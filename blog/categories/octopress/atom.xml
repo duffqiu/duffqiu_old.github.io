@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Duff Qiu's Blog]]></title>
-  <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
   <updated>2014-01-25T15:24:43+08:00</updated>
   <id>http://duffqiu.github.io/</id>
