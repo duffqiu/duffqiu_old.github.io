@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-25T15:24:43+08:00</updated>
+  <updated>2014-01-25T15:31:13+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,14 +12,5 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Environment Setup]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/01/25/environment-setup/"/>
-    <updated>2014-01-25T15:23:06+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/01/25/environment-setup</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
   
 </feed>
