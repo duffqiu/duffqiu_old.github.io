@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-26T23:27:18+08:00</updated>
+  <updated>2014-01-27T00:10:29+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -37,8 +37,7 @@
 <pre><code>sudo port -v selfupgrad
 </code></pre>
 
-<p>的时候出现了错误，所以还是安装上xcode的command line工具就好了，好像是OSX Mavericks版本才有？这个问题是通过stackover上的帖子<a href="http://stackoverflow.com/questions/19622337/cant-update-macports-with-mac-os-x-mavericks">cant-update-macports-with-mac-os-x-mavericks</a>的解答获得的
-port工具可以帮助安装所需要软件以及其依赖的软件，省去了很多找软件的麻烦，另外一个和macports差不多的软件管理工具是<a href="http://brew.sh" title="Brew官网">HomeBrew</a></p></li>
+<p>的时候出现了错误，所以还是安装上xcode的command line工具就好了，好像是OSX Mavericks版本才有？这个问题是通过stackover上的帖子<a href="http://stackoverflow.com/questions/19622337/cant-update-macports-with-mac-os-x-mavericks">cant-update-macports-with-mac-os-x-mavericks</a>的解答获得的。port工具可以帮助安装所需要软件以及其依赖的软件，省去了很多找软件的麻烦，另外一个和macports差不多的软件管理工具是<a href="http://brew.sh" title="Brew官网">HomeBrew</a></p></li>
 <li><p>安装<a href="http://git-scm.com/">Git</a>工具，如何使用Git还是看官方文档吧，这里就不讲了</p></li>
 <li><p>安装ruby，OSX已经自带了</p></li>
 <li><p>用MacPorts安装rbenv</p>

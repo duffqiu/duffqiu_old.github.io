@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Octepress | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/octepress/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2014-01-27T00:10:29+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[开始写第一篇blog]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/01/26/kai-shi-xie-di-%5B%3F%5D-pian-blog/"/>
+    <updated>2014-01-26T23:36:24+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/01/26/kai-shi-xie-di-[?]-pian-blog</id>
+    <content type="html"><![CDATA[<h4>要简单，你必须有利器</h4>
+
+<p>要简单用好Octepress，首先要看看markdown语法（链接我前面有提到），基本很简单，半个小时就能看懂，剩下实操就可。</p>
+
+<p>然后就是需要有个工具，下载了个<a href="http://moustand.com">Mou</a>，完全免费，到目前为止感觉很好用</p>
+
+<h4>开始写第一篇blog</h4>
+
+<p>首先通过命令生成第一篇文章</p>
+
+<pre><code> rake new_post\["&lt;文章标题&gt;"\] #&lt;文章标题&gt;替换成你的文章标题，可以是中文，最后生成的文件名自动转为拼音，这里用\是使用zsh shell自动生成的
+</code></pre>
+
+<p>然后通过mou打开生成好的文件用markdown语法进行编辑
+当你第一次打开文件的时候，你会发现这个文件有文件头
+ <img src="../images/Snip20140126_1.png" alt="filehead" /></p>
+
+<p>注意几个内容：</p>
+
+<ul>
+<li>如果不需要comments，可以设置为false。后面有介绍如何配置comments</li>
+<li>为分类写分类名，后面会将如何配置分类的plugin。这个例子我用了Octopress做分类名</li>
+</ul>
+
+
+<p>然后就是按照markdown的方式写内容了。
+写完了以后，则需要运行以下命令进行部署</p>
+
+<pre><code>rake generate
+rake deploy
+</code></pre>
+
+<p>以后就是重复上面的步骤就可以。</p>
+
+<h4>配置Octopress，更本地化</h4>
+]]></content>
+  </entry>
+  
+</feed>

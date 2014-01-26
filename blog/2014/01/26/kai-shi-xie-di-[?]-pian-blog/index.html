@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>First Time to Setup Octopress in Github - Duff Qiu's Blog</title>
+  <title>开始写第一篇blog - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
   
-  <meta name="description" content="为什么要建这个博客呢？ 最近小孩放假在家，总爱写些短文，但是写完了就没了，所以想想是不是建个blog来记录一下。前两天看见Leo同学在Github上用Octopress开的blog看得挺简单，直接用接近文本的markdown语法写，所以今天下午baidu＋ &hellip;">
+  <meta name="description" content="要简单，你必须有利器 要简单用好Octepress，首先要看看markdown语法（链接我前面有提到），基本很简单，半个小时就能看懂，剩下实操就可。 然后就是需要有个工具，下载了个Mou，完全免费，到目前为止感觉很好用 开始写第一篇blog 首先通过命令生成第一篇文章 rake new_post &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/25/first-time-to-setup-octopress-in-github">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/26/kai-shi-xie-di-%5B%3F%5D-pian-blog">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Duff Qiu's Blog" type="application/atom+xml">
@@ -80,7 +80,7 @@
   
   <header>
     
-      <h1 class="entry-title">First Time to Setup Octopress in Github</h1>
+      <h1 class="entry-title">开始写第一篇blog</h1>
     
     
       <p class="meta">
@@ -96,7 +96,7 @@
   
 
 
-<time datetime="2014-01-25T16:33:01+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2014</time>
+<time datetime="2014-01-26T23:36:24+08:00" pubdate data-updated="true">Jan 26<span>th</span>, 2014</time>
         
 	
           | <a href="#comments">Comments</a>
@@ -106,17 +106,41 @@
   </header>
 
 
-<div class="entry-content"><h3>为什么要建这个博客呢？</h3>
+<div class="entry-content"><h4>要简单，你必须有利器</h4>
 
-<p>最近小孩放假在家，总爱写些短文，但是写完了就没了，所以想想是不是建个blog来记录一下。前两天看见<a href="http://weibo.com/acette" title="Leo's Weibo">Leo</a>同学在Github上用<a href="http://www.octopress.org" title="Octopress">Octopress</a>开的blog看得挺简单，直接用接近文本的<a href="http://wowubuntu.com/markdown/" title="markdown中文">markdown</a>语法写，所以今天下午baidu＋google的方式在自己的<a href="http://github.com/duffqiu" title="Duff's Github">Github</a>上试验一下，然后再打算给小孩开一个。</p>
+<p>要简单用好Octepress，首先要看看markdown语法（链接我前面有提到），基本很简单，半个小时就能看懂，剩下实操就可。</p>
 
-<p>谁知道弄了一半才发现果然是只能给程序猿的东东，每次建个post都要用命令生成静态代码，然后再部署。。。这些果然不是一般人能用的。就如同它号称的“给黑客的blog框架”</p>
+<p>然后就是需要有个工具，下载了个<a href="http://moustand.com">Mou</a>，完全免费，到目前为止感觉很好用</p>
 
-<p>另外从学习安装、试用的过程看，octopress真的不太适合用windows的童鞋，最好是用Apple Mac，简单很多。这两天刚看完<a href="%22http://www.amazon.cn/MacTalk%C2%B7%E4%BA%BA%E7%94%9F%E5%85%83%E7%BC%96%E7%A8%8B-%E6%B1%A0%E5%BB%BA%E5%BC%BA-%E8%91%97/dp/B00FF5G3GK/ref=sr_1_1?ie=UTF8&amp;qid=1390661141&amp;sr=8-1&amp;keywords=mactalk%22">Mactalk</a>，感觉真的是不错，后面再来补这个的学习笔记，这也是我买的第一本收费的电子书，尽管只有¥2.99。</p>
+<h4>开始写第一篇blog</h4>
 
-<p>建议有Mac的童鞋都读读，里面提到了不少工具的用法。</p>
+<p>首先通过命令生成第一篇文章</p>
 
-<p>不过弄完了一个下午，只有一个结论，那就是不适合小孩用，看来还要再花时间给小孩找个合适的，难道是个机会？儿童blog平台？只有iPad／android版就可以了，无需电脑版。</p>
+<pre><code> rake new_post\["&lt;文章标题&gt;"\] #&lt;文章标题&gt;替换成你的文章标题，可以是中文，最后生成的文件名自动转为拼音，这里用\是使用zsh shell自动生成的
+</code></pre>
+
+<p>然后通过mou打开生成好的文件用markdown语法进行编辑
+当你第一次打开文件的时候，你会发现这个文件有文件头
+ <img src="../images/Snip20140126_1.png" alt="filehead" /></p>
+
+<p>注意几个内容：</p>
+
+<ul>
+<li>如果不需要comments，可以设置为false。后面有介绍如何配置comments</li>
+<li>为分类写分类名，后面会将如何配置分类的plugin。这个例子我用了Octopress做分类名</li>
+</ul>
+
+
+<p>然后就是按照markdown的方式写内容了。
+写完了以后，则需要运行以下命令进行部署</p>
+
+<pre><code>rake generate
+rake deploy
+</code></pre>
+
+<p>以后就是重复上面的步骤就可以。</p>
+
+<h4>配置Octopress，更本地化</h4>
 </div>
 
 
@@ -139,12 +163,12 @@
   
 
 
-<time datetime="2014-01-25T16:33:01+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2014</time>
+<time datetime="2014-01-26T23:36:24+08:00" pubdate data-updated="true">Jan 26<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/octepress/'>Octepress</a>
   
 </span>
 
@@ -160,8 +184,8 @@
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2014/01/25/octopresszai-githubshang-jian-blogde-zhun-bei-gong-zuo/" title="Previous Post: Octopress在github上建blog的准备工作">&laquo; Octopress在github上建blog的准备工作</a>
       
-        <a class="basic-alignment right" href="/blog/2014/01/25/octopresszai-githubshang-jian-blogde-zhun-bei-gong-zuo/" title="Next Post: Octopress在github上建blog的准备工作">Octopress在github上建blog的准备工作 &raquo;</a>
       
     </p>
   </footer>
