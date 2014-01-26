@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-27T00:46:30+08:00</updated>
+  <updated>2014-01-27T00:47:32+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -36,7 +36,7 @@
 
 <p>  <br /></p>
 
-<p><img class="left" src="http://duffqiu.github.io/images/Snip20140126_1.png" width="200" height="800" title="Head of post" alt="headfile"></p>
+<p><img class="left" src="http://duffqiu.github.io/images/Snip20140126_1.png" width="400" height="1000" title="Head of post" alt="headfile"></p>
 
 <br />     
 
@@ -59,6 +59,8 @@ rake deploy
 <p>以后就是重复上面的步骤就可以。</p>
 
 <h4>配置Octopress，更本地化</h4>
+
+<p>待续。。。</p>
 ]]></content>
   </entry>
   
