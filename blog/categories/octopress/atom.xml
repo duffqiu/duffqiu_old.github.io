@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-27T16:53:06+08:00</updated>
+  <updated>2014-01-27T16:54:52+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -108,7 +108,7 @@ rake deploy
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='moin'><span class='line'>&lt;/p&gt;
+</pre></td><td class='code'><pre><code class='text'><span class='line'>&lt;/p&gt;
 </span><span class='line'>
 </span><span class='line'>&lt;p&gt;&lt;/p&gt;
 </span><span class='line'>
@@ -127,14 +127,14 @@ rake deploy
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="o">&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>&lt;/p&gt;
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>
-</span><span class='line'>      <span class="o">|</span> <span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s">&quot;#comments&quot;</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span><span class="n">Comments</span><span class="o">&amp;</span><span class="n">lt</span><span class="p">;</span><span class="o">/</span><span class="n">a</span><span class="o">&amp;</span><span class="n">gt</span><span class="p">;</span>
+</span><span class='line'>&lt;pre&gt;&lt;code&gt;
+</span><span class='line'>      | &amp;lt;a href=&quot;#comments&quot;&amp;gt;Comments&amp;lt;/a&amp;gt;
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>&lt;/code&gt;&lt;/pre&gt;
 </span><span class='line'>
-</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>&lt;p&gt;
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <ol>
