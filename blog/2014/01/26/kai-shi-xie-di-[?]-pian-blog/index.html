@@ -193,22 +193,21 @@ rake deploy
 </ol>
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>        </span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>   增加多说的配置</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>
-</span><span class='line'>
-</span><span class='line'>          | &lt;a href=&quot;#comments&quot;&gt;Comments&lt;/a&gt;
-</span><span class='line'>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>    
+</span><span class='line'>      | &lt;a href=&quot;#comments&quot;&gt;Comments&lt;/a&gt;
+</span><span class='line'>     
 </span></code></pre></td></tr></table></div></figure>
 
 
@@ -218,59 +217,50 @@ rake deploy
 </ol>
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'>
-</span><span class='line'>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>   增加多说模块</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'>
-</span><span class='line'>
-</span><span class='line'>          <span class="o">&lt;</span><span class="n">section</span><span class="o">&gt;</span>
-</span><span class='line'>            <span class="o">&lt;</span><span class="n">h1</span><span class="o">&gt;</span><span class="n">Comments</span><span class="o">&lt;/</span><span class="n">h1</span><span class="o">&gt;</span>
-</span><span class='line'>            <span class="o">&lt;</span><span class="n">div</span> <span class="kt">id</span><span class="o">=</span><span class="s">&quot;comments&quot;</span> <span class="n">aria</span><span class="o">-</span><span class="n">live</span><span class="o">=</span><span class="s">&quot;polite&quot;</span><span class="o">&gt;&lt;!--</span> <span class="n">Duoshuo</span> <span class="n">Comment</span> <span class="n">BEGIN</span> <span class="o">--&gt;</span>
-</span><span class='line'>  <span class="o">&lt;</span><span class="n">div</span> <span class="n">class</span><span class="o">=</span><span class="s">&quot;ds-thread&quot;</span><span class="o">&gt;&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;</span><span class="n">script</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="o">&gt;</span>
-</span><span class='line'><span class="n">var</span> <span class="n">duoshuoQuery</span> <span class="o">=</span> <span class="p">{</span><span class="nl">short_name:</span><span class="s">&quot;duffqiu&quot;</span><span class="p">};</span>
-</span><span class='line'>  <span class="p">(</span><span class="n">function</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>      <span class="n">var</span> <span class="n">ds</span> <span class="o">=</span> <span class="n">document</span><span class="p">.</span><span class="n">createElement</span><span class="p">(</span><span class="err">&#39;</span><span class="n">script</span><span class="err">&#39;</span><span class="p">);</span>
-</span><span class='line'>      <span class="n">ds</span><span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">text</span><span class="o">/</span><span class="n">javascript</span><span class="err">&#39;</span><span class="p">;</span><span class="n">ds</span><span class="p">.</span><span class="n">async</span> <span class="o">=</span> <span class="n">true</span><span class="p">;</span>
-</span><span class='line'>      <span class="n">ds</span><span class="p">.</span><span class="n">src</span> <span class="o">=</span> <span class="err">&#39;</span><span class="nl">http:</span><span class="c1">//static.duoshuo.com/embed.js&#39;;</span>
-</span><span class='line'>      <span class="n">ds</span><span class="p">.</span><span class="n">charset</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">UTF</span><span class="o">-</span><span class="mi">8</span><span class="err">&#39;</span><span class="p">;</span>
-</span><span class='line'>      <span class="p">(</span><span class="n">document</span><span class="p">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="err">&#39;</span><span class="n">head</span><span class="err">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-</span><span class='line'>      <span class="o">||</span> <span class="n">document</span><span class="p">.</span><span class="n">getElementsByTagName</span><span class="p">(</span><span class="err">&#39;</span><span class="n">body</span><span class="err">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]).</span><span class="n">appendChild</span><span class="p">(</span><span class="n">ds</span><span class="p">);</span>
-</span><span class='line'>  <span class="p">})();</span>
-</span><span class='line'>  <span class="o">&lt;/</span><span class="n">script</span><span class="o">&gt;</span>
-</span><span class='line'><span class="o">&lt;!--</span> <span class="n">Duoshuo</span> <span class="n">Comment</span> <span class="n">END</span> <span class="o">--&gt;</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">div</span><span class="o">&gt;</span>
-</span><span class='line'>          <span class="o">&lt;/</span><span class="n">section</span><span class="o">&gt;</span>
-</span><span class='line'>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>    
 </span></code></pre></td></tr></table></div></figure>
 
+
+<p></p>
+
+<p>   增加多说模块</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>    
+</span><span class='line'>      &lt;section&gt;
+</span><span class='line'>        &lt;h1&gt;Comments&lt;/h1&gt;
+</span><span class='line'>        &lt;div id=&quot;comments&quot; aria-live=&quot;polite&quot;&gt;<!-- Duoshuo Comment BEGIN -->
+    <div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"duffqiu"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = 'http://static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+        || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+<!-- Duoshuo Comment END -->
+&lt;/div&gt;
+</span><span class='line'>      &lt;/section&gt;
+</span><span class='line'>    
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
 
 <ol>
 <li><p>取消disqus</p>
