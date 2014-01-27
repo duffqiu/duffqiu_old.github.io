@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-27T16:38:05+08:00</updated>
+  <updated>2014-01-27T16:40:53+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -103,30 +103,31 @@ rake deploy
 </code></pre></li>
 <li><p>修改source/_includes/article.html文件，在disqus配置后面</p>
 
-<p> <div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>&lt;br/>
 </span><span class='line'>      &lt;br/></span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p> 增加多说的配置</p>
+<p>增加多说的配置</p>
 
-<p><code>
-     
-       | &lt;a href="#comments"&gt;Comments&lt;/a&gt;
-          
-</code></p></li>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>| &lt;a href="#comments">Comments&lt;/a>
+</span><span class='line'>        &lt;br/></span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
 <li><p>在source/_includes/post/目录里面增加一个duoshuo.html模块文件，然后从多说的应用对应的工具里面获取通用代码(不要用网上搜索到的代码)放入这个文件中</p></li>
 <li><p>在source/_layouts/post.html 中的 disqus代码下</p>
 
-<p><code>  
-             
-</code></p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;br/>
+</span><span class='line'>           &lt;br/></span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>  增加多说模块</p>
+<p> 增加多说模块</p>
 
-<p> <code>  
-              
-</code></p></li>
+<p> <div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;br/>
+</span><span class='line'>            &lt;br/></span></code></pre></td></tr></table></div></figure></notextile></div></p></li>
 <li><p>取消disqus</p>
 
 <p>编辑_config.yml文件，将配置项disqus_show_comment_count设置为false就可以</p></li>

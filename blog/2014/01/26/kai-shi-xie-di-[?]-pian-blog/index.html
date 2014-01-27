@@ -196,13 +196,22 @@ rake deploy
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"></pre></td><td class='code'><pre><code class=''></code></pre></td></tr></table></div></figure>
 
 
-<pre><code>增加多说的配置 
-</code></pre>
+<p>   增加多说的配置</p>
 
-<p>   &#8220;`</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>| &lt;a href="#comments">Comments&lt;/a></span></code></pre></td></tr></table></div></figure>
 
-<pre><code>      | &lt;a href="#comments"&gt;Comments&lt;/a&gt;
-</code></pre>
+
+<ol>
+<li><p>在source/_includes/post/目录里面增加一个duoshuo.html模块文件，然后从多说的应用对应的工具里面获取通用代码(不要用网上搜索到的代码)放入这个文件中</p></li>
+<li><p>在source/_layouts/post.html 中的 disqus代码下</p></li>
+</ol>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"></pre></td><td class='code'><pre><code class=''></code></pre></td></tr></table></div></figure>
+
+
+<p>   增加多说模块</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -216,50 +225,31 @@ rake deploy
 <span class='line-number'>10</span>
 <span class='line-number'>11</span>
 <span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>     
-</span><span class='line'>4. 在source/_includes/post/目录里面增加一个duoshuo.html模块文件，然后从多说的应用对应的工具里面获取通用代码(不要用网上搜索到的代码)放入这个文件中 
-</span><span class='line'>
-</span><span class='line'>5. 在source/_layouts/post.html 中的 disqus代码下
-</span><span class='line'>
-</span><span class='line'>   ```  
-</span><span class='line'>            </span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;section>
+</span><span class='line'>            &lt;h1>Comments&lt;/h1>
+</span><span class='line'>            &lt;div id="comments" aria-live="polite">&lt;!-- Duoshuo Comment BEGIN -->
+</span><span class='line'>  &lt;div class="ds-thread">&lt;/div>
+</span><span class='line'>&lt;script type="text/javascript">
+</span><span class='line'>var duoshuoQuery = {short_name:"duffqiu"};
+</span><span class='line'>  (function() {
+</span><span class='line'>      var ds = document.createElement('script');
+</span><span class='line'>      ds.type = 'text/javascript';ds.async = true;
+</span><span class='line'>      ds.src = 'http://static.duoshuo.com/embed.js';
+</span><span class='line'>      ds.charset = 'UTF-8';
+</span><span class='line'>      (document.getElementsByTagName('head')[0] 
+</span><span class='line'>      || document.getElementsByTagName('body')[0]).appendChild(ds);
+</span><span class='line'>  })();
+</span><span class='line'>  &lt;/script>
+</span><span class='line'>&lt;!-- Duoshuo Comment END -->
+</span><span class='line'>&lt;/div>
+</span><span class='line'>          &lt;/section></span></code></pre></td></tr></table></div></figure>
 
-
-<p></p>
-
-<pre><code>增加多说模块
-</code></pre>
-
-<p>   &#8220;`</p>
-
-<pre><code>      &lt;section&gt;
-        &lt;h1&gt;Comments&lt;/h1&gt;
-        &lt;div id="comments" aria-live="polite"&gt;&lt;!-- Duoshuo Comment BEGIN --&gt;
-&lt;div class="ds-thread"&gt;&lt;/div&gt;
-</code></pre>
-
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"duffqiu"};
-    (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = 'http://static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-        || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-    </script>
-
-
-<!-- Duoshuo Comment END -->
-
-
-<p></div></p>
-
-<pre><code>      &lt;/section&gt;
-</code></pre>
-
-<p>&#8220;`</p>
 
 <ol>
 <li><p>取消disqus</p>
