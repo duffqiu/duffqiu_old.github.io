@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-27T16:27:41+08:00</updated>
+  <updated>2014-01-27T16:29:51+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -127,20 +127,29 @@ rake deploy
 <li><p>在source/_includes/post/目录里面增加一个duoshuo.html模块文件，然后从多说的应用对应的工具里面获取通用代码(不要用网上搜索到的代码)放入这个文件中</p></li>
 <li><p>在source/_layouts/post.html 中的 disqus代码下</p>
 
-<pre><code> `        
-</code></pre>
-
-<p> 增加多说模块</p>
-
-<pre><code>   &lt;section&gt;
-     &lt;h1&gt;Comments&lt;/h1&gt;
-     &lt;div id="comments" aria-live="polite"&gt;&lt;!-- Duoshuo Comment BEGIN --&gt;
-</code></pre>
-
-<p> <div class="ds-thread"></div></p></li>
+<p>&#8220;`</p></li>
 </ol>
 
 
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> 
+</span><span class='line'>    增加多说模块
+</span><span class='line'>  
+</span><span class='line'>   ```  
+</span><span class='line'>        
+</span><span class='line'>          &lt;section&gt;
+</span><span class='line'>            &lt;h1&gt;Comments&lt;/h1&gt;
+</span><span class='line'>            &lt;div id="comments" aria-live="polite"&gt;<!-- Duoshuo Comment BEGIN -->
+    <div class="ds-thread"></div>
 <script type="text/javascript">
 var duoshuoQuery = {short_name:"duffqiu"};
     (function() {
@@ -152,15 +161,11 @@ var duoshuoQuery = {short_name:"duffqiu"};
         || document.getElementsByTagName('body')[0]).appendChild(ds);
     })();
     </script>
-
-
 <!-- Duoshuo Comment END -->
+&lt;/div&gt;
+</span><span class='line'>          &lt;/section&gt;
+</span><span class='line'>                </span></code></pre></td></tr></table></div></figure>
 
-
-<p></div></p>
-
-<pre><code>      &lt;/section&gt;
-</code></pre>
 
 <ol>
 <li><p>取消disqus</p>
