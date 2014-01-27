@@ -200,20 +200,16 @@ rake deploy
  duoshuo_comments: true
  duoshuo_short_name: &lt;你的多说的应用名&gt;  
 </code></pre></li>
-<li><p>修改source/_includes/article.html文件，在disqus配置后面</p></li>
-</ol>
+<li><p>修改source/_includes/article.html文件，在disqus配置后面</p>
 
+<p><pre><code></p>
 
-<p><code></p>
+<p></code></pre></p>
 
-<p></code></p>
+<p><strong>增加多说的配置</strong></p>
 
-<p>   <strong>增加多说的配置</strong></p>
-
-<pre><code>      | &lt;a href="#comments"&gt;Comments&lt;/a&gt;
-</code></pre>
-
-<ol>
+<pre><code>   | &lt;a href="#comments"&gt;Comments&lt;/a&gt;
+</code></pre></li>
 <li><p>在source/_includes/post/目录里面增加一个duoshuo.html模块文件，然后从多说的应用对应的工具里面获取通用代码(不要用网上搜索到的代码)放入这个文件中</p></li>
 <li><p>在source/_layouts/post.html 中的 disqus代码下</p>
 
