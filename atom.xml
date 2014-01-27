@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-27T15:20:31+08:00</updated>
+  <updated>2014-01-27T15:22:48+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -110,10 +110,6 @@ rake deploy
  duoshuo_short_name: &lt;你的多说的应用名&gt;  
 </code></pre></li>
 <li><p>修改source/_includes/article.html文件，在disqus配置后面</p>
-
-<p><pre><code></p>
-
-<p></code></pre></p>
 
 <p><strong>增加多说的配置</strong></p>
 
