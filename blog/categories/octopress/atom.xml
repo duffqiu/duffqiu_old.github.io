@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-27T15:05:54+08:00</updated>
+  <updated>2014-01-27T15:11:53+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -105,18 +105,18 @@ rake deploy
 <li><p>用微博／百度账户开通多说，并配置一个应用指向你的blog，获得这个应用的short name</p></li>
 <li><p>在octopress的配置文件中增加以下内容</p>
 
-<pre><code> # duoshuo comments
+<pre><code> #duoshuo comments
  duoshuo_comments: true
  duoshuo_short_name: &lt;你的多说的应用名&gt;  
 </code></pre></li>
 <li><p>修改source/_includes/article.html文件，在disqus配置后面</p>
 
-<pre><code>   
+<pre><code>    
 </code></pre>
 
 <p><strong>增加多说的配置</strong></p>
 
-<pre><code>
+<pre><code> 
    | &lt;a href="#comments"&gt;Comments&lt;/a&gt;
     
 </code></pre></li>
