@@ -199,16 +199,25 @@ rake deploy
 </code></pre></li>
 <li><p>修改source/_includes/article.html文件，在disqus配置后面</p>
 
+<pre><code> \
+</code></pre>
+
 <p>增加多说的配置</p>
 
-<pre><code>   | &lt;a href="#comments"&gt;Comments&lt;/a&gt;
+<pre><code>\
+   | &lt;a href="#comments"&gt;Comments&lt;/a&gt;
+  \    
 </code></pre></li>
 <li><p>在source/_includes/post/目录里面增加一个duoshuo.html模块文件，然后从多说的应用对应的工具里面获取通用代码(不要用网上搜索到的代码)放入这个文件中</p></li>
 <li><p>在source/_layouts/post.html 中的 disqus代码下</p>
 
+<pre><code> \        
+</code></pre>
+
 <p>增加多说模块</p>
 
-<pre><code> &lt;section&gt;
+<pre><code>\
+ &lt;section&gt;
  &lt;h1&gt;Comments&lt;/h1&gt;
  &lt;div id="comments" aria-live="polite"&gt;&lt;!-- Duoshuo Comment BEGIN --&gt;
 </code></pre>
@@ -236,6 +245,7 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <p></div></p>
 
 <pre><code>    &lt;/section&gt;
+    \        
 </code></pre>
 
 <ol>
