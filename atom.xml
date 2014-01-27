@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-27T15:26:00+08:00</updated>
+  <updated>2014-01-27T15:30:33+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -118,13 +118,7 @@ rake deploy
 <li><p>在source/_includes/post/目录里面增加一个duoshuo.html模块文件，然后从多说的应用对应的工具里面获取通用代码(不要用网上搜索到的代码)放入这个文件中</p></li>
 <li><p>在source/_layouts/post.html 中的 disqus代码下</p>
 
-<p> <pre><code></p>
-
-<p></code></pre></p>
-
 <p> <strong>增加多说模块</strong></p>
-
-<p> <pre><code></p>
 
 <pre><code> &lt;section&gt;
  &lt;h1&gt;Comments&lt;/h1&gt;
@@ -154,8 +148,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <p></div></p>
 
 <pre><code>    &lt;/section&gt;
-
-&lt;/code&gt;&lt;/pre&gt;       
 </code></pre>
 
 <ol>
