@@ -14,7 +14,8 @@
 3
 4
 5
-{% raw %} #代码块 {% endraw %} &hellip;">
+{% raw %} # 必须有空行 #代码块 # 必须有空行
+{% &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -121,9 +122,9 @@
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 </pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="o">{</span>% raw %<span class="o">}</span>
-</span><span class='line'>
+</span><span class='line'>   <span class="c"># 必须有空行</span>
 </span><span class='line'>   <span class="c">#代码块  </span>
-</span><span class='line'>
+</span><span class='line'>   <span class="c"># 必须有空行</span>
 </span><span class='line'><span class="o">{</span>% endraw %<span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -131,6 +132,8 @@
 <p>的方式将代码块再扩起来解决的。</p>
 
 <p>如果有序列(如1., 2&hellip;)，则需要缩进代码快和raw..endraw指令</p>
+
+<p>出个小题，这里是怎么写出raw&hellip;endraw的?</p>
 </div>
 
 
