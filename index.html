@@ -194,48 +194,41 @@ rake deploy
 </code></pre></li>
 <li><p>修改source/_includes/article.html文件，在disqus配置后面</p>
 
-<p>增加多说的配置</p></li>
+<p>&#8220;` sh</p></li>
 </ol>
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>| &lt;a href="#comments"&gt;Comments&lt;/a&gt;
-</span><span class='line'></span></code></pre></td></tr></table></div></figure>
+<p>&#8220;`</p>
 
+<p>   增加多说的配置</p>
+
+<p>   &#8220;` sh</p>
+
+<p>| <a href="#comments">Comments</a></p>
+
+<p>   &#8220;`</p>
 
 <ol>
 <li><p>在source/_includes/post/目录里面增加一个duoshuo.html模块文件，然后从多说的应用对应的工具里面获取通用代码(不要用网上搜索到的代码)放入这个文件中</p></li>
-<li><p>在source/_layouts/post.html 中的 disqus代码下</p></li>
+<li><p>在source/_layouts/post.html 中的 disqus代码下</p>
+
+<p>&#8220;` sh</p>
+
+<p>&#8220;`</p>
+
+<p>增加多说模块</p>
+
+<p>&#8220;`</p>
+
+<pre><code>   &lt;section&gt;
+     &lt;h1&gt;Comments&lt;/h1&gt;
+     &lt;div id="comments" aria-live="polite"&gt;&lt;!-- Duoshuo Comment BEGIN --&gt;
+</code></pre>
+
+<p> <div class="ds-thread"></div></p></li>
 </ol>
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>            </span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>   增加多说模块</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>    
-</span><span class='line'>      &lt;section&gt;
-</span><span class='line'>        &lt;h1&gt;Comments&lt;/h1&gt;
-</span><span class='line'>        &lt;div id="comments" aria-live="polite"&gt;<!-- Duoshuo Comment BEGIN -->
-    <div class="ds-thread"></div>
 <script type="text/javascript">
 var duoshuoQuery = {short_name:"duffqiu"};
     (function() {
@@ -247,13 +240,17 @@ var duoshuoQuery = {short_name:"duffqiu"};
         || document.getElementsByTagName('body')[0]).appendChild(ds);
     })();
     </script>
+
+
 <!-- Duoshuo Comment END -->
-&lt;/div&gt;
-</span><span class='line'>      &lt;/section&gt;
-</span><span class='line'>            </span></code></pre></td></tr></table></div></figure>
 
 
-<p></p>
+<p></div></p>
+
+<pre><code>      &lt;/section&gt;
+</code></pre>
+
+<p>   &#8220;`</p>
 
 <ol>
 <li><p>取消disqus</p>
