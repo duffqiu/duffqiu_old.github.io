@@ -129,7 +129,7 @@
 
 <p><img class="left" src="/images/Snip20140126_1.png" width="400" height="1000" title="Head of post" alt="headfile"></p>
 
-<br />     
+<br />     <!-- 不起作用-->
 
 
 <p>注意几个内容：</p>
@@ -150,6 +150,33 @@ rake deploy
 <p>以后就是重复上面的步骤就可以。</p>
 
 <h4>配置Octopress，更本地化</h4>
+
+<h5>用微博配置About me</h5>
+
+<p>通常在主页的侧边栏说明一下自己是谁，最简单的方式或许是直接连接自己的微博。具体步骤如下</p>
+
+<ol>
+<li><p>激活About me。</p>
+
+<p>Octopress已经准备了一个aboutme的侧边栏文件，在对一个的Octopresss目录的/source/<em>includes/custom/asides子目录下的about.html文件
+编辑octopress的配置文件</em>config.yml，修改default_asides项，增加内容:</p>
+
+<pre><code>custom/asides/about.html
+</code></pre></li>
+<li><p>加入微博内容</p>
+
+<p> 微博的插入代码可以到<a href="http://app.weibo.com/tool/weiboshow?sudaref=open.weibo.com" title="微博秀">微博的开放平台</a>获取（不要copy搜索出来，很可能旧了）</p>
+
+<p> 然后将代码放入到about.html文件</p></li>
+<li><p>重修部署</p>
+
+<pre><code>rake generate
+rake deploy
+</code></pre></li>
+</ol>
+
+
+<p>这个时候主页和每个页面都会出现你的微博了。如果只想出现在主页上，后面介绍如何配置post页的配置，配置完后就只有主页出现了。</p>
 
 <p>待续。。。</p>
 </div>
