@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-27T17:45:17+08:00</updated>
+  <updated>2014-01-27T18:18:23+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -72,13 +72,21 @@ rake deploy
 <p> 微博的插入代码可以到<a href="http://app.weibo.com/tool/weiboshow?sudaref=open.weibo.com" title="微博秀">微博的开放平台</a>获取（不要copy搜索出来，很可能旧了）</p>
 
 <p> 然后将代码放入到about.html文件
- 如我的about.html文件内容</p>
+ 如我的about.html文件内容</p></li>
+</ol>
 
-<pre><code> &lt;section&gt;
-  &lt;h1&gt;About Me&lt;/h1&gt;
-  &lt;iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&amp;width=0&amp;height=550&amp;fansRow=2&amp;ptype=1&amp;speed=300&amp;skin=1&amp;isTitle=0&amp;noborder=0&amp;isWeibo=1&amp;isFans=0&amp;uid=1872168377&amp;verifier=1cd3a528&amp;dpc=1"&gt;&lt;/iframe&gt;
- &lt;/section&gt;
-</code></pre></li>
+
+<p>``` text</p>
+
+<pre><code>    &lt;section&gt;
+     &lt;h1&gt;About Me&lt;/h1&gt;
+     &lt;iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&amp;width=0&amp;height=550&amp;fansRow=2&amp;ptype=1&amp;speed=300&amp;skin=1&amp;isTitle=0&amp;noborder=0&amp;isWeibo=1&amp;isFans=0&amp;uid=1872168377&amp;verifier=1cd3a528&amp;dpc=1"&gt;&lt;/iframe&gt;
+    &lt;/section&gt;
+</code></pre>
+
+<p>```</p>
+
+<ol>
 <li><p>重修部署</p>
 
 <pre><code>rake generate
@@ -103,29 +111,55 @@ rake deploy
 </code></pre></li>
 <li><p>修改source/_includes/article.html文件，在disqus配置后面</p>
 
-<p><code>sh
-     
-</code></p>
+<p></p>
 
-<p> 增加多说的配置</p>
+<pre><code>{% if site.disqus_short_name and page.comments != false and post.comments != false and site.disqus_show_comment_count == true %}
+ | &lt;a href="{% if index %}{{ root_url }}{{ post.url }}{% endif %}#disqus_thread"
+ data-disqus-identifier="{% if post.meta.disqus_id %}{{ post.meta.disqus_id }}{% else %}{{ site.url }}{{ post.url }}
+ {% endif %}"&gt;Comments&lt;/a&gt; 
+ {% endif %}
+</code></pre>
 
-<p> <code>sh
+<p></p>
 
-| &lt;a href="#comments"&gt;Comments&lt;/a&gt;
+<p>增加多说的配置</p>
 
-</code></p></li>
+<p></p>
+
+<pre><code> {% if site.duoshuo_short_name and page.comments != false and post.comments != false and site.duoshuo_comments == true %}
+ | &lt;a href="{% if index %}{{ root_url }}{{ post.url }}{% endif %}#comments"&gt;Comments&lt;/a&gt;
+ {% endif %}
+</code></pre>
+
+<p></p></li>
 <li><p>在source/_includes/post/目录里面增加一个duoshuo.html模块文件，然后从多说的应用对应的工具里面获取通用代码(不要用网上搜索到的代码)放入这个文件中</p></li>
 <li><p>在source/_layouts/post.html 中的 disqus代码下</p>
 
-<p><code>sh  
-             
-</code></p>
+<p></p>
+
+<pre><code> {% if site.disqus_short_name and page.comments == true %}
+   &lt;section&gt;
+     &lt;h1&gt;Comments&lt;/h1&gt;
+     &lt;div id="disqus_thread" aria-live="polite"&gt;{% include post/disqus_thread.html %}&lt;/div&gt;
+   &lt;/section&gt;
+ {% endif %}    
+</code></pre>
+
+<p></p>
 
 <p>增加多说模块</p>
 
-<p><code>  
-             
-</code></p></li>
+<p></p>
+
+<pre><code> {% if site.duoshuo_short_name and site.duoshuo_comments == true and page.comments == true %}
+   &lt;section&gt;
+     &lt;h1&gt;Comments&lt;/h1&gt;
+     &lt;div id="comments" aria-live="polite"&gt;{% include post/duoshuo.html %}&lt;/div&gt;
+   &lt;/section&gt;
+ {% endif %}        
+</code></pre>
+
+<p></p></li>
 <li><p>取消disqus</p>
 
 <p>编辑_config.yml文件，将配置项disqus_show_comment_count设置为false就可以</p></li>

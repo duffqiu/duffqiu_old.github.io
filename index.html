@@ -163,13 +163,24 @@ rake deploy
 <p> 微博的插入代码可以到<a href="http://app.weibo.com/tool/weiboshow?sudaref=open.weibo.com" title="微博秀">微博的开放平台</a>获取（不要copy搜索出来，很可能旧了）</p>
 
 <p> 然后将代码放入到about.html文件
- 如我的about.html文件内容</p>
+ 如我的about.html文件内容</p></li>
+</ol>
 
-<pre><code> &lt;section&gt;
-  &lt;h1&gt;About Me&lt;/h1&gt;
-  &lt;iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&amp;width=0&amp;height=550&amp;fansRow=2&amp;ptype=1&amp;speed=300&amp;skin=1&amp;isTitle=0&amp;noborder=0&amp;isWeibo=1&amp;isFans=0&amp;uid=1872168377&amp;verifier=1cd3a528&amp;dpc=1"&gt;&lt;/iframe&gt;
- &lt;/section&gt;
-</code></pre></li>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>    &lt;section&gt;
+</span><span class='line'>     &lt;h1&gt;About Me&lt;/h1&gt;
+</span><span class='line'>     &lt;iframe width=&quot;100%&quot; height=&quot;550&quot; class=&quot;share_self&quot;  frameborder=&quot;0&quot; scrolling=&quot;no&quot; src=&quot;http://widget.weibo.com/weiboshow/index.php?language=&amp;width=0&amp;height=550&amp;fansRow=2&amp;ptype=1&amp;speed=300&amp;skin=1&amp;isTitle=0&amp;noborder=0&amp;isWeibo=1&amp;isFans=0&amp;uid=1872168377&amp;verifier=1cd3a528&amp;dpc=1&quot;&gt;&lt;/iframe&gt;
+</span><span class='line'>    &lt;/section&gt;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+
+<ol>
 <li><p>重修部署</p>
 
 <pre><code>rake generate
@@ -194,65 +205,39 @@ rake deploy
 </code></pre></li>
 <li><p>修改source/_includes/article.html文件，在disqus配置后面</p>
 
-<p>&#8220;` sh</p></li>
-</ol>
+<pre><code>{% if site.disqus_short_name and page.comments != false and post.comments != false and site.disqus_show_comment_count == true %}
+ | &lt;a href="{% if index %}{{ root_url }}{{ post.url }}{% endif %}#disqus_thread"
+ data-disqus-identifier="{% if post.meta.disqus_id %}{{ post.meta.disqus_id }}{% else %}{{ site.url }}{{ post.url }}
+ {% endif %}"&gt;Comments&lt;/a&gt; 
+ {% endif %}
+</code></pre>
 
+<p>增加多说的配置</p>
 
-<p>&#8220;`</p>
-
-<p>   增加多说的配置</p>
-
-<p>   &#8220;` sh</p>
-
-<p>| <a href="#comments">Comments</a></p>
-
-<p>   &#8220;`</p>
-
-<ol>
+<pre><code> {% if site.duoshuo_short_name and page.comments != false and post.comments != false and site.duoshuo_comments == true %}
+ | &lt;a href="{% if index %}{{ root_url }}{{ post.url }}{% endif %}#comments"&gt;Comments&lt;/a&gt;
+ {% endif %}
+</code></pre></li>
 <li><p>在source/_includes/post/目录里面增加一个duoshuo.html模块文件，然后从多说的应用对应的工具里面获取通用代码(不要用网上搜索到的代码)放入这个文件中</p></li>
 <li><p>在source/_layouts/post.html 中的 disqus代码下</p>
 
-<p>&#8220;` sh</p>
-
-<p>&#8220;`</p>
+<pre><code> {% if site.disqus_short_name and page.comments == true %}
+   &lt;section&gt;
+     &lt;h1&gt;Comments&lt;/h1&gt;
+     &lt;div id="disqus_thread" aria-live="polite"&gt;{% include post/disqus_thread.html %}&lt;/div&gt;
+   &lt;/section&gt;
+ {% endif %}    
+</code></pre>
 
 <p>增加多说模块</p>
 
-<p>&#8220;`</p>
-
-<pre><code>   &lt;section&gt;
+<pre><code> {% if site.duoshuo_short_name and site.duoshuo_comments == true and page.comments == true %}
+   &lt;section&gt;
      &lt;h1&gt;Comments&lt;/h1&gt;
-     &lt;div id="comments" aria-live="polite"&gt;&lt;!-- Duoshuo Comment BEGIN --&gt;
-</code></pre>
-
-<p> <div class="ds-thread"></div></p></li>
-</ol>
-
-
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"duffqiu"};
-    (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = 'http://static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-        || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-    </script>
-
-
-<!-- Duoshuo Comment END -->
-
-
-<p></div></p>
-
-<pre><code>      &lt;/section&gt;
-</code></pre>
-
-<p>   &#8220;`</p>
-
-<ol>
+     &lt;div id="comments" aria-live="polite"&gt;{% include post/duoshuo.html %}&lt;/div&gt;
+   &lt;/section&gt;
+ {% endif %}        
+</code></pre></li>
 <li><p>取消disqus</p>
 
 <p>编辑_config.yml文件，将配置项disqus_show_comment_count设置为false就可以</p></li>
