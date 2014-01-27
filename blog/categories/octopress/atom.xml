@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-27T18:18:23+08:00</updated>
+  <updated>2014-01-27T18:42:34+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,29 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress插入代码块的问题]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/"/>
+    <updated>2014-01-27T18:20:21+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti</id>
+    <content type="html"><![CDATA[<h4>在blog中插入Octopress代码块的问题</h4>
+
+<p>Octopress的说明文档中有多种插入代码块的方式，但是当初入markdown代码的时候就出现问题，尝试了多种方式后无果，最后查看别人的blog的源码发现使用</p>
+
+<p>``` sh <br/>
+</p>
+
+<p>   #代码块</p>
+
+<p><br/>
+```</p>
+
+<p>的方式将代码块再扩起来解决的。</p>
+
+<p>如果有序列(如1., 2&hellip;)，则需要缩进代码快和raw..endraw指令</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[开始写第一篇blog]]></title>

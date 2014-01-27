@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-27T18:18:23+08:00</updated>
+  <updated>2014-01-27T18:42:34+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,34 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress插入代码块的问题]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/"/>
+    <updated>2014-01-27T18:20:21+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti</id>
+    <content type="html"><![CDATA[<h4>在blog中插入Octopress代码块的问题</h4>
+
+<p>Octopress的说明文档中有多种插入代码块的方式，但是当初入markdown代码的时候就出现问题，尝试了多种方式后无果，最后查看别人的blog的源码发现使用</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="o">{</span>% raw %<span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="c">#代码块  </span>
+</span><span class='line'>
+</span><span class='line'><span class="o">{</span>% endraw %<span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>的方式将代码块再扩起来解决的。</p>
+
+<p>如果有序列(如1., 2&hellip;)，则需要缩进代码快和raw..endraw指令</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[开始写第一篇blog]]></title>

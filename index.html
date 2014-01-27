@@ -9,7 +9,12 @@
   <meta name="author" content="Duff Qiu">
 
   
-  <meta name="description" content="要简单，你必须有利器 要简单用好Octepress，首先要看看markdown语法（链接我前面有提到），基本很简单，半个小时就能看懂，剩下实操就可。 然后就是需要有个工具，下载了个Mou，完全免费，到目前为止感觉很好用 开始写第一篇blog 首先通过命令生成第一篇文章 rake new_post &hellip;">
+  <meta name="description" content="在blog中插入Octopress代码块的问题 Octopress的说明文档中有多种插入代码块的方式，但是当初入markdown代码的时候就出现问题，尝试了多种方式后无果，最后查看别人的blog的源码发现使用 1
+2
+3
+4
+5
+{% raw %} #代码块 {% endraw %} &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +82,64 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/">Octopress插入代码块的问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-27T18:20:21+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time>
+        
+	
+          | <a href="/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>在blog中插入Octopress代码块的问题</h4>
+
+<p>Octopress的说明文档中有多种插入代码块的方式，但是当初入markdown代码的时候就出现问题，尝试了多种方式后无果，最后查看别人的blog的源码发现使用</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="o">{</span>% raw %<span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>   <span class="c">#代码块  </span>
+</span><span class='line'>
+</span><span class='line'><span class="o">{</span>% endraw %<span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>的方式将代码块再扩起来解决的。</p>
+
+<p>如果有序列(如1., 2&hellip;)，则需要缩进代码快和raw..endraw指令</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -451,6 +514,10 @@ git push origin source
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/">Octopress插入代码块的问题</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/01/26/kai-shi-xie-di-%5B%3F%5D-pian-blog/">开始写第一篇blog</a>
