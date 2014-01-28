@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-28T11:55:29+08:00</updated>
+  <updated>2014-01-28T12:03:42+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -29,7 +29,7 @@
 <h4>安装Goagent</h4>
 
 <p>访问<a href="https://code.google.com/p/goagent/" title="官网">Goagent</a><br/>
-但是在没有代理的时候，访问code.google.com总是很慢，这里附上一个<a href="http://duffqiu.github.io/assets/goagent-goagent-v3.1.5-12-gd6029f0.zip">Goagent 3.1.5</a><br/>
+但是在没有代理的时候，访问code.google.com总是很慢，这里附上一个<a href="http://duffqiu.github.io/assets/goagent-goagent-v3.1.5.zip">Goagent 3.1.5</a><br/>
 具体教程可以参考Goagent的官网
 在Mac上的简单操作就是</p>
 
