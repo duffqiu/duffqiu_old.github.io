@@ -14,7 +14,7 @@ categories: Proxy
 
 ####安装Goagent
 访问[Goagent](https://code.google.com/p/goagent/ "官网")  
-但是在没有代理的时候，访问code.google.com总是很慢，这里附上一个[Goagent 3.1.5](/assets/goagent-goagent-v3.1.5-12-gd6029f0.zip)  
+但是在没有代理的时候，访问code.google.com总是很慢，这里附上一个[Goagent 3.1.5](/assets/goagent-goagent-v3.1.5.zip)  
 具体教程可以参考Goagent的官网
 在Mac上的简单操作就是
 
