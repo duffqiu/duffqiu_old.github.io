@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-28T12:05:09+08:00</updated>
+  <updated>2014-01-28T12:14:51+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,29 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress管理附件]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/01/28/octopressguan-li-fu-jian/"/>
+    <updated>2014-01-28T12:10:51+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/01/28/octopressguan-li-fu-jian</id>
+    <content type="html"><![CDATA[<h4>如何在Octopress使用附件</h4>
+
+<ol>
+<li>在octopress目录中，将对应的附件放到/source/assets目录里面</li>
+<li><p>然后重新生成和部署</p>
+
+<pre><code>rake gengerate
+rake deploy
+</code></pre></li>
+<li><p>然后在对应的blog中，使用http的链接方式指定文件就可如</p>
+
+<pre><code>[附件](/assets/&lt;附件名&gt;)
+</code></pre></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mac上用google-app-engine搭建proxy]]></title>

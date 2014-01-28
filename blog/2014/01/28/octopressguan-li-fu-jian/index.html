@@ -5,17 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress插入代码块的问题 - Duff Qiu's Blog</title>
+  <title>Octopress管理附件 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
   
-  <meta name="description" content="在blog中插入Octopress代码块的问题 Octopress的说明文档中有多种插入代码块的方式，但是当初入markdown代码的时候就出现问题，尝试了多种方式后无果，最后查看别人的blog的源码发现使用 1
-2
-3
-4
-5
-{% raw %} # 必须有空行 #代码块 # 必须有空行
-{% &hellip;">
+  <meta name="description" content="如何在Octopress使用附件 在octopress目录中，将对应的附件放到/source/assets目录里面
+然后重新生成和部署 rake gengerate
+rake deploy 然后在对应的blog中，使用http的链接方式指定文件就可如 [附件](/assets/&lt;附件名&gt &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -24,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/28/octopressguan-li-fu-jian">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Duff Qiu's Blog" type="application/atom+xml">
@@ -86,7 +82,7 @@
   
   <header>
     
-      <h1 class="entry-title">Octopress插入代码块的问题</h1>
+      <h1 class="entry-title">Octopress管理附件</h1>
     
     
       <p class="meta">
@@ -102,7 +98,7 @@
   
 
 
-<time datetime="2014-01-27T18:20:21+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time>
+<time datetime="2014-01-28T12:10:51+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
         
 	
           | <a href="#comments">Comments</a>
@@ -112,28 +108,21 @@
   </header>
 
 
-<div class="entry-content"><h4>在blog中插入Octopress代码块的问题</h4>
+<div class="entry-content"><h4>如何在Octopress使用附件</h4>
 
-<p>Octopress的说明文档中有多种插入代码块的方式，但是当初入markdown代码的时候就出现问题，尝试了多种方式后无果，最后查看别人的blog的源码发现使用</p>
+<ol>
+<li>在octopress目录中，将对应的附件放到/source/assets目录里面</li>
+<li><p>然后重新生成和部署</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="o">{</span>% raw %<span class="o">}</span>
-</span><span class='line'>   <span class="c"># 必须有空行</span>
-</span><span class='line'>   <span class="c">#代码块  </span>
-</span><span class='line'>   <span class="c"># 必须有空行</span>
-</span><span class='line'><span class="o">{</span>% endraw %<span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<pre><code>rake gengerate
+rake deploy
+</code></pre></li>
+<li><p>然后在对应的blog中，使用http的链接方式指定文件就可如</p>
 
+<pre><code>[附件](/assets/&lt;附件名&gt;)
+</code></pre></li>
+</ol>
 
-<p>的方式将代码块再扩起来解决的。</p>
-
-<p>如果有序列(如1., 2&hellip;)，则需要缩进代码快和raw..endraw指令</p>
-
-<p>出个小题，这里是怎么写出raw&hellip;endraw的?</p>
 </div>
 
 
@@ -156,7 +145,7 @@
   
 
 
-<time datetime="2014-01-27T18:20:21+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time>
+<time datetime="2014-01-28T12:10:51+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
       
 
 <span class="categories">
@@ -177,10 +166,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/26/kai-shi-xie-di-%5B%3F%5D-pian-blog/" title="Previous Post: 开始写第一篇blog">&laquo; 开始写第一篇blog</a>
+        <a class="basic-alignment left" href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/" title="Previous Post: Mac上用google-app-engine搭建proxy">&laquo; Mac上用google-app-engine搭建proxy</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/" title="Next Post: Mac上用google-app-engine搭建proxy">Mac上用google-app-engine搭建proxy &raquo;</a>
       
     </p>
   </footer>
@@ -245,7 +232,7 @@ var duoshuoQuery = {short_name:"duffqiu"};
     </li>
     
     <li class="related">
-        <a href="/blog/2014/01/28/octopressguan-li-fu-jian/">octopress管理附件</a>
+        <a href="/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/">octopress插入代码块的问题</a>
     </li>
     
     </ul>

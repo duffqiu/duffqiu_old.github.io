@@ -9,7 +9,9 @@
   <meta name="author" content="Duff Qiu">
 
   
-  <meta name="description" content="原由 在家访问Google时总时不时就无法访问，而技术类问题的搜索在百度的结果总是与期望相差太远，要不就是国外的网站无法访问，所以最好的就是使用国外的代理，作为技术人员最好的办法就是自己搭建一个。 平台选择 目前有多中选择，但是看了下攻略，最简单的方式就是用google app engine。 &hellip;">
+  <meta name="description" content="如何在Octopress使用附件 在octopress目录中，将对应的附件放到/source/assets目录里面
+然后重新生成和部署 rake gengerate
+rake deploy 然后在对应的blog中，使用http的链接方式指定文件就可如 [附件](/assets/&lt;附件名&gt &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +79,59 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/28/octopressguan-li-fu-jian/">Octopress管理附件</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-28T12:10:51+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
+        
+	
+          | <a href="/blog/2014/01/28/octopressguan-li-fu-jian/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>如何在Octopress使用附件</h4>
+
+<ol>
+<li>在octopress目录中，将对应的附件放到/source/assets目录里面</li>
+<li><p>然后重新生成和部署</p>
+
+<pre><code>rake gengerate
+rake deploy
+</code></pre></li>
+<li><p>然后在对应的blog中，使用http的链接方式指定文件就可如</p>
+
+<pre><code>[附件](/assets/&lt;附件名&gt;)
+</code></pre></li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -600,6 +655,10 @@ git push origin source
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/28/octopressguan-li-fu-jian/">Octopress管理附件</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/">Mac上用google-app-engine搭建proxy</a>
       </li>
     
@@ -613,10 +672,6 @@ git push origin source
     
       <li class="post">
         <a href="/blog/2014/01/25/octopresszai-githubshang-jian-blogde-zhun-bei-gong-zuo/">Octopress在github上建blog的准备工作</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/25/first-time-to-setup-octopress-in-github/">First Time to Setup Octopress in Github</a>
       </li>
     
   </ul>
