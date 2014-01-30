@@ -5,17 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress插入代码块的问题 - Duff Qiu's Blog</title>
+  <title>Octopress的内部blog间关联 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
   
-  <meta name="description" content="在blog中插入Octopress代码块的问题 Octopress的说明文档中有多种插入代码块的方式，但是当初入markdown代码的时候就出现问题，尝试了多种方式后无果，最后查看别人的blog的源码发现使用 1
-2
-3
-4
-5
-{% raw %} # 必须有空行 #代码块 # 必须有空行
-{% &hellip;">
+  <meta name="description" content="首先鸣谢参考资料的作者 参考资料来自与 1 完善Octopress的配置 获取内部关联的post url plugin，然后将其放入到plugin目录中 确保已经安装了kramdown，如果没有，用以下命令安装 &gt;sudo gem install kramdown &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -24,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Duff Qiu's Blog" type="application/atom+xml">
@@ -86,7 +80,7 @@
   
   <header>
     
-      <h1 class="entry-title">Octopress插入代码块的问题</h1>
+      <h1 class="entry-title">Octopress的内部blog间关联</h1>
     
     
       <p class="meta">
@@ -102,7 +96,7 @@
   
 
 
-<time datetime="2014-01-27T18:20:21+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time>
+<time datetime="2014-01-30T18:28:34+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -112,27 +106,53 @@
   </header>
 
 
-<div class="entry-content"><h4 id="blogoctopress">在blog中插入Octopress代码块的问题</h4>
+<div class="entry-content"><h3 id="section">首先鸣谢参考资料的作者</h3>
 
-<p>Octopress的说明文档中有多种插入代码块的方式，但是当初入markdown代码的时候就出现问题，尝试了多种方式后无果，最后查看别人的blog的源码发现使用</p>
+<p>参考资料来自与 <a href="http://blog.eavatar.com/post/2013/06/use-post-url-internal-link-octopress/">1</a></p>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="o">{</span>% raw %<span class="o">}</span>
-</span><span class="line">   <span class="c"># 必须有空行</span>
-</span><span class="line">   <span class="c">#代码块  </span>
-</span><span class="line">   <span class="c"># 必须有空行</span>
-</span><span class="line"><span class="o">{</span>% endraw %<span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+<h3 id="octopress">完善Octopress的配置</h3>
 
-<p>的方式将代码块再扩起来解决的。</p>
+<ol>
+  <li>
+    <p>获取内部关联的<a href="https://raw.github.com/michael-groble/jekyll/fix_post_url/lib/jekyll/tags/post_url.rb">post url plugin</a>，然后将其放入到plugin目录中    </p>
+  </li>
+  <li>
+    <p>确保已经安装了kramdown，如果没有，用以下命令安装</p>
 
-<p>如果有序列(如1., 2…)，则需要缩进代码快和raw..endraw指令</p>
+    <pre><code>&gt;sudo gem install kramdown
+</code></pre>
+  </li>
+  <li>
+    <p>编辑配置文件_configy.yml，注释掉markdown: rdiscount，然后增加</p>
 
-<p>出个小题，这里是怎么写出raw…endraw的?</p>
+    <pre><code>#markdown: rdiscount
+markdown: kramdown
+</code></pre>
+  </li>
+</ol>
+
+<h3 id="blog">在blog中使用关联，语法如下</h3>
+
+<pre><code>[&lt;链接名字&gt;]({% post_url &lt;blog的文件名字，不要带目录和文件后缀&gt; %}) 
+</code></pre>
+
+<p>然后重新生成和部署就可以了</p>
+
+<pre><code>&gt;rake generate
+&gt;rake deploy
+</code></pre>
+
+<h3 id="section-1">一个小插曲</h3>
+<p>今天在生成地8个blog后，rake generate就出错了，报在matrix.rb文件中反馈出”Not Regular Matrix”错误，但是就是死活找不到问题所在，只要将刚生成的文件删除就好了，而文件还没写东西。后来经历反复的从头再来，终于发现了问题所在，结论是之前参照网上配置关联blog的配置，在_configy.yml中增加了以下配置：</p>
+
+<pre><code>lsi: true    
+</code></pre>
+
+<p>只要将这个选项关闭或删除就可，好像octopress已经没有用了</p>
+
+<h3 id="octopress-1">Octopress经验终结</h3>
+
+<p>尽管使用上就是用markdown的方式写文章，但是使用octopress这个平台，就像使用开发工具一样，总会出现这样那样的错误，而且还很难定位，最好的办法就是像编程一样，今早“编译”－》“试运行”－》“改错”－》“再运行”，不然当你写了很多后一次行生成出现错误就无从下手去解决问题了，只能一个一个做减法然后再试。 </p>
 </div>
 
 
@@ -155,7 +175,7 @@
   
 
 
-<time datetime="2014-01-27T18:20:21+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time>
+<time datetime="2014-01-30T18:28:34+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
       
 
 <span class="categories">
@@ -176,10 +196,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/26/kai-shi-xie-di-%5B%3F%5D-pian-blog/" title="Previous Post: 开始写第一篇blog">&laquo; 开始写第一篇blog</a>
+        <a class="basic-alignment left" href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/" title="Previous Post: Mac tips: 给用户增加用户组">&laquo; Mac tips: 给用户增加用户组</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/" title="Next Post: Mac上用google-app-engine搭建proxy">Mac上用google-app-engine搭建proxy &raquo;</a>
       
     </p>
   </footer>
@@ -239,22 +257,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/">Octopress的内部blog间关联</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/">Mac tips: 给用户增加用户组</a></h3>
         <div class="meta">
           <span class="tags">
@@ -304,6 +306,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/">Mac上用google-app-engine搭建proxy</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/proxy/'>Proxy</a>
   
 </span>
 

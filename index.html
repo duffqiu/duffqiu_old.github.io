@@ -9,7 +9,7 @@
   <meta name="author" content="Duff Qiu">
 
   
-  <meta name="description" content="OSX系统后台服务简介 系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来 &gt; sudo chmod root [文件名] 用户级别的服务配置，即在用户登录后才会运行的服务 &hellip;">
+  <meta name="description" content="首先鸣谢参考资料的作者 参考资料来自与 1 完善Octopress的配置 获取内部关联的post url plugin，然后将其放入到plugin目录中 确保已经安装了kramdown，如果没有，用以下命令安装 &gt;sudo gem install kramdown &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -83,6 +83,130 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/">Octopress的内部blog间关联</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-30T18:28:34+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">首先鸣谢参考资料的作者</h3>
+
+<p>参考资料来自与 <a href="http://blog.eavatar.com/post/2013/06/use-post-url-internal-link-octopress/">1</a></p>
+
+<h3 id="octopress">完善Octopress的配置</h3>
+
+<ol>
+  <li>
+    <p>获取内部关联的<a href="https://raw.github.com/michael-groble/jekyll/fix_post_url/lib/jekyll/tags/post_url.rb">post url plugin</a>，然后将其放入到plugin目录中    </p>
+  </li>
+  <li>
+    <p>确保已经安装了kramdown，如果没有，用以下命令安装</p>
+
+    <pre><code>&gt;sudo gem install kramdown
+</code></pre>
+  </li>
+  <li>
+    <p>编辑配置文件_configy.yml，注释掉markdown: rdiscount，然后增加</p>
+
+    <pre><code>#markdown: rdiscount
+markdown: kramdown
+</code></pre>
+  </li>
+</ol>
+
+<h3 id="blog">在blog中使用关联，语法如下</h3>
+
+<pre><code>[&lt;链接名字&gt;]({% post_url &lt;blog的文件名字，不要带目录和文件后缀&gt; %}) 
+</code></pre>
+
+<p>然后重新生成和部署就可以了</p>
+
+<pre><code>&gt;rake generate
+&gt;rake deploy
+</code></pre>
+
+<h3 id="section-1">一个小插曲</h3>
+<p>今天在生成地8个blog后，rake generate就出错了，报在matrix.rb文件中反馈出”Not Regular Matrix”错误，但是就是死活找不到问题所在，只要将刚生成的文件删除就好了，而文件还没写东西。后来经历反复的从头再来，终于发现了问题所在，结论是之前参照网上配置关联blog的配置，在_configy.yml中增加了以下配置：</p>
+
+<pre><code>lsi: true    
+</code></pre>
+
+<p>只要将这个选项关闭或删除就可，好像octopress已经没有用了</p>
+
+<h3 id="octopress-1">Octopress经验终结</h3>
+
+<p>尽管使用上就是用markdown的方式写文章，但是使用octopress这个平台，就像使用开发工具一样，总会出现这样那样的错误，而且还很难定位，最好的办法就是像编程一样，今早“编译”－》“试运行”－》“改错”－》“再运行”，不然当你写了很多后一次行生成出现错误就无从下手去解决问题了，只能一个一个做减法然后再试。 </p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/">Mac Tips: 给用户增加用户组</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-30T18:06:43+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu/">Mac Tips: 管理后台自动运行的服务</a></h1>
     
     
@@ -109,40 +233,62 @@
   </header>
 
 
-  <div class="entry-content"><h3>OSX系统后台服务简介</h3>
-
+  <div class="entry-content"><h3 id="osx">OSX系统后台服务简介</h3>
 <ol>
-<li><p>系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来</p>
+  <li>
+    <p>系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来</p>
 
-<pre><code>&gt; sudo chmod root [文件名]
-</code></pre></li>
-<li><p>用户级别的服务配置，即在用户登录后才会运行的服务，配置文件在 ~/Library/LaunchAgents/ 目录里面。</p></li>
-<li><p>如果需要自己定义后台服务，可以copy一个已有的文件，然后做一定的更改就可以。</p></li>
-<li><p>编辑工具，xcode是其默认的编辑工具，简要处理的方式是在shell中执行</p>
+    <pre><code>&gt; sudo chmod root [文件名]
+</code></pre>
+  </li>
+  <li>
+    <p>用户级别的服务配置，即在用户登录后才会运行的服务，配置文件在 ~/Library/LaunchAgents/ 目录里面。</p>
+  </li>
+  <li>
+    <p>如果需要自己定义后台服务，可以copy一个已有的文件，然后做一定的更改就可以。</p>
+  </li>
+  <li>
+    <p>编辑工具，xcode是其默认的编辑工具，简要处理的方式是在shell中执行</p>
 
-<pre><code> &gt; open [文件名]
+    <pre><code> &gt; open [文件名]
 </code></pre>
 
-<p>然后系统会自动用xcode打开。<br/>
-<strong><em>注意</em></strong>：如果需要用xocode编辑首先要安装xcode（好像是废话）。如果是修改系统的服务，就必须将当前用户加入到wheel组，并更改 /Library/LaunchDaemons/目录权限为771，还要将被更改的plist文件的权限改为664，这样才可以用xcode处理文件。是不是很烦？所以还是直接用vi的方式好。编辑完后，还需要将目录权限更改过来</p>
+    <p>然后系统会自动用xcode打开。  </p>
 
-<ul>
-<li><p>添加当前用户到wheel组。 <div style="color:#F00"> <strong><em> 注意：</em></strong> </div> OSX没有像Linux那样操作用户组的命令，似乎OSX给用户日常使用是不用管理用户组的。但是对于开发人员，则必须清楚。具体方式是通过dscl(Directory Service command line utility)目录服务命令工具完成的。后面再写个介绍这个。<a href="http://weibo.com">Mac tips: 给用户添加用户组</a></p></li>
-<li><p>更改目录权限</p>
+    <div style="color:#F00">  注意：</div>
 
-<pre><code>  sudo chmod 771 /Library/LaunchDaemons/
-</code></pre></li>
-<li><p>更改文件权限</p>
+    <p>如果需要用xocode编辑首先要安装xcode（好像是废话）。如果是修改系统的服务，就必须将当前用户加入到wheel组，并更改 /Library/LaunchDaemons/目录权限为771，还要将被更改的plist文件的权限改为664，这样才可以用xcode处理文件。是不是很烦？所以还是直接用vi的方式好。编辑完后，还需要将目录权限更改过来</p>
 
-<pre><code>  sudo chmod 664 [plist 文件名]
-</code></pre></li>
-<li><p>编辑完了记得再改回来</p></li>
-</ul>
-</li>
+    <ul>
+      <li>添加当前用户到wheel组。 </li>
+    </ul>
+
+    <div style="color:#F00">  注意：</div>
+
+    <p>OSX没有像Linux那样操作用户组的命令，似乎OSX给用户日常使用是不用管理用户组的。但是对于开发人员，则必须清楚。具体方式是通过dscl(Directory Service command line utility)目录服务命令工具完成的。后面再写个介绍这个。<a href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/">Mac tips: 给用户添加用户组</a></p>
+
+    <ul>
+      <li>
+        <p>更改目录权限  </p>
+
+        <pre><code>  sudo chmod 771 /Library/LaunchDaemons/
+</code></pre>
+      </li>
+      <li>
+        <p>更改文件权限</p>
+
+        <pre><code>  sudo chmod 664 [plist 文件名]
+</code></pre>
+      </li>
+      <li>
+        <p>编辑完了记得再改回来</p>
+      </li>
+    </ul>
+  </li>
 </ol>
 
+<h3 id="section">服务的启动和停止</h3>
 
-<h3>服务的启动和停止</h3>
 </div>
   
   
@@ -181,22 +327,27 @@
   </header>
 
 
-  <div class="entry-content"><h3>OSX系统的PATH设置</h3>
+  <div class="entry-content"><h3 id="osxpath">OSX系统的PATH设置</h3>
 
 <ol>
-<li><p>系统读取path配置的顺序为<br/>
-1). /etc/paths wenjian <br/>
-2). /etc/paths.d/目录下的所有设置文件<br/>
-3). /etc/profile 文件
-4). 用户目录下的shell配置文件，如zsh的.zshrc文件</p></li>
-<li><p>获取当前path的值的方式<br/>
-1). echo $PATH<br/>
-2). /usr/libexec/path_helper</p></li>
-<li><p>用户设置path的建议<br/>
+  <li>
+    <p>系统读取path配置的顺序为<br />
+1). /etc/paths wenjian <br />
+2). /etc/paths.d/目录下的所有设置文件<br />
+3). /etc/profile 文件 
+4). 用户目录下的shell配置文件，如zsh的.zshrc文件</p>
+  </li>
+  <li>
+    <p>获取当前path的值的方式<br />
+1). echo $PATH<br />
+2). /usr/libexec/path_helper  </p>
+  </li>
+  <li>
+    <p>用户设置path的建议<br />
 1). 只针对用户自己的设置配知道shell的配置文件中，如.zshrc
-2). 针对系统的文件，可以在/etc/paths.d/路径中生成一个对应的配置文件</p></li>
+2). 针对系统的文件，可以在/etc/paths.d/路径中生成一个对应的配置文件</p>
+  </li>
 </ol>
-
 </div>
   
   
@@ -235,21 +386,24 @@
   </header>
 
 
-  <div class="entry-content"><h4>如何在Octopress使用附件</h4>
+  <div class="entry-content"><h4 id="octopress">如何在Octopress使用附件</h4>
 
 <ol>
-<li>在octopress目录中，将对应的附件放到/source/assets目录里面</li>
-<li><p>然后重新生成和部署</p>
+  <li>在octopress目录中，将对应的附件放到/source/assets目录里面</li>
+  <li>
+    <p>然后重新生成和部署</p>
 
-<pre><code>rake gengerate
+    <pre><code>rake gengerate
 rake deploy
-</code></pre></li>
-<li><p>然后在对应的blog中，使用http的链接方式指定文件就可如</p>
+</code></pre>
+  </li>
+  <li>
+    <p>然后在对应的blog中，使用http的链接方式指定文件就可如</p>
 
-<pre><code>[附件](/assets/&lt;附件名&gt;)
-</code></pre></li>
+    <pre><code>[附件](/assets/&lt;附件名&gt;)
+</code></pre>
+  </li>
 </ol>
-
 </div>
   
   
@@ -288,53 +442,46 @@ rake deploy
   </header>
 
 
-  <div class="entry-content"><h4>原由</h4>
-
+  <div class="entry-content"><h4 id="section">原由</h4>
 <p>在家访问Google时总时不时就无法访问，而技术类问题的搜索在百度的结果总是与期望相差太远，要不就是国外的网站无法访问，所以最好的就是使用国外的代理，作为技术人员最好的办法就是自己搭建一个。</p>
 
-<h4>平台选择</h4>
-
+<h4 id="section-1">平台选择</h4>
 <p>目前有多中选择，但是看了下攻略，最简单的方式就是用google app engine。而且有开源的proxy服务器软件Goagent以及有Mac上好用的GoagentX客户端，那么就它了。</p>
 
-<h4>安装Goagent</h4>
-
-<p>访问<a href="https://code.google.com/p/goagent/" title="官网">Goagent</a><br/>
-但是在没有代理的时候，访问code.google.com总是很慢，这里附上一个<a href="/assets/goagent-goagent-v3.1.5.zip">Goagent 3.1.5</a><br/>
+<h4 id="goagent">安装Goagent</h4>
+<p>访问<a href="https://code.google.com/p/goagent/" title="官网">Goagent</a><br />
+但是在没有代理的时候，访问code.google.com总是很慢，这里附上一个<a href="/assets/goagent-goagent-v3.1.5.zip">Goagent 3.1.5</a><br />
 具体教程可以参考Goagent的官网
 在Mac上的简单操作就是</p>
 
 <ol>
-<li>到<a href="https://appengine.google.com/">Google App Engine</a>创建一个App</li>
-<li>解开Goagent下载下来的软件，到server/gae目录，编写gae.py文件配置密码（避免有人偷用你的流量）</li>
-<li><p>使用命令上传goagent并部署</p>
+  <li>到<a href="https://appengine.google.com/">Google App Engine</a>创建一个App</li>
+  <li>解开Goagent下载下来的软件，到server/gae目录，编写gae.py文件配置密码（避免有人偷用你的流量）</li>
+  <li>
+    <p>使用命令上传goagent并部署</p>
 
-<pre><code> python upload.zip
+    <pre><code> python upload.zip 然后按照提示操作就可（就是输入两次google account和密码）
 </code></pre>
-
-<p>然后按照提示操作就可（就是输入两次google account和密码）</p></li>
-<li>注意：如果提示等待x秒后尝试看看部署是否成功，等待一会就好，如果不行取消当前操作(ctrol+c)重复之前的操作直到成功为止。估计又是Great Wall的问题</li>
+  </li>
+  <li>注意：如果提示等待x秒后尝试看看部署是否成功，等待一会就好，如果不行取消当前操作(ctrol+c)重复之前的操作直到成功为止。估计又是Great Wall的问题</li>
 </ol>
 
-
-<h4>安装GoagentX</h4>
-
+<h4 id="goagentx">安装GoagentX</h4>
 <p>访问<a href="http://goagentx.com">GoagentX</a>，获得一个App，打开就可
 然后就是简单配置GoagentX</p>
 
 <ol>
-<li>设置AppId</li>
-<li>设置服务密码，就是在gae.py上设置的密码</li>
-<li>然后启动就可</li>
-<li>启动成功后，Mac会被自动设置了代理</li>
-<li>接着就能够访问了(如果你能看到youtube／facebook就证明OK了)</li>
-<li>如需在局域网共享，则将启动Goagent的地方勾上局域网选项，然后在代理设置里面也勾上代理选项（记得重启代理）</li>
-<li>在其它机器上配置代理服务器就可以了</li>
+  <li>设置AppId</li>
+  <li>设置服务密码，就是在gae.py上设置的密码</li>
+  <li>然后启动就可</li>
+  <li>启动成功后，Mac会被自动设置了代理</li>
+  <li>接着就能够访问了(如果你能看到youtube／facebook就证明OK了)</li>
+  <li>如需在局域网共享，则将启动Goagent的地方勾上局域网选项，然后在代理设置里面也勾上代理选项（记得重启代理）</li>
+  <li>在其它机器上配置代理服务器就可以了</li>
 </ol>
 
-
-<h4>免费增加流量</h4>
-
-<p>Google App Engine目前是提供28个小时的前端应用免费流量，如果需要增加则再多创建一个或多个这样的应用就可。</p>
+<h4 id="section-2">免费增加流量</h4>
+<p>Google App Engine目前是提供28个小时的前端应用免费流量，如果需要增加则再多创建一个或多个这样的应用就可。  </p>
 
 <p>Google App Engine允许一个账户最多创建10个应用</p>
 </div>
@@ -375,28 +522,27 @@ rake deploy
   </header>
 
 
-  <div class="entry-content"><h4>在blog中插入Octopress代码块的问题</h4>
+  <div class="entry-content"><h4 id="blogoctopress">在blog中插入Octopress代码块的问题</h4>
 
 <p>Octopress的说明文档中有多种插入代码块的方式，但是当初入markdown代码的时候就出现问题，尝试了多种方式后无果，最后查看别人的blog的源码发现使用</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="o">{</span>% raw %<span class="o">}</span>
-</span><span class='line'>   <span class="c"># 必须有空行</span>
-</span><span class='line'>   <span class="c">#代码块  </span>
-</span><span class='line'>   <span class="c"># 必须有空行</span>
-</span><span class='line'><span class="o">{</span>% endraw %<span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="o">{</span>% raw %<span class="o">}</span>
+</span><span class="line">   <span class="c"># 必须有空行</span>
+</span><span class="line">   <span class="c">#代码块  </span>
+</span><span class="line">   <span class="c"># 必须有空行</span>
+</span><span class="line"><span class="o">{</span>% endraw %<span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>的方式将代码块再扩起来解决的。</p>
 
-<p>如果有序列(如1., 2&hellip;)，则需要缩进代码快和raw..endraw指令</p>
+<p>如果有序列(如1., 2…)，则需要缩进代码快和raw..endraw指令</p>
 
-<p>出个小题，这里是怎么写出raw&hellip;endraw的?</p>
+<p>出个小题，这里是怎么写出raw…endraw的?</p>
 </div>
   
   
@@ -435,34 +581,31 @@ rake deploy
   </header>
 
 
-  <div class="entry-content"><h4>要简单，你必须有利器</h4>
-
+  <div class="entry-content"><h4 id="section">要简单，你必须有利器</h4>
 <p>要简单用好Octepress，首先要看看markdown语法（链接我前面有提到），基本很简单，半个小时就能看懂，剩下实操就可。</p>
 
 <p>然后就是需要有个工具，下载了个<a href="http://moustand.com">Mou</a>，完全免费，到目前为止感觉很好用</p>
 
-<h4>开始写第一篇blog</h4>
-
+<h4 id="blog">开始写第一篇blog</h4>
 <p>首先通过命令生成第一篇文章</p>
 
 <pre><code> rake new_post\["&lt;文章标题&gt;"\] #&lt;文章标题&gt;替换成你的文章标题，可以是中文，最后生成的文件名自动转为拼音，这里用\是使用zsh shell自动生成的
 </code></pre>
 
-<p>然后通过mou打开生成好的文件用markdown语法进行编辑
-当你第一次打开文件的时候，你会发现这个文件有文件头</p>
+<p>然后通过mou打开生成好的文件用markdown语法进行编辑 
+当你第一次打开文件的时候，你会发现这个文件有文件头     </p>
 
-<p><img class="left" src="/images/Snip20140126_1.png" width="400" height="1000" title="Head of post" alt="headfile"></p>
+<p><img class="left" src="/images/Snip20140126_1.png" width="400" height="1000" title="Head of post" alt="headfile" />          </p>
 
-<p>注意几个内容：</p>
+<p>注意几个内容：   </p>
 
 <ul>
-<li>如果不需要comments，可以设置为false。后面有介绍如何配置comments</li>
-<li>为分类写分类名，后面会将如何配置分类的plugin。这个例子我用了Octopress做分类名</li>
+  <li>如果不需要comments，可以设置为false。后面有介绍如何配置comments </li>
+  <li>为分类写分类名，后面会将如何配置分类的plugin。这个例子我用了Octopress做分类名 </li>
 </ul>
 
-
-<p>然后就是按照markdown的方式写内容了。
-写完了以后，则需要运行以下命令进行部署</p>
+<p>然后就是按照markdown的方式写内容了。 
+写完了以后，则需要运行以下命令进行部署 </p>
 
 <pre><code>rake generate
 rake deploy
@@ -470,84 +613,93 @@ rake deploy
 
 <p>以后就是重复上面的步骤就可以。</p>
 
-<h4>配置Octopress，更本地化</h4>
+<h4 id="octopress">配置Octopress，更本地化</h4>
 
-<h5>用微博配置About me</h5>
+<h5 id="about-me">用微博配置About me</h5>
 
 <p>通常在主页的侧边栏说明一下自己是谁，最简单的方式或许是直接连接自己的微博。具体步骤如下</p>
 
 <ol>
-<li><p>激活About me。</p>
+  <li>
+    <p>激活About me。</p>
 
-<p>Octopress已经准备了一个aboutme的侧边栏文件，在对应的Octopresss目录的/source/<em>includes/custom/asides子目录下的about.html文件
-编辑octopress的配置文件</em>config.yml，修改default_asides项，增加内容:</p>
+    <p>Octopress已经准备了一个aboutme的侧边栏文件，在对应的Octopresss目录的/source/_includes/custom/asides子目录下的about.html文件
+编辑octopress的配置文件_config.yml，修改default_asides项，增加内容:</p>
 
-<pre><code>custom/asides/about.html
-</code></pre></li>
-<li><p>加入微博内容</p>
+    <pre><code>custom/asides/about.html
+</code></pre>
+  </li>
+  <li>
+    <p>加入微博内容</p>
 
-<p> 微博的插入代码可以到<a href="http://app.weibo.com/tool/weiboshow?sudaref=open.weibo.com" title="微博秀">微博的开放平台</a>获取（不要copy搜索出来，很可能旧了）</p>
+    <p>微博的插入代码可以到<a href="http://app.weibo.com/tool/weiboshow?sudaref=open.weibo.com" title="微博秀">微博的开放平台</a>获取（不要copy搜索出来，很可能旧了）</p>
 
-<p> 然后将代码放入到about.html文件
- 如我的about.html文件内容</p></li>
+    <p>然后将代码放入到about.html文件
+ 如我的about.html文件内容</p>
+  </li>
 </ol>
 
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='text'><span class='line'>    &lt;section&gt;
-</span><span class='line'>     &lt;h1&gt;About Me&lt;/h1&gt;
-</span><span class='line'>     &lt;iframe width=&quot;100%&quot; height=&quot;550&quot; class=&quot;share_self&quot;  frameborder=&quot;0&quot; scrolling=&quot;no&quot; src=&quot;http://widget.weibo.com/weiboshow/index.php?language=&amp;width=0&amp;height=550&amp;fansRow=2&amp;ptype=1&amp;speed=300&amp;skin=1&amp;isTitle=0&amp;noborder=0&amp;isWeibo=1&amp;isFans=0&amp;uid=1872168377&amp;verifier=1cd3a528&amp;dpc=1&quot;&gt;&lt;/iframe&gt;
-</span><span class='line'>    &lt;/section&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">    &lt;section&gt;
+</span><span class="line">     &lt;h1&gt;About Me&lt;/h1&gt;
+</span><span class="line">     &lt;iframe width=&quot;100%&quot; height=&quot;550&quot; class=&quot;share_self&quot;  frameborder=&quot;0&quot; scrolling=&quot;no&quot; src=&quot;http://widget.weibo.com/weiboshow/index.php?language=&amp;width=0&amp;height=550&amp;fansRow=2&amp;ptype=1&amp;speed=300&amp;skin=1&amp;isTitle=0&amp;noborder=0&amp;isWeibo=1&amp;isFans=0&amp;uid=1872168377&amp;verifier=1cd3a528&amp;dpc=1&quot;&gt;&lt;/iframe&gt;
+</span><span class="line">    &lt;/section&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <ol>
-<li><p>重修部署</p>
+  <li>
+    <p>重修部署</p>
 
-<pre><code>rake generate
+    <pre><code>rake generate
 rake deploy
-</code></pre></li>
+</code></pre>
+  </li>
 </ol>
-
 
 <p>这个时候主页和每个页面都会出现你的微博了。如果只想出现在主页上，后面介绍如何配置post页的配置，配置完后就只有主页出现了。</p>
 
-<h5>配置comment</h5>
-
-<p>octopress已经集成了<a href="http://www.disqus.com%20disqus%E5%AE%98%E7%BD%91">disqus</a>系统，据说不是太好用，没有去试，只是感觉纯老外的东西，被中国用的很少，所以试着配置国内的<a href="http://dev.duoshuo.com%20%E5%A4%9A%E8%AF%B4%E5%AE%98%E7%BD%91">多说</a></p>
+<h5 id="comment">配置comment</h5>
+<p>octopress已经集成了<a href="http://www.disqus.com disqus官网">disqus</a>系统，据说不是太好用，没有去试，只是感觉纯老外的东西，被中国用的很少，所以试着配置国内的<a href="http://dev.duoshuo.com 多说官网">多说</a></p>
 
 <ol>
-<li><p>用微博／百度账户开通多说，并配置一个应用指向你的blog，获得这个应用的short name</p></li>
-<li><p>在octopress的配置文件中增加以下内容</p>
+  <li>
+    <p>用微博／百度账户开通多说，并配置一个应用指向你的blog，获得这个应用的short name</p>
+  </li>
+  <li>
+    <p>在octopress的配置文件中增加以下内容 </p>
 
-<pre><code> #duoshuo comments
+    <pre><code> #duoshuo comments
  duoshuo_comments: true
  duoshuo_short_name: &lt;你的多说的应用名&gt;  
-</code></pre></li>
-<li><p>修改source/_includes/article.html文件，在disqus配置后面</p>
+</code></pre>
+  </li>
+  <li>
+    <p>修改source/_includes/article.html文件，在disqus配置后面 </p>
 
-<pre><code>{% if site.disqus_short_name and page.comments != false and post.comments != false and site.disqus_show_comment_count == true %}
+    <pre><code>{% if site.disqus_short_name and page.comments != false and post.comments != false and site.disqus_show_comment_count == true %}
  | &lt;a href="{% if index %}{{ root_url }}{{ post.url }}{% endif %}#disqus_thread"
  data-disqus-identifier="{% if post.meta.disqus_id %}{{ post.meta.disqus_id }}{% else %}{{ site.url }}{{ post.url }}
  {% endif %}"&gt;Comments&lt;/a&gt; 
  {% endif %}
 </code></pre>
 
-<p>增加多说的配置</p>
+    <p>增加多说的配置 </p>
 
-<pre><code> {% if site.duoshuo_short_name and page.comments != false and post.comments != false and site.duoshuo_comments == true %}
+    <pre><code> {% if site.duoshuo_short_name and page.comments != false and post.comments != false and site.duoshuo_comments == true %}
  | &lt;a href="{% if index %}{{ root_url }}{{ post.url }}{% endif %}#comments"&gt;Comments&lt;/a&gt;
  {% endif %}
-</code></pre></li>
-<li><p>在source/_includes/post/目录里面增加一个duoshuo.html模块文件，然后从多说的应用对应的工具里面获取通用代码(不要用网上搜索到的代码)放入这个文件中</p></li>
-<li><p>在source/_layouts/post.html 中的 disqus代码下</p>
+</code></pre>
+  </li>
+  <li>
+    <p>在source/_includes/post/目录里面增加一个duoshuo.html模块文件，然后从多说的应用对应的工具里面获取通用代码(不要用网上搜索到的代码)放入这个文件中 </p>
+  </li>
+  <li>
+    <p>在source/_layouts/post.html 中的 disqus代码下</p>
 
-<pre><code> {% if site.disqus_short_name and page.comments == true %}
+    <pre><code> {% if site.disqus_short_name and page.comments == true %}
    &lt;section&gt;
      &lt;h1&gt;Comments&lt;/h1&gt;
      &lt;div id="disqus_thread" aria-live="polite"&gt;{% include post/disqus_thread.html %}&lt;/div&gt;
@@ -555,41 +707,43 @@ rake deploy
  {% endif %}    
 </code></pre>
 
-<p>增加多说模块</p>
+    <p>增加多说模块</p>
 
-<pre><code> {% if site.duoshuo_short_name and site.duoshuo_comments == true and page.comments == true %}
+    <pre><code> {% if site.duoshuo_short_name and site.duoshuo_comments == true and page.comments == true %}
    &lt;section&gt;
      &lt;h1&gt;Comments&lt;/h1&gt;
      &lt;div id="comments" aria-live="polite"&gt;{% include post/duoshuo.html %}&lt;/div&gt;
    &lt;/section&gt;
  {% endif %}        
-</code></pre></li>
-<li><p>取消disqus</p>
+</code></pre>
+  </li>
+  <li>
+    <p>取消disqus</p>
 
-<p>编辑_config.yml文件，将配置项disqus_show_comment_count设置为false就可以</p></li>
-<li><p>然后就是重新部署</p>
+    <p>编辑_config.yml文件，将配置项disqus_show_comment_count设置为false就可以</p>
+  </li>
+  <li>
+    <p>然后就是重新部署</p>
 
-<pre><code> rake generate
+    <pre><code> rake generate
  rake deploy
-</code></pre></li>
+</code></pre>
+  </li>
 </ol>
-
 
 <p><strong>到目前为止，一个octopress在github上的配置就基本完成了</strong>
 Octopress还有不少功能，后面用到再补充了</p>
 
-<h4>监控你的blog</h4>
-
+<h4 id="blog-1">监控你的blog</h4>
 <p>最简单的方法是使用<a href="https://www.google.com/analytics/">google analytics</a>，octopress已经集成了它，需要做的事情是</p>
 
 <ol>
-<li>先在google analytics上开设一个web的app，获得tracking_id</li>
-<li>然后修改_config.yml，找到google_analytics_tracking_id，填上你的tracking_id。</li>
-<li>重新部署就可以了</li>
+  <li>先在google analytics上开设一个web的app，获得tracking_id</li>
+  <li>然后修改_config.yml，找到google_analytics_tracking_id，填上你的tracking_id。</li>
+  <li>重新部署就可以了</li>
 </ol>
 
-
-<p>注意： _config.yml文件的配置要每个选项&#8221;:&ldquo;后面需要有一个空格</p>
+<p>注意： _config.yml文件的配置要每个选项”:”后面需要有一个空格</p>
 </div>
   
   
@@ -628,86 +782,92 @@ Octopress还有不少功能，后面用到再补充了</p>
   </header>
 
 
-  <div class="entry-content"><h3>需要一堆的软件</h3>
-
+  <div class="entry-content"><h3 id="section">需要一堆的软件</h3>
 <p>我都是在Mac上安装的，windows真的没有兴趣再试多一次了</p>
 
-<h4>Mac系统的准备工作</h4>
-
+<h4 id="mac">Mac系统的准备工作</h4>
 <p>这个部分或许和安装<a href="http://octopress.org" title="Octopress官网">Octopress</a>没什么关系，但是用Mac系统的话最好都装上，通常都用的上</p>
 
 <ul>
-<li><p>安装<a href="http://www.macports.org/index.php">MacPorts</a>，官网有比较详细的介绍，可以下pkg安装；也可以源文件安装，但是前提是必须安装xcode的command line工具，运行一下命令安装。</p>
+  <li>
+    <p>安装<a href="http://www.macports.org/index.php">MacPorts</a>，官网有比较详细的介绍，可以下pkg安装；也可以源文件安装，但是前提是必须安装xcode的command line工具，运行一下命令安装。</p>
 
-<pre><code> sudo xcode-select --install
+    <pre><code> sudo xcode-select --install
 </code></pre>
 
-<p>  之前也是用pkg方式安装的，但是用</p>
+    <p>之前也是用pkg方式安装的，但是用</p>
 
-<pre><code>sudo port -v selfupgrad
+    <pre><code>  sudo port -v selfupgrad
 </code></pre>
 
-<p>的时候出现了错误，所以还是安装上xcode的command line工具就好了，好像是OSX Mavericks版本才有？这个问题是通过stackover上的帖子<a href="http://stackoverflow.com/questions/19622337/cant-update-macports-with-mac-os-x-mavericks">cant-update-macports-with-mac-os-x-mavericks</a>的解答获得的。port工具可以帮助安装所需要软件以及其依赖的软件，省去了很多找软件的麻烦，另外一个和macports差不多的软件管理工具是<a href="http://brew.sh" title="Brew官网">HomeBrew</a></p></li>
-<li><p>安装<a href="http://git-scm.com/">Git</a>工具，如何使用Git还是看官方文档吧，这里就不讲了</p></li>
-<li><p>安装ruby，OSX已经自带了</p></li>
-<li><p>用MacPorts安装rbenv</p>
+    <p>的时候出现了错误，所以还是安装上xcode的command line工具就好了，好像是OSX Mavericks版本才有？这个问题是通过stackover上的帖子<a href="http://stackoverflow.com/questions/19622337/cant-update-macports-with-mac-os-x-mavericks">cant-update-macports-with-mac-os-x-mavericks</a>的解答获得的。port工具可以帮助安装所需要软件以及其依赖的软件，省去了很多找软件的麻烦，另外一个和macports差不多的软件管理工具是<a href="http://brew.sh" title="Brew官网">HomeBrew</a></p>
+  </li>
+  <li>安装<a href="http://git-scm.com/">Git</a>工具，如何使用Git还是看官方文档吧，这里就不讲了</li>
+  <li>
+    <p>安装ruby，OSX已经自带了</p>
+  </li>
+  <li>
+    <p>用MacPorts安装rbenv</p>
 
-<pre><code>sudo port install rbenv
+    <pre><code>  sudo port install rbenv 安装octopress需要，但是具体什么用没有细研究
 </code></pre>
-
-<p>安装octopress需要，但是具体什么用没有细研究</p></li>
-<li><p>配置zsh shell，建议用zsh shell，具体如何配置可以参考Mactalk，如果后面讲书的内容写到blog里，是否有侵权？</p></li>
+  </li>
+  <li>配置zsh shell，建议用zsh shell，具体如何配置可以参考Mactalk，如果后面讲书的内容写到blog里，是否有侵权？</li>
 </ul>
 
-
-<h4>获取Octopress并安装相应的包</h4>
-
+<h4 id="octopress">获取Octopress并安装相应的包</h4>
 <ol>
-<li>在机器上建立一个本地的git repo，并进入这个目录</li>
-<li><p>获取Octopress源码</p>
+  <li>在机器上建立一个本地的git repo，并进入这个目录</li>
+  <li>
+    <p>获取Octopress源码</p>
 
-<pre><code>git clone git://github.com/imathis/octopress.git octopress
-</code></pre></li>
-<li><p>安装依赖工具</p>
+    <pre><code>git clone git://github.com/imathis/octopress.git octopress
+</code></pre>
+  </li>
+  <li>
+    <p>安装依赖工具</p>
 
-<pre><code>cd octopress
+    <pre><code>cd octopress
 gem install bundler
 rbenv rehash #还是不太明白这个具体做什么用
 bundle install
-</code></pre></li>
-<li><p>安装Octopress默认的Theme</p>
+</code></pre>
+  </li>
+  <li>
+    <p>安装Octopress默认的Theme</p>
 
-<pre><code>rake install
-</code></pre></li>
+    <pre><code>rake install
+</code></pre>
+  </li>
 </ol>
 
+<h4 id="github">配置Github</h4>
+<p>生成一个名为<your github="" name="">.github.io的repository，注意这里<your github="" name="">是你的github的账户名，要用.io不是.com</your></your></p>
 
-<h4>配置Github</h4>
-
-<p>生成一个名为<your github name>.github.io的repository，注意这里<your github name>是你的github的账户名，要用.io不是.com</p>
-
-<h4>初始化octopress并部署到Github</h4>
-
+<h4 id="octopressgithub">初始化octopress并部署到Github</h4>
 <ol>
-<li><p>关联octopress和github</p>
+  <li>
+    <p>关联octopress和github</p>
 
-<pre><code>rake setup_github_pages
+    <pre><code>rake setup_github_pages 根据提示输入&lt;your github name&gt;.github.io的repository对应的地址
 </code></pre>
+  </li>
+  <li>
+    <p>部署octpress到Github</p>
 
-<p>根据提示输入<your github name>.github.io的repository对应的地址</p></li>
-<li><p>部署octpress到Github</p>
-
-<pre><code>rake generate #生成静态文件
+    <pre><code>rake generate #生成静态文件
 rake deploy #部署静态文件到github
-</code></pre></li>
-<li><p>Push原文件到Github的source branch上，如果不做这步，github将只有生成好的文件</p>
+</code></pre>
+  </li>
+  <li>
+    <p>Push原文件到Github的source branch上，如果不做这步，github将只有生成好的文件</p>
 
-<pre><code>git add .
+    <pre><code>git add .
 git commit -m &lt;'your message'&gt;
 git push origin source
-</code></pre></li>
+</code></pre>
+  </li>
 </ol>
-
 
 <p>到这一步，基本上就将Octopress基本配置好了，后面将讲讲如何写blogger和配置Octopress</p>
 </div>
@@ -748,13 +908,14 @@ git push origin source
   </header>
 
 
-  <div class="entry-content"><h3>为什么要建这个博客呢？</h3>
-
+  <div class="entry-content"><h3 id="section">为什么要建这个博客呢？</h3>
 <p>最近小孩放假在家，总爱写些短文，但是写完了就没了，所以想想是不是建个blog来记录一下。前两天看见<a href="http://weibo.com/acette" title="Leo's Weibo">Leo</a>同学在Github上用<a href="http://www.octopress.org" title="Octopress">Octopress</a>开的blog看得挺简单，直接用接近文本的<a href="http://wowubuntu.com/markdown/" title="markdown中文">markdown</a>语法写，所以今天下午baidu＋google的方式在自己的<a href="http://github.com/duffqiu" title="Duff's Github">Github</a>上试验一下，然后再打算给小孩开一个。</p>
 
 <p>谁知道弄了一半才发现果然是只能给程序猿的东东，每次建个post都要用命令生成静态代码，然后再部署。。。这些果然不是一般人能用的。就如同它号称的“给黑客的blog框架”</p>
 
-<p>另外从学习安装、试用的过程看，octopress真的不太适合用windows的童鞋，最好是用Apple Mac，简单很多。这两天刚看完<a href="%22http://www.amazon.cn/MacTalk%C2%B7%E4%BA%BA%E7%94%9F%E5%85%83%E7%BC%96%E7%A8%8B-%E6%B1%A0%E5%BB%BA%E5%BC%BA-%E8%91%97/dp/B00FF5G3GK/ref=sr_1_1?ie=UTF8&amp;qid=1390661141&amp;sr=8-1&amp;keywords=mactalk%22">Mactalk</a>，感觉真的是不错，后面再来补这个的学习笔记，这也是我买的第一本收费的电子书，尽管只有¥2.99。</p>
+<p>另外从学习安装、试用的过程看，octopress真的不太适合用windows的童鞋，最好是用Apple Mac，简单很多。这两天刚看完[Mactalk][2]，感觉真的是不错，后面再来补这个的学习笔记，这也是我买的第一本收费的电子书，尽管只有¥2.99。</p>
+
+<p>[2]: “http://www.amazon.cn/MacTalk·人生元编程-池建强-著/dp/B00FF5G3GK/ref=sr<em>1</em>1?ie=UTF8&amp;qid=1390661141&amp;sr=8-1&amp;keywords=mactalk”</p>
 
 <p>建议有Mac的童鞋都读读，里面提到了不少工具的用法。</p>
 
@@ -779,6 +940,14 @@ git push origin source
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/">Octopress的内部blog间关联</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/">Mac Tips: 给用户增加用户组</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu/">Mac Tips: 管理后台自动运行的服务</a>
       </li>
     
@@ -788,14 +957,6 @@ git push origin source
     
       <li class="post">
         <a href="/blog/2014/01/28/octopressguan-li-fu-jian/">Octopress管理附件</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/">Mac上用google-app-engine搭建proxy</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/">Octopress插入代码块的问题</a>
       </li>
     
   </ul>

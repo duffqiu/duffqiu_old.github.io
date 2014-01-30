@@ -11,9 +11,7 @@
   
   <meta name="description" content="OSX系统的PATH设置 系统读取path配置的顺序为
 1). /etc/paths wenjian 2). /etc/paths.d/目录下的所有设置文件
-3). /etc/profile 文件
-4). 用户目录下的shell配置文件，如zsh的.zshrc文件
-获取当前path的值的方式
+3). /etc/profile 文件 4). 用户目录下的shell配置文件，如zsh的.zshrc文件 获取当前path的值的方式
 1 &hellip;">
   
 
@@ -111,22 +109,27 @@
   </header>
 
 
-<div class="entry-content"><h3>OSX系统的PATH设置</h3>
+<div class="entry-content"><h3 id="osxpath">OSX系统的PATH设置</h3>
 
 <ol>
-<li><p>系统读取path配置的顺序为<br/>
-1). /etc/paths wenjian <br/>
-2). /etc/paths.d/目录下的所有设置文件<br/>
-3). /etc/profile 文件
-4). 用户目录下的shell配置文件，如zsh的.zshrc文件</p></li>
-<li><p>获取当前path的值的方式<br/>
-1). echo $PATH<br/>
-2). /usr/libexec/path_helper</p></li>
-<li><p>用户设置path的建议<br/>
+  <li>
+    <p>系统读取path配置的顺序为<br />
+1). /etc/paths wenjian <br />
+2). /etc/paths.d/目录下的所有设置文件<br />
+3). /etc/profile 文件 
+4). 用户目录下的shell配置文件，如zsh的.zshrc文件</p>
+  </li>
+  <li>
+    <p>获取当前path的值的方式<br />
+1). echo $PATH<br />
+2). /usr/libexec/path_helper  </p>
+  </li>
+  <li>
+    <p>用户设置path的建议<br />
 1). 只针对用户自己的设置配知道shell的配置文件中，如.zshrc
-2). 针对系统的文件，可以在/etc/paths.d/路径中生成一个对应的配置文件</p></li>
+2). 针对系统的文件，可以在/etc/paths.d/路径中生成一个对应的配置文件</p>
+  </li>
 </ol>
-
 </div>
 
 
@@ -216,7 +219,7 @@ var duoshuoQuery = {short_name:"duffqiu"};
   <ul id="categories">
     <li class='category'><a href='/blog/categories/mac/'>MAC (1)</a></li>
 <li class='category'><a href='/blog/categories/osx/'>OSX (2)</a></li>
-<li class='category'><a href='/blog/categories/octopress/'>Octopress (5)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>Octopress (6)</a></li>
 <li class='category'><a href='/blog/categories/proxy/'>Proxy (1)</a></li>
 
   </ul>
@@ -233,7 +236,7 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/">octopress插入代码块的问题</a></h3>
+        <h3 class="title"><a href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/">Octopress的内部blog间关联</a></h3>
         <div class="meta">
           <span class="tags">
 
@@ -249,13 +252,23 @@ var duoshuoQuery = {short_name:"duffqiu"};
       </article>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/01/26/kai-shi-xie-di-%5B%3F%5D-pian-blog/">开始写第一篇blog</a></h3>
+        <h3 class="title"><a href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/">Mac tips: 给用户增加用户组</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu/">mac tips: 管理后台自动运行的服务</a></h3>
         <div class="meta">
           <span class="tags">
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/osx/'>OSX</a>
   
 </span>
 
@@ -265,7 +278,7 @@ var duoshuoQuery = {short_name:"duffqiu"};
       </article>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/01/25/octopresszai-githubshang-jian-blogde-zhun-bei-gong-zuo/">Octopress在github上建blog的准备工作</a></h3>
+        <h3 class="title"><a href="/blog/2014/01/28/octopressguan-li-fu-jian/">octopress管理附件</a></h3>
         <div class="meta">
           <span class="tags">
 
@@ -288,22 +301,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/proxy/'>Proxy</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2014/01/28/octopressguan-li-fu-jian/">octopress管理附件</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
   
 </span>
 

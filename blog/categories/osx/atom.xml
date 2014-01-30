@@ -4,7 +4,7 @@
   <title><![CDATA[Category: OSX | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/osx/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-30T17:58:31+08:00</updated>
+  <updated>2014-01-30T19:06:58+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -18,40 +18,62 @@
     <link href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu/"/>
     <updated>2014-01-30T13:29:43+08:00</updated>
     <id>http://duffqiu.github.io/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu</id>
-    <content type="html"><![CDATA[<h3>OSX系统后台服务简介</h3>
-
+    <content type="html"><![CDATA[<h3 id="osx">OSX系统后台服务简介</h3>
 <ol>
-<li><p>系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来</p>
+  <li>
+    <p>系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来</p>
 
-<pre><code>&gt; sudo chmod root [文件名]
-</code></pre></li>
-<li><p>用户级别的服务配置，即在用户登录后才会运行的服务，配置文件在 ~/Library/LaunchAgents/ 目录里面。</p></li>
-<li><p>如果需要自己定义后台服务，可以copy一个已有的文件，然后做一定的更改就可以。</p></li>
-<li><p>编辑工具，xcode是其默认的编辑工具，简要处理的方式是在shell中执行</p>
+    <pre><code>&gt; sudo chmod root [文件名]
+</code></pre>
+  </li>
+  <li>
+    <p>用户级别的服务配置，即在用户登录后才会运行的服务，配置文件在 ~/Library/LaunchAgents/ 目录里面。</p>
+  </li>
+  <li>
+    <p>如果需要自己定义后台服务，可以copy一个已有的文件，然后做一定的更改就可以。</p>
+  </li>
+  <li>
+    <p>编辑工具，xcode是其默认的编辑工具，简要处理的方式是在shell中执行</p>
 
-<pre><code> &gt; open [文件名]
+    <pre><code> &gt; open [文件名]
 </code></pre>
 
-<p>然后系统会自动用xcode打开。<br/>
-<strong><em>注意</em></strong>：如果需要用xocode编辑首先要安装xcode（好像是废话）。如果是修改系统的服务，就必须将当前用户加入到wheel组，并更改 /Library/LaunchDaemons/目录权限为771，还要将被更改的plist文件的权限改为664，这样才可以用xcode处理文件。是不是很烦？所以还是直接用vi的方式好。编辑完后，还需要将目录权限更改过来</p>
+    <p>然后系统会自动用xcode打开。  </p>
 
-<ul>
-<li><p>添加当前用户到wheel组。 <div style="color:#F00"> <strong><em> 注意：</em></strong> </div> OSX没有像Linux那样操作用户组的命令，似乎OSX给用户日常使用是不用管理用户组的。但是对于开发人员，则必须清楚。具体方式是通过dscl(Directory Service command line utility)目录服务命令工具完成的。后面再写个介绍这个。<a href="http://weibo.com">Mac tips: 给用户添加用户组</a></p></li>
-<li><p>更改目录权限</p>
+    <div style="color:#F00">  注意：</div>
 
-<pre><code>  sudo chmod 771 /Library/LaunchDaemons/
-</code></pre></li>
-<li><p>更改文件权限</p>
+    <p>如果需要用xocode编辑首先要安装xcode（好像是废话）。如果是修改系统的服务，就必须将当前用户加入到wheel组，并更改 /Library/LaunchDaemons/目录权限为771，还要将被更改的plist文件的权限改为664，这样才可以用xcode处理文件。是不是很烦？所以还是直接用vi的方式好。编辑完后，还需要将目录权限更改过来</p>
 
-<pre><code>  sudo chmod 664 [plist 文件名]
-</code></pre></li>
-<li><p>编辑完了记得再改回来</p></li>
-</ul>
-</li>
+    <ul>
+      <li>添加当前用户到wheel组。 </li>
+    </ul>
+
+    <div style="color:#F00">  注意：</div>
+
+    <p>OSX没有像Linux那样操作用户组的命令，似乎OSX给用户日常使用是不用管理用户组的。但是对于开发人员，则必须清楚。具体方式是通过dscl(Directory Service command line utility)目录服务命令工具完成的。后面再写个介绍这个。<a href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/">Mac tips: 给用户添加用户组</a></p>
+
+    <ul>
+      <li>
+        <p>更改目录权限  </p>
+
+        <pre><code>  sudo chmod 771 /Library/LaunchDaemons/
+</code></pre>
+      </li>
+      <li>
+        <p>更改文件权限</p>
+
+        <pre><code>  sudo chmod 664 [plist 文件名]
+</code></pre>
+      </li>
+      <li>
+        <p>编辑完了记得再改回来</p>
+      </li>
+    </ul>
+  </li>
 </ol>
 
+<h3 id="section">服务的启动和停止</h3>
 
-<h3>服务的启动和停止</h3>
 ]]></content>
   </entry>
   
@@ -60,22 +82,27 @@
     <link href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/"/>
     <updated>2014-01-30T13:14:17+08:00</updated>
     <id>http://duffqiu.github.io/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi</id>
-    <content type="html"><![CDATA[<h3>OSX系统的PATH设置</h3>
+    <content type="html"><![CDATA[<h3 id="osxpath">OSX系统的PATH设置</h3>
 
 <ol>
-<li><p>系统读取path配置的顺序为<br/>
-1). /etc/paths wenjian <br/>
-2). /etc/paths.d/目录下的所有设置文件<br/>
-3). /etc/profile 文件
-4). 用户目录下的shell配置文件，如zsh的.zshrc文件</p></li>
-<li><p>获取当前path的值的方式<br/>
-1). echo $PATH<br/>
-2). /usr/libexec/path_helper</p></li>
-<li><p>用户设置path的建议<br/>
+  <li>
+    <p>系统读取path配置的顺序为<br />
+1). /etc/paths wenjian <br />
+2). /etc/paths.d/目录下的所有设置文件<br />
+3). /etc/profile 文件 
+4). 用户目录下的shell配置文件，如zsh的.zshrc文件</p>
+  </li>
+  <li>
+    <p>获取当前path的值的方式<br />
+1). echo $PATH<br />
+2). /usr/libexec/path_helper  </p>
+  </li>
+  <li>
+    <p>用户设置path的建议<br />
 1). 只针对用户自己的设置配知道shell的配置文件中，如.zshrc
-2). 针对系统的文件，可以在/etc/paths.d/路径中生成一个对应的配置文件</p></li>
+2). 针对系统的文件，可以在/etc/paths.d/路径中生成一个对应的配置文件</p>
+  </li>
 </ol>
-
 ]]></content>
   </entry>
   
