@@ -4,7 +4,7 @@
   <title><![CDATA[Category: OSX | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/osx/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-30T19:52:58+08:00</updated>
+  <updated>2014-01-30T19:54:03+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -42,6 +42,7 @@
     <p>进入组目录，使用ls 你就可以看到Mac所有的group（同理，在/Local/Default/Users可以到所有的用户）</p>
 
     <pre><code>&gt;cd /Local/Default/Groups
+&gt;ls
 </code></pre>
   </li>
   <li>
