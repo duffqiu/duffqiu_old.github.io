@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-30T19:25:59+08:00</updated>
+  <updated>2014-01-30T19:52:11+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -66,7 +66,7 @@ markdown: kramdown
 
 <p>只要将这个选项关闭或删除就可，好像octopress已经没有用了</p>
 
-<h3 id="octopress-1">Octopress经验终结</h3>
+<h3 id="octopress-1">Octopress经验总结</h3>
 
 <p>尽管使用上就是用markdown的方式写文章，但是使用octopress这个平台，就像使用开发工具一样，总会出现这样那样的错误，而且还很难定位，最好的办法就是像编程一样，今早“编译”－》“试运行”－》“改错”－》“再运行”，不然当你写了很多后一次行生成出现错误就无从下手去解决问题了，只能一个一个做减法然后再试。</p>
 
@@ -76,6 +76,7 @@ markdown: kramdown
   <li>写一部分，就立马rake generate  </li>
   <li>rake new_post[“<文章名>"]，不写任何东西，立马rake generate</文章名></li>
   <li>只要用到 {%  %}这些内嵌语法，立马rake generate</li>
+  <li>更改一项_config.yml配置，立马rake generate</li>
 </ol>
 ]]></content>
   </entry>

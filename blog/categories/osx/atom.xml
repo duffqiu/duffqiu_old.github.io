@@ -4,7 +4,7 @@
   <title><![CDATA[Category: OSX | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/osx/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-30T19:25:59+08:00</updated>
+  <updated>2014-01-30T19:52:11+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,57 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Mac Tips: 给用户增加用户组]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/"/>
+    <updated>2014-01-30T18:06:43+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu</id>
+    <content type="html"><![CDATA[<h3 id="section">查看用户所在用户组</h3>
+
+<pre><code>&gt;groups ###查看当前有那些用户
+
+&gt;uers
+</code></pre>
+
+<h3 id="section-1">给用户增加用户组</h3>
+<p>通过用户管理创建的用户，如果赋予管理员权限，则用户在admin组，当时有时候需要将用户增加到wheel组，但是OSX没有像相关的命令，似乎apple就不想普通用户像linux那样操作OSX。不过对于技术人员，apple提供了个dscl(Directory Service command line utility)目录服务命令工具完成的，具体操作如下</p>
+
+<ol>
+  <li>
+    <p>现进入dscl</p>
+
+    <pre><code>&gt;dscl localhost
+</code></pre>
+  </li>
+  <li>
+    <p>进入组目录，使用ls 你就可以看到Mac所有的group（同理，在/Local/Default/Users可以到所有的用户）</p>
+
+    <pre><code>&gt;cd /Local/Default/Groups
+</code></pre>
+  </li>
+  <li>
+    <p>添加用户到用户组，&lt;groupname&gt;为组名，&lt;username&gt;为用户名</p>
+
+    <pre><code>&gt;append &lt;groupname&gt; GroupMembership &lt;username&gt;
+</code></pre>
+  </li>
+  <li>
+    <p>将用户从用户组中移除</p>
+
+    <pre><code>&gt;delete &lt;groupname&gt; GroupMembership &lt;username&gt;
+</code></pre>
+  </li>
+  <li>
+    <p>查看用户组信息，同理可以查看用户信息</p>
+
+    <pre><code>&gt;read  &lt;groupname&gt;
+</code></pre>
+  </li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mac Tips: 管理后台自动运行的服务]]></title>

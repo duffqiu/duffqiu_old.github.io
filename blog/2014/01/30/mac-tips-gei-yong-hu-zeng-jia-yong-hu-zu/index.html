@@ -9,8 +9,8 @@
   <meta name="author" content="Duff Qiu">
 
   
-  <meta name="description" content="
-">
+  <meta name="description" content="查看用户所在用户组 &gt;groups ###查看当前有那些用户 &gt;uers 给用户增加用户组
+通过用户管理创建的用户，如果赋予管理员权限，则用户在admin组，当时有时候需要将用户增加到wheel组，但是OSX没有像相关的命令，似乎apple就不想普通用户像linux那样操作OSX。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -107,7 +107,49 @@
   </header>
 
 
-<div class="entry-content">
+<div class="entry-content"><h3 id="section">查看用户所在用户组</h3>
+
+<pre><code>&gt;groups ###查看当前有那些用户
+
+&gt;uers
+</code></pre>
+
+<h3 id="section-1">给用户增加用户组</h3>
+<p>通过用户管理创建的用户，如果赋予管理员权限，则用户在admin组，当时有时候需要将用户增加到wheel组，但是OSX没有像相关的命令，似乎apple就不想普通用户像linux那样操作OSX。不过对于技术人员，apple提供了个dscl(Directory Service command line utility)目录服务命令工具完成的，具体操作如下</p>
+
+<ol>
+  <li>
+    <p>现进入dscl</p>
+
+    <pre><code>&gt;dscl localhost
+</code></pre>
+  </li>
+  <li>
+    <p>进入组目录，使用ls 你就可以看到Mac所有的group（同理，在/Local/Default/Users可以到所有的用户）</p>
+
+    <pre><code>&gt;cd /Local/Default/Groups
+</code></pre>
+  </li>
+  <li>
+    <p>添加用户到用户组，&lt;groupname&gt;为组名，&lt;username&gt;为用户名</p>
+
+    <pre><code>&gt;append &lt;groupname&gt; GroupMembership &lt;username&gt;
+</code></pre>
+  </li>
+  <li>
+    <p>将用户从用户组中移除</p>
+
+    <pre><code>&gt;delete &lt;groupname&gt; GroupMembership &lt;username&gt;
+</code></pre>
+  </li>
+  <li>
+    <p>查看用户组信息，同理可以查看用户信息</p>
+
+    <pre><code>&gt;read  &lt;groupname&gt;
+</code></pre>
+  </li>
+</ol>
+
 </div>
 
 
@@ -132,6 +174,12 @@
 
 <time datetime="2014-01-30T18:06:43+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/mac/'>Mac</a>, <a class='category' href='/blog/categories/osx/'>OSX</a>
+  
+</span>
 
 
     </p>
@@ -190,7 +238,8 @@ var duoshuoQuery = {short_name:"duffqiu"};
   <h1>Categories</h1>
   <ul id="categories">
     <li class='category'><a href='/blog/categories/mac/'>MAC (1)</a></li>
-<li class='category'><a href='/blog/categories/osx/'>OSX (2)</a></li>
+<li class='category'><a href='/blog/categories/mac/'>Mac (1)</a></li>
+<li class='category'><a href='/blog/categories/osx/'>OSX (3)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>Octopress (6)</a></li>
 <li class='category'><a href='/blog/categories/proxy/'>Proxy (1)</a></li>
 
