@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-01-30T19:52:11+08:00</updated>
+  <updated>2014-01-30T19:52:58+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -84,12 +84,15 @@ markdown: kramdown
     <id>http://duffqiu.github.io/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu</id>
     <content type="html"><![CDATA[<h3 id="section">查看用户所在用户组</h3>
 
-<pre><code>&gt;groups ###查看当前有那些用户
-
-&gt;uers
+<pre><code>&gt;groups
 </code></pre>
 
-<h3 id="section-1">给用户增加用户组</h3>
+<h3 id="section-1">查看当前有那些用户</h3>
+
+<pre><code>&gt;uers
+</code></pre>
+
+<h3 id="section-2">给用户增加用户组</h3>
 <p>通过用户管理创建的用户，如果赋予管理员权限，则用户在admin组，当时有时候需要将用户增加到wheel组，但是OSX没有像相关的命令，似乎apple就不想普通用户像linux那样操作OSX。不过对于技术人员，apple提供了个dscl(Directory Service command line utility)目录服务命令工具完成的，具体操作如下</p>
 
 <ol>
