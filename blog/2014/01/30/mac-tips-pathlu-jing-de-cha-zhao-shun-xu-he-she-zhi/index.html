@@ -5,11 +5,16 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Mac上用google-app-engine搭建proxy - Duff Qiu's Blog</title>
+  <title>Mac Tips: Path路径的查找顺序和设置 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
   
-  <meta name="description" content="原由 在家访问Google时总时不时就无法访问，而技术类问题的搜索在百度的结果总是与期望相差太远，要不就是国外的网站无法访问，所以最好的就是使用国外的代理，作为技术人员最好的办法就是自己搭建一个。 平台选择 目前有多中选择，但是看了下攻略，最简单的方式就是用google app engine。 &hellip;">
+  <meta name="description" content="OSX系统的PATH设置 系统读取path配置的顺序为
+1). /etc/paths wenjian 2). /etc/paths.d/目录下的所有设置文件
+3). /etc/profile 文件
+4). 用户目录下的shell配置文件，如zsh的.zshrc文件
+获取当前path的值的方式
+1 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +23,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Duff Qiu's Blog" type="application/atom+xml">
@@ -80,7 +85,7 @@
   
   <header>
     
-      <h1 class="entry-title">Mac上用google-app-engine搭建proxy</h1>
+      <h1 class="entry-title">Mac Tips: Path路径的查找顺序和设置</h1>
     
     
       <p class="meta">
@@ -96,7 +101,7 @@
   
 
 
-<time datetime="2014-01-28T11:20:35+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
+<time datetime="2014-01-30T13:14:17+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
         
 	
           | <a href="#comments">Comments</a>
@@ -106,55 +111,22 @@
   </header>
 
 
-<div class="entry-content"><h4>原由</h4>
-
-<p>在家访问Google时总时不时就无法访问，而技术类问题的搜索在百度的结果总是与期望相差太远，要不就是国外的网站无法访问，所以最好的就是使用国外的代理，作为技术人员最好的办法就是自己搭建一个。</p>
-
-<h4>平台选择</h4>
-
-<p>目前有多中选择，但是看了下攻略，最简单的方式就是用google app engine。而且有开源的proxy服务器软件Goagent以及有Mac上好用的GoagentX客户端，那么就它了。</p>
-
-<h4>安装Goagent</h4>
-
-<p>访问<a href="https://code.google.com/p/goagent/" title="官网">Goagent</a><br/>
-但是在没有代理的时候，访问code.google.com总是很慢，这里附上一个<a href="/assets/goagent-goagent-v3.1.5.zip">Goagent 3.1.5</a><br/>
-具体教程可以参考Goagent的官网
-在Mac上的简单操作就是</p>
+<div class="entry-content"><h3>OSX系统的PATH设置</h3>
 
 <ol>
-<li>到<a href="https://appengine.google.com/">Google App Engine</a>创建一个App</li>
-<li>解开Goagent下载下来的软件，到server/gae目录，编写gae.py文件配置密码（避免有人偷用你的流量）</li>
-<li><p>使用命令上传goagent并部署</p>
-
-<pre><code> python upload.zip
-</code></pre>
-
-<p>然后按照提示操作就可（就是输入两次google account和密码）</p></li>
-<li>注意：如果提示等待x秒后尝试看看部署是否成功，等待一会就好，如果不行取消当前操作(ctrol+c)重复之前的操作直到成功为止。估计又是Great Wall的问题</li>
+<li><p>系统读取path配置的顺序为<br/>
+1). /etc/paths wenjian <br/>
+2). /etc/paths.d/目录下的所有设置文件<br/>
+3). /etc/profile 文件
+4). 用户目录下的shell配置文件，如zsh的.zshrc文件</p></li>
+<li><p>获取当前path的值的方式<br/>
+1). echo $PATH<br/>
+2). /usr/libexec/path_helper</p></li>
+<li><p>用户设置path的建议<br/>
+1). 只针对用户自己的设置配知道shell的配置文件中，如.zshrc
+2). 针对系统的文件，可以在/etc/paths.d/路径中生成一个对应的配置文件</p></li>
 </ol>
 
-
-<h4>安装GoagentX</h4>
-
-<p>访问<a href="http://goagentx.com">GoagentX</a>，获得一个App，打开就可
-然后就是简单配置GoagentX</p>
-
-<ol>
-<li>设置AppId</li>
-<li>设置服务密码，就是在gae.py上设置的密码</li>
-<li>然后启动就可</li>
-<li>启动成功后，Mac会被自动设置了代理</li>
-<li>接着就能够访问了(如果你能看到youtube／facebook就证明OK了)</li>
-<li>如需在局域网共享，则将启动Goagent的地方勾上局域网选项，然后在代理设置里面也勾上代理选项（记得重启代理）</li>
-<li>在其它机器上配置代理服务器就可以了</li>
-</ol>
-
-
-<h4>免费增加流量</h4>
-
-<p>Google App Engine目前是提供28个小时的前端应用免费流量，如果需要增加则再多创建一个或多个这样的应用就可。</p>
-
-<p>Google App Engine允许一个账户最多创建10个应用</p>
 </div>
 
 
@@ -177,12 +149,12 @@
   
 
 
-<time datetime="2014-01-28T11:20:35+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
+<time datetime="2014-01-30T13:14:17+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/proxy/'>Proxy</a>
+    <a class='category' href='/blog/categories/mac/'>MAC,</a>, <a class='category' href='/blog/categories/osx/'>OSX</a>
   
 </span>
 
@@ -198,10 +170,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/" title="Previous Post: octopress插入代码块的问题">&laquo; octopress插入代码块的问题</a>
+        <a class="basic-alignment left" href="/blog/2014/01/28/octopressguan-li-fu-jian/" title="Previous Post: octopress管理附件">&laquo; octopress管理附件</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/28/octopressguan-li-fu-jian/" title="Next Post: octopress管理附件">octopress管理附件 &raquo;</a>
       
     </p>
   </footer>
@@ -252,11 +222,11 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <ul class="posts">
     
     <li class="related">
-        <a href="/blog/2014/01/26/kai-shi-xie-di-%5B%3F%5D-pian-blog/">开始写第一篇blog</a>
+        <a href="/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/">octopress插入代码块的问题</a>
     </li>
     
     <li class="related">
-        <a href="/blog/2014/01/25/first-time-to-setup-octopress-in-github/">First time to setup Octopress in Github</a>
+        <a href="/blog/2014/01/26/kai-shi-xie-di-%5B%3F%5D-pian-blog/">开始写第一篇blog</a>
     </li>
     
     <li class="related">
@@ -264,11 +234,11 @@ var duoshuoQuery = {short_name:"duffqiu"};
     </li>
     
     <li class="related">
-        <a href="/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/">mac tips: path路径的查找顺序和设置</a>
+        <a href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/">Mac上用google-app-engine搭建proxy</a>
     </li>
     
     <li class="related">
-        <a href="/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/">octopress插入代码块的问题</a>
+        <a href="/blog/2014/01/28/octopressguan-li-fu-jian/">octopress管理附件</a>
     </li>
     
     </ul>

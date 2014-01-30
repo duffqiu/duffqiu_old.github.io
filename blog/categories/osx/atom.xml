@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: OSX | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/osx/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2014-01-30T13:24:18+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Mac Tips: Path路径的查找顺序和设置]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/"/>
+    <updated>2014-01-30T13:14:17+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi</id>
+    <content type="html"><![CDATA[<h3>OSX系统的PATH设置</h3>
+
+<ol>
+<li><p>系统读取path配置的顺序为<br/>
+1). /etc/paths wenjian <br/>
+2). /etc/paths.d/目录下的所有设置文件<br/>
+3). /etc/profile 文件
+4). 用户目录下的shell配置文件，如zsh的.zshrc文件</p></li>
+<li><p>获取当前path的值的方式<br/>
+1). echo $PATH<br/>
+2). /usr/libexec/path_helper</p></li>
+<li><p>用户设置path的建议<br/>
+1). 只针对用户自己的设置配知道shell的配置文件中，如.zshrc
+2). 针对系统的文件，可以在/etc/paths.d/路径中生成一个对应的配置文件</p></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>
