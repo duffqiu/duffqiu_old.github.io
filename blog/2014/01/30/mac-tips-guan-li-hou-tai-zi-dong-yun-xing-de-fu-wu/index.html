@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress管理附件 - Duff Qiu's Blog</title>
+  <title>Mac Tips: 管理后台自动运行的服务 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
   
-  <meta name="description" content="如何在Octopress使用附件 在octopress目录中，将对应的附件放到/source/assets目录里面
-然后重新生成和部署 rake gengerate
-rake deploy 然后在对应的blog中，使用http的链接方式指定文件就可如 [附件](/assets/&lt;附件名&gt &hellip;">
+  <meta name="description" content="OSX系统后台服务简介 系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来 &gt; sudo chmod root [文件名] 用户级别的服务配置，即在用户登录后才会运行的服务 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ rake deploy 然后在对应的blog中，使用http的链接方式指定文件就
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/28/octopressguan-li-fu-jian">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Duff Qiu's Blog" type="application/atom+xml">
@@ -82,7 +80,7 @@ rake deploy 然后在对应的blog中，使用http的链接方式指定文件就
   
   <header>
     
-      <h1 class="entry-title">Octopress管理附件</h1>
+      <h1 class="entry-title">Mac Tips: 管理后台自动运行的服务</h1>
     
     
       <p class="meta">
@@ -98,28 +96,47 @@ rake deploy 然后在对应的blog中，使用http的链接方式指定文件就
   
 
 
-<time datetime="2014-01-28T12:10:51+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
+<time datetime="2014-01-30T13:29:43+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h4>如何在Octopress使用附件</h4>
+<div class="entry-content"><h3>OSX系统后台服务简介</h3>
 
 <ol>
-<li>在octopress目录中，将对应的附件放到/source/assets目录里面</li>
-<li><p>然后重新生成和部署</p>
+<li><p>系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来</p>
 
-<pre><code>rake gengerate
-rake deploy
+<pre><code>&gt; sudo chmod root [文件名]
 </code></pre></li>
-<li><p>然后在对应的blog中，使用http的链接方式指定文件就可如</p>
+<li><p>用户级别的服务配置，即在用户登录后才会运行的服务，配置文件在 ~/Library/LaunchAgents/ 目录里面。</p></li>
+<li><p>如果需要自己定义后台服务，可以copy一个已有的文件，然后做一定的更改就可以。</p></li>
+<li><p>编辑工具，xcode是其默认的编辑工具，简要处理的方式是在shell中执行</p>
 
-<pre><code>[附件](/assets/&lt;附件名&gt;)
+<pre><code> &gt; open [文件名]
+</code></pre>
+
+<p>然后系统会自动用xcode打开。<br/>
+<strong><em>注意</em></strong>：如果需要用xocode编辑首先要安装xcode（好像是废话）。如果是修改系统的服务，就必须将当前用户加入到wheel组，并更改 /Library/LaunchDaemons/目录权限为771，还要将被更改的plist文件的权限改为664，这样才可以用xcode处理文件。是不是很烦？所以还是直接用vi的方式好。编辑完后，还需要将目录权限更改过来</p>
+
+<ul>
+<li><p>添加当前用户到wheel组。 <div style="color:#F00"> <strong><em> 注意：</em></strong> </div> OSX没有像Linux那样操作用户组的命令，似乎OSX给用户日常使用是不用管理用户组的。但是对于开发人员，则必须清楚。具体方式是通过dscl(Directory Service command line utility)目录服务命令工具完成的。后面再写个介绍这个。<a href="http://weibo.com">Mac tips: 给用户添加用户组</a></p></li>
+<li><p>更改目录权限</p>
+
+<pre><code>  sudo chmod 771 /Library/LaunchDaemons/
 </code></pre></li>
+<li><p>更改文件权限</p>
+
+<pre><code>  sudo chmod 664 [plist 文件名]
+</code></pre></li>
+<li><p>编辑完了记得再改回来</p></li>
+</ul>
+</li>
 </ol>
 
+
+<h3>服务的启动和停止</h3>
 </div>
 
 
@@ -142,12 +159,12 @@ rake deploy
   
 
 
-<time datetime="2014-01-28T12:10:51+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
+<time datetime="2014-01-30T13:29:43+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/osx/'>OSX</a>
   
 </span>
 
@@ -163,10 +180,8 @@ rake deploy
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/" title="Previous Post: Mac上用google-app-engine搭建proxy">&laquo; Mac上用google-app-engine搭建proxy</a>
+        <a class="basic-alignment left" href="/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/" title="Previous Post: mac tips: path路径的查找顺序和设置">&laquo; mac tips: path路径的查找顺序和设置</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/" title="Next Post: mac tips: path路径的查找顺序和设置">mac tips: path路径的查找顺序和设置 &raquo;</a>
       
     </p>
   </footer>

@@ -9,12 +9,7 @@
   <meta name="author" content="Duff Qiu">
 
   
-  <meta name="description" content="OSX系统的PATH设置 系统读取path配置的顺序为
-1). /etc/paths wenjian 2). /etc/paths.d/目录下的所有设置文件
-3). /etc/profile 文件
-4). 用户目录下的shell配置文件，如zsh的.zshrc文件
-获取当前path的值的方式
-1 &hellip;">
+  <meta name="description" content="OSX系统后台服务简介 系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来 &gt; sudo chmod root [文件名] 用户级别的服务配置，即在用户登录后才会运行的服务 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -88,6 +83,75 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu/">Mac Tips: 管理后台自动运行的服务</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-30T13:29:43+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>OSX系统后台服务简介</h3>
+
+<ol>
+<li><p>系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来</p>
+
+<pre><code>&gt; sudo chmod root [文件名]
+</code></pre></li>
+<li><p>用户级别的服务配置，即在用户登录后才会运行的服务，配置文件在 ~/Library/LaunchAgents/ 目录里面。</p></li>
+<li><p>如果需要自己定义后台服务，可以copy一个已有的文件，然后做一定的更改就可以。</p></li>
+<li><p>编辑工具，xcode是其默认的编辑工具，简要处理的方式是在shell中执行</p>
+
+<pre><code> &gt; open [文件名]
+</code></pre>
+
+<p>然后系统会自动用xcode打开。<br/>
+<strong><em>注意</em></strong>：如果需要用xocode编辑首先要安装xcode（好像是废话）。如果是修改系统的服务，就必须将当前用户加入到wheel组，并更改 /Library/LaunchDaemons/目录权限为771，还要将被更改的plist文件的权限改为664，这样才可以用xcode处理文件。是不是很烦？所以还是直接用vi的方式好。编辑完后，还需要将目录权限更改过来</p>
+
+<ul>
+<li><p>添加当前用户到wheel组。 <div style="color:#F00"> <strong><em> 注意：</em></strong> </div> OSX没有像Linux那样操作用户组的命令，似乎OSX给用户日常使用是不用管理用户组的。但是对于开发人员，则必须清楚。具体方式是通过dscl(Directory Service command line utility)目录服务命令工具完成的。后面再写个介绍这个。<a href="http://weibo.com">Mac tips: 给用户添加用户组</a></p></li>
+<li><p>更改目录权限</p>
+
+<pre><code>  sudo chmod 771 /Library/LaunchDaemons/
+</code></pre></li>
+<li><p>更改文件权限</p>
+
+<pre><code>  sudo chmod 664 [plist 文件名]
+</code></pre></li>
+<li><p>编辑完了记得再改回来</p></li>
+</ul>
+</li>
+</ol>
+
+
+<h3>服务的启动和停止</h3>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/">Mac Tips: Path路径的查找顺序和设置</a></h1>
     
     
@@ -106,9 +170,6 @@
 
 <time datetime="2014-01-30T13:14:17+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
         
-	
-          | <a href="/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/#comments">Comments</a>
-         
       </p>
     
   </header>
@@ -160,9 +221,6 @@
 
 <time datetime="2014-01-28T12:10:51+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
         
-	
-          | <a href="/blog/2014/01/28/octopressguan-li-fu-jian/#comments">Comments</a>
-         
       </p>
     
   </header>
@@ -213,9 +271,6 @@ rake deploy
 
 <time datetime="2014-01-28T11:20:35+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
         
-	
-          | <a href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/#comments">Comments</a>
-         
       </p>
     
   </header>
@@ -300,9 +355,6 @@ rake deploy
 
 <time datetime="2014-01-27T18:20:21+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time>
         
-	
-          | <a href="/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/#comments">Comments</a>
-         
       </p>
     
   </header>
@@ -360,9 +412,6 @@ rake deploy
 
 <time datetime="2014-01-26T23:36:24+08:00" pubdate data-updated="true">Jan 26<span>th</span>, 2014</time>
         
-	
-          | <a href="/blog/2014/01/26/kai-shi-xie-di-%5B%3F%5D-pian-blog/#comments">Comments</a>
-         
       </p>
     
   </header>
@@ -553,9 +602,6 @@ Octopress还有不少功能，后面用到再补充了</p>
 
 <time datetime="2014-01-25T23:03:42+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2014</time>
         
-	
-          | <a href="/blog/2014/01/25/octopresszai-githubshang-jian-blogde-zhun-bei-gong-zuo/#comments">Comments</a>
-         
       </p>
     
   </header>
@@ -673,9 +719,6 @@ git push origin source
 
 <time datetime="2014-01-25T16:33:01+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2014</time>
         
-	
-          | <a href="/blog/2014/01/25/first-time-to-setup-octopress-in-github/#comments">Comments</a>
-         
       </p>
     
   </header>
@@ -712,6 +755,10 @@ git push origin source
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu/">Mac Tips: 管理后台自动运行的服务</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/">Mac Tips: Path路径的查找顺序和设置</a>
       </li>
     
@@ -727,10 +774,6 @@ git push origin source
         <a href="/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/">Octopress插入代码块的问题</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/01/26/kai-shi-xie-di-%5B%3F%5D-pian-blog/">开始写第一篇blog</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -739,9 +782,7 @@ git push origin source
 
 <section>
   <h1>About Me</h1>
-
-<iframe width="100%" height="550" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=550&fansRow=2&ptype=1&speed=300&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=1872168377&verifier=1cd3a528&dpc=1"></iframe>
-
+  <p>A little something about me.</p>
 </section>
 
   
