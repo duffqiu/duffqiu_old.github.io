@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-01T20:28:36+08:00</updated>
+  <updated>2014-02-01T23:09:38+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -18,7 +18,142 @@
     <link href="http://duffqiu.github.io/blog/2014/02/01/jia-su-octopressde-zhuang-zai/"/>
     <updated>2014-02-01T14:23:15+08:00</updated>
     <id>http://duffqiu.github.io/blog/2014/02/01/jia-su-octopressde-zhuang-zai</id>
-    <content type="html"><![CDATA[
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<p>加速网页的存取有多种方式，其中之一就是减少一个页面的http的请求数量，因为浏览器同时发送http请求的数量是有限的，而对于很多页面而言，通常定义了很多css和js文件的链接，这样就会造成浏览器需要多次请求后才能完整的展示页面，所以最好的方式将多个css和js文件合并，如果需要还可以将合并后的文件压缩再传输，从而达到加速的目的。</p>
+
+<h3 id="gem">Gem插件安装</h3>
+<p>Octopress的<a href="https://github.com/matthodan/jekyll-asset-pipeline">jekyll-asset-pipeline</a>就是一个这样机制的开源插件<br />
+简单的可以通过以下命令安装</p>
+
+<pre><code>&gt;sudo gem install jekyll-asset-pipeline
+</code></pre>
+
+<p><strong>注意：</strong>* 有可能安装完成后，需要更新bundle，这行命令</p>
+
+<pre><code>&gt;sudo bunlde update  
+</code></pre>
+
+<p>压缩需要用到插件YUI Compressor，可以简单通过以下命令安装</p>
+
+<pre><code>&gt;sudo gem install yui-compressor
+</code></pre>
+
+<p>另外一个选择是使用Google的<a href="https://developers.google.com/closure/?hl=zh-cn">Closure</a>，可以通过简单通过以下命令安装</p>
+
+<pre><code>&gt;sudo gem install Closure          
+</code></pre>
+
+<h3 id="octopress">配置Octopress</h3>
+<ol>
+  <li>
+    <p>配置octopress目录下的Gemfile文件，在:development中，增加以下两行</p>
+
+    <pre><code>gem "jekyll-asset-pipeline"
+gem "yui-compressor
+</code></pre>
+  </li>
+  <li>
+    <p>在 Octopress的plugins目录中，创建一个名为“jekyll_asset_pipeline.rb”的文件，内容如下：可以用注释那行代替上面那行就是使用Google的closure来压缩js文件</p>
+
+    <pre><code> require 'jekyll_asset_pipeline'
+
+ module JekyllAssetPipeline
+	
+   class CssCompressor &lt; JekyllAssetPipeline::Compressor
+     require 'yui/compressor'
+	
+     def self.filetype
+       '.css'
+     end
+	
+     def compress
+       return YUI::CssCompressor.new.compress(@content)
+     end
+   end
+	
+   class JavaScriptCompressor &lt; JekyllAssetPipeline::Compressor
+     require 'yui/compressor'
+     #require 'closure-compiler'
+	
+     def self.filetype
+       '.js'
+     end
+	
+     def compress
+       return YUI::JavaScriptCompressor.new(munge: true).compress(@content)
+       #return Closure::Compiler.new.compile(@content)
+     end
+   end
+	
+ end
+</code></pre>
+  </li>
+  <li>
+    <p>修改Octopress的配置文件_config.yml，在文件最后增加以下配置</p>
+
+    <pre><code>asset_pipeline:
+   bundle: true            # Default = true
+   compress: true          # Default = true
+   #output_path: assets     # Default = assets
+   #display_path: nil       # Default = nil
+   gzip: false             # Default = false
+</code></pre>
+  </li>
+  <li>
+    <p>修改相应的html文件，激活js/css文件的合并压缩。不同的Octopress的template，对应的文件或有不同，我这里用的是Octopress默认的官方template，因该适合大多数人</p>
+
+    <ul>
+      <li>
+        <p>修改source/_include目录下的head.html文件，注释掉带有js/css的几行</p>
+
+        <pre><code> &lt;!-- &lt;link href="{{ root_url }}/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"&gt; --&gt;
+	 
+ &lt;!-- &lt;script src="{{ root_url }}/javascripts/modernizr-2.0.js"&gt;&lt;/script&gt; --&gt;
+ &lt;!-- &lt;script src="http://duffqiu.github.io//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt; --&gt;
+ &lt;!-- &lt;script&gt;!window.jQuery &amp;&amp; document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))&lt;/script&gt; --&gt;
+ &lt;!-- &lt;script src="{{ root_url }}/javascripts/octopress.js" type="text/javascript"&gt;&lt;/script&gt; --&gt;
+</code></pre>
+      </li>
+      <li>
+        <p>增加以下内容</p>
+
+        <pre><code>{% css_asset_tag global %}
+ - /stylesheets/screen.css
+{% endcss_asset_tag %}
+	
+{% javascript_asset_tag global %}
+- /javascripts/octopress.js
+- /javascripts/modernizr-2.0.js
+- /javascripts/libs/jquery.min.js
+- /javascripts/libs/swfobject-dynamic.js
+- /javascripts/libs/jXHR.js
+{% endjavascript_asset_tag %}
+</code></pre>
+      </li>
+      <li>
+        <p>同理修改source/_includes/custom目录下的head.html文件，注释掉里面的内容，增加上面的内容就可   </p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>到底有多css和js文件需要加入到需要增加的内容中呢？在octopress/source目录中搜索一下</p>
+
+    <pre><code>find . -name '*.css'
+find . -name '*.js'
+</code></pre>
+
+    <p>然后将必要的文件加入到上面的文件列表中</p>
+  </li>
+</ol>
+
+<h3 id="vi">Vi小提示</h3>
+
+<ol>
+  <li>跳到文件头用 “:0”</li>
+  <li>跳到行头在非编辑状态下直接收入”0”</li>
+  <li>跳到行尾在非编辑状态下直接收入”$”      </li>
+</ol>
+
 ]]></content>
   </entry>
   
