@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Port | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/port/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2014-02-01T23:43:54+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Port Tips: 软件版本选择]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/01/port-tips-ruan-jian-ban-ben-xuan-ze/"/>
+    <updated>2014-02-01T23:30:20+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/01/port-tips-ruan-jian-ban-ben-xuan-ze</id>
+    <content type="html"><![CDATA[<h3 id="port">port查看本地已安装的文件</h3>
+
+<pre><code>&gt;port installed
+</code></pre>
+
+<h3 id="port-1">port查看同一个软件的不同版本</h3>
+
+<pre><code>&gt;port select --list python    #这里查看的已经安装了的python的版本
+</code></pre>
+
+<p>我的机器情况是：    </p>
+
+<p><img class="left" src="/images/Snip20140126_1.png" width="400" height="1000" title="“Head of post” “headfile”" >  </p>
+
+<p>显示为none指的是系统自带的版本</p>
+
+<h3 id="section">激活某个版本</h3>
+
+<pre><code>&gt;sudo port select --set python python2.7
+</code></pre>
+
+<p><strong>注意：</strong> 只有那些有对应的select软件包的软件才可以设置版本    </p>
+]]></content>
+  </entry>
+  
+</feed>

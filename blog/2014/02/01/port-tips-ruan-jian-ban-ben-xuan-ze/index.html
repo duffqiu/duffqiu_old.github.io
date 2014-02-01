@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress的内部blog间关联 - Duff Qiu's Blog</title>
+  <title>Port Tips: 软件版本选择 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 <link href='/assets/global-3a2a46e85a900f0a5862e559f6930c23.css' rel='stylesheet' type='text/css' />
@@ -15,7 +15,7 @@
 
 
   
-  <meta name="description" content="首先鸣谢参考资料的作者 参考资料来自与 1 完善Octopress的配置 获取内部关联的post url plugin，然后将其放入到plugin目录中 确保已经安装了kramdown，如果没有，用以下命令安装 &gt;sudo gem install kramdown &hellip;">
+  <meta name="description" content="port查看本地已安装的文件 &gt;port installed port查看同一个软件的不同版本 &gt;port select --list python #这里查看的已经安装了的python的版本 我的机器情况是： 显示为none指的是系统自带的版本 激活某个版本 &gt;sudo &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -24,7 +24,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/01/port-tips-ruan-jian-ban-ben-xuan-ze">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -93,7 +93,7 @@
   
   <header>
     
-      <h1 class="entry-title">Octopress的内部blog间关联</h1>
+      <h1 class="entry-title">Port Tips: 软件版本选择</h1>
     
     
       <p class="meta">
@@ -109,7 +109,7 @@
   
 
 
-<time datetime="2014-01-30T18:28:34+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2014-02-01T23:30:20+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -119,62 +119,28 @@
   </header>
 
 
-<div class="entry-content"><h3 id="section">首先鸣谢参考资料的作者</h3>
+<div class="entry-content"><h3 id="port">port查看本地已安装的文件</h3>
 
-<p>参考资料来自与 <a href="http://blog.eavatar.com/post/2013/06/use-post-url-internal-link-octopress/">1</a></p>
-
-<h3 id="octopress">完善Octopress的配置</h3>
-
-<ol>
-  <li>
-    <p>获取内部关联的<a href="https://raw.github.com/michael-groble/jekyll/fix_post_url/lib/jekyll/tags/post_url.rb">post url plugin</a>，然后将其放入到plugin目录中    </p>
-  </li>
-  <li>
-    <p>确保已经安装了kramdown，如果没有，用以下命令安装</p>
-
-    <pre><code>&gt;sudo gem install kramdown
-</code></pre>
-  </li>
-  <li>
-    <p>编辑配置文件_configy.yml，注释掉markdown: rdiscount，然后增加</p>
-
-    <pre><code>#markdown: rdiscount
-markdown: kramdown
-</code></pre>
-  </li>
-</ol>
-
-<h3 id="blog">在blog中使用关联，语法如下</h3>
-
-<pre><code>[&lt;链接名字&gt;]({% post_url &lt;blog的文件名字，不要带目录和文件后缀&gt; %}) 
+<pre><code>&gt;port installed
 </code></pre>
 
-<p>然后重新生成和部署就可以了</p>
+<h3 id="port-1">port查看同一个软件的不同版本</h3>
 
-<pre><code>&gt;rake generate
-&gt;rake deploy
+<pre><code>&gt;port select --list python    #这里查看的已经安装了的python的版本
 </code></pre>
 
-<h3 id="section-1">一个小插曲</h3>
-<p>今天在生成地8个blog后，rake generate就出错了，报在matrix.rb文件中反馈出”Not Regular Matrix”错误，但是就是死活找不到问题所在，只要将刚生成的文件删除就好了，而文件还没写东西。后来经历反复的从头再来，终于发现了问题所在，结论是之前参照网上配置关联blog的配置，在_configy.yml中增加了以下配置：</p>
+<p>我的机器情况是：    </p>
 
-<pre><code>lsi: true    
+<p><img class="left" src="/images/Snip20140126_1.png" width="400" height="1000" title="Head of post" alt="headfile" />  </p>
+
+<p>显示为none指的是系统自带的版本</p>
+
+<h3 id="section">激活某个版本</h3>
+
+<pre><code>&gt;sudo port select --set python python2.7
 </code></pre>
 
-<p>只要将这个选项关闭或删除就可，好像octopress已经没有用了</p>
-
-<h3 id="octopress-1">Octopress经验总结</h3>
-
-<p>尽管使用上就是用markdown的方式写文章，但是使用octopress这个平台，就像使用开发工具一样，总会出现这样那样的错误，而且还很难定位，最好的办法就是像编程一样，今早“编译”－》“试运行”－》“改错”－》“再运行”，不然当你写了很多后一次行生成出现错误就无从下手去解决问题了，只能一个一个做减法然后再试。</p>
-
-<p>最好的方式是</p>
-
-<ol>
-  <li>写一部分，就立马rake generate  </li>
-  <li>rake new_post[“<文章名>&#8221;]，不写任何东西，立马rake generate</文章名></li>
-  <li>只要用到 {%  %}这些内嵌语法，立马rake generate</li>
-  <li>更改一项_config.yml配置，立马rake generate</li>
-</ol>
+<p><strong>注意：</strong> 只有那些有对应的select软件包的软件才可以设置版本    </p>
 </div>
 
 
@@ -197,12 +163,12 @@ markdown: kramdown
   
 
 
-<time datetime="2014-01-30T18:28:34+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2014-02-01T23:30:20+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/port/'>Port</a>
   
 </span>
 
@@ -218,10 +184,8 @@ markdown: kramdown
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/" title="Previous Post: Mac tips: 给用户增加用户组">&laquo; Mac tips: 给用户增加用户组</a>
+        <a class="basic-alignment left" href="/blog/2014/02/01/jia-su-octopressde-zhuang-zai/" title="Previous Post: 加速Octopress的装载">&laquo; 加速Octopress的装载</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/30/octopress-gemcha-jian-gslan-zhuang/" title="Next Post: Octopress gem插件gsl安装">Octopress gem插件gsl安装 &raquo;</a>
       
     </p>
   </footer>
@@ -284,22 +248,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/01/port-tips-ruan-jian-ban-ben-xuan-ze/">Port tips: 软件版本选择</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/port/'>Port</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/02/01/jia-su-octopressde-zhuang-zai/">加速Octopress的装载</a></h3>
         <div class="meta">
           <span class="tags">
@@ -339,6 +287,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/gsl/'>GSL</a>, <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/">Octopress的内部blog间关联</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
   
 </span>
 
