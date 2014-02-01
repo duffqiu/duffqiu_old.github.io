@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-01T14:10:57+08:00</updated>
+  <updated>2014-02-01T14:15:56+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -114,8 +114,10 @@ end
 
 <h3 id="section-2">使用</h3>
 
-<pre><code>rake notify 目前看除了rake generate没有那个提示，好像速度没有看出来，或许是文章的数目不多体现不出来 
+<pre><code>rake notify
 </code></pre>
+
+<p>目前看除了rake generate没有那个提示，好像速度没有看出来，或许是文章的数目不多体现不出来 </p>
 ]]></content>
   </entry>
   
