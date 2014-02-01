@@ -1,3 +1,15 @@
 <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+{% css_asset_tag global %}
+- /stylesheets/screen.css
+{% endcss_asset_tag %}
+
+{% javascript_asset_tag global %}
+- /javascripts/octopress.js
+- /javascripts/modernizr-2.0.js
+- /javascripts/libs/jquery.min.js
+- /javascripts/libs/swfobject-dynamic.js
+- /javascripts/libs/jXHR.js
+{% endjavascript_asset_tag %}
+
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
