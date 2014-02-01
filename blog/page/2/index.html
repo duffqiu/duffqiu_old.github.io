@@ -8,10 +8,16 @@
   <title>Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
+<link href='/assets/global-b6b625d4245a9c11ab1b2dc836578a58.css' rel='stylesheet' type='text/css' />
+
+
+<script src='/assets/global-3fa4f07a73f9cd54e7d917e69bc0cad4.js' type='text/javascript'></script>
+
+
   
-  <meta name="description" content="需要一堆的软件
-我都是在Mac上安装的，windows真的没有兴趣再试多一次了 Mac系统的准备工作
-这个部分或许和安装Octopress没什么关系，但是用Mac系统的话最好都装上，通常都用的上 安装MacPorts，官网有比较详细的介绍，可以下pkg安装；也可以源文件安装， &hellip;">
+  <meta name="description" content="要简单，你必须有利器
+要简单用好Octepress，首先要看看markdown语法（链接我前面有提到），基本很简单，半个小时就能看懂，剩下实操就可。 然后就是需要有个工具，下载了个Mou，完全免费，到目前为止感觉很好用 开始写第一篇blog
+首先通过命令生成第一篇文章 rake new_post &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,6 +35,12 @@
   <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='/assets/global-b6b625d4245a9c11ab1b2dc836578a58.css' rel='stylesheet' type='text/css' />
+
+
+<script src='/assets/global-3fa4f07a73f9cd54e7d917e69bc0cad4.js' type='text/javascript'></script>
+
+
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
@@ -79,6 +91,207 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/26/kai-shi-xie-di-%5B%3F%5D-pian-blog/">开始写第一篇blog</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-26T23:36:24+08:00" pubdate data-updated="true">Jan 26<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/01/26/kai-shi-xie-di-%5B%3F%5D-pian-blog/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4 id="section">要简单，你必须有利器</h4>
+<p>要简单用好Octepress，首先要看看markdown语法（链接我前面有提到），基本很简单，半个小时就能看懂，剩下实操就可。</p>
+
+<p>然后就是需要有个工具，下载了个<a href="http://moustand.com">Mou</a>，完全免费，到目前为止感觉很好用</p>
+
+<h4 id="blog">开始写第一篇blog</h4>
+<p>首先通过命令生成第一篇文章</p>
+
+<pre><code> rake new_post\["&lt;文章标题&gt;"\] #&lt;文章标题&gt;替换成你的文章标题，可以是中文，最后生成的文件名自动转为拼音，这里用\是使用zsh shell自动生成的
+</code></pre>
+
+<p>然后通过mou打开生成好的文件用markdown语法进行编辑 
+当你第一次打开文件的时候，你会发现这个文件有文件头     </p>
+
+<p><img class="left" src="/images/Snip20140126_1.png" width="400" height="1000" title="Head of post" alt="headfile" />          </p>
+
+<p>注意几个内容：   </p>
+
+<ul>
+  <li>如果不需要comments，可以设置为false。后面有介绍如何配置comments </li>
+  <li>为分类写分类名，后面会将如何配置分类的plugin。这个例子我用了Octopress做分类名 </li>
+</ul>
+
+<p>然后就是按照markdown的方式写内容了。 
+写完了以后，则需要运行以下命令进行部署 </p>
+
+<pre><code>rake generate
+rake deploy
+</code></pre>
+
+<p>以后就是重复上面的步骤就可以。</p>
+
+<h4 id="octopress">配置Octopress，更本地化</h4>
+
+<h5 id="about-me">用微博配置About me</h5>
+
+<p>通常在主页的侧边栏说明一下自己是谁，最简单的方式或许是直接连接自己的微博。具体步骤如下</p>
+
+<ol>
+  <li>
+    <p>激活About me。</p>
+
+    <p>Octopress已经准备了一个aboutme的侧边栏文件，在对应的Octopresss目录的/source/_includes/custom/asides子目录下的about.html文件
+编辑octopress的配置文件_config.yml，修改default_asides项，增加内容:</p>
+
+    <pre><code>custom/asides/about.html
+</code></pre>
+  </li>
+  <li>
+    <p>加入微博内容</p>
+
+    <p>微博的插入代码可以到<a href="http://app.weibo.com/tool/weiboshow?sudaref=open.weibo.com" title="微博秀">微博的开放平台</a>获取（不要copy搜索出来，很可能旧了）</p>
+
+    <p>然后将代码放入到about.html文件
+ 如我的about.html文件内容</p>
+  </li>
+</ol>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="text"><span class="line">    &lt;section&gt;
+</span><span class="line">     &lt;h1&gt;About Me&lt;/h1&gt;
+</span><span class="line">     &lt;iframe width=&quot;100%&quot; height=&quot;550&quot; class=&quot;share_self&quot;  frameborder=&quot;0&quot; scrolling=&quot;no&quot; src=&quot;http://widget.weibo.com/weiboshow/index.php?language=&amp;width=0&amp;height=550&amp;fansRow=2&amp;ptype=1&amp;speed=300&amp;skin=1&amp;isTitle=0&amp;noborder=0&amp;isWeibo=1&amp;isFans=0&amp;uid=1872168377&amp;verifier=1cd3a528&amp;dpc=1&quot;&gt;&lt;/iframe&gt;
+</span><span class="line">    &lt;/section&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ol>
+  <li>
+    <p>重修部署</p>
+
+    <pre><code>rake generate
+rake deploy
+</code></pre>
+  </li>
+</ol>
+
+<p>这个时候主页和每个页面都会出现你的微博了。如果只想出现在主页上，后面介绍如何配置post页的配置，配置完后就只有主页出现了。</p>
+
+<h5 id="comment">配置comment</h5>
+<p>octopress已经集成了<a href="http://www.disqus.com disqus官网">disqus</a>系统，据说不是太好用，没有去试，只是感觉纯老外的东西，被中国用的很少，所以试着配置国内的<a href="http://dev.duoshuo.com 多说官网">多说</a></p>
+
+<ol>
+  <li>
+    <p>用微博／百度账户开通多说，并配置一个应用指向你的blog，获得这个应用的short name</p>
+  </li>
+  <li>
+    <p>在octopress的配置文件中增加以下内容 </p>
+
+    <pre><code> #duoshuo comments
+ duoshuo_comments: true
+ duoshuo_short_name: &lt;你的多说的应用名&gt;  
+</code></pre>
+  </li>
+  <li>
+    <p>修改source/_includes/article.html文件，在disqus配置后面 </p>
+
+    <pre><code>{% if site.disqus_short_name and page.comments != false and post.comments != false and site.disqus_show_comment_count == true %}
+ | &lt;a href="{% if index %}{{ root_url }}{{ post.url }}{% endif %}#disqus_thread"
+ data-disqus-identifier="{% if post.meta.disqus_id %}{{ post.meta.disqus_id }}{% else %}{{ site.url }}{{ post.url }}
+ {% endif %}"&gt;Comments&lt;/a&gt; 
+ {% endif %}
+</code></pre>
+
+    <p>增加多说的配置 </p>
+
+    <pre><code> {% if site.duoshuo_short_name and page.comments != false and post.comments != false and site.duoshuo_comments == true %}
+ | &lt;a href="{% if index %}{{ root_url }}{{ post.url }}{% endif %}#comments"&gt;Comments&lt;/a&gt;
+ {% endif %}
+</code></pre>
+  </li>
+  <li>
+    <p>在source/_includes/post/目录里面增加一个duoshuo.html模块文件，然后从多说的应用对应的工具里面获取通用代码(不要用网上搜索到的代码)放入这个文件中 </p>
+  </li>
+  <li>
+    <p>在source/_layouts/post.html 中的 disqus代码下</p>
+
+    <pre><code> {% if site.disqus_short_name and page.comments == true %}
+   &lt;section&gt;
+     &lt;h1&gt;Comments&lt;/h1&gt;
+     &lt;div id="disqus_thread" aria-live="polite"&gt;{% include post/disqus_thread.html %}&lt;/div&gt;
+   &lt;/section&gt;
+ {% endif %}    
+</code></pre>
+
+    <p>增加多说模块</p>
+
+    <pre><code> {% if site.duoshuo_short_name and site.duoshuo_comments == true and page.comments == true %}
+   &lt;section&gt;
+     &lt;h1&gt;Comments&lt;/h1&gt;
+     &lt;div id="comments" aria-live="polite"&gt;{% include post/duoshuo.html %}&lt;/div&gt;
+   &lt;/section&gt;
+ {% endif %}        
+</code></pre>
+  </li>
+  <li>
+    <p>取消disqus</p>
+
+    <p>编辑_config.yml文件，将配置项disqus_show_comment_count设置为false就可以</p>
+  </li>
+  <li>
+    <p>然后就是重新部署</p>
+
+    <pre><code> rake generate
+ rake deploy
+</code></pre>
+  </li>
+</ol>
+
+<p><strong>到目前为止，一个octopress在github上的配置就基本完成了</strong>
+Octopress还有不少功能，后面用到再补充了</p>
+
+<h4 id="blog-1">监控你的blog</h4>
+<p>最简单的方法是使用<a href="https://www.google.com/analytics/">google analytics</a>，octopress已经集成了它，需要做的事情是</p>
+
+<ol>
+  <li>先在google analytics上开设一个web的app，获得tracking_id</li>
+  <li>然后修改_config.yml，找到google_analytics_tracking_id，填上你的tracking_id。</li>
+  <li>重新部署就可以了</li>
+</ol>
+
+<p>注意： _config.yml文件的配置要每个选项”:”后面需要有一个空格</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -269,6 +482,10 @@ git push origin source
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/01/jia-su-octopressde-zhuang-zai/">加速Octopress的装载</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing/">Octopress通知搜索引擎</a>
       </li>
     
@@ -282,10 +499,6 @@ git push origin source
     
       <li class="post">
         <a href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/">Mac Tips: 给用户增加用户组</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu/">Mac Tips: 管理后台自动运行的服务</a>
       </li>
     
   </ul>
@@ -317,6 +530,12 @@ git push origin source
 
 
 
+
+
+<link href='/assets/global-b6b625d4245a9c11ab1b2dc836578a58.css' rel='stylesheet' type='text/css' />
+
+
+<script src='/assets/global-3fa4f07a73f9cd54e7d917e69bc0cad4.js' type='text/javascript'></script>
 
 
 
