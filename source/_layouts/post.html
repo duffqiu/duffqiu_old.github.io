@@ -31,12 +31,14 @@ single: true
     <div id="disqus_thread" aria-live="polite">{% include post/disqus_thread.html %}</div>
   </section>
 {% endif %}
+
 {% if site.duoshuo_short_name and site.duoshuo_comments == true and page.comments == true %}
-  <section>
-    <h1>Comments</h1>
-    <div id="comments" aria-live="polite">{% include post/duoshuo.html %}</div>
-  </section>
-{% endif %}
+   <section>
+     <h1>Comments</h1>
+     <div id="comments" aria-live="polite">{% include post/duoshuo.html %}</div>
+   </section>
+ {% endif %} 
+
 </div>
 {% unless page.sidebar == false %}
 <aside class="sidebar">
@@ -47,3 +49,23 @@ single: true
   {% endif %}
 </aside>
 {% endunless %}
+
+
+{% if site.related_posts.size > 1 %}
+<article class="archives">
+  <div class="related-posts">
+    <h2>Related Posts</h2>
+    {% for post in site.related_posts limit:site.recent_posts %}
+      <article>
+        <h3 class="title"><a href="{{ root_url }}{{ post.url }}">{{post.title}}</a></h3>
+        <div class="meta">
+          <span class="tags">{% include post/categories.html %}</span>
+            {% if site.disqus_short_name and post.comments == true and site.disqus_show_comment_count == true %}
+          <time datetime="{{ date | datetime | date_to_xmlschema }}" pubdate{% if post.updated %} data-updated="true"{% endif %}>{{ date | date: "%F" }}</time>
+            {% endif %}
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</article>
+{% endif %}

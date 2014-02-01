@@ -17,9 +17,7 @@ categories: Octopress
 	
 谁知道弄了一半才发现果然是只能给程序猿的东东，每次建个post都要用命令生成静态代码，然后再部署。。。这些果然不是一般人能用的。就如同它号称的“给黑客的blog框架”
 
-另外从学习安装、试用的过程看，octopress真的不太适合用windows的童鞋，最好是用Apple Mac，简单很多。这两天刚看完[Mactalk][2]，感觉真的是不错，后面再来补这个的学习笔记，这也是我买的第一本收费的电子书，尽管只有¥2.99。
-
-[2]: "http://www.amazon.cn/MacTalk·人生元编程-池建强-著/dp/B00FF5G3GK/ref=sr_1_1?ie=UTF8&qid=1390661141&sr=8-1&keywords=mactalk"
+另外从学习安装、试用的过程看，octopress真的不太适合用windows的童鞋，最好是用Apple Mac，简单很多。这两天刚看完[Mactalk](http://www.amazon.cn/MacTalk·人生元编程-池建强-著/dp/B00FF5G3GK/ref=sr_1_1?ie=UTF8&qid=1390661141&sr=8-1&keywords=mactalk)，感觉真的是不错，后面再来补这个的学习笔记，这也是我买的第一本收费的电子书，尽管只有¥2.99。
 
 建议有Mac的童鞋都读读，里面提到了不少工具的用法。
 

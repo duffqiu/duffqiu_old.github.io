@@ -33,7 +33,8 @@ destination: public
 plugins: plugins
 code_dir: downloads/code
 category_dir: blog/categories
-markdown: rdiscount
+#markdown: rdiscount
+markdown: kramdown
 rdiscount:
   extensions:
     - autolink
@@ -55,7 +56,7 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 # Each layout uses the default asides, but they can have their own asides instead. Simply uncomment the lines below
 # and add an array with the asides you want to use.
 blog_index_asides:
-post_asides: [custom/asides/recent_comments.html, custom/asides/category_list.html, custom/asides/related.html]
+post_asides: [custom/asides/recent_comments.html, custom/asides/category_list.html]
 page_asides: [custom/asides/recent_comments.html]
 
 # ----------------------- #
@@ -105,7 +106,7 @@ duoshuo_asides_admin: 0     # 侧边栏评论是否显示作者评论
 duoshuo_asides_length: 18   # 侧边栏评论截取的长度
 
 #add for related post
-lsi: true
+lsi: false
 
 # Google Analytics
 google_analytics_tracking_id: UA-47478128-1
