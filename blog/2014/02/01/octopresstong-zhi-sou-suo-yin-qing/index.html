@@ -5,11 +5,15 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Mac Tips: 管理后台自动运行的服务 - Duff Qiu's Blog</title>
+  <title>Octopress通知搜索引擎 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
   
-  <meta name="description" content="OSX系统后台服务简介 系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来 &gt; sudo chmod root [文件名] 用户级别的服务配置，即在用户登录后才会运行的服务 &hellip;">
+  <meta name="description" content="目的
+每次更新blog后，总希望搜索引擎可以尽快收录到，最好是多个搜索引擎都能收入到
+怎么做到呢？ 配置搜索引擎rake任务
+首先感谢原作者的介绍1 编辑octopress目录的Rakefile文件，在最后增加搜索引擎任务 ＃Google search engine
+desc 'Notify &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +22,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Duff Qiu's Blog" type="application/atom+xml">
@@ -80,7 +84,7 @@
   
   <header>
     
-      <h1 class="entry-title">Mac Tips: 管理后台自动运行的服务</h1>
+      <h1 class="entry-title">Octopress通知搜索引擎</h1>
     
     
       <p class="meta">
@@ -96,7 +100,7 @@
   
 
 
-<time datetime="2014-01-30T13:29:43+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2014-02-01T13:21:02+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -106,62 +110,79 @@
   </header>
 
 
-<div class="entry-content"><h3 id="osx">OSX系统后台服务简介</h3>
+<div class="entry-content"><h3 id="section">目的</h3>
+<p>每次更新blog后，总希望搜索引擎可以尽快收录到，最好是多个搜索引擎都能收入到<br />
+怎么做到呢？</p>
+
+<h3 id="rake">配置搜索引擎rake任务</h3>
+<p>首先感谢原作者的介绍<a href="http://blog.eavatar.com/post/2013/06/octopress-ping-search-engines/">1</a></p>
+
 <ol>
   <li>
-    <p>系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来</p>
+    <p>编辑octopress目录的Rakefile文件，在最后增加搜索引擎任务</p>
 
-    <pre><code>&gt; sudo chmod root [文件名]
+    <pre><code>＃Google search engine
+desc 'Notify Google of the new sitemap'
+ task :sitemapgoogle do
+  begin
+    require 'net/http'
+    require 'uri'
+    puts '* Pinging Google about our sitemap'
+    Net::HTTP.get('www.google.com', '/webmasters/tools/ping?sitemap=' + URI.escape('http://duffqiu.github.io/sitemap.xml'))
+  rescue LoadError
+    puts '! Could not ping Google about our sitemap, because Net::HTTP or URI could not be found.'
+  end
+ end
+
+#Baidu search engine       
+desc 'Ping Baidu'
+ task :pingbaidu do
+   begin
+     require 'xmlrpc/client'
+     puts '* Pinging Baidu search engine'
+     XMLRPC::Client.new('ping.baidu.com', '/ping/RPC2').call('weblogUpdates.extendedPing', 'duffqiu.github.io' , 'http://duffqiu.github.io', 'http://duffqiu.github.io', 'http://duffqiu.github.io/rss.xml')
+   rescue LoadError
+     puts '! Could not ping Baidu, because XMLRPC::Client could not be found.'
+   end
+ end
+	
+#Bing search engine
+desc 'Notify Bing of the new sitemap'
+ task :sitemapbing do
+   begin
+     require 'net/http'
+     require 'uri'
+     puts '* Pinging Bing about our sitemap'
+     Net::HTTP.get('www.bing.com', '/webmaster/ping.aspx?siteMap=' + URI.escape('http://duffqiu.github.io/sitemap.xml'))
+   rescue LoadError
+     puts '! Could not ping Bing about our sitemap, because Net::HTTP or URI could not be found.'
+   end
+ end	
+</code></pre>
+
+    <p>将”duffqiu.github.io”换成你的blog域名字即可</p>
+  </li>
+  <li>
+    <p>增加一个批量任务同时执行三个通知</p>
+
+    <pre><code>desc "Notify various services about new content"
+task :notify =&gt; [:sitemapgoogle, :sitemapbing, :pingbaidu] do
+end
 </code></pre>
   </li>
   <li>
-    <p>用户级别的服务配置，即在用户登录后才会运行的服务，配置文件在 ~/Library/LaunchAgents/ 目录里面。</p>
-  </li>
-  <li>
-    <p>如果需要自己定义后台服务，可以copy一个已有的文件，然后做一定的更改就可以。</p>
-  </li>
-  <li>
-    <p>编辑工具，xcode是其默认的编辑工具，简要处理的方式是在shell中执行</p>
+    <p>每次部署后执行命令</p>
 
-    <pre><code> &gt; open [文件名]
+    <pre><code>rake notify
 </code></pre>
-
-    <p>然后系统会自动用xcode打开。  </p>
-
-    <div style="color:#F00">  注意：</div>
-
-    <p>如果需要用xocode编辑首先要安装xcode（好像是废话）。如果是修改系统的服务，就必须将当前用户加入到wheel组，并更改 /Library/LaunchDaemons/目录权限为771，还要将被更改的plist文件的权限改为664，这样才可以用xcode处理文件。是不是很烦？所以还是直接用vi的方式好。编辑完后，还需要将目录权限更改过来</p>
-
-    <ul>
-      <li>添加当前用户到wheel组。 </li>
-    </ul>
-
-    <div style="color:#F00">  注意：</div>
-
-    <p>OSX没有像Linux那样操作用户组的命令，似乎OSX给用户日常使用是不用管理用户组的。但是对于开发人员，则必须清楚。具体方式是通过dscl(Directory Service command line utility)目录服务命令工具完成的。后面再写个介绍这个。<a href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/">Mac tips: 给用户添加用户组</a></p>
-
-    <ul>
-      <li>
-        <p>更改目录权限  </p>
-
-        <pre><code>  sudo chmod 771 /Library/LaunchDaemons/
-</code></pre>
-      </li>
-      <li>
-        <p>更改文件权限</p>
-
-        <pre><code>  sudo chmod 664 [plist 文件名]
-</code></pre>
-      </li>
-      <li>
-        <p>编辑完了记得再改回来</p>
-      </li>
-    </ul>
   </li>
 </ol>
 
-<h3 id="section">服务的启动和停止</h3>
+<h3 id="vi">vi小技巧</h3>
+<p>今天有用到一个vi的命令，跳转到文件最后用”:$”        </p>
 
+<h3 id="section-1">小插曲</h3>
+<p>今天发现用Mac OSX10.9可以直接投射屏幕到小米盒子(v1.3.20)了</p>
 </div>
 
 
@@ -184,12 +205,12 @@
   
 
 
-<time datetime="2014-01-30T13:29:43+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2014-02-01T13:21:02+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/osx/'>OSX</a>
+    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
   
 </span>
 
@@ -205,10 +226,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/" title="Previous Post: mac tips: path路径的查找顺序和设置">&laquo; mac tips: path路径的查找顺序和设置</a>
+        <a class="basic-alignment left" href="/blog/2014/01/30/octopress-gemcha-jian-gslan-zhuang/" title="Previous Post: Octopress gem插件gsl安装">&laquo; Octopress gem插件gsl安装</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/" title="Next Post: Mac tips: 给用户增加用户组">Mac tips: 给用户增加用户组 &raquo;</a>
       
     </p>
   </footer>
@@ -268,22 +287,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing/">Octopress通知搜索引擎</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/01/30/octopress-gemcha-jian-gslan-zhuang/">Octopress gem插件gsl安装</a></h3>
         <div class="meta">
           <span class="tags">
@@ -317,6 +320,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/mac/'>MAC</a>, <a class='category' href='/blog/categories/osx/'>OSX</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu/">mac tips: 管理后台自动运行的服务</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/osx/'>OSX</a>
   
 </span>
 
