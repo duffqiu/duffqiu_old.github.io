@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Jekyll | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/jekyll/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-01T23:12:07+08:00</updated>
+  <updated>2014-02-01T23:16:26+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -28,7 +28,7 @@
 <pre><code>&gt;sudo gem install jekyll-asset-pipeline
 </code></pre>
 
-<p><strong>注意：</strong>* 有可能安装完成后，需要更新bundle，这行命令</p>
+<p><strong>注意：</strong> 有可能安装完成后，需要更新bundle，这行命令</p>
 
 <pre><code>&gt;sudo bunlde update  
 </code></pre>
