@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-02T11:27:39+08:00</updated>
+  <updated>2014-02-02T11:49:33+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,56 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress添加bing网站分析]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/02/octopresstian-jia-bingwang-zhan-fen-xi/"/>
+    <updated>2014-02-02T11:30:01+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/02/octopresstian-jia-bingwang-zhan-fen-xi</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<p>Google提供了相应的Analytics网站分析工具，同样Bing也提供了类似的工具：<a href="http://www.bing.com/toolbox/webmaster/" title="官网">Bing网站管理员</a>，同样可以给你的Octopress很快速的添加该分析工具</p>
+
+<h3 id="section-1">配置</h3>
+
+<ol>
+  <li>在Bing网站管理员注册，并填写必要的信息</li>
+  <li>添加一个新网站，填写相应的信息</li>
+  <li>
+    <p>根据认证所有权网页配置Octopress，具体如下</p>
+
+    <ul>
+      <li>下载你的BingSiteAuth.xml到octopres的source目录下</li>
+      <li>
+        <p>配置_config_yml文件，设置bing analytics开关，在文件最后加入，如果以后不用bing analytics，则可以将开关设置为false就可以，不用到处改文件</p>
+
+        <pre><code># Bing Analytics  
+bing_analytics: true
+</code></pre>
+      </li>
+      <li>
+        <p>修改octopres/source/_include目录下的head.html文件，在&lt;head&gt;下面增加以下内容，记得替换&lt;…&gt;bing给你的blog的标识</p>
+
+        <pre><code>
+     
+{% if site.bing_analytics %}
+&lt;meta name="msvalidate.01" content="&lt;...&gt;" /&gt;
+{% endif %}
+     
+
+</code></pre>
+      </li>
+      <li>
+        <p>然后重新生成并部署就可以了      </p>
+
+        <pre><code>&gt;rake generate
+&gt;rake deploy
+</code></pre>
+      </li>
+    </ul>
+  </li>
+</ol>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[加速Octopress的装载]]></title>
@@ -337,32 +387,6 @@ markdown: kramdown
   <li>rake new_post[“<文章名>"]，不写任何东西，立马rake generate</文章名></li>
   <li>只要用到 {%  %}这些内嵌语法，立马rake generate</li>
   <li>更改一项_config.yml配置，立马rake generate</li>
-</ol>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress管理附件]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/01/28/octopressguan-li-fu-jian/"/>
-    <updated>2014-01-28T12:10:51+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/01/28/octopressguan-li-fu-jian</id>
-    <content type="html"><![CDATA[<h4 id="octopress">如何在Octopress使用附件</h4>
-
-<ol>
-  <li>在octopress目录中，将对应的附件放到/source/assets目录里面</li>
-  <li>
-    <p>然后重新生成和部署</p>
-
-    <pre><code>rake gengerate
-rake deploy
-</code></pre>
-  </li>
-  <li>
-    <p>然后在对应的blog中，使用http的链接方式指定文件就可如</p>
-
-    <pre><code>[附件](/assets/&lt;附件名&gt;)
-</code></pre>
-  </li>
 </ol>
 ]]></content>
   </entry>

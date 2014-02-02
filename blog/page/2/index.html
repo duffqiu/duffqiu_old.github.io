@@ -9,21 +9,19 @@
   <meta name="author" content="Duff Qiu">
 
 
+<meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
-<link href='/assets/global-c6a32664fbcf111d6c49d4d52bf36074.css' rel='stylesheet' type='text/css' />
+
+<link href='/assets/global-9a23c9af33b49fc518c096b0aea9560a.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="在blog中插入Octopress代码块的问题 Octopress的说明文档中有多种插入代码块的方式，但是当初入markdown代码的时候就出现问题，尝试了多种方式后无果，最后查看别人的blog的源码发现使用 1
-2
-3
-4
-5
-{% raw %} # 必须有空行 #代码块 # 必须有空行
-{% &hellip;">
+  <meta name="description" content="原由
+在家访问Google时总时不时就无法访问，而技术类问题的搜索在百度的结果总是与期望相差太远，要不就是国外的网站无法访问，所以最好的就是使用国外的代理，作为技术人员最好的办法就是自己搭建一个。 平台选择
+目前有多中选择，但是看了下攻略，最简单的方式就是用google app engine。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -42,7 +40,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-c6a32664fbcf111d6c49d4d52bf36074.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-9a23c9af33b49fc518c096b0aea9560a.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
@@ -100,6 +98,86 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/">Mac上用google-app-engine搭建proxy</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-28T11:20:35+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4 id="section">原由</h4>
+<p>在家访问Google时总时不时就无法访问，而技术类问题的搜索在百度的结果总是与期望相差太远，要不就是国外的网站无法访问，所以最好的就是使用国外的代理，作为技术人员最好的办法就是自己搭建一个。</p>
+
+<h4 id="section-1">平台选择</h4>
+<p>目前有多中选择，但是看了下攻略，最简单的方式就是用google app engine。而且有开源的proxy服务器软件Goagent以及有Mac上好用的GoagentX客户端，那么就它了。</p>
+
+<h4 id="goagent">安装Goagent</h4>
+<p>访问<a href="https://code.google.com/p/goagent/" title="官网">Goagent</a><br />
+但是在没有代理的时候，访问code.google.com总是很慢，这里附上一个<a href="/assets/goagent-goagent-v3.1.5.zip">Goagent 3.1.5</a><br />
+具体教程可以参考Goagent的官网
+在Mac上的简单操作就是</p>
+
+<ol>
+  <li>到<a href="https://appengine.google.com/">Google App Engine</a>创建一个App</li>
+  <li>解开Goagent下载下来的软件，到server/gae目录，编写gae.py文件配置密码（避免有人偷用你的流量）</li>
+  <li>
+    <p>使用命令上传goagent并部署</p>
+
+    <pre><code> python upload.zip 然后按照提示操作就可（就是输入两次google account和密码）
+</code></pre>
+  </li>
+  <li>注意：如果提示等待x秒后尝试看看部署是否成功，等待一会就好，如果不行取消当前操作(ctrol+c)重复之前的操作直到成功为止。估计又是Great Wall的问题</li>
+</ol>
+
+<h4 id="goagentx">安装GoagentX</h4>
+<p>访问<a href="http://goagentx.com">GoagentX</a>，获得一个App，打开就可
+然后就是简单配置GoagentX</p>
+
+<ol>
+  <li>设置AppId</li>
+  <li>设置服务密码，就是在gae.py上设置的密码</li>
+  <li>然后启动就可</li>
+  <li>启动成功后，Mac会被自动设置了代理</li>
+  <li>接着就能够访问了(如果你能看到youtube／facebook就证明OK了)</li>
+  <li>如需在局域网共享，则将启动Goagent的地方勾上局域网选项，然后在代理设置里面也勾上代理选项（记得重启代理）</li>
+  <li>在其它机器上配置代理服务器就可以了</li>
+</ol>
+
+<h4 id="section-2">免费增加流量</h4>
+<p>Google App Engine目前是提供28个小时的前端应用免费流量，如果需要增加则再多创建一个或多个这样的应用就可。  </p>
+
+<p>Google App Engine允许一个账户最多创建10个应用</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -550,6 +628,10 @@ git push origin source
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/02/octopresstian-jia-bingwang-zhan-fen-xi/">Octopress添加bing网站分析</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/01/port-tips-ruan-jian-ban-ben-xuan-ze/">Port Tips: 软件版本选择</a>
       </li>
     
@@ -563,10 +645,6 @@ git push origin source
     
       <li class="post">
         <a href="/blog/2014/01/30/octopress-gemcha-jian-gslan-zhuang/">Octopress Gem插件gsl安装</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/">Octopress的内部blog间关联</a>
       </li>
     
   </ul>
