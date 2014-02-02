@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress的内部blog间关联 - Duff Qiu's Blog</title>
+  <title>OO的一些设计原则 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,7 +19,7 @@
 
 
   
-  <meta name="description" content="首先鸣谢参考资料的作者 参考资料来自与 1 完善Octopress的配置 获取内部关联的post url plugin，然后将其放入到plugin目录中 确保已经安装了kramdown，如果没有，用以下命令安装 &gt;sudo gem install kramdown &hellip;">
+  <meta name="description" content="OO设计原则 “开-闭”原则 (Open-Closed Principle, OCP) 对扩展开放，对修改关闭 (如不要去覆盖一个父类的行为，但是可以在一个新的类的行为中使用父类／关联类的行为) 不允许更改系统的抽象层，是允许扩展系统的实现层 抽象类(Abstract Class) &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -28,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -99,7 +99,7 @@
   
   <header>
     
-      <h1 class="entry-title">Octopress的内部blog间关联</h1>
+      <h1 class="entry-title">OO的一些设计原则</h1>
     
     
       <p class="meta">
@@ -115,7 +115,7 @@
   
 
 
-<time datetime="2014-01-30T18:28:34+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2014-02-02T16:05:09+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -125,61 +125,99 @@
   </header>
 
 
-<div class="entry-content"><h3 id="section">首先鸣谢参考资料的作者</h3>
-
-<p>参考资料来自与 <a href="http://blog.eavatar.com/post/2013/06/use-post-url-internal-link-octopress/">1</a></p>
-
-<h3 id="octopress">完善Octopress的配置</h3>
+<div class="entry-content"><h3 id="oo">OO设计原则</h3>
 
 <ol>
   <li>
-    <p>获取内部关联的<a href="https://raw.github.com/michael-groble/jekyll/fix_post_url/lib/jekyll/tags/post_url.rb">post url plugin</a>，然后将其放入到plugin目录中    </p>
+    <p>“开-闭”原则 (Open-Closed Principle, OCP)</p>
+
+    <ul>
+      <li>对扩展开放，对修改关闭 (如不要去覆盖一个父类的行为，但是可以在一个新的类的行为中使用父类／关联类的行为)</li>
+      <li>不允许更改系统的抽象层，是允许扩展系统的实现层</li>
+    </ul>
   </li>
   <li>
-    <p>确保已经安装了kramdown，如果没有，用以下命令安装</p>
+    <p>抽象类(Abstract Class)</p>
 
-    <pre><code>&gt;sudo gem install kramdown
-</code></pre>
+    <ul>
+      <li>具体类不是用来继承的。继承要从抽象类开始，一般以abstract命名开头</li>
+      <li>如果遇到具体类的继承，最有可能的重构方式是构造一个抽象类，这两个类成为这个抽象类的子类</li>
+      <li>抽象类应当尽可能有多的共同代码</li>
+      <li>抽象类应当尽可能少的数据</li>
+      <li>针对抽象编程</li>
+      <li>正确使用继承，不要从工具类继承</li>
+    </ul>
+  </li>
+  <li>里氏代换原则(LSP)
+    <ul>
+      <li>如果程序调用适用于基类，则必定适用于其子类</li>
+      <li>反过来的代价不成立</li>
+    </ul>
   </li>
   <li>
-    <p>编辑配置文件_configy.yml，注释掉markdown: rdiscount，然后增加</p>
+    <p>依赖倒转原则（DIP）</p>
 
-    <pre><code>#markdown: rdiscount
-markdown: kramdown
-</code></pre>
+    <ul>
+      <li>要依赖于抽象，不要依赖于具体实现</li>
+      <li>三种耦合关系：
+  a. 零耦合(Nil Coupling)，两个类没有耦合关系<br />
+  b. 具体耦合(Concrete Coupling)，具体型耦合发生在两个具体类之间，有一个类对另一个具体类的直接引用造成（非继承）<br />
+  c. 抽象耦合(Abstract Coupling)，耦合关系发生在一个具体类和抽象类（或接口）之间  </li>
+      <li>DIP要求客户端依赖于抽象耦合</li>
+      <li>抽象不应当依赖于细节，细节应当依赖于抽象</li>
+      <li>针对接口编程，不针对实现编程。即使用接口和抽象类进行变量的类型声明、函数参数的类型声明、方法的返回值类型声明，以及数据类型的转换。</li>
+      <li>联合使用Java接口和抽象类</li>
+      <li>对于已经很稳定的类，客户端是可以依赖于这个具体类型的，而不用再发明抽象类型</li>
+    </ul>
   </li>
-</ol>
+  <li>接口隔离原则(ISP)
+    <ul>
+      <li>使用多个专门的接口比使用单一接口要好 </li>
+      <li>一个类对于另外一个类的依赖应当建立在最小的接口上</li>
+      <li>定制服务：如果客户端仅需要某些方法，那么就应但只提供这些需要的方法，而不提供不需要的方法</li>
+    </ul>
+  </li>
+  <li>合成/聚合复用原则（CARP）  <br />
+    <ul>
+      <li>在一个新的对象中使用一些已有的对象，新的对象通过向这些旧的对象委派达到复用已有功能的目的</li>
+      <li>尽量使用合成/聚合，尽量不要使用继承</li>
+    </ul>
+  </li>
+  <li>迪米特法则(LoD)<br />
+又叫做最少知识原则(Least Knowledge Principle LKP)
+    <ul>
+      <li>只与你直接的朋友通信</li>
+      <li>不要和“陌生人”说话</li>
+      <li>朋友确定的原则：
+        <ul>
+          <li>当前对象本身（this）</li>
+          <li>以参数形式传入到当前对象方法的对象</li>
+          <li>当前对象的实例变量直接引用的对象</li>
+          <li>当前对象的实例变量如果是一个聚集，则聚集中的元素都是朋友</li>
+          <li>当前对象所创建的对象</li>
+        </ul>
+      </li>
+      <li>使用抽象陌生人重构来调用陌生对象，避免过多的原子调用转发</li>
+    </ul>
+  </li>
+  <li>
+    <p>广义迪米特法则在类上的设计</p>
 
-<h3 id="blog">在blog中使用关联，语法如下</h3>
-
-<pre><code>[&lt;链接名字&gt;]({% post_url &lt;blog的文件名字，不要带目录和文件后缀&gt; %}) 
-</code></pre>
-
-<p>然后重新生成和部署就可以了</p>
-
-<pre><code>&gt;rake generate
-&gt;rake deploy
-</code></pre>
-
-<h3 id="section-1">一个小插曲</h3>
-<p>今天在生成地8个blog后，rake generate就出错了，报在matrix.rb文件中反馈出”Not Regular Matrix”错误，但是就是死活找不到问题所在，只要将刚生成的文件删除就好了，而文件还没写东西。后来经历反复的从头再来，终于发现了问题所在，结论是之前参照网上配置关联blog的配置，在_configy.yml中增加了以下配置：</p>
-
-<pre><code>lsi: true    
-</code></pre>
-
-<p>只要将这个选项关闭或删除就可，好像octopress已经没有用了</p>
-
-<h3 id="octopress-1">Octopress经验总结</h3>
-
-<p>尽管使用上就是用markdown的方式写文章，但是使用octopress这个平台，就像使用开发工具一样，总会出现这样那样的错误，而且还很难定位，最好的办法就是像编程一样，今早“编译”－》“试运行”－》“改错”－》“再运行”，不然当你写了很多后一次行生成出现错误就无从下手去解决问题了，只能一个一个做减法然后再试。</p>
-
-<p>最好的方式是</p>
-
-<ol>
-  <li>写一部分，就立马rake generate  </li>
-  <li>rake new_post[“<文章名>&#8221;]，不写任何东西，立马rake generate</文章名></li>
-  <li>只要用到 {%  %}这些内嵌语法，立马rake generate</li>
-  <li>更改一项_config.yml配置，立马rake generate</li>
+    <ul>
+      <li>优先考虑将一个类设置成不变类</li>
+      <li>尽量降低一个类的访问权限（package-private是默认权限，无需标示private关键字）</li>
+      <li>谨慎使用Serializable</li>
+      <li>尽量降低类成员(属性、方法、嵌套类、嵌套接口)的访问权限
+        <ul>
+          <li>private，只能类内部使用 </li>
+          <li>package-private,只能被当前包的类访问，默认权限，无需任何关键字标示</li>
+          <li>protected，但前包的类和它的子类可以访问</li>
+          <li>public,任何类都可以访问</li>
+        </ul>
+      </li>
+      <li>限制局域变量的有效访问</li>
+    </ul>
+  </li>
 </ol>
 </div>
 
@@ -203,12 +241,12 @@ markdown: kramdown
   
 
 
-<time datetime="2014-01-30T18:28:34+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2014-02-02T16:05:09+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/java/'>Java</a>, <a class='category' href='/blog/categories/oo/'>OO</a>
   
 </span>
 
@@ -224,10 +262,8 @@ markdown: kramdown
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/" title="Previous Post: Mac tips: 给用户增加用户组">&laquo; Mac tips: 给用户增加用户组</a>
+        <a class="basic-alignment left" href="/blog/2014/02/02/she-ji-mo-shi-kai-pian/" title="Previous Post: 设计模式开篇">&laquo; 设计模式开篇</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/30/octopress-gemcha-jian-gslan-zhuang/" title="Next Post: Octopress gem插件gsl安装">Octopress gem插件gsl安装 &raquo;</a>
       
     </p>
   </footer>
@@ -294,22 +330,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/">OO的一些设计原则</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/java/'>Java</a>, <a class='category' href='/blog/categories/oo/'>OO</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/02/02/she-ji-mo-shi-kai-pian/">设计模式开篇</a></h3>
         <div class="meta">
           <span class="tags">
@@ -365,6 +385,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/jekyll/'>Jekyll</a>, <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing/">Octopress通知搜索引擎</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
   
 </span>
 

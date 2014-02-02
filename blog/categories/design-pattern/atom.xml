@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design Pattern | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/design-pattern/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-02T15:55:25+08:00</updated>
+  <updated>2014-02-02T16:33:10+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -24,8 +24,8 @@
 <p>要去理解设计模式，必须是有以下基础</p>
 
 <ol>
-  <li>语言基础(Java, C++, Object-C…)，这里是以Java语言做介绍，如果需要初步学Java则可以看看<a href="https://www.udemy.com">Udemy</a>上面的免费入门视频</li>
-  <li>懂得OO的设计理念/原则，后面再抽个章节讲讲这个</li>
+  <li>语言基础(Java, C++, Object-C…)，这里是以Java语言做介绍，如果需要初步学Java则可以看看<a href="https://www.udemy.com/java-tutorial/?couponCode=FREE">Udemy</a>上面的免费入门视频</li>
+  <li>懂得OO的设计理念/原则，后面再抽个章节讲讲这个<a href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/">OO的设计原则</a></li>
   <li>懂得UML的基础，入门可以先看看这本简单的<a href="http://www.amazon.cn/系统分析师UML项目实战-邱郁惠/dp/B00DSQZ9IQ/ref=sr_1_1?ie=UTF8&amp;qid=1391326582&amp;sr=8-1&amp;keywords=系统分析师UML项目实战">系统分析师UML项目实战</a>，个人也不太建议UML在工作做过于教条化。之前曾经有1年多都是在画UML图，然后开发依据UML图去做开发，结果效果并不是很好。但是一些基础的比较实际的用法还是值得去做的。</li>
 </ol>
 
