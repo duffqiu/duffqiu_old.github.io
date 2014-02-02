@@ -15,7 +15,7 @@ Octopress的[jekyll-asset-pipeline](https://github.com/matthodan/jekyll-asset-pi
 
     >sudo gem install jekyll-asset-pipeline
     
-**注意：*** 有可能安装完成后，需要更新bundle，这行命令
+**注意：** 有可能安装完成后，需要更新bundle，这行命令
 
     >sudo bunlde update  
     

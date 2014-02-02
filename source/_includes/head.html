@@ -7,6 +7,10 @@
   <title>{% if page.title %}{% if site.titlecase %}{{ page.title | titlecase }}{% else %}{{ page.title }}{% endif %} - {% endif %}{{ site.title }}</title>
   <meta name="author" content="{{ site.author }}">
 
+{% if site.bing_analytics %}
+<meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
+{% endif %}
+
 {% css_asset_tag global %}
 - /stylesheets/screen.css
 {% endcss_asset_tag %}
