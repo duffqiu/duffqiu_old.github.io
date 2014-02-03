@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-03T18:10:23+08:00</updated>
+  <updated>2014-02-03T18:15:26+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -29,7 +29,7 @@
 
 <h3 id="singleton">简单的Singleton</h3>
 
-<pre><code><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>java </span></figcaption>
+<pre><code><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Java </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -44,20 +44,22 @@
 <span class='line-number'>12</span>
 <span class='line-number'>13</span>
 <span class='line-number'>14</span>
+<span class='line-number'>15</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>public class Singleton {
 </span><span class='line'>	private static Singleton instance = new Singleton();
 </span><span class='line'>	//public staic Singleton INSTANCE = new Singleton(); //not suggest
 </span><span class='line'>	
-</span><span class='line'>}
 </span><span class='line'>
-</span><span class='line'>//must make the default create menthod private
-</span><span class='line'>private Singleton() {
-</span><span class='line'>}
+</span><span class='line'>    //must make the default create menthod private
+</span><span class='line'>    private Singleton() {
+</span><span class='line'>    }
 </span><span class='line'>
-</span><span class='line'>public staic Singleton getInstance() {
-</span><span class='line'>}
+</span><span class='line'>    public staic Singleton getInstance() {
+</span><span class='line'>    }
 </span><span class='line'>
-</span><span class='line'>//....</span></code></pre></td></tr></table></div></figure></notextile></div>
+</span><span class='line'>//....
+</span><span class='line'>
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure></notextile></div>
 </code></pre>
 
 <p>这里有几点注意：</p>
