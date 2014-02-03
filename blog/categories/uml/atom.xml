@@ -4,7 +4,7 @@
   <title><![CDATA[Category: UML | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/uml/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-03T11:52:50+08:00</updated>
+  <updated>2014-02-03T11:56:37+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -80,9 +80,11 @@
 
 <ol>
   <li>
-    <p>依赖关系(dependency)，依赖总是单向。Java中体现为局部变量、方法参数，以及对静态方法的调用，图形通过虚线开放箭头表示，实践中没有必要将所有的依赖都画出来，只画出重要部分</p>
+    <p>依赖关系(dependency)，依赖总是单向。Java中体现为局部变量、方法参数，以及对静态方法的调用，图形通过虚线开放箭头表示</p>
 
     <div style="font-size: 36px"> ⤑ </div>
+
+    <p>实践中没有必要将所有的依赖都画出来，只画出重要部分</p>
   </li>
 </ol>
 
@@ -90,7 +92,8 @@
 
 <p><img src="/images/ClassRelationship.png" alt="类的关联关系和依赖关系" />   </p>
 
-<p>尽管前面讲了使用UML不要太教条，试用就好，但是图的表示含义还是要准确的好</p>
+<p>尽管前面讲了使用UML不要太教条，试用就好，但是图的表示含义还是要准确的好
+本章节的astah的文件：<a href="/assets/ClassDiagram.asta">类的UML说明</a></p>
 ]]></content>
   </entry>
   
