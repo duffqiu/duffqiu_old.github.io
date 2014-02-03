@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-02T16:37:01+08:00</updated>
+  <updated>2014-02-03T11:03:14+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,47 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[UML类图]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/02/umllei-tu/"/>
+    <updated>2014-02-02T20:44:44+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/02/umllei-tu</id>
+    <content type="html"><![CDATA[<h3 id="uml">UML工具</h3>
+<p>推荐大家用<a href="http://members.change-vision.com/files/astah_community" title="官网">astash</a>，Community版本就够了</p>
+
+<h3 id="section">类图的描述</h3>
+
+<ol>
+  <li>类名：正体字为实例化类， 斜体字是抽象类，接口类有interface标识(也可以是个圆形，不过建议在类图中还是使用长方形的图形标识)</li>
+  <li>属性：<strong><em>+</em></strong>表示puiblic， <strong><em>-</em></strong>表示private， <strong><em>#</em></strong>表示protected</li>
+  <li>方法：<strong><em>+</em></strong>表示puiblic， <strong><em>-</em></strong>表示private， <strong><em>#</em></strong>表示protected, 有下划线表示      &lt;div&gt;<font style="border-bottom:1px solid #000;">静态方法</font>&lt;/div&gt;</li>
+</ol>
+
+<p><img src="http://duffqiu.github.io/images/ClassDiagram.png" alt="类图" /></p>
+
+<h3 id="section-1">类图中类与类的关系</h3>
+
+<ol>
+  <li>
+    <p>继承关系，用带实线的闭合箭头</p>
+
+    <div style="font-size: 36px"> ➝ </div>
+
+    <p>表示</p>
+  </li>
+  <li>
+    <p>接口实现关系，用虚线带的闭合箭头</p>
+
+    <div style="font-size: 36px"> ⇢ </div>
+
+    <p>表示</p>
+  </li>
+  <li></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[OO的一些设计原则]]></title>
