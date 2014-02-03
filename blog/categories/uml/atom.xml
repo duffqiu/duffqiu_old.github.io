@@ -4,7 +4,7 @@
   <title><![CDATA[Category: UML | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/uml/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-03T11:47:09+08:00</updated>
+  <updated>2014-02-03T11:52:50+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -86,7 +86,7 @@
   </li>
 </ol>
 
-<p>在astah中的表示如下：</p>
+<h5 id="astah">类的关联关系和依赖关系在astah中的表示如下：</h5>
 
 <p><img src="/images/ClassRelationship.png" alt="类的关联关系和依赖关系" />   </p>
 
