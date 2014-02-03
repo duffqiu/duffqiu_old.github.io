@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress通知搜索引擎 - Duff Qiu's Blog</title>
+  <title>设计模式: 单例模式 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,11 +19,7 @@
 
 
   
-  <meta name="description" content="目的
-每次更新blog后，总希望搜索引擎可以尽快收录到，最好是多个搜索引擎都能收入到
-怎么做到呢？ 配置搜索引擎rake任务
-首先感谢原作者的介绍1 编辑octopress目录的Rakefile文件，在最后增加搜索引擎任务 ＃Google search engine
-desc 'Notify &hellip;">
+  <meta name="description" content="单例模式原理 模式名称：单例模式(Singleton Pattern) 问题：需要确保系统中的某个类只能有一个实例存在。现实中如序号ID分配器，确保ID在系统中必须是唯一的。(当然也有很多方式生成唯一ID，这里只是个例子) 解决方案：限制类被new出来，只能通过唯一的访问点（static方法） &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -32,7 +28,7 @@ desc 'Notify &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -105,7 +101,7 @@ desc 'Notify &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Octopress通知搜索引擎</h1>
+      <h1 class="entry-title">设计模式: 单例模式</h1>
     
     
       <p class="meta">
@@ -121,7 +117,7 @@ desc 'Notify &hellip;">
   
 
 
-<time datetime="2014-02-01T13:21:02+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
+<time datetime="2014-02-03T17:47:12+08:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -131,79 +127,54 @@ desc 'Notify &hellip;">
   </header>
 
 
-<div class="entry-content"><h3 id="section">目的</h3>
-<p>每次更新blog后，总希望搜索引擎可以尽快收录到，最好是多个搜索引擎都能收入到<br />
-怎么做到呢？</p>
-
-<h3 id="rake">配置搜索引擎rake任务</h3>
-<p>首先感谢原作者的介绍<a href="http://blog.eavatar.com/post/2013/06/octopress-ping-search-engines/">1</a></p>
+<div class="entry-content"><h3 id="section">单例模式原理</h3>
 
 <ol>
-  <li>
-    <p>编辑octopress目录的Rakefile文件，在最后增加搜索引擎任务</p>
-
-    <pre><code>＃Google search engine
-desc 'Notify Google of the new sitemap'
- task :sitemapgoogle do
-  begin
-    require 'net/http'
-    require 'uri'
-    puts '* Pinging Google about our sitemap'
-    Net::HTTP.get('www.google.com', '/webmasters/tools/ping?sitemap=' + URI.escape('http://duffqiu.github.io/sitemap.xml'))
-  rescue LoadError
-    puts '! Could not ping Google about our sitemap, because Net::HTTP or URI could not be found.'
-  end
- end
-
-#Baidu search engine       
-desc 'Ping Baidu'
- task :pingbaidu do
-   begin
-     require 'xmlrpc/client'
-     puts '* Pinging Baidu search engine'
-     XMLRPC::Client.new('ping.baidu.com', '/ping/RPC2').call('weblogUpdates.extendedPing', 'duffqiu.github.io' , 'http://duffqiu.github.io', 'http://duffqiu.github.io', 'http://duffqiu.github.io/rss.xml')
-   rescue LoadError
-     puts '! Could not ping Baidu, because XMLRPC::Client could not be found.'
-   end
- end
-	
-#Bing search engine
-desc 'Notify Bing of the new sitemap'
- task :sitemapbing do
-   begin
-     require 'net/http'
-     require 'uri'
-     puts '* Pinging Bing about our sitemap'
-     Net::HTTP.get('www.bing.com', '/webmaster/ping.aspx?siteMap=' + URI.escape('http://duffqiu.github.io/sitemap.xml'))
-   rescue LoadError
-     puts '! Could not ping Bing about our sitemap, because Net::HTTP or URI could not be found.'
-   end
- end	
-</code></pre>
-
-    <p>将”duffqiu.github.io”换成你的blog域名字即可</p>
-  </li>
-  <li>
-    <p>增加一个批量任务同时执行三个通知</p>
-
-    <pre><code>desc "Notify various services about new content"
-task :notify =&gt; [:sitemapgoogle, :sitemapbing, :pingbaidu] do
-end
-</code></pre>
-  </li>
-  <li>
-    <p>每次部署后执行命令</p>
-
-    <pre><code>rake notify
-</code></pre>
-  </li>
+  <li>模式名称：单例模式(Singleton Pattern)</li>
+  <li>问题：需要确保系统中的某个类只能有一个实例存在。现实中如序号ID分配器，确保ID在系统中必须是唯一的。(当然也有很多方式生成唯一ID，这里只是个例子)</li>
+  <li>解决方案：限制类被new出来，只能通过唯一的访问点（static方法）获得一个全局的自身的实例。这个访问点确保实例不会被多次创建</li>
+  <li>结论：通过唯一访问点有效的控制实例的生成</li>
 </ol>
 
-<h3 id="vi">vi小技巧</h3>
-<p>今天有用到一个vi的命令，跳转到文件最后用”:$”        </p>
+<h3 id="singleton">简单的Singleton</h3>
 
-<h3 id="section-1">小插曲</h3>
-<p>今天发现用Mac OSX10.9可以直接投射屏幕到小米盒子(v1.3.20)了</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>java </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">public class Singleton {
+</span><span class="line">    	private static Singleton instance = new Singleton();
+</span><span class="line">    	//public staic Singleton INSTANCE = new Singleton(); //not suggest
+</span><span class="line">    	
+</span><span class="line">    }
+</span><span class="line">    
+</span><span class="line">    //must make the default create menthod private
+</span><span class="line">    private Singleton() {
+</span><span class="line">    }
+</span><span class="line">    
+</span><span class="line">    public staic Singleton getInstance() {
+</span><span class="line">    }
+</span><span class="line">    
+</span><span class="line">    //....</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这里有几点注意：</p>
+
+<ol>
+  <li>默认的构造函数要设置为private，避免类被错误的new出来</li>
+  <li>尽量用方法的方式获取类的实例    </li>
+  <li>如果构造过程表负责，则需要用static{…}方式阔起来</li>
+</ol>
 </div>
 
 
@@ -226,12 +197,12 @@ end
   
 
 
-<time datetime="2014-02-01T13:21:02+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
+<time datetime="2014-02-03T17:47:12+08:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a>
   
 </span>
 
@@ -247,10 +218,8 @@ end
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/30/octopress-gemcha-jian-gslan-zhuang/" title="Previous Post: Octopress gem插件gsl安装">&laquo; Octopress gem插件gsl安装</a>
+        <a class="basic-alignment left" href="/blog/2014/02/03/she-ji-mo-shi-%3Amo-ban-fang-fa/" title="Previous Post: 设计模式：模版方法">&laquo; 设计模式：模版方法</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/02/01/jia-su-octopressde-zhuang-zai/" title="Next Post: 加速Octopress的装载">加速Octopress的装载 &raquo;</a>
       
     </p>
   </footer>
@@ -318,22 +287,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi/">设计模式: 单例模式</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/02/03/she-ji-mo-shi-%3Amo-ban-fang-fa/">设计模式：模版方法</a></h3>
         <div class="meta">
           <span class="tags">
@@ -389,6 +342,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/02/02/octopresstian-jia-bingwang-zhan-fen-xi/">Octopress添加bing网站分析</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/bing/'>Bing</a>, <a class='category' href='/blog/categories/octopress/'>Octopress</a>
   
 </span>
 

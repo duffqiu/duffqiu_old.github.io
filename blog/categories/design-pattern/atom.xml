@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design Pattern | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/design-pattern/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-03T15:34:21+08:00</updated>
+  <updated>2014-02-03T18:10:23+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,63 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式: 单例模式]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi/"/>
+    <updated>2014-02-03T17:47:12+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi</id>
+    <content type="html"><![CDATA[<h3 id="section">单例模式原理</h3>
+
+<ol>
+  <li>模式名称：单例模式(Singleton Pattern)</li>
+  <li>问题：需要确保系统中的某个类只能有一个实例存在。现实中如序号ID分配器，确保ID在系统中必须是唯一的。(当然也有很多方式生成唯一ID，这里只是个例子)</li>
+  <li>解决方案：限制类被new出来，只能通过唯一的访问点（static方法）获得一个全局的自身的实例。这个访问点确保实例不会被多次创建</li>
+  <li>结论：通过唯一访问点有效的控制实例的生成</li>
+</ol>
+
+<h3 id="singleton">简单的Singleton</h3>
+
+<pre><code><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>java </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>public class Singleton {
+</span><span class='line'>	private static Singleton instance = new Singleton();
+</span><span class='line'>	//public staic Singleton INSTANCE = new Singleton(); //not suggest
+</span><span class='line'>	
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>//must make the default create menthod private
+</span><span class='line'>private Singleton() {
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>public staic Singleton getInstance() {
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>//....</span></code></pre></td></tr></table></div></figure></notextile></div>
+</code></pre>
+
+<p>这里有几点注意：</p>
+
+<ol>
+  <li>默认的构造函数要设置为private，避免类被错误的new出来</li>
+  <li>尽量用方法的方式获取类的实例    </li>
+  <li>如果构造过程表负责，则需要用static{…}方式阔起来</li>
+</ol>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[设计模式：模版方法]]></title>

@@ -12,14 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-d3c750679d97597cd5db87fceaa57309.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-644658334c598da098a7c86b93382af8.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="模版方法模式原理 名称：模版方法(Template Method)模式 问题：在很多时候多个对象有很多个共性，只是某个／某些行为不同，如果单独实现这些对象，则需要很多的copy - paste 解决方案：将共性的行为抽取到抽象类，将特定的行为由具体的对象来实现／或者这个具体的行为本身就是一个对象( &hellip;">
+  <meta name="description" content="单例模式原理 模式名称：单例模式(Singleton Pattern) 问题：需要确保系统中的某个类只能有一个实例存在。现实中如序号ID分配器，确保ID在系统中必须是唯一的。(当然也有很多方式生成唯一ID，这里只是个例子) 解决方案：限制类被new出来，只能通过唯一的访问点（static方法） &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-d3c750679d97597cd5db87fceaa57309.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-644658334c598da098a7c86b93382af8.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
@@ -98,6 +98,92 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi/">设计模式: 单例模式</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T17:47:12+08:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">单例模式原理</h3>
+
+<ol>
+  <li>模式名称：单例模式(Singleton Pattern)</li>
+  <li>问题：需要确保系统中的某个类只能有一个实例存在。现实中如序号ID分配器，确保ID在系统中必须是唯一的。(当然也有很多方式生成唯一ID，这里只是个例子)</li>
+  <li>解决方案：限制类被new出来，只能通过唯一的访问点（static方法）获得一个全局的自身的实例。这个访问点确保实例不会被多次创建</li>
+  <li>结论：通过唯一访问点有效的控制实例的生成</li>
+</ol>
+
+<h3 id="singleton">简单的Singleton</h3>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>java </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">public class Singleton {
+</span><span class="line">    	private static Singleton instance = new Singleton();
+</span><span class="line">    	//public staic Singleton INSTANCE = new Singleton(); //not suggest
+</span><span class="line">    	
+</span><span class="line">    }
+</span><span class="line">    
+</span><span class="line">    //must make the default create menthod private
+</span><span class="line">    private Singleton() {
+</span><span class="line">    }
+</span><span class="line">    
+</span><span class="line">    public staic Singleton getInstance() {
+</span><span class="line">    }
+</span><span class="line">    
+</span><span class="line">    //....</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这里有几点注意：</p>
+
+<ol>
+  <li>默认的构造函数要设置为private，避免类被错误的new出来</li>
+  <li>尽量用方法的方式获取类的实例    </li>
+  <li>如果构造过程表负责，则需要用static{…}方式阔起来</li>
+</ol>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -964,100 +1050,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/">Octopress的内部blog间关联</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-30T18:28:34+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">首先鸣谢参考资料的作者</h3>
-
-<p>参考资料来自与 <a href="http://blog.eavatar.com/post/2013/06/use-post-url-internal-link-octopress/">1</a></p>
-
-<h3 id="octopress">完善Octopress的配置</h3>
-
-<ol>
-  <li>
-    <p>获取内部关联的<a href="https://raw.github.com/michael-groble/jekyll/fix_post_url/lib/jekyll/tags/post_url.rb">post url plugin</a>，然后将其放入到plugin目录中    </p>
-  </li>
-  <li>
-    <p>确保已经安装了kramdown，如果没有，用以下命令安装</p>
-
-    <pre><code>&gt;sudo gem install kramdown
-</code></pre>
-  </li>
-  <li>
-    <p>编辑配置文件_configy.yml，注释掉markdown: rdiscount，然后增加</p>
-
-    <pre><code>#markdown: rdiscount
-markdown: kramdown
-</code></pre>
-  </li>
-</ol>
-
-<h3 id="blog">在blog中使用关联，语法如下</h3>
-
-<pre><code>[&lt;链接名字&gt;]({% post_url &lt;blog的文件名字，不要带目录和文件后缀&gt; %}) 
-</code></pre>
-
-<p>然后重新生成和部署就可以了</p>
-
-<pre><code>&gt;rake generate
-&gt;rake deploy
-</code></pre>
-
-<h3 id="section-1">一个小插曲</h3>
-<p>今天在生成地8个blog后，rake generate就出错了，报在matrix.rb文件中反馈出”Not Regular Matrix”错误，但是就是死活找不到问题所在，只要将刚生成的文件删除就好了，而文件还没写东西。后来经历反复的从头再来，终于发现了问题所在，结论是之前参照网上配置关联blog的配置，在_configy.yml中增加了以下配置：</p>
-
-<pre><code>lsi: true    
-</code></pre>
-
-<p>只要将这个选项关闭或删除就可，好像octopress已经没有用了</p>
-
-<h3 id="octopress-1">Octopress经验总结</h3>
-
-<p>尽管使用上就是用markdown的方式写文章，但是使用octopress这个平台，就像使用开发工具一样，总会出现这样那样的错误，而且还很难定位，最好的办法就是像编程一样，今早“编译”－》“试运行”－》“改错”－》“再运行”，不然当你写了很多后一次行生成出现错误就无从下手去解决问题了，只能一个一个做减法然后再试。</p>
-
-<p>最好的方式是</p>
-
-<ol>
-  <li>写一部分，就立马rake generate  </li>
-  <li>rake new_post[“<文章名>&#8221;]，不写任何东西，立马rake generate</文章名></li>
-  <li>只要用到 {%  %}这些内嵌语法，立马rake generate</li>
-  <li>更改一项_config.yml配置，立马rake generate</li>
-</ol>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1071,6 +1063,10 @@ markdown: kramdown
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi/">设计模式: 单例模式</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/02/03/she-ji-mo-shi-%3Amo-ban-fang-fa/">设计模式：模版方法</a>
@@ -1088,10 +1084,6 @@ markdown: kramdown
         <a href="/blog/2014/02/02/she-ji-mo-shi-kai-pian/">设计模式开篇</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/02/02/octopresstian-jia-bingwang-zhan-fen-xi/">Octopress添加bing网站分析</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -1102,9 +1094,9 @@ markdown: kramdown
   <h1>Categories</h1>
   <ul id="categories">
     <li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
-<li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (2)</a></li>
+<li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (3)</a></li>
 <li class='category'><a href='/blog/categories/gsl/'>GSL (1)</a></li>
-<li class='category'><a href='/blog/categories/java/'>Java (3)</a></li>
+<li class='category'><a href='/blog/categories/java/'>Java (4)</a></li>
 <li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>MAC (2)</a></li>
 <li class='category'><a href='/blog/categories/oo/'>OO (1)</a></li>
