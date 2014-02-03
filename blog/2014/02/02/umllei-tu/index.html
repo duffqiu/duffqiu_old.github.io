@@ -12,7 +12,7 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-edb5255f73e5bd1c76960da37dcd254b.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-5c7c7eb13321f6e6e9c9fb36004912cb.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
@@ -20,7 +20,7 @@
 
   
   <meta name="description" content="UML工具
-推荐大家用astash，Community版本就够了 类图的描述 类名：正体字为实例化类， 斜体字是抽象类，接口类有interface标识(也可以是个圆形，不过建议在类图中还是使用长方形的图形标识) 属性：+表示puiblic， -表示private， #表示protected 方法 &hellip;">
+推荐大家用astah，Community版本就够了 类图的描述 类名：正体字为实例化类， 斜体字是抽象类，接口类有interface标识(也可以是个圆形，不过建议在类图中还是使用长方形的图形标识) 属性：+表示puiblic， -表示private， #表示protected 方法：+ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -39,7 +39,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-edb5255f73e5bd1c76960da37dcd254b.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-5c7c7eb13321f6e6e9c9fb36004912cb.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
@@ -128,38 +128,78 @@
 
 
 <div class="entry-content"><h3 id="uml">UML工具</h3>
-<p>推荐大家用<a href="http://members.change-vision.com/files/astah_community" title="官网">astash</a>，Community版本就够了</p>
+<p>推荐大家用<a href="http://members.change-vision.com/files/astah_community" title="官网">astah</a>，Community版本就够了</p>
 
 <h3 id="section">类图的描述</h3>
 
 <ol>
   <li>类名：正体字为实例化类， 斜体字是抽象类，接口类有interface标识(也可以是个圆形，不过建议在类图中还是使用长方形的图形标识)</li>
   <li>属性：<strong><em>+</em></strong>表示puiblic， <strong><em>-</em></strong>表示private， <strong><em>#</em></strong>表示protected</li>
-  <li>方法：<strong><em>+</em></strong>表示puiblic， <strong><em>-</em></strong>表示private， <strong><em>#</em></strong>表示protected, 有下划线表示      &lt;div&gt;<font style="border-bottom:1px solid #000;">静态方法</font>&lt;/div&gt;</li>
+  <li>方法：<strong><em>+</em></strong>表示puiblic， <strong><em>-</em></strong>表示private， <strong><em>#</em></strong>表示protected, 有下划线表示      <font style="border-bottom:1px solid #000;">静态方法</font></li>
 </ol>
 
-<p><img src="/images/ClassDiagram.png" alt="类图" /></p>
+<p><img src="/images/ClassDiagram.png" alt="类图和继承与实现" /></p>
 
 <h3 id="section-1">类图中类与类的关系</h3>
 
+<h4 id="section-2">继承与实现</h4>
+
 <ol>
   <li>
-    <p>继承关系，用带实线的闭合箭头</p>
+    <p>继承关系，用带实线的闭合空心箭头</p>
 
-    <div style="font-size: 36px"> ➝ </div>
+    <div style="font-size: 36px"> ⇾ </div>
 
-    <p>表示</p>
+    <p>表示，Java语言中<strong>extends</strong>体现</p>
   </li>
   <li>
-    <p>接口实现关系，用虚线带的闭合箭头</p>
+    <p>接口实现关系，用虚线带的闭合空心箭头</p>
 
-    <div style="font-size: 36px"> ⇢ </div>
+    <div style="font-size: 36px"> ­­­­⁃⁃⇾ </div>
 
-    <p>表示</p>
+    <p>表示，Java语言中<strong>implements</strong>体现</p>
   </li>
-  <li></li>
 </ol>
 
+<h4 id="section-3">关联关系(体现类与类的实例变量的关系)</h4>
+
+<p>提示： 实践中，要将所有的关联关系都要画清楚</p>
+
+<ol>
+  <li>
+    <p>类与类的关联关系：(association)，体现类与类的实例变量的关系，可以是单向关联（单箭头），也可以是双向关联（双箭头/无箭头，不鼓励有这种关系）。关联关系还可以有个基数，表明这一端的类有几个该类型的实例（0..1, 0..*, 1, 1..*），使用实线开放式箭头表示</p>
+
+    <div style="font-size: 36px"> ➔ </div>
+  </li>
+  <li>
+    <p>聚合关系（aggregation），关联关系的一种，是强的关联关系，是整体和个体间的关系(个体可以单独存在)，也是通过实例变量体现。Java语法是无法区分聚合和关联关系的。如果不是太确定，可以设置为关联关系。同样具有基数。实例类用空的菱形表示  </p>
+
+    <div style="font-size: 36px"> ◇⟶ </div>
+  </li>
+  <li>
+    <p>合成关系(Composition)，关联关系的一种，是比聚合关系<strong>强</strong>的关联关系。该关系和聚合关系的区别是，代表整体的部分负责代表部分的对象的生命周期，即部分对象不会独立于整体存在，且不能共享。实例类用实心的菱形表示，也是通过实例变量体现。如果不是太确定则用聚合/关联关系表示</p>
+
+    <div style="font-size: 36px"> ◆⟶ </div>
+  </li>
+</ol>
+
+<h4 id="section-4">依赖关系(体现为局部变量、方法参数，以及对静态方法的调用)</h4>
+
+<p>提示： 这些表示在astah中都可以容易使用，要做到的事情时清楚其具体含义 </p>
+
+<ol>
+  <li>
+    <p>依赖关系(dependency)，依赖总是单向。Java中体现为局部变量、方法参数，以及对静态方法的调用，图形通过虚线开放箭头表示，实践中没有必要将所有的依赖都画出来，只画出重要部分</p>
+
+    <div style="font-size: 36px"> ⤑ </div>
+  </li>
+</ol>
+
+<p>在astah中的表示如下：</p>
+
+<p><img src="/images/ClassRelationship.png" alt="类的关联关系和依赖关系" />   </p>
+
+<p>尽管前面讲了使用UML不要太教条，试用就好，但是图的表示含义还是要准确的好</p>
 </div>
 
 
