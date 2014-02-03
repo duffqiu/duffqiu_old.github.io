@@ -64,3 +64,7 @@ categories: UML
 
 尽管前面讲了使用UML不要太教条，试用就好，但是图的表示含义还是要准确的好
 本章节的astah的文件：[类的UML说明](/assets/ClassDiagram.asta)
+
+###小插曲
+
+今天在家下载astah很慢，就用baidu的离线下载（普通下载方式），先交由baidu下载到网盘上，然后再到网盘上下载下来，速度很快，比直接下载好多了
