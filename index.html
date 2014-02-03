@@ -12,7 +12,7 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-62b6b1d311b99293bb7519b48f09dcca.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-c00552f41d7de08bcddfa947de5a1f46.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-62b6b1d311b99293bb7519b48f09dcca.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-c00552f41d7de08bcddfa947de5a1f46.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
@@ -138,6 +138,27 @@
   <li>解决方案：将共性的行为抽取到抽象类，将特定的行为由具体的对象来实现／或者这个具体的行为本身就是一个对象(主要由继承方式和回调方式两种实现手段)</li>
   <li>结果：减少了相同的代码，增强了维护性</li>
 </ol>
+
+<h3 id="section-1">继承方式实现模版方法模式</h3>
+
+<p><img src="/images/TemplatePattern1.png" alt="继承方式的模版方法" /></p>
+
+<p>这里注意点：
+1. 父类是抽象类
+2. 抽象方法是个个子类需要实现的各自的具体行为
+3. 父类只是实现一个算法框架
+4. Java为了避免父类的的方法被覆盖／重写，可以将其申明为final或private</p>
+
+<h3 id="section-2">回调函数实现模版方法模式</h3>
+
+<p><img src="/images/TemplatePattern2.png" alt="回调函数的模版方法" /></p>
+
+<p>这里注意点：
+1. 主类对应的接口依赖与回调的接口定义，不是直接依赖回调对象本身
+2. 主类无需被继承，提定行为由实现回调接口的对象实现
+3. 最为常用的例子是多线程处理中，回调对象都实现了Runable接口实现特性的逻辑，控制线程的主逻辑类如ExecutorService依赖于Runable接口</p>
+
+<p>个人比较建议使用回调函数实现模版方法模式。（之前用C++的时候计较多的是用继承的方式）</p>
 </div>
   
   
