@@ -1,5 +1,5 @@
 /**
- * 
+ * The file show the lazy holder
  */
 package org.duffqiu.patterndemo;
 
