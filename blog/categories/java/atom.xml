@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-04T22:04:30+08:00</updated>
+  <updated>2014-02-04T22:08:18+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -118,7 +118,7 @@
 </span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>LazySingleton.java  (LazySingleton.java)</span> <a href='/downloads/code/LazySingleton.java'>download</a></figcaption>
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (LazySingleton.java)</span> <a href='/downloads/code/LazySingleton.java'>download</a></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
