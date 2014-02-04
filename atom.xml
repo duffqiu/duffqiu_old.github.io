@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-04T21:23:50+08:00</updated>
+  <updated>2014-02-04T22:04:30+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -129,8 +129,33 @@
 </span><span class="line">
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<pre><code>File /Users/macbook/Documents/Git/octopress/source/downloads/code/https://github.com/duffqiu/DesignPatternDemo/blob/feature/LazySingletonDemo/src/org/duffqiu/patterndemo/LazySingleton.java could not be found
+<pre><code>&lt;div class='bogus-wrapper'&gt;&lt;notextile&gt;&lt;figure class='code'&gt;&lt;figcaption&gt;&lt;span&gt;LazySingleton.java  (LazySingleton.java)&lt;/span&gt; &lt;a href='http://duffqiu.github.io/downloads/code/LazySingleton.java'&gt;download&lt;/a&gt;&lt;/figcaption&gt; &lt;div class="highlight"&gt;&lt;table&gt;&lt;tr&gt;&lt;td class="gutter"&gt;&lt;pre class="line-numbers"&gt;&lt;span class='line-number'&gt;1&lt;/span&gt; &lt;span class='line-number'&gt;2&lt;/span&gt; &lt;span class='line-number'&gt;3&lt;/span&gt; &lt;span class='line-number'&gt;4&lt;/span&gt; &lt;span class='line-number'&gt;5&lt;/span&gt; &lt;span class='line-number'&gt;6&lt;/span&gt; &lt;span class='line-number'&gt;7&lt;/span&gt; &lt;span class='line-number'&gt;8&lt;/span&gt; &lt;span class='line-number'&gt;9&lt;/span&gt; &lt;span class='line-number'&gt;10&lt;/span&gt; &lt;span class='line-number'&gt;11&lt;/span&gt; &lt;span class='line-number'&gt;12&lt;/span&gt; &lt;span class='line-number'&gt;13&lt;/span&gt; &lt;span class='line-number'&gt;14&lt;/span&gt; &lt;span class='line-number'&gt;15&lt;/span&gt; &lt;span class='line-number'&gt;16&lt;/span&gt; &lt;span class='line-number'&gt;17&lt;/span&gt; &lt;span class='line-number'&gt;18&lt;/span&gt; &lt;span class='line-number'&gt;19&lt;/span&gt; &lt;span class='line-number'&gt;20&lt;/span&gt; &lt;span class='line-number'&gt;21&lt;/span&gt; &lt;span class='line-number'&gt;22&lt;/span&gt; &lt;span class='line-number'&gt;23&lt;/span&gt; &lt;span class='line-number'&gt;24&lt;/span&gt;
 </code></pre>
+<p>&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="java"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndemo</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * @author macbook</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> *         2014年2月4日</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LazySingleton</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="nf">LazySingleton</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">LazyHolder</span> <span class="o">{</span>
+</span><span class="line">	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">LazySingleton</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LazySingleton</span><span class="o">();</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kd">static</span> <span class="n">LazySingleton</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">	<span class="k">return</span> <span class="n">LazyHolder</span><span class="o">.</span><span class="na">instance</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/notextile&gt;&lt;/div&gt;</p>
 
 <p>小提示：对于非单例的类的延迟初始化要用double check的方式，具体可以参见Effective Java 第71条</p>
 ]]></content>
@@ -720,7 +745,7 @@ end
 
 <p>原因是缺少了<a href="http://www.gnu.org/software/gsl/" title="GSL Library官网">GSL的C的开发库</a>    </p>
 
-<p>然后在GSL Library官网下载了最新的GSL1.16，然后编译安装，然后再重新安装Ruby GSL，但是还是出现错误，后来搜索<a href="stackoverflow.com">stackoverflow</a>找到一个说明，说是GSL和Ruby GSL配合的版本只能用1.14的。所以再次下载GSL1.14编译、安装然后再安装Ruby GSL就可以了</p>
+<p>然后在GSL Library官网下载了最新的GSL1.16，然后编译安装，然后再重新安装Ruby GSL，但是还是出现错误，后来搜索<a href="http://stackoverflow.com">stackoverflow</a>找到一个说明，说是GSL和Ruby GSL配合的版本只能用1.14的。所以再次下载GSL1.14编译、安装然后再安装Ruby GSL就可以了</p>
 
 <h3 id="section-2">使用</h3>
 
