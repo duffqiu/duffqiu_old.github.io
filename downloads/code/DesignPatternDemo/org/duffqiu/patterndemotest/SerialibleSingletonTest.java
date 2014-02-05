@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.duffqiu.patterndemo.SerialibleSingleton;
 import org.junit.Test;
 
@@ -39,6 +40,17 @@ public class SerialibleSingletonTest {
 	InputStream is = new ByteArrayInputStream(bytes);
 	ObjectInputStream ois = new ObjectInputStream(is);
 	SerialibleSingleton b = (SerialibleSingleton) ois.readObject();
+
+	assertThat(a).isSameAs(b);
+
+    }
+
+    @Test
+    public void testWithCommLang() {
+	SerialibleSingleton a = SerialibleSingleton.getInstance();
+
+	byte[] bytes = SerializationUtils.serialize(a);
+	SerialibleSingleton b = SerializationUtils.deserialize(bytes);
 
 	assertThat(a).isSameAs(b);
 

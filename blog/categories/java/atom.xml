@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-05T18:53:11+08:00</updated>
+  <updated>2014-02-05T19:21:32+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -437,7 +437,7 @@
 </span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>测试代码为：</p>
+<p>测试代码如下，一个自己实现的序列化和反序列化，一个是用apache common lang实现的。</p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (SerialibleSingletonTest.java)</span> <a href='/downloads/code/DesignPatternDemo/org/duffqiu/patterndemotest/SerialibleSingletonTest.java'>download</a></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -486,6 +486,18 @@
 <span class='line-number'>44</span>
 <span class='line-number'>45</span>
 <span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
 </span><span class='line'><span class="cm"> * </span>
 </span><span class='line'><span class="cm"> */</span>
@@ -500,6 +512,7 @@
 </span><span class='line'><span class="kn">import</span> <span class="nn">java.io.ObjectInputStream</span><span class="o">;</span>
 </span><span class='line'><span class="kn">import</span> <span class="nn">java.io.ObjectOutputStream</span><span class="o">;</span>
 </span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="nn">org.apache.commons.lang3.SerializationUtils</span><span class="o">;</span>
 </span><span class='line'><span class="kn">import</span> <span class="nn">org.duffqiu.patterndemo.SerialibleSingleton</span><span class="o">;</span>
 </span><span class='line'><span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="o">;</span>
 </span><span class='line'>
@@ -531,11 +544,24 @@
 </span><span class='line'>	<span class="n">assertThat</span><span class="o">(</span><span class="n">a</span><span class="o">).</span><span class="na">isSameAs</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Test</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testWithCommLang</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>	<span class="n">SerialibleSingleton</span> <span class="n">a</span> <span class="o">=</span> <span class="n">SerialibleSingleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>	<span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="n">SerializationUtils</span><span class="o">.</span><span class="na">serialize</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
+</span><span class='line'>	<span class="n">SerialibleSingleton</span> <span class="n">b</span> <span class="o">=</span> <span class="n">SerializationUtils</span><span class="o">.</span><span class="na">deserialize</span><span class="o">(</span><span class="n">bytes</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>	<span class="n">assertThat</span><span class="o">(</span><span class="n">a</span><span class="o">).</span><span class="na">isSameAs</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">}</span>
 </span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3 id="section-3">小插曲</h3>
 <p>测试的判断，我这里用的是assertj的库，比较简单好用，参见<a href="http://joel-costigliola.github.io/assertj/index.html">assertj</a></p>
+
+<p>从上面的测试序列化和反序列化的测试例子看出来，序列化和反序列化是挺麻烦的事情，还好有开源的工具帮组我们做到简单化。可以使用<a href="http://commons.apache.org/proper/commons-lang/">apache common lang</a>的SerializationUtils。</p>
 ]]></content>
   </entry>
   
