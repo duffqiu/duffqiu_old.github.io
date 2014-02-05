@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-05T11:43:21+08:00</updated>
+  <updated>2014-02-05T17:16:03+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,128 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress实时获取并展示github上其它repository的代码]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/"/>
+    <updated>2014-02-05T01:45:57+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<p>在写blog的时候，想要直接关联github上的其它repository的代码，这样以后代码更新就不需要更新blog了。但是看octopress的文档，似乎<a href="https://gist.github.com">gist</a>可以达到该目的，但是它不是一个代码工程，无法像正常的代码工程那样去管理，编译，运行等。<br />
+所以就想看看能否给Octopress加个plugin直接展示该代码</p>
+
+<h3 id="section-1">办法</h3>
+<p>原本想改一下plugins/include_code.rb，但是感觉还是太复杂，所以想个简单的方式
+还是利用include_code这个插件，这个插件是可以将在source/downloads/code/目录下的文件展示出来的，这个目录原octopress代码没有生成，需要手工生成。<br />
+思路就是想法将github上的代码在rake generate之前先用wget获取下来放到上面这个指定的目录中<br />
+因为include_code.rb的复杂度，我选择了更改Rakefile文件，新增一个任务的方式来解决
+具体步骤如下：</p>
+
+<ol>
+  <li>
+    <p>在octopress目录下新增一个需要下载的文件的配置githubcode.cf，格式为<github repository="" name="">空格<java package="" name="">空格<java code="" file="" url="">。java的包名可以保留'.'的格式，这个插件会自动转成目录</java></java></github></p>
+
+    <pre><code>DesignPatternDemo  org.duffqiu.patterndemo  https://raw.github.com/duffqiu/DesignPatternDemo/feature/LazySingletonDemo/src/org/duffqiu/patterndemo/LazySingleton.java
+</code></pre>
+  </li>
+  <li>
+    <p>确保已经安装好wget</p>
+
+    <pre><code>sudo port install wget
+</code></pre>
+  </li>
+  <li>
+    <p>更改Rakefile文件，在最后增加一个任务</p>
+
+    <pre><code> desc "get code file from github"
+ task :github_code do
+	
+   begin
+     require 'net/http'
+     require 'uri'
+     rm_rf "source/downloads"
+     mkdir_p "source/downloads/code"
+     if File.exist?("githubcode.cf")
+       IO.foreach("githubcode.cf") do |line|
+         if line.strip.empty? == false
+             cd "source/downloads/code" do
+             attr = line.split(' ')
+             repo = attr[0].strip
+             if repo.empty?
+               abort("repo name is empty")
+             end
+             package = attr[1].strip
+             file_url = attr[2].strip
+             if file_url.empty?
+               abort("file url is empty")
+             end
+             package_dir = package.gsub(/\./, '/')
+             target_dir = repo + '/' + package_dir
+             mkdir_p target_dir
+             cd target_dir do
+               system ("wget  " + file_url)
+             end
+           end
+         end
+       end
+     else
+       puts 'githubcode.cf not found'
+     end
+   end
+ end        		
+</code></pre>
+  </li>
+  <li>
+    <p>在需要引用代码的地方使用以下方式</p>
+
+    <pre><code>
+   
+{% include_code lang:java &lt;repository name&gt;/&lt;package name&gt;/&lt;java file name&gt; %}
+   
+
+</code></pre>
+
+    <p>注意：<repository name="">前面没有'/'，<pakcage name="">要将java的包名的'.'改为'/'</pakcage></repository></p>
+  </li>
+  <li>
+    <p>每次有新增的github代码文件引入，则需要在rake generate前先调用</p>
+
+    <pre><code>rake github_code
+</code></pre>
+  </li>
+</ol>
+
+<h3 id="section-2">小插曲</h3>
+<p>####wget https访问问题</p>
+
+<p>使用wget访问github的时候，因为github使用https，则会出现说github的“证书不可信”和“证书颁发者未知”的问题。
+解决方式为</p>
+
+<ol>
+  <li>使用–no-check-certificate参数访问github，但是还是用warning，不够完美</li>
+  <li>
+    <p>决解证书问题  </p>
+
+    <ul>
+      <li>
+        <p>安装curl-ca-bundle</p>
+
+        <pre><code> sudo port install curl-ca-bundle
+</code></pre>
+      </li>
+      <li>
+        <p>配置wget</p>
+
+        <pre><code> echo CA_CERTIFICATE=/opt/local/share/curl/curl-ca-bundle.crt &gt;&gt; ~/.wgetrc
+</code></pre>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p>然后再运行wget就不会有问题了</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Octopress添加bing网站分析]]></title>
@@ -320,74 +442,6 @@ end
 </code></pre>
 
 <p>目前看除了rake generate没有那个提示，好像速度没有看出来，或许是文章的数目不多体现不出来 </p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress的内部blog间关联]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/"/>
-    <updated>2014-01-30T18:28:34+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian</id>
-    <content type="html"><![CDATA[<h3 id="section">首先鸣谢参考资料的作者</h3>
-
-<p>参考资料来自与 <a href="http://blog.eavatar.com/post/2013/06/use-post-url-internal-link-octopress/">1</a></p>
-
-<h3 id="octopress">完善Octopress的配置</h3>
-
-<ol>
-  <li>
-    <p>获取内部关联的<a href="https://raw.github.com/michael-groble/jekyll/fix_post_url/lib/jekyll/tags/post_url.rb">post url plugin</a>，然后将其放入到plugin目录中    </p>
-  </li>
-  <li>
-    <p>确保已经安装了kramdown，如果没有，用以下命令安装</p>
-
-    <pre><code>&gt;sudo gem install kramdown
-</code></pre>
-  </li>
-  <li>
-    <p>编辑配置文件_configy.yml，注释掉markdown: rdiscount，然后增加</p>
-
-    <pre><code>#markdown: rdiscount
-markdown: kramdown
-</code></pre>
-  </li>
-</ol>
-
-<h3 id="blog">在blog中使用关联，语法如下</h3>
-
-<pre><code>
-
-[&lt;链接名字&gt;]({% post_url &lt;blog的文件名字，不要带目录和文件后缀&gt; %}) 
-
-
-</code></pre>
-
-<p>然后重新生成和部署就可以了</p>
-
-<pre><code>&gt;rake generate
-&gt;rake deploy
-</code></pre>
-
-<h3 id="section-1">一个小插曲</h3>
-<p>今天在生成地8个blog后，rake generate就出错了，报在matrix.rb文件中反馈出”Not Regular Matrix”错误，但是就是死活找不到问题所在，只要将刚生成的文件删除就好了，而文件还没写东西。后来经历反复的从头再来，终于发现了问题所在，结论是之前参照网上配置关联blog的配置，在_configy.yml中增加了以下配置：</p>
-
-<pre><code>lsi: true    
-</code></pre>
-
-<p>只要将这个选项关闭或删除就可，好像octopress已经没有用了</p>
-
-<h3 id="octopress-1">Octopress经验总结</h3>
-
-<p>尽管使用上就是用markdown的方式写文章，但是使用octopress这个平台，就像使用开发工具一样，总会出现这样那样的错误，而且还很难定位，最好的办法就是像编程一样，今早“编译”－》“试运行”－》“改错”－》“再运行”，不然当你写了很多后一次行生成出现错误就无从下手去解决问题了，只能一个一个做减法然后再试。</p>
-
-<p>最好的方式是</p>
-
-<ol>
-  <li>写一部分，就立马rake generate  </li>
-  <li>rake new_post[“<文章名>"]，不写任何东西，立马rake generate</文章名></li>
-  <li>只要用到 {%  %}这些内嵌语法，立马rake generate</li>
-  <li>更改一项_config.yml配置，立马rake generate</li>
-</ol>
 ]]></content>
   </entry>
   

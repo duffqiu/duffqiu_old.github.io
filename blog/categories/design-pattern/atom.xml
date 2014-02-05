@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design Pattern | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/design-pattern/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-05T11:43:21+08:00</updated>
+  <updated>2014-02-05T17:16:03+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -80,58 +80,15 @@
 
 <p>在单例中，变量是static的，使用Lazy Holder的方式根据需要创建这个静态变量，同时由JVM来保证线程并发问题。</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (LazySingleton.java)</span> <a href='/downloads/code/DesignPatternDemo/org/duffqiu/patterndemo/LazySingleton.java'>download</a></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
-</span><span class='line'><span class="cm"> * The file show the lazy holder</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndemo</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="cm">/**</span>
-</span><span class='line'><span class="cm"> * @author macbook</span>
-</span><span class='line'><span class="cm"> * </span>
-</span><span class='line'><span class="cm"> *         2014年2月4日</span>
-</span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LazySingleton</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">private</span> <span class="nf">LazySingleton</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">LazyHolder</span> <span class="o">{</span>
-</span><span class='line'>	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">LazySingleton</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LazySingleton</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">LazySingleton</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>	<span class="k">return</span> <span class="n">LazyHolder</span><span class="o">.</span><span class="na">instance</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>File /Users/macbook/Documents/Git/octopress/source/downloads/code/DesignPatternDemo/org/duffqiu/patterndemo/LazySingleton.java could not be found</p>
 
 <p>小提示：对于非单例的类的延迟初始化要用double check的方式，具体可以参见Effective Java 第71条</p>
+
+<p>提供两个JUnit test，一个是简单比对两次生成的singleton是否相同，一个是多线程（线程数比CPU大就可）的方式同时去获取singleton，然后比对第一个和其它的是否相同</p>
+
+<p>File /Users/macbook/Documents/Git/octopress/source/downloads/code/DesignPatternDemo/org/duffqiu/patterndemotest/LazySingletonTest.java could not be found</p>
+
+<h3 id="section-2">单例的序列化</h3>
 ]]></content>
   </entry>
   
