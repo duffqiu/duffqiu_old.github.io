@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-05T11:24:45+08:00</updated>
+  <updated>2014-02-05T11:26:57+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -40,7 +40,7 @@
 </pre></td></tr></table></div></figure></notextile></div>
   </li>
 </ol>
-<p>&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="sh"><span class="line">DesignPatternDemo  org.duffqiu.patterndemo  https://raw.github.com/duffqiu/DesignPatternDemo/feature/LazySingletonDemo/src/org/duffqiu/patterndemo/LazySingleton.java
+<p>&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="text"><span class="line">DesignPatternDemo  org.duffqiu.patterndemo  https://raw.github.com/duffqiu/DesignPatternDemo/feature/LazySingletonDemo/src/org/duffqiu/patterndemo/LazySingleton.java
 </span><span class="line">
 </span><span class="line">DesignPatternDemo  org.duffqiu.patterndemotest      https://raw.github.com/duffqiu/DesignPatternDemo/feature/LazySingletonDemo/test/org/duffqiu/patterndeomtest/LazySingletonTest.java
 </span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/notextile&gt;&lt;/div&gt;</p>

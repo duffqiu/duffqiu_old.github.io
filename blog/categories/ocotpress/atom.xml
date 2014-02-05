@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ocotpress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/ocotpress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-05T11:26:27+08:00</updated>
+  <updated>2014-02-05T11:26:57+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -33,7 +33,14 @@
   <li>
     <p>在octopress目录下新增一个需要下载的文件的配置githubcode.cf，格式为<github repository="" name="">空格<java package="" name="">空格<java code="" file="" url=""></java></java></github></p>
 
-    <p>{% include_code lang:txt ../../../githubcode.cf %}</p>
+    <p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (githubcode.cf)</span> <a href='/downloads/code/../../../githubcode.cf'>download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>DesignPatternDemo  org.duffqiu.patterndemo  https://raw.github.com/duffqiu/DesignPatternDemo/feature/LazySingletonDemo/src/org/duffqiu/patterndemo/LazySingleton.java
+</span><span class='line'>
+</span><span class='line'>DesignPatternDemo  org.duffqiu.patterndemotest      https://raw.github.com/duffqiu/DesignPatternDemo/feature/LazySingletonDemo/test/org/duffqiu/patterndeomtest/LazySingletonTest.java
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
   </li>
   <li>
     <p>确保已经安装好wget</p>
@@ -85,11 +92,11 @@
   <li>
     <p>在需要引用代码的地方使用以下方式</p>
 
-    <pre><code>{% raw %}
+    <pre><code>
    
 {% include_code lang:java &lt;repository name&gt;/&lt;package name&gt;/&lt;java file name&gt; %}
    
-{% endraw %}
+
 </code></pre>
 
     <p>注意：<repository name="">前面没有'/'，<pakcage name="">要将'.'改为'/'</pakcage></repository></p>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design Pattern | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/design-pattern/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-05T11:26:27+08:00</updated>
+  <updated>2014-02-05T11:26:57+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -29,25 +29,37 @@
 
 <h3 id="singleton">简单的Singleton</h3>
 
-<pre><code>{% codeblock lang:java %}
-
-public class Singleton {
-	private static Singleton instance = new Singleton();
-	//public staic Singleton INSTANCE = new Singleton(); //not suggest
-	
-
-    //must make the default create menthod private
-    private Singleton() {
-    }
-
-    public staic Singleton getInstance() {
-    }
-
-//....
-
-}
-
-{% endcodeblock %}
+<pre><code><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Singleton</span> <span class="o">{</span>
+</span><span class='line'>	<span class="kd">private</span> <span class="kd">static</span> <span class="n">Singleton</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Singleton</span><span class="o">();</span>
+</span><span class='line'>	<span class="c1">//public staic Singleton INSTANCE = new Singleton(); //not suggest</span>
+</span><span class='line'>	
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">//must make the default create menthod private</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="nf">Singleton</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">staic</span> <span class="n">Singleton</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//....</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 </code></pre>
 
 <p>这里有几点注意：</p>
@@ -68,7 +80,56 @@ public class Singleton {
 
 <p>在单例中，变量是static的，使用Lazy Holder的方式根据需要创建这个静态变量，同时由JVM来保证线程并发问题。</p>
 
-<p>{% include_code lang:java DesignPatternDemo/org/duffqiu/patterndemo/LazySingleton.java %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (LazySingleton.java)</span> <a href='/downloads/code/DesignPatternDemo/org/duffqiu/patterndemo/LazySingleton.java'>download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * The file show the lazy holder</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndemo</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * @author macbook</span>
+</span><span class='line'><span class="cm"> * </span>
+</span><span class='line'><span class="cm"> *         2014年2月4日</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LazySingleton</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="nf">LazySingleton</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">LazyHolder</span> <span class="o">{</span>
+</span><span class='line'>	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">LazySingleton</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LazySingleton</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">LazySingleton</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>	<span class="k">return</span> <span class="n">LazyHolder</span><span class="o">.</span><span class="na">instance</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>小提示：对于非单例的类的延迟初始化要用double check的方式，具体可以参见Effective Java 第71条</p>
 ]]></content>
@@ -130,8 +191,8 @@ public class Singleton {
 
 <ol>
   <li>语言基础(Java, C++, Object-C…)，这里是以Java语言做介绍，如果需要初步学Java则可以看看<a href="https://www.udemy.com/java-tutorial/?couponCode=FREE">Udemy</a>上面的免费入门视频</li>
-  <li>懂得OO的设计理念/原则，后面再抽个章节讲讲这个<a href="{% post_url 2014-02-02-oode-[?]-xie-she-ji-yuan-ze %}">OO的设计原则</a></li>
-  <li>懂得UML的基础，入门可以先看看这本简单的<a href="http://www.amazon.cn/系统分析师UML项目实战-邱郁惠/dp/B00DSQZ9IQ/ref=sr_1_1?ie=UTF8&amp;qid=1391326582&amp;sr=8-1&amp;keywords=系统分析师UML项目实战">系统分析师UML项目实战</a>，个人也不太建议UML在工作做过于教条化。之前曾经有1年多都是在画UML图，然后开发依据UML图去做开发，结果效果并不是很好。但是一些基础的比较实际的用法还是值得去做的。要看明白设计模式的类图，请先看看<a href="{% post_url 2014-02-02-umllei-tu %}">UML类图</a></li>
+  <li>懂得OO的设计理念/原则，后面再抽个章节讲讲这个<a href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/">OO的设计原则</a></li>
+  <li>懂得UML的基础，入门可以先看看这本简单的<a href="http://www.amazon.cn/系统分析师UML项目实战-邱郁惠/dp/B00DSQZ9IQ/ref=sr_1_1?ie=UTF8&amp;qid=1391326582&amp;sr=8-1&amp;keywords=系统分析师UML项目实战">系统分析师UML项目实战</a>，个人也不太建议UML在工作做过于教条化。之前曾经有1年多都是在画UML图，然后开发依据UML图去做开发，结果效果并不是很好。但是一些基础的比较实际的用法还是值得去做的。要看明白设计模式的类图，请先看看<a href="/blog/2014/02/02/umllei-tu/">UML类图</a></li>
 </ol>
 
 <h3 id="gof-23">经典的GoF 23个设计模式，这只是个基础</h3>
