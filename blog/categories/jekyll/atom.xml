@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Jekyll | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/jekyll/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-05T11:29:16+08:00</updated>
+  <updated>2014-02-05T11:31:27+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -106,7 +106,7 @@ gem "yui-compressor
       <li>
         <p>修改source/_include目录下的head.html文件，注释掉带有js/css的几行</p>
 
-        <pre><code>{% raw %}
+        <pre><code>
      
  &lt;!-- &lt;link href="{{ root_url }}/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"&gt; --&gt;
 	 
@@ -115,13 +115,13 @@ gem "yui-compressor
  &lt;!-- &lt;script&gt;!window.jQuery &amp;&amp; document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))&lt;/script&gt; --&gt;
  &lt;!-- &lt;script src="{{ root_url }}/javascripts/octopress.js" type="text/javascript"&gt;&lt;/script&gt; --&gt;
 	  
-{% endraw %}
+
 </code></pre>
       </li>
       <li>
         <p>增加以下内容</p>
 
-        <pre><code>{% raw %}
+        <pre><code>
    
 {% css_asset_tag global %}
  - /stylesheets/screen.css
@@ -135,7 +135,7 @@ gem "yui-compressor
 - /javascripts/libs/jXHR.js
 {% endjavascript_asset_tag %}
    
-{% endraw %}
+
 </code></pre>
       </li>
       <li>
