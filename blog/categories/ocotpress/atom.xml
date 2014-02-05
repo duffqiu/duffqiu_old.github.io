@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ocotpress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/ocotpress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-05T11:31:27+08:00</updated>
+  <updated>2014-02-05T11:43:21+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -106,6 +106,32 @@
 <h3 id="section-2">小插曲</h3>
 <p>####wget https访问问题</p>
 
+<p>使用wget访问github的时候，因为github使用https，则会出现说github的“证书不可信”和“证书颁发者未知”的问题。
+解决方式为</p>
+
+<ol>
+  <li>使用–no-check-certificate参数访问github，但是还是用warning，不够完美</li>
+  <li>
+    <p>决解证书问题  </p>
+
+    <ul>
+      <li>
+        <p>安装curl-ca-bundle</p>
+
+        <pre><code> sudo port install curl-ca-bundle
+</code></pre>
+      </li>
+      <li>
+        <p>配置wget</p>
+
+        <pre><code> echo CA_CERTIFICATE=/opt/local/share/curl/curl-ca-bundle.crt &gt;&gt; ~/.wgetrc
+</code></pre>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p>然后再运行wget就不会有问题了</p>
 ]]></content>
   </entry>
   
