@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design Pattern | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/design-pattern/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-05T17:20:34+08:00</updated>
+  <updated>2014-02-05T18:51:30+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -212,7 +212,7 @@
 </span><span class='line'><span class="cm"> */</span>
 </span><span class='line'><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndeomtest</span><span class="o">;</span>
 </span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">junit</span><span class="o">.</span><span class="na">Assert</span><span class="o">.</span><span class="na">assertEquals</span><span class="o">;</span>
+</span><span class='line'><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">assertj</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">api</span><span class="o">.</span><span class="na">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="kn">import</span> <span class="nn">java.util.Collection</span><span class="o">;</span>
 </span><span class='line'><span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
@@ -238,7 +238,7 @@
 </span><span class='line'>	<span class="n">LazySingleton</span> <span class="n">a</span> <span class="o">=</span> <span class="n">LazySingleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
 </span><span class='line'>	<span class="n">LazySingleton</span> <span class="n">b</span> <span class="o">=</span> <span class="n">LazySingleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
 </span><span class='line'>
-</span><span class='line'>	<span class="n">assertEquals</span><span class="o">(</span><span class="n">a</span><span class="o">,</span> <span class="n">b</span><span class="o">);</span>
+</span><span class='line'>	<span class="n">assertThat</span><span class="o">(</span><span class="n">a</span><span class="o">).</span><span class="na">isSameAs</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="o">}</span>
 </span><span class='line'>
@@ -273,7 +273,7 @@
 </span><span class='line'>	<span class="n">LazySingleton</span> <span class="n">b</span> <span class="o">=</span> <span class="n">litSingleton</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
 </span><span class='line'>
 </span><span class='line'>	<span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">o</span> <span class="o">:</span> <span class="n">litSingleton</span><span class="o">.</span><span class="na">toArray</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'>	    <span class="n">assertEquals</span><span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">o</span><span class="o">);</span>
+</span><span class='line'>	    <span class="n">assertThat</span><span class="o">(</span><span class="n">b</span><span class="o">).</span><span class="na">isSameAs</span><span class="o">(</span><span class="n">o</span><span class="o">);</span>
 </span><span class='line'>	<span class="o">}</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="o">}</span>
@@ -281,6 +281,19 @@
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <h3 id="section-2">单例的序列化</h3>
+<p>如果单例实现了Serializable接口，则需要注意，默认情况下，反序列化都会生成一个新的对象。根据Effective Java 第74条，谨慎实现序列化接口，除非真的有必要。因为一旦发布这个类出去，再改动这个类时使用端需要重新编译的，从而降低了类的灵活性</p>
+
+<p>解决办法，利用反序列化完成前的readResolve函数重新返回本地的单例，确保系统的单例唯一性<br />
+代码演示如下。如果将readResolve方法注释掉，则单元测试将报错</p>
+
+<p>File /Users/macbook/Documents/Git/octopress/source/downloads/code/DesignPatternDemo/org/duffqiu/patterndemo/SerialiableSingleton.java could not be found</p>
+
+<p>测试代码为：</p>
+
+<p>File /Users/macbook/Documents/Git/octopress/source/downloads/code/DesignPatternDemo/org/duffqiu/patterndemotest/SerialiableSingletonTest.java could not be found</p>
+
+<h3 id="section-3">小插曲</h3>
+<p>测试的判断，我这里用的是assertj的库，比较简单好用，参见<a href="http://joel-costigliola.github.io/assertj/index.html">assertj</a></p>
 ]]></content>
   </entry>
   

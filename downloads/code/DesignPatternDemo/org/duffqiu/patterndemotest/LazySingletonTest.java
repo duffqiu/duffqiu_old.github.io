@@ -3,7 +3,7 @@
  */
 package org.duffqiu.patterndeomtest;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collection;
 import java.util.List;
@@ -29,7 +29,7 @@ public class LazySingletonTest {
 	LazySingleton a = LazySingleton.getInstance();
 	LazySingleton b = LazySingleton.getInstance();
 
-	assertEquals(a, b);
+	assertThat(a).isSameAs(b);
 
     }
 
@@ -64,7 +64,7 @@ public class LazySingletonTest {
 	LazySingleton b = litSingleton.get(0);
 
 	for (Object o : litSingleton.toArray()) {
-	    assertEquals(b, o);
+	    assertThat(b).isSameAs(o);
 	}
 
     }
