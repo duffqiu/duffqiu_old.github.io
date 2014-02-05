@@ -12,7 +12,7 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-b0b83595fccba9dc8f84429bdb25e783.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-c09e670117720dc2f4f9975c2d3fbf99.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-b0b83595fccba9dc8f84429bdb25e783.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-c09e670117720dc2f4f9975c2d3fbf99.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
@@ -669,6 +669,171 @@
 </span><span class="line">	<span class="n">assertThat</span><span class="o">(</span><span class="n">a</span><span class="o">).</span><span class="na">isSameAs</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
 </span><span class="line">
 </span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="enumsingleton">Enum实现singleton</h3>
+<p>这个参见Effective Java 第77条，好处是不用特别处理readResolve，也不用实现Serializable接口。缺点是无法延迟初始化，以及看起来不是太好看</p>
+
+<p>代码如下：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span> (EnumSingleton.java)</span> <a href="/downloads/code/DesignPatternDemo/org/duffqiu/patterndemo/EnumSingleton.java">download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndemo</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * @author macbook</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> *         2014年2月5日</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kd">public</span> <span class="kd">enum</span> <span class="n">EnumSingleton</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">INSTANCE</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;duff qiu&quot;</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="mi">36</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="cm">/**</span>
+</span><span class="line"><span class="cm">     * @return the name</span>
+</span><span class="line"><span class="cm">     */</span>
+</span><span class="line">    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">	<span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="cm">/**</span>
+</span><span class="line"><span class="cm">     * @param name</span>
+</span><span class="line"><span class="cm">     *            the name to set</span>
+</span><span class="line"><span class="cm">     */</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">	<span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="cm">/**</span>
+</span><span class="line"><span class="cm">     * @return the age</span>
+</span><span class="line"><span class="cm">     */</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">	<span class="k">return</span> <span class="n">age</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="cm">/**</span>
+</span><span class="line"><span class="cm">     * @param age</span>
+</span><span class="line"><span class="cm">     *            the age to set</span>
+</span><span class="line"><span class="cm">     */</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAge</span><span class="o">(</span><span class="kt">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">	<span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>测试代码如下：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span> (EnumSingletonTest.java)</span> <a href="/downloads/code/DesignPatternDemo/org/duffqiu/patterndemotest/EnumSingletonTest.java">download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndeomtest</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">assertj</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">api</span><span class="o">.</span><span class="na">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kn">import</span> <span class="nn">org.apache.commons.lang3.SerializationUtils</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">org.duffqiu.patterndemo.EnumSingleton</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * @author macbook</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> *         2014年2月5日</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EnumSingletonTest</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Test</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">	<span class="n">EnumSingleton</span> <span class="n">a</span> <span class="o">=</span> <span class="n">EnumSingleton</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">	<span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="n">SerializationUtils</span><span class="o">.</span><span class="na">serialize</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
+</span><span class="line">	<span class="n">EnumSingleton</span> <span class="n">b</span> <span class="o">=</span> <span class="n">SerializationUtils</span><span class="o">.</span><span class="na">deserialize</span><span class="o">(</span><span class="n">bytes</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">assertThat</span><span class="o">(</span><span class="n">a</span><span class="o">).</span><span class="na">isSameAs</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
 </span><span class="line"><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
