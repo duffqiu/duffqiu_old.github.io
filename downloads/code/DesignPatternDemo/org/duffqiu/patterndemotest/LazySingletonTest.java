@@ -38,7 +38,7 @@ public class LazySingletonTest {
 
 	int threadNum = Runtime.getRuntime().availableProcessors() + 1;
 
-	final List<Object> litSingleton = new Vector<>();
+	final List<LazySingleton> litSingleton = new Vector<>();
 
 	ExecutorService manager = Executors.newScheduledThreadPool(threadNum);
 
@@ -61,7 +61,7 @@ public class LazySingletonTest {
 
 	manager.awaitTermination(2, TimeUnit.SECONDS);
 
-	LazySingleton b = (LazySingleton) litSingleton.get(0);
+	LazySingleton b = litSingleton.get(0);
 
 	for (Object o : litSingleton.toArray()) {
 	    assertEquals(b, o);

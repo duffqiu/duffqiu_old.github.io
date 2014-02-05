@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-05T17:16:45+08:00</updated>
+  <updated>2014-02-05T17:20:34+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -247,7 +247,7 @@
 </span><span class='line'>
 </span><span class='line'>	<span class="kt">int</span> <span class="n">threadNum</span> <span class="o">=</span> <span class="n">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">availableProcessors</span><span class="o">()</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
 </span><span class='line'>
-</span><span class='line'>	<span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;</span> <span class="n">litSingleton</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Vector</span><span class="o">&lt;&gt;();</span>
+</span><span class='line'>	<span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">LazySingleton</span><span class="o">&gt;</span> <span class="n">litSingleton</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Vector</span><span class="o">&lt;&gt;();</span>
 </span><span class='line'>
 </span><span class='line'>	<span class="n">ExecutorService</span> <span class="n">manager</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newScheduledThreadPool</span><span class="o">(</span><span class="n">threadNum</span><span class="o">);</span>
 </span><span class='line'>
@@ -270,7 +270,7 @@
 </span><span class='line'>
 </span><span class='line'>	<span class="n">manager</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
 </span><span class='line'>
-</span><span class='line'>	<span class="n">LazySingleton</span> <span class="n">b</span> <span class="o">=</span> <span class="o">(</span><span class="n">LazySingleton</span><span class="o">)</span> <span class="n">litSingleton</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+</span><span class='line'>	<span class="n">LazySingleton</span> <span class="n">b</span> <span class="o">=</span> <span class="n">litSingleton</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
 </span><span class='line'>
 </span><span class='line'>	<span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">o</span> <span class="o">:</span> <span class="n">litSingleton</span><span class="o">.</span><span class="na">toArray</span><span class="o">())</span> <span class="o">{</span>
 </span><span class='line'>	    <span class="n">assertEquals</span><span class="o">(</span><span class="n">b</span><span class="o">,</span> <span class="n">o</span><span class="o">);</span>
