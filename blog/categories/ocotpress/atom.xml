@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Ocotpress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/ocotpress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-05T11:21:44+08:00</updated>
+  <updated>2014-02-05T11:23:49+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -33,7 +33,7 @@
   <li>
     <p>在octopress目录下新增一个需要下载的文件的配置githubcode.cf，格式为<github repository="" name="">空格<java package="" name="">空格<java code="" file="" url=""></java></java></github></p>
 
-    <p>File /githubcode.cf could not be found</p>
+    <p>File /Users/macbook/Documents/Git/octopress/source/githubcode.cf could not be found</p>
   </li>
   <li>
     <p>确保已经安装好wget</p>
