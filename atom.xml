@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-05T01:42:32+08:00</updated>
+  <updated>2014-02-05T11:21:44+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,97 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress实时获取并展示github上其它repository的代码]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/"/>
+    <updated>2014-02-05T01:45:57+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<p>在写blog的时候，想要直接关联github上的其它repository的代码，这样以后代码更新就不需要更新blog了。但是看octopress的文档，似乎<a href="https://gist.github.com">gist</a>可以达到该目的，但是它不是一个代码工程，无法像正常的代码工程那样去管理，编译，运行等。<br />
+所以就想看看能否给Octopress加个plugin直接展示该代码</p>
+
+<h3 id="section-1">办法</h3>
+<p>原本想改一下plugins/include_code.rb，但是感觉还是太复杂，所以想个简单的方式
+还是利用include_code这个插件，这个插件是可以将在source/downloads/code/目录下的文件展示出来的，这个目录原octopress代码没有生成，需要手工生成。<br />
+思路就是想法将github上的代码在rake generate之前先用wget获取下来放到上面这个指定的目录中<br />
+因为include_code.rb的复杂度，我选择了更改Rakefile文件，新增一个任务的方式来解决
+具体步骤如下：</p>
+
+<ol>
+  <li>
+    <p>在octopress目录下新增一个需要下载的文件的配置githubcode.cf，格式为<github repository="" name="">空格<java package="" name="">空格<java code="" file="" url=""></java></java></github></p>
+
+    <p>File /githubcode.cf could not be found</p>
+  </li>
+  <li>
+    <p>确保已经安装好wget</p>
+
+    <pre><code>sudo port install wget
+</code></pre>
+  </li>
+  <li>
+    <p>更改Rakefile文件，在最后增加一个任务</p>
+
+    <pre><code> desc "get code file from github"
+ task :github_code do
+	
+   begin
+     require 'net/http'
+     require 'uri'
+     rm_rf "source/downloads"
+     mkdir_p "source/downloads/code"
+     if File.exist?("githubcode.cf")
+       IO.foreach("githubcode.cf") do |line|
+         if line.strip.empty? == false
+             cd "source/downloads/code" do
+             attr = line.split(' ')
+             repo = attr[0].strip
+             if repo.empty?
+               abort("repo name is empty")
+             end
+             package = attr[1].strip
+             file_url = attr[2].strip
+             if file_url.empty?
+               abort("file url is empty")
+             end
+             package_dir = package.gsub(/\./, '/')
+             target_dir = repo + '/' + package_dir
+             mkdir_p target_dir
+             cd target_dir do
+               system ("wget  " + file_url)
+             end
+           end
+         end
+       end
+     else
+       puts 'githubcode.cf not found'
+     end
+   end
+ end        		
+</code></pre>
+  </li>
+  <li>
+    <p>在需要引用代码的地方使用以下方式</p>
+
+    <pre><code>{% include_code lang:java &lt;repository name&gt;/&lt;package name&gt;/&lt;java file name&gt; %}
+</code></pre>
+
+    <p>注意：<repository name="">前面没有&#8217;/&#8217;，<pakcage name="">要将&#8217;.&#8217;改为&#8217;/&#8217;</pakcage></repository></p>
+  </li>
+  <li>
+    <p>每次有新增的github代码文件引入，则需要在rake generate前先调用</p>
+
+    <pre><code>rake github_code
+</code></pre>
+  </li>
+</ol>
+
+<h3 id="section-2">小插曲</h3>
+<p>####wget https访问问题</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[设计模式: 单例模式]]></title>
@@ -1316,24 +1407,6 @@ git push origin source
 </ol>
 
 <p>到这一步，基本上就将Octopress基本配置好了，后面将讲讲如何写blogger和配置Octopress</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[First Time to Setup Octopress in Github]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/01/25/first-time-to-setup-octopress-in-github/"/>
-    <updated>2014-01-25T16:33:01+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/01/25/first-time-to-setup-octopress-in-github</id>
-    <content type="html"><![CDATA[<h3 id="section">为什么要建这个博客呢？</h3>
-<p>最近小孩放假在家，总爱写些短文，但是写完了就没了，所以想想是不是建个blog来记录一下。前两天看见<a href="http://weibo.com/acette" title="Leo's Weibo">Leo</a>同学在Github上用<a href="http://www.octopress.org" title="Octopress">Octopress</a>开的blog看得挺简单，直接用接近文本的<a href="http://wowubuntu.com/markdown/" title="markdown中文">markdown</a>语法写，所以今天下午baidu＋google的方式在自己的<a href="http://github.com/duffqiu" title="Duff's Github">Github</a>上试验一下，然后再打算给小孩开一个。</p>
-
-<p>谁知道弄了一半才发现果然是只能给程序猿的东东，每次建个post都要用命令生成静态代码，然后再部署。。。这些果然不是一般人能用的。就如同它号称的“给黑客的blog框架”</p>
-
-<p>另外从学习安装、试用的过程看，octopress真的不太适合用windows的童鞋，最好是用Apple Mac，简单很多。这两天刚看完<a href="http://www.amazon.cn/MacTalk·人生元编程-池建强-著/dp/B00FF5G3GK/ref=sr_1_1?ie=UTF8&amp;qid=1390661141&amp;sr=8-1&amp;keywords=mactalk">Mactalk</a>，感觉真的是不错，后面再来补这个的学习笔记，这也是我买的第一本收费的电子书，尽管只有¥2.99。</p>
-
-<p>建议有Mac的童鞋都读读，里面提到了不少工具的用法。</p>
-
-<p>不过弄完了一个下午，只有一个结论，那就是不适合小孩用，看来还要再花时间给小孩找个合适的，难道是个机会？儿童blog平台？只有iPad／android版就可以了，无需电脑版。</p>
 ]]></content>
   </entry>
   

@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>设计模式开篇 - Duff Qiu's Blog</title>
+  <title>Octopress实时获取并展示github上其它repository的代码 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,8 +19,8 @@
 
 
   
-  <meta name="description" content="参考
-从这里开始，主要是参考漫谈设计模式 要去理解设计模式，必须是有以下基础 语言基础(Java, C++, Object-C…)，这里是以Java语言做介绍，如果需要初步学Java则可以看看Udemy上面的免费入门视频 懂得OO的设计理念/原则，后面再抽个章节讲讲这个OO的设计原则 &hellip;">
+  <meta name="description" content="原由
+在写blog的时候，想要直接关联github上的其它repository的代码，这样以后代码更新就不需要更新blog了。但是看octopress的文档，似乎gist可以达到该目的，但是它不是一个代码工程，无法像正常的代码工程那样去管理，编译，运行等。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,7 +29,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/02/she-ji-mo-shi-kai-pian">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -102,7 +102,7 @@
   
   <header>
     
-      <h1 class="entry-title">设计模式开篇</h1>
+      <h1 class="entry-title">Octopress实时获取并展示github上其它repository的代码</h1>
     
     
       <p class="meta">
@@ -118,7 +118,7 @@
   
 
 
-<time datetime="2014-02-02T15:31:04+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2014</time>
+<time datetime="2014-02-05T01:45:57+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -128,31 +128,89 @@
   </header>
 
 
-<div class="entry-content"><h3 id="section">参考</h3>
-<p>从这里开始，主要是参考<a href="http://www.amazon.cn/漫谈设计模式-从面向对象开始-刘济华/dp/B006QQZE4Y/ref=sr_1_1?ie=UTF8&amp;qid=1391326331&amp;sr=8-1&amp;keywords=漫谈设计模式">漫谈设计模式</a></p>
+<div class="entry-content"><h3 id="section">原由</h3>
+<p>在写blog的时候，想要直接关联github上的其它repository的代码，这样以后代码更新就不需要更新blog了。但是看octopress的文档，似乎<a href="https://gist.github.com">gist</a>可以达到该目的，但是它不是一个代码工程，无法像正常的代码工程那样去管理，编译，运行等。<br />
+所以就想看看能否给Octopress加个plugin直接展示该代码</p>
 
-<p>要去理解设计模式，必须是有以下基础</p>
-
-<ol>
-  <li>语言基础(Java, C++, Object-C…)，这里是以Java语言做介绍，如果需要初步学Java则可以看看<a href="https://www.udemy.com/java-tutorial/?couponCode=FREE">Udemy</a>上面的免费入门视频</li>
-  <li>懂得OO的设计理念/原则，后面再抽个章节讲讲这个<a href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/">OO的设计原则</a></li>
-  <li>懂得UML的基础，入门可以先看看这本简单的<a href="http://www.amazon.cn/系统分析师UML项目实战-邱郁惠/dp/B00DSQZ9IQ/ref=sr_1_1?ie=UTF8&amp;qid=1391326582&amp;sr=8-1&amp;keywords=系统分析师UML项目实战">系统分析师UML项目实战</a>，个人也不太建议UML在工作做过于教条化。之前曾经有1年多都是在画UML图，然后开发依据UML图去做开发，结果效果并不是很好。但是一些基础的比较实际的用法还是值得去做的。要看明白设计模式的类图，请先看看<a href="/blog/2014/02/02/umllei-tu/">UML类图</a></li>
-</ol>
-
-<h3 id="gof-23">经典的GoF 23个设计模式，这只是个基础</h3>
-<p>GoF的23个设计模式只是一个经典的总结，但是不代表只有23个，其实在工作中很多问题的共性解决方案都有可能编程设计模式，只要复合以下4个基本的设计模式要素</p>
+<h3 id="section-1">办法</h3>
+<p>原本想改一下plugins/include_code.rb，但是感觉还是太复杂，所以想个简单的方式
+还是利用include_code这个插件，这个插件是可以将在source/downloads/code/目录下的文件展示出来的，这个目录原octopress代码没有生成，需要手工生成。<br />
+思路就是想法将github上的代码在rake generate之前先用wget获取下来放到上面这个指定的目录中<br />
+因为include_code.rb的复杂度，我选择了更改Rakefile文件，新增一个任务的方式来解决
+具体步骤如下：</p>
 
 <ol>
-  <li>模式名称（Pattern Name）</li>
-  <li>问题描述（Problem）</li>
-  <li>解决方案（Solution）</li>
-  <li>效果／结果（consequence）</li>
+  <li>
+    <p>在octopress目录下新增一个需要下载的文件的配置githubcode.cf，格式为<github repository="" name="">空格<java package="" name="">空格<java code="" file="" url=""></java></java></github></p>
+
+    <p>File /githubcode.cf could not be found</p>
+  </li>
+  <li>
+    <p>确保已经安装好wget</p>
+
+    <pre><code>sudo port install wget
+</code></pre>
+  </li>
+  <li>
+    <p>更改Rakefile文件，在最后增加一个任务</p>
+
+    <pre><code> desc "get code file from github"
+ task :github_code do
+	
+   begin
+     require 'net/http'
+     require 'uri'
+     rm_rf "source/downloads"
+     mkdir_p "source/downloads/code"
+     if File.exist?("githubcode.cf")
+       IO.foreach("githubcode.cf") do |line|
+         if line.strip.empty? == false
+             cd "source/downloads/code" do
+             attr = line.split(' ')
+             repo = attr[0].strip
+             if repo.empty?
+               abort("repo name is empty")
+             end
+             package = attr[1].strip
+             file_url = attr[2].strip
+             if file_url.empty?
+               abort("file url is empty")
+             end
+             package_dir = package.gsub(/\./, '/')
+             target_dir = repo + '/' + package_dir
+             mkdir_p target_dir
+             cd target_dir do
+               system ("wget  " + file_url)
+             end
+           end
+         end
+       end
+     else
+       puts 'githubcode.cf not found'
+     end
+   end
+ end        		
+</code></pre>
+  </li>
+  <li>
+    <p>在需要引用代码的地方使用以下方式</p>
+
+    <pre><code>{% include_code lang:java &lt;repository name&gt;/&lt;package name&gt;/&lt;java file name&gt; %}
+</code></pre>
+
+    <p>注意：<repository name="">前面没有&#8217;/&#8217;，<pakcage name="">要将&#8217;.&#8217;改为&#8217;/&#8217;</pakcage></repository></p>
+  </li>
+  <li>
+    <p>每次有新增的github代码文件引入，则需要在rake generate前先调用</p>
+
+    <pre><code>rake github_code
+</code></pre>
+  </li>
 </ol>
 
-<h3 id="section-1">模式的套用</h3>
-<p>不是说能套上设计模式就是好的设计，好的设计需要多个方面的积累，AOP、BDD、TDD。。。<br />
-模式更像是独孤九剑，最后是忘记模式而自然而然的使用模式(好像有些玄乎？)<br />
-设计模式的基础还是OO，只有用好OO才能更好的理解和用好设计模式</p>
+<h3 id="section-2">小插曲</h3>
+<p>####wget https访问问题</p>
+
 </div>
 
 
@@ -175,12 +233,12 @@
   
 
 
-<time datetime="2014-02-02T15:31:04+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2014</time>
+<time datetime="2014-02-05T01:45:57+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a>
+    <a class='category' href='/blog/categories/ocotpress/'>Ocotpress</a>
   
 </span>
 
@@ -196,10 +254,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/02/02/octopresstian-jia-bingwang-zhan-fen-xi/" title="Previous Post: Octopress添加bing网站分析">&laquo; Octopress添加bing网站分析</a>
+        <a class="basic-alignment left" href="/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi/" title="Previous Post: 设计模式: 单例模式">&laquo; 设计模式: 单例模式</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/" title="Next Post: OO的一些设计原则">OO的一些设计原则 &raquo;</a>
       
     </p>
   </footer>
@@ -268,22 +324,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/">Octopress实时获取并展示github上其它repository的代码</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/ocotpress/'>Ocotpress</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi/">设计模式: 单例模式</a></h3>
         <div class="meta">
           <span class="tags">
@@ -339,6 +379,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/java/'>Java</a>, <a class='category' href='/blog/categories/oo/'>OO</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/02/02/she-ji-mo-shi-kai-pian/">设计模式开篇</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a>
   
 </span>
 
