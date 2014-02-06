@@ -12,16 +12,18 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-bf624b63610dca56608da6eb9cd3125c.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-a6e01ec9fd149d709d47a66b173121e8.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由
-Octopress用rake generate的时候会提示使用GSL将会加速文件的生成，速度是原来的的10+倍，但是需要安装Ruby GSL插件。 安装
-当使用命令安装Ruby GSL的时候确发现了问题 gem install gsl 原因是缺少了GSL的C的开发库 然后在GSL &hellip;">
+  <meta name="description" content="目的
+每次更新blog后，总希望搜索引擎可以尽快收录到，最好是多个搜索引擎都能收入到
+怎么做到呢？ 配置搜索引擎rake任务
+首先感谢原作者的介绍1 编辑octopress目录的Rakefile文件，在最后增加搜索引擎任务 ＃Google search engine
+desc 'Notify &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -40,7 +42,7 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-bf624b63610dca56608da6eb9cd3125c.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-a6e01ec9fd149d709d47a66b173121e8.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
@@ -100,6 +102,117 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing/">Octopress通知搜索引擎</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-01T13:21:02+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">目的</h3>
+<p>每次更新blog后，总希望搜索引擎可以尽快收录到，最好是多个搜索引擎都能收入到<br />
+怎么做到呢？</p>
+
+<h3 id="rake">配置搜索引擎rake任务</h3>
+<p>首先感谢原作者的介绍<a href="http://blog.eavatar.com/post/2013/06/octopress-ping-search-engines/">1</a></p>
+
+<ol>
+  <li>
+    <p>编辑octopress目录的Rakefile文件，在最后增加搜索引擎任务</p>
+
+    <pre><code>＃Google search engine
+desc 'Notify Google of the new sitemap'
+ task :sitemapgoogle do
+  begin
+    require 'net/http'
+    require 'uri'
+    puts '* Pinging Google about our sitemap'
+    Net::HTTP.get('www.google.com', '/webmasters/tools/ping?sitemap=' + URI.escape('http://duffqiu.github.io/sitemap.xml'))
+  rescue LoadError
+    puts '! Could not ping Google about our sitemap, because Net::HTTP or URI could not be found.'
+  end
+ end
+
+#Baidu search engine       
+desc 'Ping Baidu'
+ task :pingbaidu do
+   begin
+     require 'xmlrpc/client'
+     puts '* Pinging Baidu search engine'
+     XMLRPC::Client.new('ping.baidu.com', '/ping/RPC2').call('weblogUpdates.extendedPing', 'duffqiu.github.io' , 'http://duffqiu.github.io', 'http://duffqiu.github.io', 'http://duffqiu.github.io/rss.xml')
+   rescue LoadError
+     puts '! Could not ping Baidu, because XMLRPC::Client could not be found.'
+   end
+ end
+	
+#Bing search engine
+desc 'Notify Bing of the new sitemap'
+ task :sitemapbing do
+   begin
+     require 'net/http'
+     require 'uri'
+     puts '* Pinging Bing about our sitemap'
+     Net::HTTP.get('www.bing.com', '/webmaster/ping.aspx?siteMap=' + URI.escape('http://duffqiu.github.io/sitemap.xml'))
+   rescue LoadError
+     puts '! Could not ping Bing about our sitemap, because Net::HTTP or URI could not be found.'
+   end
+ end	
+</code></pre>
+
+    <p>将”duffqiu.github.io”换成你的blog域名字即可</p>
+  </li>
+  <li>
+    <p>增加一个批量任务同时执行三个通知</p>
+
+    <pre><code>desc "Notify various services about new content"
+task :notify =&gt; [:sitemapgoogle, :sitemapbing, :pingbaidu] do
+end
+</code></pre>
+  </li>
+  <li>
+    <p>每次部署后执行命令</p>
+
+    <pre><code>rake notify
+</code></pre>
+  </li>
+</ol>
+
+<h3 id="vi">vi小技巧</h3>
+<p>今天有用到一个vi的命令，跳转到文件最后用”:$”        </p>
+
+<h3 id="section-1">小插曲</h3>
+<p>今天发现用Mac OSX10.9可以直接投射屏幕到小米盒子(v1.3.20)了</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -886,132 +999,6 @@ Octopress还有不少功能，后面用到再补充了</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/25/octopresszai-githubshang-jian-blogde-zhun-bei-gong-zuo/">Octopress在github上建blog的准备工作</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-25T23:03:42+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/01/25/octopresszai-githubshang-jian-blogde-zhun-bei-gong-zuo/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">需要一堆的软件</h3>
-<p>我都是在Mac上安装的，windows真的没有兴趣再试多一次了</p>
-
-<h4 id="mac">Mac系统的准备工作</h4>
-<p>这个部分或许和安装<a href="http://octopress.org" title="Octopress官网">Octopress</a>没什么关系，但是用Mac系统的话最好都装上，通常都用的上</p>
-
-<ul>
-  <li>
-    <p>安装<a href="http://www.macports.org/index.php">MacPorts</a>，官网有比较详细的介绍，可以下pkg安装；也可以源文件安装，但是前提是必须安装xcode的command line工具，运行一下命令安装。</p>
-
-    <pre><code> sudo xcode-select --install
-</code></pre>
-
-    <p>之前也是用pkg方式安装的，但是用</p>
-
-    <pre><code>  sudo port -v selfupgrad
-</code></pre>
-
-    <p>的时候出现了错误，所以还是安装上xcode的command line工具就好了，好像是OSX Mavericks版本才有？这个问题是通过stackover上的帖子<a href="http://stackoverflow.com/questions/19622337/cant-update-macports-with-mac-os-x-mavericks">cant-update-macports-with-mac-os-x-mavericks</a>的解答获得的。port工具可以帮助安装所需要软件以及其依赖的软件，省去了很多找软件的麻烦，另外一个和macports差不多的软件管理工具是<a href="http://brew.sh" title="Brew官网">HomeBrew</a></p>
-  </li>
-  <li>安装<a href="http://git-scm.com/">Git</a>工具，如何使用Git还是看官方文档吧，这里就不讲了</li>
-  <li>
-    <p>安装ruby，OSX已经自带了</p>
-  </li>
-  <li>
-    <p>用MacPorts安装rbenv</p>
-
-    <pre><code>  sudo port install rbenv 安装octopress需要，但是具体什么用没有细研究
-</code></pre>
-  </li>
-  <li>配置zsh shell，建议用zsh shell，具体如何配置可以参考Mactalk，如果后面讲书的内容写到blog里，是否有侵权？</li>
-</ul>
-
-<h4 id="octopress">获取Octopress并安装相应的包</h4>
-<ol>
-  <li>在机器上建立一个本地的git repo，并进入这个目录</li>
-  <li>
-    <p>获取Octopress源码</p>
-
-    <pre><code>git clone git://github.com/imathis/octopress.git octopress
-</code></pre>
-  </li>
-  <li>
-    <p>安装依赖工具</p>
-
-    <pre><code>cd octopress
-gem install bundler
-rbenv rehash #还是不太明白这个具体做什么用
-bundle install
-</code></pre>
-  </li>
-  <li>
-    <p>安装Octopress默认的Theme</p>
-
-    <pre><code>rake install
-</code></pre>
-  </li>
-</ol>
-
-<h4 id="github">配置Github</h4>
-<p>生成一个名为<your github="" name="">.github.io的repository，注意这里<your github="" name="">是你的github的账户名，要用.io不是.com</your></your></p>
-
-<h4 id="octopressgithub">初始化octopress并部署到Github</h4>
-<ol>
-  <li>
-    <p>关联octopress和github</p>
-
-    <pre><code>rake setup_github_pages 根据提示输入&lt;your github name&gt;.github.io的repository对应的地址
-</code></pre>
-  </li>
-  <li>
-    <p>部署octpress到Github</p>
-
-    <pre><code>rake generate #生成静态文件
-rake deploy #部署静态文件到github
-</code></pre>
-  </li>
-  <li>
-    <p>Push原文件到Github的source branch上，如果不做这步，github将只有生成好的文件</p>
-
-    <pre><code>git add .
-git commit -m &lt;'your message'&gt;
-git push origin source
-</code></pre>
-  </li>
-</ol>
-
-<p>到这一步，基本上就将Octopress基本配置好了，后面将讲讲如何写blogger和配置Octopress</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1029,6 +1016,10 @@ git push origin source
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi/">用Jenkins搭建基于Github和JUnit的自动化测试</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/">Octopress实时获取并展示github上其它repository的代码</a>
       </li>
     
@@ -1042,10 +1033,6 @@ git push origin source
     
       <li class="post">
         <a href="/blog/2014/02/02/umllei-tu/">UML类图</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/">OO的一些设计原则</a>
       </li>
     
   </ul>

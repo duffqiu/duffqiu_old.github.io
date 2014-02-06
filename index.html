@@ -12,15 +12,15 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-bf624b63610dca56608da6eb9cd3125c.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-a6e01ec9fd149d709d47a66b173121e8.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由
-在写blog的时候，想要直接关联github上的其它repository的代码，这样以后代码更新就不需要更新blog了。但是看octopress的文档，似乎gist可以达到该目的，但是它不是一个代码工程，无法像正常的代码工程那样去管理，编译，运行等。 &hellip;">
+  <meta name="description" content="
+">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -39,7 +39,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-bf624b63610dca56608da6eb9cd3125c.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-a6e01ec9fd149d709d47a66b173121e8.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
@@ -99,6 +99,45 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi/">用Jenkins搭建基于Github和JUnit的自动化测试</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-06T20:23:53+08:00" pubdate data-updated="true">Feb 6<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -878,7 +917,7 @@
 <span class="line-number">46</span>
 <span class="line-number">47</span>
 </pre></td><td class="code"><pre><code class="java"><span class="line"><span class="cm">/**</span>
-</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> * test git polling</span>
 </span><span class="line"><span class="cm"> */</span>
 </span><span class="line"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndemo</span><span class="o">;</span>
 </span><span class="line">
@@ -896,7 +935,7 @@
 </span><span class="line">    <span class="cm">/**</span>
 </span><span class="line"><span class="cm">     * @return the name</span>
 </span><span class="line"><span class="cm">     */</span>
-</span><span class="line">    <span class="kd">public</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
 </span><span class="line">	<span class="k">return</span> <span class="n">name</span><span class="o">;</span>
 </span><span class="line">    <span class="o">}</span>
 </span><span class="line">
@@ -904,14 +943,14 @@
 </span><span class="line"><span class="cm">     * @param name</span>
 </span><span class="line"><span class="cm">     *            the name to set</span>
 </span><span class="line"><span class="cm">     */</span>
-</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
 </span><span class="line">	<span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
 </span><span class="line">    <span class="o">}</span>
 </span><span class="line">
 </span><span class="line">    <span class="cm">/**</span>
 </span><span class="line"><span class="cm">     * @return the age</span>
 </span><span class="line"><span class="cm">     */</span>
-</span><span class="line">    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="o">()</span> <span class="o">{</span>
 </span><span class="line">	<span class="k">return</span> <span class="n">age</span><span class="o">;</span>
 </span><span class="line">    <span class="o">}</span>
 </span><span class="line">
@@ -919,7 +958,7 @@
 </span><span class="line"><span class="cm">     * @param age</span>
 </span><span class="line"><span class="cm">     *            the age to set</span>
 </span><span class="line"><span class="cm">     */</span>
-</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAge</span><span class="o">(</span><span class="kt">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">setAge</span><span class="o">(</span><span class="kt">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
 </span><span class="line">	<span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
 </span><span class="line">    <span class="o">}</span>
 </span><span class="line">
@@ -958,6 +997,18 @@
 <span class="line-number">27</span>
 <span class="line-number">28</span>
 <span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
 </pre></td><td class="code"><pre><code class="java"><span class="line"><span class="cm">/**</span>
 </span><span class="line"><span class="cm"> * </span>
 </span><span class="line"><span class="cm"> */</span>
@@ -977,13 +1028,25 @@
 </span><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EnumSingletonTest</span> <span class="o">{</span>
 </span><span class="line">
 </span><span class="line">    <span class="nd">@Test</span>
-</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSerialibel</span><span class="o">()</span> <span class="o">{</span>
 </span><span class="line">	<span class="n">EnumSingleton</span> <span class="n">a</span> <span class="o">=</span> <span class="n">EnumSingleton</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
 </span><span class="line">
 </span><span class="line">	<span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="n">SerializationUtils</span><span class="o">.</span><span class="na">serialize</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
 </span><span class="line">	<span class="n">EnumSingleton</span> <span class="n">b</span> <span class="o">=</span> <span class="n">SerializationUtils</span><span class="o">.</span><span class="na">deserialize</span><span class="o">(</span><span class="n">bytes</span><span class="o">);</span>
 </span><span class="line">
 </span><span class="line">	<span class="n">assertThat</span><span class="o">(</span><span class="n">a</span><span class="o">).</span><span class="na">isSameAs</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Test</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testGetSet</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">	<span class="n">EnumSingleton</span> <span class="n">a</span> <span class="o">=</span> <span class="n">EnumSingleton</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
+</span><span class="line">	<span class="n">EnumSingleton</span> <span class="n">b</span> <span class="o">=</span> <span class="n">EnumSingleton</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">a</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="mi">30</span><span class="o">);</span>
+</span><span class="line">	<span class="n">b</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;test name&quot;</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">assertThat</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">getName</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="n">b</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span><span class="line">	<span class="n">assertThat</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">getAge</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="n">b</span><span class="o">.</span><span class="na">getAge</span><span class="o">());</span>
 </span><span class="line">    <span class="o">}</span>
 </span><span class="line">
 </span><span class="line"><span class="o">}</span>
@@ -1697,117 +1760,6 @@ find . -name '*.js'
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing/">Octopress通知搜索引擎</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-01T13:21:02+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">目的</h3>
-<p>每次更新blog后，总希望搜索引擎可以尽快收录到，最好是多个搜索引擎都能收入到<br />
-怎么做到呢？</p>
-
-<h3 id="rake">配置搜索引擎rake任务</h3>
-<p>首先感谢原作者的介绍<a href="http://blog.eavatar.com/post/2013/06/octopress-ping-search-engines/">1</a></p>
-
-<ol>
-  <li>
-    <p>编辑octopress目录的Rakefile文件，在最后增加搜索引擎任务</p>
-
-    <pre><code>＃Google search engine
-desc 'Notify Google of the new sitemap'
- task :sitemapgoogle do
-  begin
-    require 'net/http'
-    require 'uri'
-    puts '* Pinging Google about our sitemap'
-    Net::HTTP.get('www.google.com', '/webmasters/tools/ping?sitemap=' + URI.escape('http://duffqiu.github.io/sitemap.xml'))
-  rescue LoadError
-    puts '! Could not ping Google about our sitemap, because Net::HTTP or URI could not be found.'
-  end
- end
-
-#Baidu search engine       
-desc 'Ping Baidu'
- task :pingbaidu do
-   begin
-     require 'xmlrpc/client'
-     puts '* Pinging Baidu search engine'
-     XMLRPC::Client.new('ping.baidu.com', '/ping/RPC2').call('weblogUpdates.extendedPing', 'duffqiu.github.io' , 'http://duffqiu.github.io', 'http://duffqiu.github.io', 'http://duffqiu.github.io/rss.xml')
-   rescue LoadError
-     puts '! Could not ping Baidu, because XMLRPC::Client could not be found.'
-   end
- end
-	
-#Bing search engine
-desc 'Notify Bing of the new sitemap'
- task :sitemapbing do
-   begin
-     require 'net/http'
-     require 'uri'
-     puts '* Pinging Bing about our sitemap'
-     Net::HTTP.get('www.bing.com', '/webmaster/ping.aspx?siteMap=' + URI.escape('http://duffqiu.github.io/sitemap.xml'))
-   rescue LoadError
-     puts '! Could not ping Bing about our sitemap, because Net::HTTP or URI could not be found.'
-   end
- end	
-</code></pre>
-
-    <p>将”duffqiu.github.io”换成你的blog域名字即可</p>
-  </li>
-  <li>
-    <p>增加一个批量任务同时执行三个通知</p>
-
-    <pre><code>desc "Notify various services about new content"
-task :notify =&gt; [:sitemapgoogle, :sitemapbing, :pingbaidu] do
-end
-</code></pre>
-  </li>
-  <li>
-    <p>每次部署后执行命令</p>
-
-    <pre><code>rake notify
-</code></pre>
-  </li>
-</ol>
-
-<h3 id="vi">vi小技巧</h3>
-<p>今天有用到一个vi的命令，跳转到文件最后用”:$”        </p>
-
-<h3 id="section-1">小插曲</h3>
-<p>今天发现用Mac OSX10.9可以直接投射屏幕到小米盒子(v1.3.20)了</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1823,6 +1775,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi/">用Jenkins搭建基于Github和JUnit的自动化测试</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/">Octopress实时获取并展示github上其它repository的代码</a>
       </li>
     
@@ -1836,10 +1792,6 @@ end
     
       <li class="post">
         <a href="/blog/2014/02/02/umllei-tu/">UML类图</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/">OO的一些设计原则</a>
       </li>
     
   </ul>

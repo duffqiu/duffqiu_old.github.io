@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress插入代码块的问题 - Duff Qiu's Blog</title>
+  <title>用Jenkins搭建基于Github和JUnit的自动化测试 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,13 +19,8 @@
 
 
   
-  <meta name="description" content="在blog中插入Octopress代码块的问题 Octopress的说明文档中有多种插入代码块的方式，但是当初入markdown代码的时候就出现问题，尝试了多种方式后无果，最后查看别人的blog的源码发现使用 1
-2
-3
-4
-5
-{% raw %} # 必须有空行 #代码块 # 必须有空行
-{% &hellip;">
+  <meta name="description" content="
+">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -34,7 +29,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -107,7 +102,7 @@
   
   <header>
     
-      <h1 class="entry-title">Octopress插入代码块的问题</h1>
+      <h1 class="entry-title">用Jenkins搭建基于Github和JUnit的自动化测试</h1>
     
     
       <p class="meta">
@@ -123,7 +118,7 @@
   
 
 
-<time datetime="2014-01-27T18:20:21+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time>
+<time datetime="2014-02-06T20:23:53+08:00" pubdate data-updated="true">Feb 6<span>th</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -133,27 +128,7 @@
   </header>
 
 
-<div class="entry-content"><h4 id="blogoctopress">在blog中插入Octopress代码块的问题</h4>
-
-<p>Octopress的说明文档中有多种插入代码块的方式，但是当初入markdown代码的时候就出现问题，尝试了多种方式后无果，最后查看别人的blog的源码发现使用</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="o">{</span>% raw %<span class="o">}</span>
-</span><span class="line">   <span class="c"># 必须有空行</span>
-</span><span class="line">   <span class="c">#代码块  </span>
-</span><span class="line">   <span class="c"># 必须有空行</span>
-</span><span class="line"><span class="o">{</span>% endraw %<span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>的方式将代码块再扩起来解决的。</p>
-
-<p>如果有序列(如1., 2…)，则需要缩进代码快和raw..endraw指令</p>
-
-<p>出个小题，这里是怎么写出raw…endraw的?</p>
+<div class="entry-content">
 </div>
 
 
@@ -176,14 +151,8 @@
   
 
 
-<time datetime="2014-01-27T18:20:21+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time>
+<time datetime="2014-02-06T20:23:53+08:00" pubdate data-updated="true">Feb 6<span>th</span>, 2014</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
-  
-</span>
 
 
     </p>
@@ -197,10 +166,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/26/kai-shi-xie-di-%5B%3F%5D-pian-blog/" title="Previous Post: 开始写第一篇blog">&laquo; 开始写第一篇blog</a>
+        <a class="basic-alignment left" href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/" title="Previous Post: Octopress实时获取并展示github上其它repository的代码">&laquo; Octopress实时获取并展示github上其它repository的代码</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/" title="Next Post: Mac上用google-app-engine搭建proxy">Mac上用google-app-engine搭建proxy &raquo;</a>
       
     </p>
   </footer>
@@ -268,16 +235,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi/">用Jenkins搭建基于Github和JUnit的自动化测试</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/">Octopress实时获取并展示github上其它repository的代码</a></h3>
         <div class="meta">
           <span class="tags">
@@ -333,6 +290,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/uml/'>UML</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/">OO的一些设计原则</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>Java</a>, <a class='category' href='/blog/categories/oo/'>OO</a>
   
 </span>
 
