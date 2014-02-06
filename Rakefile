@@ -453,3 +453,40 @@ end
 desc "deply and notify search engines"
 task :deploy_notify => [:deploy, :notify] do
 end
+
+desc "get code file from github"
+task :github_code do
+
+  begin
+    require 'net/http'
+    require 'uri'
+    rm_rf "source/downloads"
+    mkdir_p "source/downloads/code"
+    if File.exist?("githubcode.cf")
+      IO.foreach("githubcode.cf") do |line|
+        if line.strip.empty? == false
+            cd "source/downloads/code" do
+            attr = line.split(' ')
+            repo = attr[0].strip
+            if repo.empty?
+              abort("repo name is empty")
+            end
+            package = attr[1].strip
+            file_url = attr[2].strip
+            if file_url.empty?
+              abort("file url is empty")
+            end
+            package_dir = package.gsub(/\./, '/')
+            target_dir = repo + '/' + package_dir
+            mkdir_p target_dir
+            cd target_dir do
+              system ("wget  " + file_url)
+            end
+          end  
+        end
+      end
+    else
+      puts 'githubcode.cf not found'
+    end
+  end
+end

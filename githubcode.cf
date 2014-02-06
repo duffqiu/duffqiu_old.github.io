@@ -1,0 +1,11 @@
+DesignPatternDemo  org.duffqiu.patterndemo  https://raw.github.com/duffqiu/DesignPatternDemo/develop/src/main/java/org/duffqiu/patterndemo/LazySingleton.java
+
+DesignPatternDemo  org.duffqiu.patterndemotest      https://raw.github.com/duffqiu/DesignPatternDemo/develop/src/test/java/org/duffqiu/patterndeomtest/LazySingletonTest.java
+
+DesignPatternDemo  org.duffqiu.patterndemo https://raw.github.com/duffqiu/DesignPatternDemo/develop/src/main/java/org/duffqiu/patterndemo/SerialibleSingleton.java 
+
+DesignPatternDemo  org.duffqiu.patterndemotest https://raw.github.com/duffqiu/DesignPatternDemo/develop/src/test/java/org/duffqiu/patterndeomtest/SerialibleSingletonTest.java
+
+DesignPatternDemo  org.duffqiu.patterndemo https://raw.github.com/duffqiu/DesignPatternDemo/develop/src/main/java/org/duffqiu/patterndemo/EnumSingleton.java
+
+DesignPatternDemo  org.duffqiu.patterndemotest  https://raw.github.com/duffqiu/DesignPatternDemo/develop/src/test/java/org/duffqiu/patterndeomtest/EnumSingletonTest.java
