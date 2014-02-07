@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-07T22:00:25+08:00</updated>
+  <updated>2014-02-07T22:06:38+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -93,7 +93,7 @@
 <p>效果是点击图片文字展开图片，点击图片后隐藏。     </p>
 
 <h3 id="section-2">小插曲</h3>
-<p>整个2014春节假期就要过去了，回顾一下，整整谢了24篇blog，有不少是跑题写出来。很多题目只是开了个头，也期待自己后面继续努力！   </p>
+<p>整个2014春节假期就要过去了，回顾一下，整整写了24篇blog，有不少是跑题写出来。很多题目只是开了个头，也期待自己后面继续努力！   </p>
 
 <p>在octopress的source/_post目录里用命令，实际就是将ls输出用wc工具再统计</p>
 
