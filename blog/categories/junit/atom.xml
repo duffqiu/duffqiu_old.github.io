@@ -4,7 +4,7 @@
   <title><![CDATA[Category: JUnit | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/junit/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-07T21:21:31+08:00</updated>
+  <updated>2014-02-07T21:24:05+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -27,7 +27,7 @@
 
 <ol>
   <li>下载OSX的安装包，直接安装就可以了。安装完后，程序被放在了/Applications/Jenkins/jenkins.war</li>
-  <li>启动是通过系统服务的方式启动的，启动配置文件在/Library/LaunchDaemons/org.jenkins-ci.plist，可以通过launchctl命令的方式启动／卸载服务，launchctl使用可以参见<a href="{% post_url 2014-01-30-mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu %}">1</a></li>
+  <li>启动是通过系统服务的方式启动的，启动配置文件在/Library/LaunchDaemons/org.jenkins-ci.plist，可以通过launchctl命令的方式启动／卸载服务，launchctl使用可以参见<a href="/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu/">1</a></li>
   <li>
     <p>如果需要卸载这个Jenkins，可以运行</p>
 
