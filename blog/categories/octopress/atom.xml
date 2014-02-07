@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-07T21:59:48+08:00</updated>
+  <updated>2014-02-07T22:00:25+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -103,7 +103,7 @@
 
 <p>在octopress的source/_post目录里用命令，实际就是将ls输出用wc工具再统计</p>
 
-<pre><code>&gt;ls |ws -l
+<pre><code>&gt;ls |wc -l
 </code></pre>
 ]]></content>
   </entry>
