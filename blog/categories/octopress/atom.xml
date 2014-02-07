@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-07T21:06:07+08:00</updated>
+  <updated>2014-02-07T21:07:45+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -32,18 +32,19 @@
 
     <p>{% codeblock lang:Javascript %}</p>
 
-    <p>function showdiv(elemid){</p>
-
-    <pre><code> var fd = document.getElementById(elemid);
- fd.style.left = event.clientX;
- fd.style.top = event.clientY;
- fd.style.display = "inline";    }
+    <pre><code> function showdiv(elemid){
+	
+   var fd = document.getElementById(elemid);
+   fd.style.left = event.clientX;
+   fd.style.top = event.clientY;
+   fd.style.display = "inline";
+ }
+	
+ function hidediv(elemid){
+   document.getElementById(elemid).style.display = "none";
+	
+ }
 </code></pre>
-
-    <p>function hidediv(elemid){
-     document.getElementById(elemid).style.display = “none”;</p>
-
-    <p>}</p>
 
     <p>{% endcodeblock %}</p>
   </li>
@@ -56,9 +57,9 @@
 
     <div style="display:none" class="prev" id="pic" onclick="hidediv('pic')">
      
- <img src="xxx.png" title="点击关闭" />
+   <img src="xxx.png" title="点击关闭" />
       
- </div>
+   </div>
 
     <p>{% endcodeblock %}</p>
   </li>
