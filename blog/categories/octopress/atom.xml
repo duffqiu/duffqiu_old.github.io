@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-07T21:14:14+08:00</updated>
+  <updated>2014-02-07T21:17:11+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -32,19 +32,20 @@
 
 <p>{% codeblock lang:Javascript %}   </p>
 
-<pre><code>function showdiv(elemid){
+<p>function showdiv(elemid){</p>
 
-  var fd = document.getElementById(elemid);
-  fd.style.left = event.clientX;
-  fd.style.top = event.clientY;
-  fd.style.display = "inline";
-}
+<p>var fd = document.getElementById(elemid);
+fd.style.left = event.clientX;
+fd.style.top = event.clientY;
+fd.style.display = “inline”;</p>
 
-function hidediv(elemid){
-  document.getElementById(elemid).style.display = "none";
+<p>}</p>
 
-}	
-</code></pre>
+<p>function hidediv(elemid){</p>
+
+<p>document.getElementById(elemid).style.display = “none”;</p>
+
+<p>}	</p>
 
 <p>{% endcodeblock %}</p>
 
@@ -54,15 +55,13 @@ function hidediv(elemid){
 
 <p>{% codeblock lang:sh %}</p>
 
-<pre><code>&lt;div style="text-decoration:underline; font-size: 24px; color: red" onclick="showdiv('pic')"&gt; Picture Show Text &lt;/div&gt;  
+<div style="text-decoration:underline; font-size: 24px; color: red" onclick="showdiv('pic')"> Picture Show Text </div>
 
+<div style="display:none" class="prev" id="pic" onclick="hidediv('pic')">
 
-&lt;div style="display:none" class="prev" id="pic"  onclick="hidediv('pic')"&gt;
+<img src="xxx.png" title="点击关闭" />
 
-&lt;img src="xxx.png" title="点击关闭"&gt;
-
-&lt;/div&gt;
-</code></pre>
+</div>
 
 <p>{% endcodeblock %}</p>
 
