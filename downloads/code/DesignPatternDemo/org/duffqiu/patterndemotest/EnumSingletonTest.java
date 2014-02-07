@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.duffqiu.patterndeomtest;
+package org.duffqiu.patterndemotest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

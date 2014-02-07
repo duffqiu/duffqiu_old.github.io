@@ -11,8 +11,10 @@ package org.duffqiu.patterndemo;
 public enum EnumSingleton {
     INSTANCE;
 
+    private static final int DEFAULT_AGO = 36;
+
     private String name = "duff qiu";
-    private int age = 36;
+    private int age = DEFAULT_AGO;
 
     /**
      * @return the name

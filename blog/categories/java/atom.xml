@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-06T20:36:16+08:00</updated>
+  <updated>2014-02-07T16:50:28+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -115,18 +115,18 @@
 </span><span class='line'><span class="cm"> * </span>
 </span><span class='line'><span class="cm"> *         2014年2月4日</span>
 </span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LazySingleton</span> <span class="o">{</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">LazySingleton</span> <span class="o">{</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="kd">private</span> <span class="nf">LazySingleton</span><span class="o">()</span> <span class="o">{</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="o">}</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">LazyHolder</span> <span class="o">{</span>
-</span><span class='line'>	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">LazySingleton</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LazySingleton</span><span class="o">();</span>
+</span><span class='line'>	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">LazySingleton</span> <span class="n">INSTANCE</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LazySingleton</span><span class="o">();</span>
 </span><span class='line'>    <span class="o">}</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">LazySingleton</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>	<span class="k">return</span> <span class="n">LazyHolder</span><span class="o">.</span><span class="na">instance</span><span class="o">;</span>
+</span><span class='line'>	<span class="k">return</span> <span class="n">LazyHolder</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
 </span><span class='line'>    <span class="o">}</span>
 </span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
@@ -210,7 +210,7 @@
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
 </span><span class='line'><span class="cm"> * </span>
 </span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndeomtest</span><span class="o">;</span>
+</span><span class='line'><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndemotest</span><span class="o">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">assertj</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">api</span><span class="o">.</span><span class="na">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">;</span>
 </span><span class='line'>
@@ -361,6 +361,8 @@
 <span class='line-number'>72</span>
 <span class='line-number'>73</span>
 <span class='line-number'>74</span>
+<span class='line-number'>75</span>
+<span class='line-number'>76</span>
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
 </span><span class='line'><span class="cm"> * </span>
 </span><span class='line'><span class="cm"> */</span>
@@ -373,25 +375,27 @@
 </span><span class='line'><span class="cm"> * </span>
 </span><span class='line'><span class="cm"> *         2014年2月5日</span>
 </span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SerialibleSingleton</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">SerialibleSingleton</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
 </span><span class='line'>    <span class="cm">/**</span>
 </span><span class='line'><span class="cm">     * </span>
 </span><span class='line'><span class="cm">     */</span>
 </span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="mi">7646684293730736310L</span><span class="o">;</span>
 </span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">DEFAULT_AGO</span> <span class="o">=</span> <span class="mi">36</span><span class="o">;</span>
+</span><span class='line'>
 </span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;duff qiu&quot;</span><span class="o">;</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="mi">36</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="n">DEFAULT_AGO</span><span class="o">;</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="kd">private</span> <span class="nf">SerialibleSingleton</span><span class="o">()</span> <span class="o">{</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="o">}</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">LazyHolder</span> <span class="o">{</span>
-</span><span class='line'>	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">SerialibleSingleton</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SerialibleSingleton</span><span class="o">();</span>
+</span><span class='line'>	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">SerialibleSingleton</span> <span class="n">INSTANCE</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SerialibleSingleton</span><span class="o">();</span>
 </span><span class='line'>    <span class="o">}</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="kd">public</span> <span class="kd">static</span> <span class="n">SerialibleSingleton</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>	<span class="k">return</span> <span class="n">LazyHolder</span><span class="o">.</span><span class="na">instance</span><span class="o">;</span>
+</span><span class='line'>	<span class="k">return</span> <span class="n">LazyHolder</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
 </span><span class='line'>    <span class="o">}</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="cm">/*</span>
@@ -432,7 +436,7 @@
 </span><span class='line'>
 </span><span class='line'>    <span class="kd">private</span> <span class="n">Object</span> <span class="nf">readResolve</span><span class="o">()</span> <span class="o">{</span>
 </span><span class='line'>	<span class="c1">//make sure the instance is the same as the local system after de-serialization </span>
-</span><span class='line'>	<span class="k">return</span> <span class="n">LazyHolder</span><span class="o">.</span><span class="na">instance</span><span class="o">;</span>
+</span><span class='line'>	<span class="k">return</span> <span class="n">LazyHolder</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
 </span><span class='line'>    <span class="o">}</span>
 </span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
@@ -501,7 +505,7 @@
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
 </span><span class='line'><span class="cm"> * </span>
 </span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndeomtest</span><span class="o">;</span>
+</span><span class='line'><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndemotest</span><span class="o">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">assertj</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">api</span><span class="o">.</span><span class="na">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">;</span>
 </span><span class='line'>
@@ -611,6 +615,8 @@
 <span class='line-number'>45</span>
 <span class='line-number'>46</span>
 <span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
 </span><span class='line'><span class="cm"> * test git polling</span>
 </span><span class='line'><span class="cm"> */</span>
@@ -624,8 +630,10 @@
 </span><span class='line'><span class="kd">public</span> <span class="kd">enum</span> <span class="n">EnumSingleton</span> <span class="o">{</span>
 </span><span class='line'>    <span class="n">INSTANCE</span><span class="o">;</span>
 </span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">DEFAULT_AGO</span> <span class="o">=</span> <span class="mi">36</span><span class="o">;</span>
+</span><span class='line'>
 </span><span class='line'>    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;duff qiu&quot;</span><span class="o">;</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="mi">36</span><span class="o">;</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="n">DEFAULT_AGO</span><span class="o">;</span>
 </span><span class='line'>
 </span><span class='line'>    <span class="cm">/**</span>
 </span><span class='line'><span class="cm">     * @return the name</span>
@@ -707,7 +715,7 @@
 </pre></td><td class='code'><pre><code class='java'><span class='line'><span class="cm">/**</span>
 </span><span class='line'><span class="cm"> * </span>
 </span><span class='line'><span class="cm"> */</span>
-</span><span class='line'><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndeomtest</span><span class="o">;</span>
+</span><span class='line'><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndemotest</span><span class="o">;</span>
 </span><span class='line'>
 </span><span class='line'><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">assertj</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">api</span><span class="o">.</span><span class="na">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">;</span>
 </span><span class='line'>
