@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-07T21:04:03+08:00</updated>
+  <updated>2014-02-07T21:06:07+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -30,68 +30,37 @@
   <li>
     <p>增加两个javascript的方法，一个展示图片，一个隐藏图片，简单的方式可以直接将他们放入到source/javascripts/octopress.js文件的最开头</p>
 
-    <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='Javascript'><span class='line'><span class="o">&lt;</span><span class="err">/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="o">&lt;</span><span class="nx">pre</span><span class="o">&gt;&lt;</span><span class="nx">code</span><span class="o">&gt;</span>   <span class="kd">function</span> <span class="nx">showdiv</span><span class="p">(</span><span class="nx">elemid</span><span class="p">){</span>
-</span><span class='line'>		
-</span><span class='line'>     <span class="kd">var</span> <span class="nx">fd</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">elemid</span><span class="p">);</span>
-</span><span class='line'>     <span class="nx">fd</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">left</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientX</span><span class="p">;</span>
-</span><span class='line'>     <span class="nx">fd</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">top</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientY</span><span class="p">;</span>
-</span><span class='line'>     <span class="nx">fd</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s2">&quot;inline&quot;</span><span class="p">;</span>
-</span><span class='line'>   <span class="p">}</span>
-</span><span class='line'>		
-</span><span class='line'>   <span class="kd">function</span> <span class="nx">hidediv</span><span class="p">(</span><span class="nx">elemid</span><span class="p">){</span>
-</span><span class='line'>     <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">elemid</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span><span class="p">;</span>
-</span><span class='line'>		
-</span><span class='line'>   <span class="p">}</span>
-</span><span class='line'><span class="o">&lt;</span><span class="err">/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+    <p>{% codeblock lang:Javascript %}</p>
+
+    <p>function showdiv(elemid){</p>
+
+    <pre><code> var fd = document.getElementById(elemid);
+ fd.style.left = event.clientX;
+ fd.style.top = event.clientY;
+ fd.style.display = "inline";    }
+</code></pre>
+
+    <p>function hidediv(elemid){
+     document.getElementById(elemid).style.display = “none”;</p>
+
+    <p>}</p>
+
+    <p>{% endcodeblock %}</p>
   </li>
   <li>
     <p>在blog中增加使用图片的div的代码</p>
 
-    <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>    &lt;div <span class="nv">style</span><span class="o">=</span><span class="s2">&quot;text-decoration:underline; font-size: 24px; color: red&quot;</span> <span class="nv">onclick</span><span class="o">=</span><span class="s2">&quot;showdiv(&#39;pic&#39;)&quot;</span>&gt; Picture Show Text &lt;/div&gt;
-</span><span class='line'>
-</span><span class='line'>    &lt;div <span class="nv">style</span><span class="o">=</span><span class="s2">&quot;display:none&quot;</span> <span class="nv">class</span><span class="o">=</span><span class="s2">&quot;prev&quot;</span> <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;pic&quot;</span> <span class="nv">onclick</span><span class="o">=</span><span class="s2">&quot;hidediv(&#39;pic&#39;)&quot;</span>&gt;
-</span><span class='line'>
-</span><span class='line'>   &lt;img <span class="nv">src</span><span class="o">=</span><span class="s2">&quot;xxx.png&quot;</span> <span class="nv">title</span><span class="o">=</span><span class="s2">&quot;点击关闭&quot;</span> /&gt;
-</span><span class='line'>
-</span><span class='line'>   &lt;/div&gt;
-</span><span class='line'>
-</span><span class='line'>    &lt;p&gt;
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+    <p>{% codeblock lang:sh %}</p>
+
+    <div style="text-decoration:underline; font-size: 24px; color: red" onclick="showdiv('pic')"> Picture Show Text </div>
+
+    <div style="display:none" class="prev" id="pic" onclick="hidediv('pic')">
+     
+ <img src="xxx.png" title="点击关闭" />
+      
+ </div>
+
+    <p>{% endcodeblock %}</p>
   </li>
 </ol>
 
@@ -105,7 +74,7 @@
     <updated>2014-02-07T17:02:16+08:00</updated>
     <id>http://duffqiu.github.io/blog/2014/02/07/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma-v2</id>
     <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<p>之前做了个Octopress实时获取并展示github上其它repository的代码的rake任务，参见<a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/">1</a>，但是每次都要打开github来获取文件的连接，还是比较烦。如果需要更改github branch的名字就需要重新更改整个链接。</p>
+<p>之前做了个Octopress实时获取并展示github上其它repository的代码的rake任务，参见<a href="{% post_url 2014-02-05-octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma %}">1</a>，但是每次都要打开github来获取文件的连接，还是比较烦。如果需要更改github branch的名字就需要重新更改整个链接。</p>
 
 <h3 id="section-1">解决方案</h3>
 <p>github上的代码存放实际上是有规则的。格式如下“https://raw.github.com/&lt;your github account&gt;/&lt;repository name&gt;/&lt;branch name&gt;/&lt;file folder&gt;/&lt;java package name&gt;/&lt;file name&gt;”</p>
@@ -278,11 +247,11 @@ end
   <li>
     <p>在需要引用代码的地方使用以下方式</p>
 
-    <pre><code>
+    <pre><code>{% raw %}
    
 {% include_code lang:java &lt;repository name&gt;/&lt;package name&gt;/&lt;java file name&gt; %}
    
-
+{% endraw %}
 </code></pre>
 
     <p>注意：<repository name="">前面没有'/'，<pakcage name="">要将java的包名的'.'改为'/'</pakcage></repository></p>
@@ -355,13 +324,13 @@ bing_analytics: true
       <li>
         <p>修改octopres/source/_include目录下的head.html文件，在&lt;head&gt;下面增加以下内容，记得替换&lt;…&gt;bing给你的blog的标识</p>
 
-        <pre><code>
+        <pre><code>{% raw %}
      
 {% if site.bing_analytics %}
 &lt;meta name="msvalidate.01" content="&lt;...&gt;" /&gt;
 {% endif %}
      
-
+{% endraw %}
 </code></pre>
       </li>
       <li>
@@ -470,7 +439,7 @@ gem "yui-compressor
       <li>
         <p>修改source/_include目录下的head.html文件，注释掉带有js/css的几行</p>
 
-        <pre><code>
+        <pre><code>{% raw %}
      
  &lt;!-- &lt;link href="{{ root_url }}/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"&gt; --&gt;
 	 
@@ -479,13 +448,13 @@ gem "yui-compressor
  &lt;!-- &lt;script&gt;!window.jQuery &amp;&amp; document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))&lt;/script&gt; --&gt;
  &lt;!-- &lt;script src="{{ root_url }}/javascripts/octopress.js" type="text/javascript"&gt;&lt;/script&gt; --&gt;
 	  
-
+{% endraw %}
 </code></pre>
       </li>
       <li>
         <p>增加以下内容</p>
 
-        <pre><code>
+        <pre><code>{% raw %}
    
 {% css_asset_tag global %}
  - /stylesheets/screen.css
@@ -499,7 +468,7 @@ gem "yui-compressor
 - /javascripts/libs/jXHR.js
 {% endjavascript_asset_tag %}
    
-
+{% endraw %}
 </code></pre>
       </li>
       <li>
