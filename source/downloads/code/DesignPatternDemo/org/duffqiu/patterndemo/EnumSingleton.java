@@ -1,5 +1,5 @@
 /**
- * 
+ * test git polling
  */
 package org.duffqiu.patterndemo;
 
@@ -11,13 +11,15 @@ package org.duffqiu.patterndemo;
 public enum EnumSingleton {
     INSTANCE;
 
+    private static final int DEFAULT_AGO = 36;
+
     private String name = "duff qiu";
-    private int age = 36;
+    private int age = DEFAULT_AGO;
 
     /**
      * @return the name
      */
-    public String getName() {
+    public synchronized String getName() {
 	return name;
     }
 
@@ -25,14 +27,14 @@ public enum EnumSingleton {
      * @param name
      *            the name to set
      */
-    public void setName(String name) {
+    public synchronized void setName(String name) {
 	this.name = name;
     }
 
     /**
      * @return the age
      */
-    public int getAge() {
+    public synchronized int getAge() {
 	return age;
     }
 
@@ -40,7 +42,7 @@ public enum EnumSingleton {
      * @param age
      *            the age to set
      */
-    public void setAge(int age) {
+    public synchronized void setAge(int age) {
 	this.age = age;
     }
 

@@ -1,0 +1,11 @@
+DesignPatternDemo develop src/main/java org.duffqiu.patterndemo       LazySingleton.java
+
+DesignPatternDemo develop src/test/java org.duffqiu.patterndemotest   LazySingletonTest.java
+
+DesignPatternDemo develop src/main/java org.duffqiu.patterndemo       SerialibleSingleton.java 
+
+DesignPatternDemo develop src/test/java org.duffqiu.patterndemotest   SerialibleSingletonTest.java
+
+DesignPatternDemo develop src/main/java org.duffqiu.patterndemo       EnumSingleton.java
+
+DesignPatternDemo develop src/test/java org.duffqiu.patterndemotest   EnumSingletonTest.java

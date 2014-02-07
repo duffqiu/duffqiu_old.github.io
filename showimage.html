@@ -1,0 +1,44 @@
+<!doctype html>
+<HTML>
+<head>
+<script type="text/javascript">
+
+function showdiv(elemid){
+
+  var fd = document.getElementById(elemid);
+  fd.style.left = event.clientX;
+  fd.style.top = event.clientY;
+  fd.style.display = "inline";
+}
+
+function hidediv(elemid){
+  document.getElementById(elemid).style.display = "none";
+
+}
+
+
+</script>
+
+</head>
+
+<BODY onload="hidediv('pic1')">
+
+<div style="border:thin solid #0000FF;width:100px" onload="hidediv('pic1')" onclick="showdiv('pic1')">
+come here!
+</div>
+
+
+<div align="center" class="prev" id="pic1" onclick="hidediv('pic1')">
+  <img src="TemplatePattern1.png" id="previmg">show image!
+</div>
+
+<div style="text-decoration:underline; font-size: 24px; color: red" onload="hidediv('gitflow')" onmouseover="showdiv('gitflow')">   Git flow Picture  </div>  
+
+
+<div align="center" class="prev" id="gitflow"  onmouseout="hidediv('gitflow')">
+  <img src="http://nvie.com/img/2009/12/Screen-shot-2009-12-24-at-11.32.03.png">
+</div>
+
+</BODY>
+
+</HTML>

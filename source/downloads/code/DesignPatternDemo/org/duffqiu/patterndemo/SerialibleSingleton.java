@@ -10,25 +10,27 @@ import java.io.Serializable;
  * 
  *         2014年2月5日
  */
-public class SerialibleSingleton implements Serializable {
+public final class SerialibleSingleton implements Serializable {
     /**
      * 
      */
     private static final long serialVersionUID = 7646684293730736310L;
 
+    private static final int DEFAULT_AGO = 36;
+
     private String name = "duff qiu";
-    private int age = 36;
+    private int age = DEFAULT_AGO;
 
     private SerialibleSingleton() {
 
     }
 
     private static class LazyHolder {
-	private static final SerialibleSingleton instance = new SerialibleSingleton();
+	private static final SerialibleSingleton INSTANCE = new SerialibleSingleton();
     }
 
     public static SerialibleSingleton getInstance() {
-	return LazyHolder.instance;
+	return LazyHolder.INSTANCE;
     }
 
     /*
@@ -69,6 +71,6 @@ public class SerialibleSingleton implements Serializable {
 
     private Object readResolve() {
 	//make sure the instance is the same as the local system after de-serialization 
-	return LazyHolder.instance;
+	return LazyHolder.INSTANCE;
     }
 }

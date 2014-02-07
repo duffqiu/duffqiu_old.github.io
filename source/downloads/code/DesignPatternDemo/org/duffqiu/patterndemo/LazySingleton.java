@@ -8,17 +8,17 @@ package org.duffqiu.patterndemo;
  * 
  *         2014年2月4日
  */
-public class LazySingleton {
+public final class LazySingleton {
 
     private LazySingleton() {
 
     }
 
     private static class LazyHolder {
-	private static final LazySingleton instance = new LazySingleton();
+	private static final LazySingleton INSTANCE = new LazySingleton();
     }
 
     public static LazySingleton getInstance() {
-	return LazyHolder.instance;
+	return LazyHolder.INSTANCE;
     }
 }

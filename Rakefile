@@ -27,6 +27,9 @@ new_post_ext    = "markdown"  # default new post file extension when using the n
 new_page_ext    = "markdown"  # default new page file extension when using the new_page task
 server_port     = "4000"      # port for preview server eg. localhost:4000
 
+# github code fetch config
+github_code_url = "https://raw.github.com/"
+github_account  = "duffqiu"
 
 desc "Initial setup for Octopress: copies the default theme into the path of Jekyll's generator. Rake install defaults to rake install[classic] to install a different theme run rake install[some_theme_name]"
 task :install, :theme do |t, args|
@@ -458,8 +461,6 @@ desc "get code file from github"
 task :github_code do
 
   begin
-    require 'net/http'
-    require 'uri'
     rm_rf "source/downloads"
     mkdir_p "source/downloads/code"
     if File.exist?("githubcode.cf")
@@ -487,6 +488,53 @@ task :github_code do
       end
     else
       puts 'githubcode.cf not found'
+    end
+  end
+end
+
+
+desc "fetch source code file from github"
+task :github_fetch do
+
+  begin
+    rm_rf "source/downloads"
+    mkdir_p "source/downloads/code"
+    if File.exist?("github_fetch.cf")
+      IO.foreach("github_fetch.cf") do |line|
+        if line.strip.empty? == false
+            cd "source/downloads/code" do
+            attr = line.split(' ')
+            repo = attr[0].strip
+            if repo.empty?
+              abort("repo name is empty")
+            end
+            branch = attr[1].strip
+            if branch.empty?
+              abort("branch name is empty")
+            end
+            src_fold = attr[2].strip
+            if src_fold.empty?
+              abort("src fold is empty")
+            end
+            package = attr[3].strip
+            if package.empty?
+              abort("package name is empty")
+            end
+            file_name = attr[4].strip
+            if file_name.empty?
+              abort("file name is empty")
+            end
+            package_dir = package.gsub(/\./, '/')
+            target_dir = repo + '/' + package_dir
+            mkdir_p target_dir
+            cd target_dir do
+              system ("wget  " + "#{github_code_url}/#{github_account}/#{repo}/#{branch}/#{src_fold}/#{package_dir}/#{file_name}")
+            end
+          end  
+        end
+      end
+    else
+      puts 'github_fetch.cf not found'
     end
   end
 end
