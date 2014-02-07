@@ -1,3 +1,16 @@
+function showdiv(){
+
+  var fd = document.getElementById("floatdiv");
+  fd.style.left = event.clientX;
+  fd.style.top = event.clientY;
+  fd.style.display = "inline";
+}
+
+function hidediv(){
+  document.getElementById("floatdiv").style.display = "none";
+
+}
+
 function getNav() {
   var mainNav = $('ul.main-navigation, ul[role=main-navigation]').before('<fieldset class="mobile-nav">')
   var mobileNav = $('fieldset.mobile-nav').append('<select>');

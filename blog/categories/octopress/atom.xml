@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-07T17:58:40+08:00</updated>
+  <updated>2014-02-07T18:27:44+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -19,7 +19,7 @@
     <updated>2014-02-07T17:02:16+08:00</updated>
     <id>http://duffqiu.github.io/blog/2014/02/07/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma-v2</id>
     <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<p>之前做了个Octopress实时获取并展示github上其它repository的代码的rake任务，参见<a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/">1</a>，但是每次都要打开github来获取文件的连接，还是比较烦。如果需要更改github branch的名字就需要重新更改整个连接。</p>
+<p>之前做了个Octopress实时获取并展示github上其它repository的代码的rake任务，参见<a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/">1</a>，但是每次都要打开github来获取文件的连接，还是比较烦。如果需要更改github branch的名字就需要重新更改整个链接。</p>
 
 <h3 id="section-1">解决方案</h3>
 <p>github上的代码存放实际上是有规则的。格式如下“https://raw.github.com/&lt;your github account&gt;/&lt;repository name&gt;/&lt;branch name&gt;/&lt;file folder&gt;/&lt;java package name&gt;/&lt;file name&gt;”</p>
@@ -28,7 +28,15 @@
 将&lt;repository name&gt;，&lt;branch name&gt;，&lt;file folder&gt;，&lt;java package name&gt;，&lt;file name&gt;配置到文件中  </p>
 
 <p>这样的话后面如果需要更改分支名就不用先去查找github上的raw文件url了<br />
-注意，如果用了git flow，则分支名可能是feature/&lt;branch name&gt;</p>
+注意，如果用了<a href="http://nvie.com/posts/a-successful-git-branching-model/">git flow</a>，则分支名可能是feature/&lt;branch name&gt;</p>
+
+<div style="border:thin solid #0000FF;width:100px" onmouseover="showdiv()" onmouseout="hidediv()">
+Git flow展示图
+</div>
+
+<div class="prev" id="floatdiv">
+  <img src="http://nvie.com/img/2009/12/Screen-shot-2009-12-24-at-11.32.03.png" id="previmg" />
+</div>
 
 <h3 id="section-2">代码实现</h3>
 
