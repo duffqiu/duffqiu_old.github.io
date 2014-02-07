@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Auto Test | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/auto-test/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-07T16:50:28+08:00</updated>
+  <updated>2014-02-07T17:49:00+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -37,8 +37,10 @@
   <li>
     <p>安装完成后，Jenkins会自动启动，打开本地8080端口，可以通过更改/Library/Application Support/Jenkins/jenkins-runner.sh启动脚本增加启动参数的方式更改，具体参数可以参考<a href="https://wiki.jenkins-ci.org/display/JENKINS/Starting+and+Accessing+Jenkins">2</a>。但是在Mac上可以用defaults工具来更改端口。具体命令如下</p>
 
-    <pre><code> &gt;sudo defaults write  /Library/Preferences/org.jenkins-ci httpPort 9080        然后用launchctl命令重新启动Jenkins就可以了。Java的配置参数也可以通过这个方式更改
+    <pre><code> &gt;sudo defaults write  /Library/Preferences/org.jenkins-ci httpPort 9080       
 </code></pre>
+
+    <p>然后用launchctl命令重新启动Jenkins就可以了。Java的配置参数也可以通过这个方式更改</p>
 
     <p>小提示，可以用defaults命令查看已经配置的参数</p>
 

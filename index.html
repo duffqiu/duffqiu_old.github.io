@@ -12,7 +12,7 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-9cd478bb8cc09a137b031cf363da0bc3.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-b6a08dcbed1957ac67d1bda851c540d2.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
@@ -20,9 +20,8 @@
 
   
   <meta name="description" content="原由
-在用Github管理代码，同时用JUnit做单元测试，则是否有一种方式／工具帮助我们自动从Github提取最新的代码然后运行JUnit测试并报告结果呢？
-答案是：Jenkins 安装及启动配置
-安装配置都是在Mac OSX下 下载OSX的安装包，直接安装就可以了。安装完后，程序被放在了/ &hellip;">
+之前做了个Octopress实时获取并展示github上其它repository的代码的rake任务，参见1，但是每次都要打开github来获取文件的连接，还是比较烦。如果需要更改github branch的名字就需要重新更改整个连接。 解决方案
+github上的代码存放实际上是有规则的。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -41,7 +40,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-9cd478bb8cc09a137b031cf363da0bc3.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-b6a08dcbed1957ac67d1bda851c540d2.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-3be11d01c576919bb0be36d59a372a9e.js' type='text/javascript'></script>
@@ -107,6 +106,66 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/02/07/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma-v2/">Octopress实时获取并展示github上其它repository的代码v2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-07T17:02:16+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/07/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma-v2/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<p>之前做了个Octopress实时获取并展示github上其它repository的代码的rake任务，参见<a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/">1</a>，但是每次都要打开github来获取文件的连接，还是比较烦。如果需要更改github branch的名字就需要重新更改整个连接。</p>
+
+<h3 id="section-1">解决方案</h3>
+<p>github上的代码存放实际上是有规则的。格式如下“https://raw.github.com/&lt;your github account&gt;/&lt;repository name&gt;/&lt;branch name&gt;/&lt;file folder&gt;/&lt;java package name&gt;/&lt;file name&gt;”</p>
+
+<p>根据这个规则，可以将https://raw.github.com/，&lt;your github account&gt;固定在Rakefile的变量中<br />
+将&lt;repository name&gt;，&lt;branch name&gt;，&lt;file folder&gt;，&lt;java package name&gt;，&lt;file name&gt;配置到文件中  </p>
+
+<p>这样的话后面如果需要更改分支名就不用先去查找github上的raw文件url了<br />
+注意，如果用了git flow，则分支名可能是feature/<branch name=""></branch></p>
+
+<h3 id="section-2">代码实现</h3>
+
+<p>为了保留原由的实现，则在Rakefile上增加一个新的任务，起名为github_fetch，对应使用的配置文件为githubfetch.cf  </p>
+
+<h4 id="vi">Vi小提示</h4>
+
+<ol>
+  <li>Copy单前行到文件结尾：“yG”</li>
+  <li>Delete单前行到文件结尾：“dG”</li>
+</ol>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi/">用Jenkins搭建基于Github和JUnit的自动化测试</a></h1>
     
     
@@ -152,8 +211,10 @@
   <li>
     <p>安装完成后，Jenkins会自动启动，打开本地8080端口，可以通过更改/Library/Application Support/Jenkins/jenkins-runner.sh启动脚本增加启动参数的方式更改，具体参数可以参考<a href="https://wiki.jenkins-ci.org/display/JENKINS/Starting+and+Accessing+Jenkins">2</a>。但是在Mac上可以用defaults工具来更改端口。具体命令如下</p>
 
-    <pre><code> &gt;sudo defaults write  /Library/Preferences/org.jenkins-ci httpPort 9080        然后用launchctl命令重新启动Jenkins就可以了。Java的配置参数也可以通过这个方式更改
+    <pre><code> &gt;sudo defaults write  /Library/Preferences/org.jenkins-ci httpPort 9080       
 </code></pre>
+
+    <p>然后用launchctl命令重新启动Jenkins就可以了。Java的配置参数也可以通过这个方式更改</p>
 
     <p>小提示，可以用defaults命令查看已经配置的参数</p>
 
@@ -1774,180 +1835,6 @@ bing_analytics: true
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/01/jia-su-octopressde-zhuang-zai/">加速Octopress的装载</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-01T14:23:15+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/01/jia-su-octopressde-zhuang-zai/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<p>加速网页的存取有多种方式，其中之一就是减少一个页面的http的请求数量，因为浏览器同时发送http请求的数量是有限的，而对于很多页面而言，通常定义了很多css和js文件的链接，这样就会造成浏览器需要多次请求后才能完整的展示页面，所以最好的方式将多个css和js文件合并，如果需要还可以将合并后的文件压缩再传输，从而达到加速的目的。</p>
-
-<h3 id="gem">Gem插件安装</h3>
-<p>Octopress的<a href="https://github.com/matthodan/jekyll-asset-pipeline">jekyll-asset-pipeline</a>就是一个这样机制的开源插件<br />
-简单的可以通过以下命令安装</p>
-
-<pre><code>&gt;sudo gem install jekyll-asset-pipeline
-</code></pre>
-
-<p><strong>注意：</strong> 有可能安装完成后，需要更新bundle，这行命令</p>
-
-<pre><code>&gt;sudo bunlde update  
-</code></pre>
-
-<p>压缩需要用到插件YUI Compressor，可以简单通过以下命令安装</p>
-
-<pre><code>&gt;sudo gem install yui-compressor
-</code></pre>
-
-<p>另外一个选择是使用Google的<a href="https://developers.google.com/closure/?hl=zh-cn">Closure</a>，可以通过简单通过以下命令安装</p>
-
-<pre><code>&gt;sudo gem install Closure          
-</code></pre>
-
-<h3 id="octopress">配置Octopress</h3>
-<ol>
-  <li>
-    <p>配置octopress目录下的Gemfile文件，在:development中，增加以下两行</p>
-
-    <pre><code>gem "jekyll-asset-pipeline"
-gem "yui-compressor
-</code></pre>
-  </li>
-  <li>
-    <p>在 Octopress的plugins目录中，创建一个名为“jekyll_asset_pipeline.rb”的文件，内容如下：可以用注释那行代替上面那行就是使用Google的closure来压缩js文件</p>
-
-    <pre><code> require 'jekyll_asset_pipeline'
-
- module JekyllAssetPipeline
-	
-   class CssCompressor &lt; JekyllAssetPipeline::Compressor
-     require 'yui/compressor'
-	
-     def self.filetype
-       '.css'
-     end
-	
-     def compress
-       return YUI::CssCompressor.new.compress(@content)
-     end
-   end
-	
-   class JavaScriptCompressor &lt; JekyllAssetPipeline::Compressor
-     require 'yui/compressor'
-     #require 'closure-compiler'
-	
-     def self.filetype
-       '.js'
-     end
-	
-     def compress
-       return YUI::JavaScriptCompressor.new(munge: true).compress(@content)
-       #return Closure::Compiler.new.compile(@content)
-     end
-   end
-	
- end
-</code></pre>
-  </li>
-  <li>
-    <p>修改Octopress的配置文件_config.yml，在文件最后增加以下配置</p>
-
-    <pre><code>asset_pipeline:
-   bundle: true            # Default = true
-   compress: true          # Default = true
-   #output_path: assets     # Default = assets
-   #display_path: nil       # Default = nil
-   gzip: false             # Default = false
-</code></pre>
-  </li>
-  <li>
-    <p>修改相应的html文件，激活js/css文件的合并压缩。不同的Octopress的template，对应的文件或有不同，我这里用的是Octopress默认的官方template，因该适合大多数人</p>
-
-    <ul>
-      <li>
-        <p>修改source/_include目录下的head.html文件，注释掉带有js/css的几行</p>
-
-        <pre><code> &lt;!-- &lt;link href="{{ root_url }}/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"&gt; --&gt;
-	 
- &lt;!-- &lt;script src="{{ root_url }}/javascripts/modernizr-2.0.js"&gt;&lt;/script&gt; --&gt;
- &lt;!-- &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt; --&gt;
- &lt;!-- &lt;script&gt;!window.jQuery &amp;&amp; document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))&lt;/script&gt; --&gt;
- &lt;!-- &lt;script src="{{ root_url }}/javascripts/octopress.js" type="text/javascript"&gt;&lt;/script&gt; --&gt;
-</code></pre>
-      </li>
-      <li>
-        <p>增加以下内容</p>
-
-        <pre><code>{% css_asset_tag global %}
- - /stylesheets/screen.css
-{% endcss_asset_tag %}
-	
-{% javascript_asset_tag global %}
-- /javascripts/octopress.js
-- /javascripts/modernizr-2.0.js
-- /javascripts/libs/jquery.min.js
-- /javascripts/libs/swfobject-dynamic.js
-- /javascripts/libs/jXHR.js
-{% endjavascript_asset_tag %}
-</code></pre>
-      </li>
-      <li>
-        <p>同理修改source/_includes/custom目录下的head.html文件，注释掉里面的内容，增加上面的内容就可   </p>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <p>到底有多css和js文件需要加入到需要增加的内容中呢？在octopress/source目录中搜索一下</p>
-
-    <pre><code>find . -name '*.css'
-find . -name '*.js'
-</code></pre>
-
-    <p>然后将必要的文件加入到上面的文件列表中</p>
-  </li>
-</ol>
-
-<h3 id="vi">Vi小提示</h3>
-
-<ol>
-  <li>跳到文件头用 “:0”</li>
-  <li>跳到行头在非编辑状态下直接收入”0”</li>
-  <li>跳到行尾在非编辑状态下直接收入”$”      </li>
-</ol>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1963,6 +1850,10 @@ find . -name '*.js'
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/07/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma-v2/">Octopress实时获取并展示github上其它repository的代码v2</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi/">用Jenkins搭建基于Github和JUnit的自动化测试</a>
       </li>
     
@@ -1976,10 +1867,6 @@ find . -name '*.js'
     
       <li class="post">
         <a href="/blog/2014/02/03/she-ji-mo-shi-%3Amo-ban-fang-fa/">设计模式：模版方法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/02/umllei-tu/">UML类图</a>
       </li>
     
   </ul>
@@ -2002,7 +1889,7 @@ find . -name '*.js'
 <li class='category'><a href='/blog/categories/mac/'>MAC (2)</a></li>
 <li class='category'><a href='/blog/categories/oo/'>OO (1)</a></li>
 <li class='category'><a href='/blog/categories/osx/'>OSX (3)</a></li>
-<li class='category'><a href='/blog/categories/octopress/'>Octopress (11)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>Octopress (12)</a></li>
 <li class='category'><a href='/blog/categories/port/'>Port (1)</a></li>
 <li class='category'><a href='/blog/categories/proxy/'>Proxy (1)</a></li>
 <li class='category'><a href='/blog/categories/uml/'>UML (1)</a></li>

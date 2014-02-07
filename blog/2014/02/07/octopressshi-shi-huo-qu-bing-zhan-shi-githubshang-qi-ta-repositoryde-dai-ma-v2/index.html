@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>UML类图 - Duff Qiu's Blog</title>
+  <title>Octopress实时获取并展示github上其它repository的代码v2 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,8 +19,9 @@
 
 
   
-  <meta name="description" content="UML工具
-推荐大家用astah，Community版本就够了 类图的描述 类名：正体字为实例化类， 斜体字是抽象类，接口类有interface标识(也可以是个圆形，不过建议在类图中还是使用长方形的图形标识) 属性：+表示puiblic， -表示private， #表示protected 方法：+ &hellip;">
+  <meta name="description" content="原由
+之前做了个Octopress实时获取并展示github上其它repository的代码的rake任务，参见1，但是每次都要打开github来获取文件的连接，还是比较烦。如果需要更改github branch的名字就需要重新更改整个连接。 解决方案
+github上的代码存放实际上是有规则的。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,7 +30,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/02/umllei-tu">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/07/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma-v2">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -102,7 +103,7 @@
   
   <header>
     
-      <h1 class="entry-title">UML类图</h1>
+      <h1 class="entry-title">Octopress实时获取并展示github上其它repository的代码v2</h1>
     
     
       <p class="meta">
@@ -118,7 +119,7 @@
   
 
 
-<time datetime="2014-02-02T20:44:44+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2014</time>
+<time datetime="2014-02-07T17:02:16+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -128,86 +129,28 @@
   </header>
 
 
-<div class="entry-content"><h3 id="uml">UML工具</h3>
-<p>推荐大家用<a href="http://members.change-vision.com/files/astah_community" title="官网">astah</a>，Community版本就够了</p>
+<div class="entry-content"><h3 id="section">原由</h3>
+<p>之前做了个Octopress实时获取并展示github上其它repository的代码的rake任务，参见<a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/">1</a>，但是每次都要打开github来获取文件的连接，还是比较烦。如果需要更改github branch的名字就需要重新更改整个连接。</p>
 
-<h3 id="section">类图的描述</h3>
+<h3 id="section-1">解决方案</h3>
+<p>github上的代码存放实际上是有规则的。格式如下“https://raw.github.com/&lt;your github account&gt;/&lt;repository name&gt;/&lt;branch name&gt;/&lt;file folder&gt;/&lt;java package name&gt;/&lt;file name&gt;”</p>
 
-<ol>
-  <li>类名：正体字为实例化类， 斜体字是抽象类，接口类有interface标识(也可以是个圆形，不过建议在类图中还是使用长方形的图形标识)</li>
-  <li>属性：<strong><em>+</em></strong>表示puiblic， <strong><em>-</em></strong>表示private， <strong><em>#</em></strong>表示protected</li>
-  <li>方法：<strong><em>+</em></strong>表示puiblic， <strong><em>-</em></strong>表示private， <strong><em>#</em></strong>表示protected, 有下划线表示      <font style="border-bottom:1px solid #000;">静态方法</font></li>
-</ol>
+<p>根据这个规则，可以将https://raw.github.com/，&lt;your github account&gt;固定在Rakefile的变量中<br />
+将&lt;repository name&gt;，&lt;branch name&gt;，&lt;file folder&gt;，&lt;java package name&gt;，&lt;file name&gt;配置到文件中  </p>
 
-<p><img src="/images/ClassDiagram.png" alt="类图和继承与实现" /></p>
+<p>这样的话后面如果需要更改分支名就不用先去查找github上的raw文件url了<br />
+注意，如果用了git flow，则分支名可能是feature/<branch name=""></branch></p>
 
-<h3 id="section-1">类图中类与类的关系</h3>
+<h3 id="section-2">代码实现</h3>
 
-<h4 id="section-2">继承与实现</h4>
+<p>为了保留原由的实现，则在Rakefile上增加一个新的任务，起名为github_fetch，对应使用的配置文件为githubfetch.cf  </p>
 
-<ol>
-  <li>
-    <p>继承关系，用带实线的闭合空心箭头</p>
-
-    <div style="font-size: 36px"> ⇾ </div>
-
-    <p>表示，Java语言中<strong>extends</strong>体现</p>
-  </li>
-  <li>
-    <p>接口实现关系，用虚线带的闭合空心箭头</p>
-
-    <div style="font-size: 36px"> ­­­­⁃⁃⇾ </div>
-
-    <p>表示，Java语言中<strong>implements</strong>体现</p>
-  </li>
-</ol>
-
-<h4 id="section-3">关联关系(体现类与类的实例变量的关系)</h4>
-
-<p>提示： 实践中，要将所有的关联关系都要画清楚</p>
+<h4 id="vi">Vi小提示</h4>
 
 <ol>
-  <li>
-    <p>类与类的关联关系：(association)，体现类与类的实例变量的关系，可以是单向关联（单箭头），也可以是双向关联（双箭头/无箭头，不鼓励有这种关系）。关联关系还可以有个基数，表明这一端的类有几个该类型的实例（0..1, 0..*, 1, 1..*），使用实线开放式箭头表示</p>
-
-    <div style="font-size: 36px"> ➔ </div>
-  </li>
-  <li>
-    <p>聚合关系（aggregation），关联关系的一种，是强的关联关系，是整体和个体间的关系(个体可以单独存在)，也是通过实例变量体现。Java语法是无法区分聚合和关联关系的。如果不是太确定，可以设置为关联关系。同样具有基数。实例类用空的菱形表示  </p>
-
-    <div style="font-size: 36px"> ◇⟶ </div>
-  </li>
-  <li>
-    <p>合成关系(Composition)，关联关系的一种，是比聚合关系<strong>强</strong>的关联关系。该关系和聚合关系的区别是，代表整体的部分负责代表部分的对象的生命周期，即部分对象不会独立于整体存在，且不能共享。实例类用实心的菱形表示，也是通过实例变量体现。如果不是太确定则用聚合/关联关系表示</p>
-
-    <div style="font-size: 36px"> ◆⟶ </div>
-  </li>
+  <li>Copy单前行到文件结尾：“yG”</li>
+  <li>Delete单前行到文件结尾：“dG”</li>
 </ol>
-
-<h4 id="section-4">依赖关系(体现为局部变量、方法参数，以及对静态方法的调用)</h4>
-
-<p>提示： 这些表示在astah中都可以容易使用，要做到的事情时清楚其具体含义 </p>
-
-<ol>
-  <li>
-    <p>依赖关系(dependency)，依赖总是单向。Java中体现为局部变量、方法参数，以及对静态方法的调用，图形通过虚线开放箭头表示</p>
-
-    <div style="font-size: 36px"> ⤑ </div>
-
-    <p>实践中没有必要将所有的依赖都画出来，只画出重要部分</p>
-  </li>
-</ol>
-
-<h5 id="astah">类的关联关系和依赖关系在astah中的表示如下：</h5>
-
-<p><img src="/images/ClassRelationship.png" alt="类的关联关系和依赖关系" />   </p>
-
-<p>尽管前面讲了使用UML不要太教条，试用就好，但是图的表示含义还是要准确的好
-本章节的astah的文件：<a href="/assets/ClassDiagram.asta">类的UML说明</a></p>
-
-<h3 id="section-5">小插曲</h3>
-
-<p>今天在家下载astah很慢，就用baidu的离线下载（普通下载方式），先交由baidu下载到网盘上，然后再到网盘上下载下来，速度很快，比直接下载好多了</p>
 </div>
 
 
@@ -230,12 +173,12 @@
   
 
 
-<time datetime="2014-02-02T20:44:44+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2014</time>
+<time datetime="2014-02-07T17:02:16+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/uml/'>UML</a>
+    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
   
 </span>
 
@@ -251,10 +194,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/" title="Previous Post: OO的一些设计原则">&laquo; OO的一些设计原则</a>
+        <a class="basic-alignment left" href="/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi/" title="Previous Post: 用Jenkins搭建基于Github和JUnit的自动化测试">&laquo; 用Jenkins搭建基于Github和JUnit的自动化测试</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/02/03/she-ji-mo-shi-%3Amo-ban-fang-fa/" title="Next Post: 设计模式：模版方法">设计模式：模版方法 &raquo;</a>
       
     </p>
   </footer>
@@ -325,22 +266,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/07/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma-v2/">Octopress实时获取并展示github上其它repository的代码v2</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi/">用Jenkins搭建基于Github和JUnit的自动化测试</a></h3>
         <div class="meta">
           <span class="tags">
@@ -396,6 +321,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/02/02/umllei-tu/">UML类图</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/uml/'>UML</a>
   
 </span>
 
