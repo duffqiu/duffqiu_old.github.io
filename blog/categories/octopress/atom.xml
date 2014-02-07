@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-07T21:12:11+08:00</updated>
+  <updated>2014-02-07T21:14:14+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -27,42 +27,44 @@
 <p>具体的实现方式是  </p>
 
 <ol>
-  <li>
-    <p>增加两个javascript的方法，一个展示图片，一个隐藏图片，简单的方式可以直接将他们放入到source/javascripts/octopress.js文件的最开头  </p>
-
-    <p>{% codeblock lang:Javascript %}</p>
-
-    <p>function showdiv(elemid){</p>
-
-    <p>var fd = document.getElementById(elemid);
-   fd.style.left = event.clientX;
-   fd.style.top = event.clientY;
-   fd.style.display = “inline”;
- }</p>
-
-    <p>function hidediv(elemid){
-   document.getElementById(elemid).style.display = “none”;</p>
-
-    <p>}</p>
-
-    <p>{% endcodeblock %}</p>
-  </li>
-  <li>
-    <p>在blog中增加使用图片的div的代码</p>
-
-    <p>{% codeblock lang:sh %}</p>
-
-    <div style="text-decoration:underline; font-size: 24px; color: red" onclick="showdiv('pic')"> Picture Show Text </div>
-
-    <div style="display:none" class="prev" id="pic" onclick="hidediv('pic')">
-	
- <img src="xxx.png" title="点击关闭" />
-	
- </div>
-
-    <p>{% endcodeblock %}</p>
-  </li>
+  <li>增加两个javascript的方法，一个展示图片，一个隐藏图片，简单的方式可以直接将他们放入到source/javascripts/octopress.js文件的最开头  </li>
 </ol>
+
+<p>{% codeblock lang:Javascript %}   </p>
+
+<pre><code>function showdiv(elemid){
+
+  var fd = document.getElementById(elemid);
+  fd.style.left = event.clientX;
+  fd.style.top = event.clientY;
+  fd.style.display = "inline";
+}
+
+function hidediv(elemid){
+  document.getElementById(elemid).style.display = "none";
+
+}	
+</code></pre>
+
+<p>{% endcodeblock %}</p>
+
+<ol>
+  <li>在blog中增加使用图片的div的代码</li>
+</ol>
+
+<p>{% codeblock lang:sh %}</p>
+
+<pre><code>&lt;div style="text-decoration:underline; font-size: 24px; color: red" onclick="showdiv('pic')"&gt; Picture Show Text &lt;/div&gt;  
+
+
+&lt;div style="display:none" class="prev" id="pic"  onclick="hidediv('pic')"&gt;
+
+&lt;img src="xxx.png" title="点击关闭"&gt;
+
+&lt;/div&gt;
+</code></pre>
+
+<p>{% endcodeblock %}</p>
 
 <p>效果是点击图片文字展开图片，点击图片后隐藏。        </p>
 ]]></content>
