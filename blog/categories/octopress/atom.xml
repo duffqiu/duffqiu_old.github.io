@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-07T21:18:25+08:00</updated>
+  <updated>2014-02-07T21:21:31+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -26,9 +26,9 @@
 
 <p>具体的实现方式是  </p>
 
-<ol>
+<ul>
   <li>增加两个javascript的方法，一个展示图片，一个隐藏图片，简单的方式可以直接将他们放入到source/javascripts/octopress.js文件的最开头  </li>
-</ol>
+</ul>
 
 <p>{% codeblock lang:Javascript %}   </p>
 
@@ -49,9 +49,9 @@ fd.style.display = “inline”;</p>
 
 <p>{% endcodeblock %}</p>
 
-<ol>
+<ul>
   <li>在blog中增加使用图片的div的代码</li>
-</ol>
+</ul>
 
 <p>{% codeblock lang:sh %}</p>
 
