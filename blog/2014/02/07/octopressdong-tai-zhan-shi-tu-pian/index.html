@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress在github上建blog的准备工作 - Duff Qiu's Blog</title>
+  <title>Octopress动态展示图片 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,9 +19,9 @@
 
 
   
-  <meta name="description" content="需要一堆的软件
-我都是在Mac上安装的，windows真的没有兴趣再试多一次了 Mac系统的准备工作
-这个部分或许和安装Octopress没什么关系，但是用Mac系统的话最好都装上，通常都用的上 安装MacPorts，官网有比较详细的介绍，可以下pkg安装；也可以源文件安装， &hellip;">
+  <meta name="description" content="原由
+在Octopress中如果展示图片太大，这回占用屏幕很大的篇幅，最好的办法是先隐藏起来，需要的时候点击展开 解决办法
+利用div的display的设置的方式实现 具体的实现方式是 增加两个javascript的方法，一个展示图片，一个隐藏图片，简单的方式可以直接将他们放入到source/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,7 +30,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/25/octopresszai-githubshang-jian-blogde-zhun-bei-gong-zuo">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/07/octopressdong-tai-zhan-shi-tu-pian">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -103,7 +103,7 @@
   
   <header>
     
-      <h1 class="entry-title">Octopress在github上建blog的准备工作</h1>
+      <h1 class="entry-title">Octopress动态展示图片</h1>
     
     
       <p class="meta">
@@ -119,7 +119,7 @@
   
 
 
-<time datetime="2014-01-25T23:03:42+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2014</time>
+<time datetime="2014-02-07T20:39:21+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -129,94 +129,46 @@
   </header>
 
 
-<div class="entry-content"><h3 id="section">需要一堆的软件</h3>
-<p>我都是在Mac上安装的，windows真的没有兴趣再试多一次了</p>
+<div class="entry-content"><h3 id="section">原由</h3>
+<p>在Octopress中如果展示图片太大，这回占用屏幕很大的篇幅，最好的办法是先隐藏起来，需要的时候点击展开 </p>
 
-<h4 id="mac">Mac系统的准备工作</h4>
-<p>这个部分或许和安装<a href="http://octopress.org" title="Octopress官网">Octopress</a>没什么关系，但是用Mac系统的话最好都装上，通常都用的上</p>
+<h3 id="section-1">解决办法</h3>
+<p>利用div的display的设置的方式实现</p>
 
-<ul>
-  <li>
-    <p>安装<a href="http://www.macports.org/index.php">MacPorts</a>，官网有比较详细的介绍，可以下pkg安装；也可以源文件安装，但是前提是必须安装xcode的command line工具，运行一下命令安装。</p>
+<p>具体的实现方式是  </p>
 
-    <pre><code> sudo xcode-select --install
-</code></pre>
-
-    <p>之前也是用pkg方式安装的，但是用</p>
-
-    <pre><code>  sudo port -v selfupgrad
-</code></pre>
-
-    <p>的时候出现了错误，所以还是安装上xcode的command line工具就好了，好像是OSX Mavericks版本才有？这个问题是通过stackover上的帖子<a href="http://stackoverflow.com/questions/19622337/cant-update-macports-with-mac-os-x-mavericks">cant-update-macports-with-mac-os-x-mavericks</a>的解答获得的。port工具可以帮助安装所需要软件以及其依赖的软件，省去了很多找软件的麻烦，另外一个和macports差不多的软件管理工具是<a href="http://brew.sh" title="Brew官网">HomeBrew</a></p>
-  </li>
-  <li>安装<a href="http://git-scm.com/">Git</a>工具，如何使用Git还是看官方文档吧，这里就不讲了</li>
-  <li>
-    <p>安装ruby，OSX已经自带了</p>
-  </li>
-  <li>
-    <p>用MacPorts安装rbenv</p>
-
-    <pre><code>  sudo port install rbenv 安装octopress需要，但是具体什么用没有细研究
-</code></pre>
-  </li>
-  <li>配置zsh shell，建议用zsh shell，具体如何配置可以参考Mactalk，如果后面讲书的内容写到blog里，是否有侵权？</li>
-</ul>
-
-<h4 id="octopress">获取Octopress并安装相应的包</h4>
 <ol>
-  <li>在机器上建立一个本地的git repo，并进入这个目录</li>
   <li>
-    <p>获取Octopress源码</p>
+    <p>增加两个javascript的方法，一个展示图片，一个隐藏图片，简单的方式可以直接将他们放入到source/javascripts/octopress.js文件的最开头</p>
 
-    <pre><code>git clone git://github.com/imathis/octopress.git octopress
+    <pre><code>   function showdiv(elemid){
+		
+     var fd = document.getElementById(elemid);
+     fd.style.left = event.clientX;
+     fd.style.top = event.clientY;
+     fd.style.display = "inline";
+   }
+		
+   function hidediv(elemid){
+     document.getElementById(elemid).style.display = "none";
+		
+   }
 </code></pre>
   </li>
   <li>
-    <p>安装依赖工具</p>
+    <p>在blog中增加使用图片的div的代码</p>
 
-    <pre><code>cd octopress
-gem install bundler
-rbenv rehash #还是不太明白这个具体做什么用
-bundle install
-</code></pre>
-  </li>
-  <li>
-    <p>安装Octopress默认的Theme</p>
+    <div style="text-decoration:underline; font-size: 24px; color: red" onclick="showdiv('pic')"> Picture Show Text </div>
 
-    <pre><code>rake install
-</code></pre>
+    <div style="display:none" class="prev" id="pic" onclick="hidediv('pic')">
+        
+   <img src="xxx.png" title="点击关闭" />
+        
+   </div>
   </li>
 </ol>
 
-<h4 id="github">配置Github</h4>
-<p>生成一个名为<your github="" name="">.github.io的repository，注意这里<your github="" name="">是你的github的账户名，要用.io不是.com</your></your></p>
-
-<h4 id="octopressgithub">初始化octopress并部署到Github</h4>
-<ol>
-  <li>
-    <p>关联octopress和github</p>
-
-    <pre><code>rake setup_github_pages 根据提示输入&lt;your github name&gt;.github.io的repository对应的地址
-</code></pre>
-  </li>
-  <li>
-    <p>部署octpress到Github</p>
-
-    <pre><code>rake generate #生成静态文件
-rake deploy #部署静态文件到github
-</code></pre>
-  </li>
-  <li>
-    <p>Push原文件到Github的source branch上，如果不做这步，github将只有生成好的文件</p>
-
-    <pre><code>git add .
-git commit -m &lt;'your message'&gt;
-git push origin source
-</code></pre>
-  </li>
-</ol>
-
-<p>到这一步，基本上就将Octopress基本配置好了，后面将讲讲如何写blogger和配置Octopress</p>
+<p>效果是点击图片文字展开图片，点击图片后隐藏。        </p>
 </div>
 
 
@@ -239,7 +191,7 @@ git push origin source
   
 
 
-<time datetime="2014-01-25T23:03:42+08:00" pubdate data-updated="true">Jan 25<span>th</span>, 2014</time>
+<time datetime="2014-02-07T20:39:21+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2014</time>
       
 
 <span class="categories">
@@ -260,10 +212,8 @@ git push origin source
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/25/first-time-to-setup-octopress-in-github/" title="Previous Post: First time to setup Octopress in Github">&laquo; First time to setup Octopress in Github</a>
+        <a class="basic-alignment left" href="/blog/2014/02/07/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma-v2/" title="Previous Post: Octopress实时获取并展示github上其它repository的代码v2">&laquo; Octopress实时获取并展示github上其它repository的代码v2</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/26/kai-shi-xie-di-%5B%3F%5D-pian-blog/" title="Next Post: 开始写第一篇blog">开始写第一篇blog &raquo;</a>
       
     </p>
   </footer>
@@ -334,22 +284,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/07/octopressdong-tai-zhan-shi-tu-pian/">Octopress动态展示图片</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/02/07/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma-v2/">Octopress实时获取并展示github上其它repository的代码v2</a></h3>
         <div class="meta">
           <span class="tags">
@@ -399,6 +333,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
     
       <article>
         <h3 class="title"><a href="/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi/">设计模式: 单例模式</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/02/03/she-ji-mo-shi-%3Amo-ban-fang-fa/">设计模式：模版方法</a></h3>
         <div class="meta">
           <span class="tags">
 
