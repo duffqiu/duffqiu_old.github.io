@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-07T22:06:38+08:00</updated>
+  <updated>2014-02-08T13:54:08+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[在Jenkins中使用Findbugs]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/08/zai-jenkinszhong-shi-yong-findbugs/"/>
+    <updated>2014-02-08T13:02:06+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/08/zai-jenkinszhong-shi-yong-findbugs</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<p>看了看Sonar的介绍，的确很专业，但是是否每个功能都用的上？而且Sonar也是集成了PMD, Findbugs, Checkstyle等插件的功能来帮助完成相关的任务的。<br />
+但是Jenkins也同样直接支持这些插件，是否只用Jenkins加上这些插件就可以了？</p>
+
+<p>前面介绍Jenkins的时候已经用了不少插件，这里再加一个Findbugs</p>
+
+<h3 id="section-1">配置</h3>
+
+<ol>
+  <li>
+    <p>在对应的maven项目中加入maven的Findbugs插件，配置示例如下：</p>
+
+ 	 <plugin>
+</plugin>    <pre><code>    &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+    &lt;artifactId&gt;findbugs-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;2.5.4-SNAPSHOT&lt;/version&gt;
+    &lt;configuration&gt;
+      &lt;xmlOutput&gt;true&lt;/xmlOutput&gt;
+    &lt;/configuration&gt;
+  &lt;/plugin&gt;
+</code></pre>
+  </li>
+  <li>在Jenkins中安装对应的Findbugs插件“FindBugs Plug-in”</li>
+  <li>然后在Jenkins的项目配置中激活Findbugs，也就是打个勾。</li>
+  <li>给Maven的运行加入新的goald：“findbugs:findbugs”</li>
+  <li>重新构建项目就可以得到了</li>
+</ol>
+
+<h4 id="section-2">小插曲：</h4>
+<p>在Eclpse中使用的时候没有发现问题，但是到了Jenkins后，从后台的build输出确发现了一个异常的warning: “Failed to notify spy hudson.maven.Maven3Builder$JenkinsEventSpy: Failed to load edu.umd.cs.findbugs.detect.TestASM”，从而没能在Jenkins上看到Findbugs的报告。后来查了半天，尽然是Jenkins的Bug，临时的解决办法尽然是将Maven换成3.0.5的版本，不要使用3.1或3.1.1</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Octopress动态展示图片]]></title>
@@ -2099,56 +2137,6 @@ rake deploy
 </code></pre>
   </li>
 </ol>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mac上用google-app-engine搭建proxy]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/"/>
-    <updated>2014-01-28T11:20:35+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy</id>
-    <content type="html"><![CDATA[<h4 id="section">原由</h4>
-<p>在家访问Google时总时不时就无法访问，而技术类问题的搜索在百度的结果总是与期望相差太远，要不就是国外的网站无法访问，所以最好的就是使用国外的代理，作为技术人员最好的办法就是自己搭建一个。</p>
-
-<h4 id="section-1">平台选择</h4>
-<p>目前有多中选择，但是看了下攻略，最简单的方式就是用google app engine。而且有开源的proxy服务器软件Goagent以及有Mac上好用的GoagentX客户端，那么就它了。</p>
-
-<h4 id="goagent">安装Goagent</h4>
-<p>访问<a href="https://code.google.com/p/goagent/" title="官网">Goagent</a><br />
-但是在没有代理的时候，访问code.google.com总是很慢，这里附上一个<a href="http://duffqiu.github.io/assets/goagent-goagent-v3.1.5.zip">Goagent 3.1.5</a><br />
-具体教程可以参考Goagent的官网
-在Mac上的简单操作就是</p>
-
-<ol>
-  <li>到<a href="https://appengine.google.com/">Google App Engine</a>创建一个App</li>
-  <li>解开Goagent下载下来的软件，到server/gae目录，编写gae.py文件配置密码（避免有人偷用你的流量）</li>
-  <li>
-    <p>使用命令上传goagent并部署</p>
-
-    <pre><code> python upload.zip 然后按照提示操作就可（就是输入两次google account和密码）
-</code></pre>
-  </li>
-  <li>注意：如果提示等待x秒后尝试看看部署是否成功，等待一会就好，如果不行取消当前操作(ctrol+c)重复之前的操作直到成功为止。估计又是Great Wall的问题</li>
-</ol>
-
-<h4 id="goagentx">安装GoagentX</h4>
-<p>访问<a href="http://goagentx.com">GoagentX</a>，获得一个App，打开就可
-然后就是简单配置GoagentX</p>
-
-<ol>
-  <li>设置AppId</li>
-  <li>设置服务密码，就是在gae.py上设置的密码</li>
-  <li>然后启动就可</li>
-  <li>启动成功后，Mac会被自动设置了代理</li>
-  <li>接着就能够访问了(如果你能看到youtube／facebook就证明OK了)</li>
-  <li>如需在局域网共享，则将启动Goagent的地方勾上局域网选项，然后在代理设置里面也勾上代理选项（记得重启代理）</li>
-  <li>在其它机器上配置代理服务器就可以了</li>
-</ol>
-
-<h4 id="section-2">免费增加流量</h4>
-<p>Google App Engine目前是提供28个小时的前端应用免费流量，如果需要增加则再多创建一个或多个这样的应用就可。  </p>
-
-<p>Google App Engine允许一个账户最多创建10个应用</p>
 ]]></content>
   </entry>
   

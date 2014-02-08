@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress Gem插件gsl安装 - Duff Qiu's Blog</title>
+  <title>在Jenkins中使用Findbugs - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -20,8 +20,8 @@
 
   
   <meta name="description" content="原由
-Octopress用rake generate的时候会提示使用GSL将会加速文件的生成，速度是原来的的10+倍，但是需要安装Ruby GSL插件。 安装
-当使用命令安装Ruby GSL的时候确发现了问题 gem install gsl 原因是缺少了GSL的C的开发库 然后在GSL &hellip;">
+看了看Sonar的介绍，的确很专业，但是是否每个功能都用的上？而且Sonar也是集成了PMD, Findbugs, Checkstyle等插件的功能来帮助完成相关的任务的。
+但是Jenkins也同样直接支持这些插件，是否只用Jenkins加上这些插件就可以了？ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,7 +30,7 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/30/octopress-gemcha-jian-gslan-zhuang">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/08/zai-jenkinszhong-shi-yong-findbugs">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -103,7 +103,7 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   
   <header>
     
-      <h1 class="entry-title">Octopress Gem插件gsl安装</h1>
+      <h1 class="entry-title">在Jenkins中使用Findbugs</h1>
     
     
       <p class="meta">
@@ -119,7 +119,7 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   
 
 
-<time datetime="2014-01-30T20:00:10+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2014-02-08T13:02:06+08:00" pubdate data-updated="true">Feb 8<span>th</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -130,24 +130,35 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
 
 
 <div class="entry-content"><h3 id="section">原由</h3>
-<p>Octopress用rake generate的时候会提示使用GSL将会加速文件的生成，速度是原来的的10+倍，但是需要安装<a href="http://rb-gsl.rubyforge.org/">Ruby GSL</a>插件。</p>
+<p>看了看Sonar的介绍，的确很专业，但是是否每个功能都用的上？而且Sonar也是集成了PMD, Findbugs, Checkstyle等插件的功能来帮助完成相关的任务的。<br />
+但是Jenkins也同样直接支持这些插件，是否只用Jenkins加上这些插件就可以了？</p>
 
-<h3 id="section-1">安装</h3>
-<p>当使用命令安装Ruby GSL的时候确发现了问题 </p>
+<p>前面介绍Jenkins的时候已经用了不少插件，这里再加一个Findbugs</p>
 
-<pre><code>gem install gsl
+<h3 id="section-1">配置</h3>
+
+<ol>
+  <li>
+    <p>在对应的maven项目中加入maven的Findbugs插件，配置示例如下：</p>
+
+ 	 <plugin>
+</plugin>    <pre><code>    &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+    &lt;artifactId&gt;findbugs-maven-plugin&lt;/artifactId&gt;
+    &lt;version&gt;2.5.4-SNAPSHOT&lt;/version&gt;
+    &lt;configuration&gt;
+      &lt;xmlOutput&gt;true&lt;/xmlOutput&gt;
+    &lt;/configuration&gt;
+  &lt;/plugin&gt;
 </code></pre>
+  </li>
+  <li>在Jenkins中安装对应的Findbugs插件“FindBugs Plug-in”</li>
+  <li>然后在Jenkins的项目配置中激活Findbugs，也就是打个勾。</li>
+  <li>给Maven的运行加入新的goald：“findbugs:findbugs”</li>
+  <li>重新构建项目就可以得到了</li>
+</ol>
 
-<p>原因是缺少了<a href="http://www.gnu.org/software/gsl/" title="GSL Library官网">GSL的C的开发库</a>    </p>
-
-<p>然后在GSL Library官网下载了最新的GSL1.16，然后编译安装，然后再重新安装Ruby GSL，但是还是出现错误，后来搜索<a href="http://stackoverflow.com">stackoverflow</a>找到一个说明，说是GSL和Ruby GSL配合的版本只能用1.14的。所以再次下载GSL1.14编译、安装然后再安装Ruby GSL就可以了</p>
-
-<h3 id="section-2">使用</h3>
-
-<pre><code>rake notify
-</code></pre>
-
-<p>目前看除了rake generate没有那个提示，好像速度没有看出来，或许是文章的数目不多体现不出来 </p>
+<h4 id="section-2">小插曲：</h4>
+<p>在Eclpse中使用的时候没有发现问题，但是到了Jenkins后，从后台的build输出确发现了一个异常的warning: “Failed to notify spy hudson.maven.Maven3Builder$JenkinsEventSpy: Failed to load edu.umd.cs.findbugs.detect.TestASM”，从而没能在Jenkins上看到Findbugs的报告。后来查了半天，尽然是Jenkins的Bug，临时的解决办法尽然是将Maven换成3.0.5的版本，不要使用3.1或3.1.1</p>
 </div>
 
 
@@ -170,12 +181,12 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   
 
 
-<time datetime="2014-01-30T20:00:10+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2014-02-08T13:02:06+08:00" pubdate data-updated="true">Feb 8<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/gsl/'>GSL</a>, <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/findbugs/'>Findbugs</a>, <a class='category' href='/blog/categories/jenkins/'>Jenkins</a>
   
 </span>
 
@@ -191,10 +202,8 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/" title="Previous Post: Octopress的内部blog间关联">&laquo; Octopress的内部blog间关联</a>
+        <a class="basic-alignment left" href="/blog/2014/02/07/octopressdong-tai-zhan-shi-tu-pian/" title="Previous Post: Octopress动态展示图片">&laquo; Octopress动态展示图片</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing/" title="Next Post: Octopress通知搜索引擎">Octopress通知搜索引擎 &raquo;</a>
       
     </p>
   </footer>
@@ -266,22 +275,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/08/zai-jenkinszhong-shi-yong-findbugs/">在Jenkins中使用Findbugs</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/findbugs/'>Findbugs</a>, <a class='category' href='/blog/categories/jenkins/'>Jenkins</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/02/07/octopressdong-tai-zhan-shi-tu-pian/">Octopress动态展示图片</a></h3>
         <div class="meta">
           <span class="tags">
@@ -337,6 +330,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi/">设计模式: 单例模式</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a>
   
 </span>
 
