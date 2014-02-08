@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-08T13:57:23+08:00</updated>
+  <updated>2014-02-08T14:00:23+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -27,19 +27,34 @@
 <h3 id="section-1">配置</h3>
 
 <ol>
-  <li>
-    <p>在对应的maven项目中加入maven的Findbugs插件，配置示例如下：</p>
+  <li>在对应的maven项目中加入maven的Findbugs插件，配置示例如下：</li>
+</ol>
 
- 	 <plugin>
-</plugin>    <pre><code>    &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
-    &lt;artifactId&gt;findbugs-maven-plugin&lt;/artifactId&gt;
-    &lt;version&gt;2.5.4-SNAPSHOT&lt;/version&gt;
-    &lt;configuration&gt;
-      &lt;xmlOutput&gt;true&lt;/xmlOutput&gt;
-    &lt;/configuration&gt;
-  &lt;/plugin&gt;
-</code></pre>
-  </li>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">    	
+</span><span class="line">    	 &lt;plugin&gt;
+</span><span class="line">	       &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+</span><span class="line">	       &lt;artifactId&gt;findbugs-maven-plugin&lt;/artifactId&gt;
+</span><span class="line">	       &lt;version&gt;2.5.4-SNAPSHOT&lt;/version&gt;
+</span><span class="line">	       &lt;configuration&gt;
+</span><span class="line">	         &lt;xmlOutput&gt;true&lt;/xmlOutput&gt;
+</span><span class="line">	       &lt;/configuration&gt;
+</span><span class="line">	     &lt;/plugin&gt;
+</span><span class="line">	
+</span><span class="line">	
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ol>
   <li>在Jenkins中安装对应的Findbugs插件“FindBugs Plug-in”</li>
   <li>然后在Jenkins的项目配置中激活Findbugs，也就是打个勾。</li>
   <li>给Maven的运行加入新的goald：“findbugs:findbugs”</li>
