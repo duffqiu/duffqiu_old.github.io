@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Maven | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/maven/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-09T21:52:34+08:00</updated>
+  <updated>2014-02-09T21:55:30+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -42,7 +42,7 @@
 
 <div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('rep-code')">repository配置</div>
 
-<div style="display:none" class="prev" id="rep-code" onclick="hidediv('rep-code');self.location.href='rep'" title="点击关闭">
+<div style="display:none" class="prev" id="rep-code" onclick="hidediv('rep-code');self.location.href='#rep'" title="点击关闭">
 
 <div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
