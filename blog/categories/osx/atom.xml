@@ -4,7 +4,7 @@
   <title><![CDATA[Category: OSX | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/osx/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-09T21:18:34+08:00</updated>
+  <updated>2014-02-09T21:22:28+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -105,7 +105,7 @@
 
     <div style="color:#F00">  注意：</div>
 
-    <p>OSX没有像Linux那样操作用户组的命令，似乎OSX给用户日常使用是不用管理用户组的。但是对于开发人员，则必须清楚。具体方式是通过dscl(Directory Service command line utility)目录服务命令工具完成的。后面再写个介绍这个。<a href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/">Mac tips: 给用户添加用户组</a></p>
+    <p>OSX没有像Linux那样操作用户组的命令，似乎OSX给用户日常使用是不用管理用户组的。但是对于开发人员，则必须清楚。具体方式是通过dscl(Directory Service command line utility)目录服务命令工具完成的。后面再写个介绍这个。<a href="{% post_url 2014-01-30-mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu %}">Mac tips: 给用户添加用户组</a></p>
 
     <ul>
       <li>
