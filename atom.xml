@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-09T21:55:30+08:00</updated>
+  <updated>2014-02-09T22:08:38+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,50 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress使用页面标签]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/09/octopressshi-yong-ye-mian-biao-qian/"/>
+    <updated>2014-02-09T21:57:59+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/09/octopressshi-yong-ye-mian-biao-qian</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>当一篇blog太长的时候，总是希望有个按钮能回到某个章节上，或者是文件的开头</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>因为Markdown语法没有提供这个支持，只用用Div的方式来支持了，具体方式如下</p>
+
+<ol>
+  <li>定义标签</li>
+</ol>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">
+</span><span class="line">   &lt;a <span class="nv">name</span><span class="o">=</span><span class="s2">&quot;标签名&quot;</span>&gt;&lt;/a&gt;
+</span><span class="line">
+</span><span class="line">
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ol>
+  <li>定义跳转链接</li>
+</ol>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">
+</span><span class="line">   &lt;div <span class="nv">style</span><span class="o">=</span><span class="s2">&quot;text-decoration:underline; font-size: 16px; color: red&quot;</span> <span class="nv">onclick</span><span class="o">=</span><span class="s2">&quot;self.location.href=&#39;#标签名&#39;&quot;</span>&gt;跳转&lt;/div&gt;
+</span><span class="line">
+</span><span class="line">
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[技术杂谈1]]></title>
@@ -2262,70 +2306,6 @@ markdown: kramdown
 </code></pre>
   </li>
 </ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mac Tips: 管理后台自动运行的服务]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu/"/>
-    <updated>2014-01-30T13:29:43+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu</id>
-    <content type="html"><![CDATA[<h3 id="osx">OSX系统后台服务简介</h3>
-<ol>
-  <li>
-    <p>系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来</p>
-
-    <pre><code>&gt; sudo chmod root [文件名]
-</code></pre>
-  </li>
-  <li>
-    <p>用户级别的服务配置，即在用户登录后才会运行的服务，配置文件在 ~/Library/LaunchAgents/ 目录里面。</p>
-  </li>
-  <li>
-    <p>如果需要自己定义后台服务，可以copy一个已有的文件，然后做一定的更改就可以。</p>
-  </li>
-  <li>
-    <p>编辑工具，xcode是其默认的编辑工具，简要处理的方式是在shell中执行</p>
-
-    <pre><code> &gt; open [文件名]
-</code></pre>
-
-    <p>然后系统会自动用xcode打开。  </p>
-
-    <div style="color:#F00">  注意：</div>
-
-    <p>如果需要用xocode编辑首先要安装xcode（好像是废话）。如果是修改系统的服务，就必须将当前用户加入到wheel组，并更改 /Library/LaunchDaemons/目录权限为771，还要将被更改的plist文件的权限改为664，这样才可以用xcode处理文件。是不是很烦？所以还是直接用vi的方式好。编辑完后，还需要将目录权限更改过来</p>
-
-    <ul>
-      <li>添加当前用户到wheel组。 </li>
-    </ul>
-
-    <div style="color:#F00">  注意：</div>
-
-    <p>OSX没有像Linux那样操作用户组的命令，似乎OSX给用户日常使用是不用管理用户组的。但是对于开发人员，则必须清楚。具体方式是通过dscl(Directory Service command line utility)目录服务命令工具完成的。后面再写个介绍这个。<a href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/">Mac tips: 给用户添加用户组</a></p>
-
-    <ul>
-      <li>
-        <p>更改目录权限  </p>
-
-        <pre><code>  sudo chmod 771 /Library/LaunchDaemons/
-</code></pre>
-      </li>
-      <li>
-        <p>更改文件权限</p>
-
-        <pre><code>  sudo chmod 664 [plist 文件名]
-</code></pre>
-      </li>
-      <li>
-        <p>编辑完了记得再改回来</p>
-      </li>
-    </ul>
-  </li>
-</ol>
-
-<h3 id="section">服务的启动和停止</h3>
 
 ]]></content>
   </entry>
