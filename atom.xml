@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-09T22:15:24+08:00</updated>
+  <updated>2014-02-09T22:16:32+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -26,9 +26,9 @@
 <hr />
 <p>因为Markdown语法没有提供这个支持，只用用Div的方式来支持了，具体方式如下</p>
 
-<ol>
+<ul>
   <li>定义标签</li>
-</ol>
+</ul>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -38,9 +38,9 @@
 </span><span class="line">
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<ol>
+<ul>
   <li>定义跳转链接</li>
-</ol>
+</ul>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
