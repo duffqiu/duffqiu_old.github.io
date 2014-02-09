@@ -12,16 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-30a73316dfa6dd287e23d0134042ab03.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-1d33b2353fa5063309b0e886f644cacb.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-c6274774306ca2592cbaa0f02ca10804.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由
-看了看Sonar的介绍，的确很专业，但是是否每个功能都用的上？而且Sonar也是集成了PMD, Findbugs, Checkstyle等插件的功能来帮助完成相关的任务的。
-但是Jenkins也同样直接支持这些插件，是否只用Jenkins加上这些插件就可以了？ &hellip;">
+  <meta name="description" content="原由 这个类别主要是想记录以下跑题中看到的一些“新”技术，或者是一些有意思的技术内容，但是不会详细展开，如有时间和必要会有专门的blog来描述某个内容或话题 今天的内容有 云上的Jenkins，由Cloudbees公司提供，提供免费的有限的使用，但是需要用到的地方，其实都有免费的软件／服务， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -40,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-30a73316dfa6dd287e23d0134042ab03.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-1d33b2353fa5063309b0e886f644cacb.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-c6274774306ca2592cbaa0f02ca10804.js' type='text/javascript'></script>
@@ -100,6 +98,214 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/09/ji-zhu-za-tan-1/">技术杂谈1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-09T18:15:58+08:00" pubdate data-updated="true">Feb 9<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/09/ji-zhu-za-tan-1/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+
+<p>这个类别主要是想记录以下跑题中看到的一些“新”技术，或者是一些有意思的技术内容，但是不会详细展开，如有时间和必要会有专门的blog来描述某个内容或话题</p>
+
+<h3 id="section-1">今天的内容有</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>云上的Jenkins，由<a href="http://www.cloudbees.com">Cloudbees公司</a>提供，提供免费的有限的使用，但是需要用到的地方，其实都有免费的软件／服务，如Jenkins的程序，Github管理代码等，唯一的好处是不用自己来搭建、维护服务器。我找到它的原因是看到它的Jenkins能自动部署到Goolge App Engine上，而 Jenkins还没有提供类似的Plugin，或许直接用shell命令就能做到，后面有机会用到再展开这个。</p>
+  </li>
+  <li>
+    <p>开源的类似Google App Engine的Paas的平台<a href="https://github.com/AppScale/appscale">AppScale</a>，<a href="http://www.youtube.com/user/AppScaleSystems">youtube的AppScale介绍</a>（不过需要代理才可以看，我前面由介绍如何搭建代理服务）。建议开发Google App Engine应用的开发者都自己搭建一套，<a href="http://www.appscale.com/features">好处</a>是：</p>
+
+    <ul>
+      <li>便于直接本地测试、部署和运行</li>
+      <li>需要部署私有云（特别是大型企业）</li>
+      <li>需要使用其它Google App Engine不支持的APIs</li>
+      <li>Google App Engine全APIs兼容</li>
+      <li>可用于生产环境的平台（Google App Engine不适合生产环境？）</li>
+      <li>
+        <p>不再依赖于Google，可以部署在多个云平台如Amazon和虚拟机等</p>
+
+        <div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('app')"> AppScale架构图 </div>
+      </li>
+    </ul>
+
+    <div style="display:none" class="prev" id="app" onclick="hidediv('app')">
+	
+ <img src="http://www.appscale.com/assets/img/appscale_stack.png" title="点击关闭" />
+	
+ </div>
+  </li>
+  <li>
+    <p><a href="http://www.docker.io">docker</a>，轻量级的应用容器，不过还没成熟和商业化，值得关注。我还没有升入去看，只能提一下而已</p>
+  </li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/08/maven-tips-artifactcha-zhao-shun-xu/">Maven Tips: Artifact查找顺序</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-08T14:36:17+08:00" pubdate data-updated="true">Feb 8<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/08/maven-tips-artifactcha-zhao-shun-xu/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+
+<p>因为要用到一个maven plugin的snapshot版本，所以需要增加一个专门的snapshot repository，但是增加了后总是不起左右</p>
+
+<h3 id="section-1">解决办法</h3>
+
+<p>尝试了多次以后，发现是maven的settings.xml的配置上问题，因为我增加了一个mirror从而造成了新增的repository不起作用。<br />
+解决的方式去掉mirror的配置，增加repository到profile中，并激活
+提示：maven下载artifactor的顺序为pom.xml上的repository配置，然后是settings.xml的mirror配置，然后才是profiles中的repository配置</p>
+
+<div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('pic')"> Maven下载artifactor的顺序</div>
+
+<div style="display:none" class="prev" id="pic" onclick="hidediv('pic')">
+
+<img src="http://maven.apache.org/repository/maven-repositories.png" title="点击关闭" />
+
+</div>
+
+<h3 id="repository">比较好用的repository</h3>
+
+<repository>
+   <id>Codehaus Snapshots</id>
+   <url>http://nexus.codehaus.org/snapshots/</url>
+   <snapshots>
+       <enabled>true</enabled>
+   </snapshots>
+   <releases>
+       <enabled>false</enabled>
+   </releases>
+</repository>
+
+<repository>
+    <id>MavenCentral</id>
+    <name>Maven repository</name>
+    <url>http://repo1.maven.org/maven2</url>
+    <releases>
+        <enabled>true</enabled>
+    </releases>
+    <snapshots>
+        <enabled>false</enabled>
+    </snapshots>
+</repository>
+
+<repository>
+    <id>objectweb</id>
+    <name>Objectweb repository</name>
+    <url>http://maven.objectweb.org/maven2</url>
+    <releases>
+        <enabled>true</enabled>
+    </releases>
+    <snapshots>
+        <enabled>false</enabled>
+    </snapshots>
+</repository>
+
+<repository>
+    <id>jboss</id>
+    <name>JBoss Maven2 repository</name>
+    <url>http://repository.jboss.com/maven2/</url>
+    <snapshots>
+        <enabled>false</enabled>
+    </snapshots>
+    <releases>
+        <enabled>true</enabled>
+    </releases>
+</repository>
+
+<repository>
+    <id>apache.snapshots</id>
+    <name>Apache Snapshot Repository</name>
+    <url>
+        http://people.apache.org/repo/m2-snapshot-repository
+    </url>
+    <releases>
+        <enabled>false</enabled>
+    </releases>
+    <snapshots>
+        <enabled>true</enabled>
+    </snapshots>
+</repository>
+
+<repository>
+    <id>ops4j.repository</id>
+    <name>OPS4J Repository</name>
+    <url>http://repository.ops4j.org/maven2</url>
+    <releases>
+        <enabled>true</enabled>
+    </releases>
+    <snapshots>
+        <enabled>false</enabled>
+    </snapshots>
+</repository>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1782,201 +1988,6 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/">OO的一些设计原则</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-02T16:05:09+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="oo">OO设计原则</h3>
-
-<ol>
-  <li>
-    <p>“开-闭”原则 (Open-Closed Principle, OCP)</p>
-
-    <ul>
-      <li>对扩展开放，对修改关闭 (如不要去覆盖一个父类的行为，但是可以在一个新的类的行为中使用父类／关联类的行为)</li>
-      <li>不允许更改系统的抽象层，是允许扩展系统的实现层  </li>
-    </ul>
-  </li>
-  <li>
-    <p>抽象类(Abstract Class)</p>
-
-    <ul>
-      <li>具体类不是用来继承的。继承要从抽象类开始，一般以abstract命名开头</li>
-      <li>如果遇到具体类的继承，最有可能的重构方式是构造一个抽象类，这两个类成为这个抽象类的子类</li>
-      <li>抽象类应当尽可能有多的共同代码</li>
-      <li>抽象类应当尽可能少的数据</li>
-      <li>针对抽象编程</li>
-      <li>正确使用继承，不要从工具类继承</li>
-    </ul>
-  </li>
-  <li>里氏代换原则(LSP)
-    <ul>
-      <li>如果程序调用适用于基类，则必定适用于其子类</li>
-      <li>反过来的代价不成立</li>
-    </ul>
-  </li>
-  <li>
-    <p>依赖倒转原则（DIP）</p>
-
-    <ul>
-      <li>要依赖于抽象，不要依赖于具体实现</li>
-      <li>三种耦合关系：
-  a. 零耦合(Nil Coupling)，两个类没有耦合关系<br />
-  b. 具体耦合(Concrete Coupling)，具体型耦合发生在两个具体类之间，有一个类对另一个具体类的直接引用造成（非继承）<br />
-  c. 抽象耦合(Abstract Coupling)，耦合关系发生在一个具体类和抽象类（或接口）之间  </li>
-      <li>DIP要求客户端依赖于抽象耦合</li>
-      <li>抽象不应当依赖于细节，细节应当依赖于抽象</li>
-      <li>针对接口编程，不针对实现编程。即使用接口和抽象类进行变量的类型声明、函数参数的类型声明、方法的返回值类型声明，以及数据类型的转换。</li>
-      <li>联合使用Java接口和抽象类</li>
-      <li>对于已经很稳定的类，客户端是可以依赖于这个具体类型的，而不用再发明抽象类型</li>
-    </ul>
-  </li>
-  <li>接口隔离原则(ISP)
-    <ul>
-      <li>使用多个专门的接口比使用单一接口要好 </li>
-      <li>一个类对于另外一个类的依赖应当建立在最小的接口上</li>
-      <li>定制服务：如果客户端仅需要某些方法，那么就应但只提供这些需要的方法，而不提供不需要的方法</li>
-    </ul>
-  </li>
-  <li>合成/聚合复用原则（CARP）  <br />
-    <ul>
-      <li>在一个新的对象中使用一些已有的对象，新的对象通过向这些旧的对象委派达到复用已有功能的目的</li>
-      <li>尽量使用合成/聚合，尽量不要使用继承</li>
-    </ul>
-  </li>
-  <li>迪米特法则(LoD)<br />
-又叫做最少知识原则(Least Knowledge Principle LKP)
-    <ul>
-      <li>只与你直接的朋友通信</li>
-      <li>不要和“陌生人”说话</li>
-      <li>朋友确定的原则：
-        <ul>
-          <li>当前对象本身（this）</li>
-          <li>以参数形式传入到当前对象方法的对象</li>
-          <li>当前对象的实例变量直接引用的对象</li>
-          <li>当前对象的实例变量如果是一个聚集，则聚集中的元素都是朋友</li>
-          <li>当前对象所创建的对象</li>
-        </ul>
-      </li>
-      <li>使用抽象陌生人重构来调用陌生对象，避免过多的原子调用转发</li>
-    </ul>
-  </li>
-  <li>
-    <p>广义迪米特法则在类上的设计</p>
-
-    <ul>
-      <li>优先考虑将一个类设置成不变类</li>
-      <li>尽量降低一个类的访问权限（package-private是默认权限，无需标示private关键字）</li>
-      <li>谨慎使用Serializable</li>
-      <li>尽量降低类成员(属性、方法、嵌套类、嵌套接口)的访问权限
-        <ul>
-          <li>private，只能类内部使用 </li>
-          <li>package-private,只能被当前包的类访问，默认权限，无需任何关键字标示</li>
-          <li>protected，但前包的类和它的子类可以访问</li>
-          <li>public,任何类都可以访问</li>
-        </ul>
-      </li>
-      <li>限制局域变量的有效访问</li>
-    </ul>
-  </li>
-</ol>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/02/she-ji-mo-shi-kai-pian/">设计模式开篇</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-02T15:31:04+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/02/she-ji-mo-shi-kai-pian/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">参考</h3>
-<p>从这里开始，主要是参考<a href="http://www.amazon.cn/漫谈设计模式-从面向对象开始-刘济华/dp/B006QQZE4Y/ref=sr_1_1?ie=UTF8&amp;qid=1391326331&amp;sr=8-1&amp;keywords=漫谈设计模式">漫谈设计模式</a></p>
-
-<p>要去理解设计模式，必须是有以下基础</p>
-
-<ol>
-  <li>语言基础(Java, C++, Object-C…)，这里是以Java语言做介绍，如果需要初步学Java则可以看看<a href="https://www.udemy.com/java-tutorial/?couponCode=FREE">Udemy</a>上面的免费入门视频</li>
-  <li>懂得OO的设计理念/原则，后面再抽个章节讲讲这个<a href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/">OO的设计原则</a></li>
-  <li>懂得UML的基础，入门可以先看看这本简单的<a href="http://www.amazon.cn/系统分析师UML项目实战-邱郁惠/dp/B00DSQZ9IQ/ref=sr_1_1?ie=UTF8&amp;qid=1391326582&amp;sr=8-1&amp;keywords=系统分析师UML项目实战">系统分析师UML项目实战</a>，个人也不太建议UML在工作做过于教条化。之前曾经有1年多都是在画UML图，然后开发依据UML图去做开发，结果效果并不是很好。但是一些基础的比较实际的用法还是值得去做的。要看明白设计模式的类图，请先看看<a href="/blog/2014/02/02/umllei-tu/">UML类图</a></li>
-</ol>
-
-<h3 id="gof-23">经典的GoF 23个设计模式，这只是个基础</h3>
-<p>GoF的23个设计模式只是一个经典的总结，但是不代表只有23个，其实在工作中很多问题的共性解决方案都有可能编程设计模式，只要复合以下4个基本的设计模式要素</p>
-
-<ol>
-  <li>模式名称（Pattern Name）</li>
-  <li>问题描述（Problem）</li>
-  <li>解决方案（Solution）</li>
-  <li>效果／结果（consequence）</li>
-</ol>
-
-<h3 id="section-1">模式的套用</h3>
-<p>不是说能套上设计模式就是好的设计，好的设计需要多个方面的积累，AOP、BDD、TDD。。。<br />
-模式更像是独孤九剑，最后是忘记模式而自然而然的使用模式(好像有些玄乎？)<br />
-设计模式的基础还是OO，只有用好OO才能更好的理解和用好设计模式</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1992,6 +2003,14 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/09/ji-zhu-za-tan-1/">技术杂谈1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/08/maven-tips-artifactcha-zhao-shun-xu/">Maven Tips: Artifact查找顺序</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/08/zai-jenkinszhong-shi-yong-findbugs/">在Jenkins中使用Findbugs</a>
       </li>
     
@@ -2001,14 +2020,6 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
     
       <li class="post">
         <a href="/blog/2014/02/07/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma-v2/">Octopress实时获取并展示github上其它repository的代码v2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi/">用Jenkins搭建基于Github和JUnit的自动化测试</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/">Octopress实时获取并展示github上其它repository的代码</a>
       </li>
     
   </ul>
@@ -2030,6 +2041,8 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
 <li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>
 <li class='category'><a href='/blog/categories/jenkins/'>Jenkins (2)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>MAC (2)</a></li>
+<li class='category'><a href='/blog/categories/maven/'>Maven (1)</a></li>
+<li class='category'><a href='/blog/categories/miscellany/'>Miscellany (1)</a></li>
 <li class='category'><a href='/blog/categories/oo/'>OO (1)</a></li>
 <li class='category'><a href='/blog/categories/osx/'>OSX (3)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>Octopress (13)</a></li>

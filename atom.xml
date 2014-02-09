@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-08T14:00:23+08:00</updated>
+  <updated>2014-02-09T21:08:47+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,154 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[技术杂谈1]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/09/ji-zhu-za-tan-1/"/>
+    <updated>2014-02-09T18:15:58+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/09/ji-zhu-za-tan-1</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+
+<p>这个类别主要是想记录以下跑题中看到的一些“新”技术，或者是一些有意思的技术内容，但是不会详细展开，如有时间和必要会有专门的blog来描述某个内容或话题</p>
+
+<h3 id="section-1">今天的内容有</h3>
+<hr />
+
+<ol>
+  <li>
+    <p>云上的Jenkins，由<a href="http://www.cloudbees.com">Cloudbees公司</a>提供，提供免费的有限的使用，但是需要用到的地方，其实都有免费的软件／服务，如Jenkins的程序，Github管理代码等，唯一的好处是不用自己来搭建、维护服务器。我找到它的原因是看到它的Jenkins能自动部署到Goolge App Engine上，而 Jenkins还没有提供类似的Plugin，或许直接用shell命令就能做到，后面有机会用到再展开这个。</p>
+  </li>
+  <li>
+    <p>开源的类似Google App Engine的Paas的平台<a href="https://github.com/AppScale/appscale">AppScale</a>，<a href="http://www.youtube.com/user/AppScaleSystems">youtube的AppScale介绍</a>（不过需要代理才可以看，我前面由介绍如何搭建代理服务）。建议开发Google App Engine应用的开发者都自己搭建一套，<a href="http://www.appscale.com/features">好处</a>是：</p>
+
+    <ul>
+      <li>便于直接本地测试、部署和运行</li>
+      <li>需要部署私有云（特别是大型企业）</li>
+      <li>需要使用其它Google App Engine不支持的APIs</li>
+      <li>Google App Engine全APIs兼容</li>
+      <li>可用于生产环境的平台（Google App Engine不适合生产环境？）</li>
+      <li>
+        <p>不再依赖于Google，可以部署在多个云平台如Amazon和虚拟机等</p>
+
+        <div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('app')"> AppScale架构图 </div>
+      </li>
+    </ul>
+
+    <div style="display:none" class="prev" id="app" onclick="hidediv('app')">
+	
+ <img src="http://www.appscale.com/assets/img/appscale_stack.png" title="点击关闭" />
+	
+ </div>
+  </li>
+  <li>
+    <p><a href="http://www.docker.io">docker</a>，轻量级的应用容器，不过还没成熟和商业化，值得关注。我还没有升入去看，只能提一下而已</p>
+  </li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Maven Tips: Artifact查找顺序]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/08/maven-tips-artifactcha-zhao-shun-xu/"/>
+    <updated>2014-02-08T14:36:17+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/08/maven-tips-artifactcha-zhao-shun-xu</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+
+<p>因为要用到一个maven plugin的snapshot版本，所以需要增加一个专门的snapshot repository，但是增加了后总是不起左右</p>
+
+<h3 id="section-1">解决办法</h3>
+
+<p>尝试了多次以后，发现是maven的settings.xml的配置上问题，因为我增加了一个mirror从而造成了新增的repository不起作用。<br />
+解决的方式去掉mirror的配置，增加repository到profile中，并激活
+提示：maven下载artifactor的顺序为pom.xml上的repository配置，然后是settings.xml的mirror配置，然后才是profiles中的repository配置</p>
+
+<div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('pic')"> Maven下载artifactor的顺序</div>
+
+<div style="display:none" class="prev" id="pic" onclick="hidediv('pic')">
+
+<img src="http://maven.apache.org/repository/maven-repositories.png" title="点击关闭" />
+
+</div>
+
+<h3 id="repository">比较好用的repository</h3>
+
+<repository>
+   <id>Codehaus Snapshots</id>
+   <url>http://nexus.codehaus.org/snapshots/</url>
+   <snapshots>
+       <enabled>true</enabled>
+   </snapshots>
+   <releases>
+       <enabled>false</enabled>
+   </releases>
+</repository>
+
+<repository>
+    <id>MavenCentral</id>
+    <name>Maven repository</name>
+    <url>http://repo1.maven.org/maven2</url>
+    <releases>
+        <enabled>true</enabled>
+    </releases>
+    <snapshots>
+        <enabled>false</enabled>
+    </snapshots>
+</repository>
+
+<repository>
+    <id>objectweb</id>
+    <name>Objectweb repository</name>
+    <url>http://maven.objectweb.org/maven2</url>
+    <releases>
+        <enabled>true</enabled>
+    </releases>
+    <snapshots>
+        <enabled>false</enabled>
+    </snapshots>
+</repository>
+
+<repository>
+    <id>jboss</id>
+    <name>JBoss Maven2 repository</name>
+    <url>http://repository.jboss.com/maven2/</url>
+    <snapshots>
+        <enabled>false</enabled>
+    </snapshots>
+    <releases>
+        <enabled>true</enabled>
+    </releases>
+</repository>
+
+<repository>
+    <id>apache.snapshots</id>
+    <name>Apache Snapshot Repository</name>
+    <url>
+        http://people.apache.org/repo/m2-snapshot-repository
+    </url>
+    <releases>
+        <enabled>false</enabled>
+    </releases>
+    <snapshots>
+        <enabled>true</enabled>
+    </snapshots>
+</repository>
+
+<repository>
+    <id>ops4j.repository</id>
+    <name>OPS4J Repository</name>
+    <url>http://repository.ops4j.org/maven2</url>
+    <releases>
+        <enabled>true</enabled>
+    </releases>
+    <snapshots>
+        <enabled>false</enabled>
+    </snapshots>
+</repository>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[在Jenkins中使用Findbugs]]></title>
@@ -2097,61 +2245,6 @@ markdown: kramdown
 
 <h3 id="section">服务的启动和停止</h3>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mac Tips: Path路径的查找顺序和设置]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/"/>
-    <updated>2014-01-30T13:14:17+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi</id>
-    <content type="html"><![CDATA[<h3 id="osxpath">OSX系统的PATH设置</h3>
-
-<ol>
-  <li>
-    <p>系统读取path配置的顺序为<br />
-1). /etc/paths wenjian <br />
-2). /etc/paths.d/目录下的所有设置文件<br />
-3). /etc/profile 文件 
-4). 用户目录下的shell配置文件，如zsh的.zshrc文件</p>
-  </li>
-  <li>
-    <p>获取当前path的值的方式<br />
-1). echo $PATH<br />
-2). /usr/libexec/path_helper  </p>
-  </li>
-  <li>
-    <p>用户设置path的建议<br />
-1). 只针对用户自己的设置配知道shell的配置文件中，如.zshrc
-2). 针对系统的文件，可以在/etc/paths.d/路径中生成一个对应的配置文件</p>
-  </li>
-</ol>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress管理附件]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/01/28/octopressguan-li-fu-jian/"/>
-    <updated>2014-01-28T12:10:51+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/01/28/octopressguan-li-fu-jian</id>
-    <content type="html"><![CDATA[<h4 id="octopress">如何在Octopress使用附件</h4>
-
-<ol>
-  <li>在octopress目录中，将对应的附件放到/source/assets目录里面</li>
-  <li>
-    <p>然后重新生成和部署</p>
-
-    <pre><code>rake gengerate
-rake deploy
-</code></pre>
-  </li>
-  <li>
-    <p>然后在对应的blog中，使用http的链接方式指定文件就可如</p>
-
-    <pre><code>[附件](/assets/&lt;附件名&gt;)
-</code></pre>
-  </li>
-</ol>
 ]]></content>
   </entry>
   
