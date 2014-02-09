@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Maven | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/maven/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-09T21:08:47+08:00</updated>
+  <updated>2014-02-09T21:11:11+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -40,78 +40,79 @@
 
 <p></p>
 
-<repository>
-   <id>Codehaus Snapshots</id>
-   <url>http://nexus.codehaus.org/snapshots/</url>
-   <snapshots>
-       <enabled>true</enabled>
-   </snapshots>
-   <releases>
-       <enabled>false</enabled>
-   </releases>
-</repository>
-
-<repository>
-    <id>MavenCentral</id>
-    <name>Maven repository</name>
-    <url>http://repo1.maven.org/maven2</url>
-    <releases>
-        <enabled>true</enabled>
-    </releases>
-    <snapshots>
-        <enabled>false</enabled>
-    </snapshots>
-</repository>
-
-<repository>
-    <id>objectweb</id>
-    <name>Objectweb repository</name>
-    <url>http://maven.objectweb.org/maven2</url>
-    <releases>
-        <enabled>true</enabled>
-    </releases>
-    <snapshots>
-        <enabled>false</enabled>
-    </snapshots>
-</repository>
-
-<repository>
-    <id>jboss</id>
-    <name>JBoss Maven2 repository</name>
-    <url>http://repository.jboss.com/maven2/</url>
-    <snapshots>
-        <enabled>false</enabled>
-    </snapshots>
-    <releases>
-        <enabled>true</enabled>
-    </releases>
-</repository>
-
-<repository>
-    <id>apache.snapshots</id>
-    <name>Apache Snapshot Repository</name>
-    <url>
-        http://people.apache.org/repo/m2-snapshot-repository
-    </url>
-    <releases>
-        <enabled>false</enabled>
-    </releases>
-    <snapshots>
-        <enabled>true</enabled>
-    </snapshots>
-</repository>
-
-<repository>
-    <id>ops4j.repository</id>
-    <name>OPS4J Repository</name>
-    <url>http://repository.ops4j.org/maven2</url>
-    <releases>
-        <enabled>true</enabled>
-    </releases>
-    <snapshots>
-        <enabled>false</enabled>
-    </snapshots>
-</repository>
+<pre><code>		&lt;repository&gt;
+		   &lt;id&gt;Codehaus Snapshots&lt;/id&gt;
+		   &lt;url&gt;http://nexus.codehaus.org/snapshots/&lt;/url&gt;
+		   &lt;snapshots&gt;
+		       &lt;enabled&gt;true&lt;/enabled&gt;
+		   &lt;/snapshots&gt;
+		   &lt;releases&gt;
+		       &lt;enabled&gt;false&lt;/enabled&gt;
+		   &lt;/releases&gt;
+		&lt;/repository&gt;
+		
+		&lt;repository&gt;
+		    &lt;id&gt;MavenCentral&lt;/id&gt;
+		    &lt;name&gt;Maven repository&lt;/name&gt;
+		    &lt;url&gt;http://repo1.maven.org/maven2&lt;/url&gt;
+		    &lt;releases&gt;
+		        &lt;enabled&gt;true&lt;/enabled&gt;
+		    &lt;/releases&gt;
+		    &lt;snapshots&gt;
+		        &lt;enabled&gt;false&lt;/enabled&gt;
+		    &lt;/snapshots&gt;
+		&lt;/repository&gt;
+		
+		&lt;repository&gt;
+		    &lt;id&gt;objectweb&lt;/id&gt;
+		    &lt;name&gt;Objectweb repository&lt;/name&gt;
+		    &lt;url&gt;http://maven.objectweb.org/maven2&lt;/url&gt;
+		    &lt;releases&gt;
+		        &lt;enabled&gt;true&lt;/enabled&gt;
+		    &lt;/releases&gt;
+		    &lt;snapshots&gt;
+		        &lt;enabled&gt;false&lt;/enabled&gt;
+		    &lt;/snapshots&gt;
+		&lt;/repository&gt;
+		
+		&lt;repository&gt;
+		    &lt;id&gt;jboss&lt;/id&gt;
+		    &lt;name&gt;JBoss Maven2 repository&lt;/name&gt;
+		    &lt;url&gt;http://repository.jboss.com/maven2/&lt;/url&gt;
+		    &lt;snapshots&gt;
+		        &lt;enabled&gt;false&lt;/enabled&gt;
+		    &lt;/snapshots&gt;
+		    &lt;releases&gt;
+		        &lt;enabled&gt;true&lt;/enabled&gt;
+		    &lt;/releases&gt;
+		&lt;/repository&gt;
+		
+		&lt;repository&gt;
+		    &lt;id&gt;apache.snapshots&lt;/id&gt;
+		    &lt;name&gt;Apache Snapshot Repository&lt;/name&gt;
+		    &lt;url&gt;
+		        http://people.apache.org/repo/m2-snapshot-repository
+		    &lt;/url&gt;
+		    &lt;releases&gt;
+		        &lt;enabled&gt;false&lt;/enabled&gt;
+		    &lt;/releases&gt;
+		    &lt;snapshots&gt;
+		        &lt;enabled&gt;true&lt;/enabled&gt;
+		    &lt;/snapshots&gt;
+		&lt;/repository&gt;
+		
+		&lt;repository&gt;
+		    &lt;id&gt;ops4j.repository&lt;/id&gt;
+		    &lt;name&gt;OPS4J Repository&lt;/name&gt;
+		    &lt;url&gt;http://repository.ops4j.org/maven2&lt;/url&gt;
+		    &lt;releases&gt;
+		        &lt;enabled&gt;true&lt;/enabled&gt;
+		    &lt;/releases&gt;
+		    &lt;snapshots&gt;
+		        &lt;enabled&gt;false&lt;/enabled&gt;
+		    &lt;/snapshots&gt;
+		&lt;/repository&gt;
+</code></pre>
 
 <p></p>
 ]]></content>
