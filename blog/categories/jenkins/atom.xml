@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Jenkins | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/jenkins/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-09T22:36:22+08:00</updated>
+  <updated>2014-02-09T22:37:36+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -39,14 +39,11 @@
 	    &lt;xmlOutput&gt;true&lt;/xmlOutput&gt;
 	  &lt;/configuration&gt;
 	&lt;/plugin&gt;
-</code></p>
-
-<ol>
-  <li>在Jenkins中安装对应的Findbugs插件“FindBugs Plug-in”</li>
-  <li>然后在Jenkins的项目配置中激活Findbugs，也就是打个勾。</li>
-  <li>给Maven的运行加入新的goald：“findbugs:findbugs”</li>
-  <li>重新构建项目就可以得到了</li>
-</ol>
+</code><br />
+2. 在Jenkins中安装对应的Findbugs插件“FindBugs Plug-in”<br />
+3. 然后在Jenkins的项目配置中激活Findbugs，也就是打个勾。<br />
+4. 给Maven的运行加入新的goald：“findbugs:findbugs”<br />
+5. 重新构建项目就可以得到了</p>
 
 <h4 id="section-2">小插曲：</h4>
 <p>在Eclpse中使用的时候没有发现问题，但是到了Jenkins后，从后台的build输出确发现了一个异常的warning: “Failed to notify spy hudson.maven.Maven3Builder$JenkinsEventSpy: Failed to load edu.umd.cs.findbugs.detect.TestASM”，从而没能在Jenkins上看到Findbugs的报告。后来查了半天，尽然是Jenkins的Bug，临时的解决办法尽然是将Maven换成3.0.5的版本，不要使用3.1或3.1.1</p>

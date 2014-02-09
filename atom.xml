@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-09T22:36:22+08:00</updated>
+  <updated>2014-02-09T22:37:36+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -317,11 +317,10 @@
 </span><span class="line">  &lt;/configuration&gt;
 </span><span class="line">&lt;/plugin&gt;
 </span></code></pre></td></tr></table></div></figure></notextile></div>
-
 <ol>
-  <li>在Jenkins中安装对应的Findbugs插件“FindBugs Plug-in”</li>
-  <li>然后在Jenkins的项目配置中激活Findbugs，也就是打个勾。</li>
-  <li>给Maven的运行加入新的goald：“findbugs:findbugs”</li>
+  <li>在Jenkins中安装对应的Findbugs插件“FindBugs Plug-in”  </li>
+  <li>然后在Jenkins的项目配置中激活Findbugs，也就是打个勾。  </li>
+  <li>给Maven的运行加入新的goald：“findbugs:findbugs”  </li>
   <li>重新构建项目就可以得到了</li>
 </ol>
 
