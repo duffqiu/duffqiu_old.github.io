@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Findbugs | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/findbugs/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-09T22:25:33+08:00</updated>
+  <updated>2014-02-09T22:27:53+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -39,15 +39,17 @@
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'>   	
-</span><span class='line'>   	 <span class="nt">&lt;plugin&gt;</span>
-</span><span class='line'>       <span class="nt">&lt;groupid&gt;</span>org.codehaus.mojo<span class="nt">&lt;/groupid&gt;</span>
-</span><span class='line'>       <span class="nt">&lt;artifactid&gt;</span>findbugs-maven-plugin<span class="nt">&lt;/artifactid&gt;</span>
-</span><span class='line'>       <span class="nt">&lt;version&gt;</span>2.5.4-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
-</span><span class='line'>       <span class="nt">&lt;configuration&gt;</span>
-</span><span class='line'>         <span class="nt">&lt;xmloutput&gt;</span>true<span class="nt">&lt;/xmloutput&gt;</span>
-</span><span class='line'>       <span class="nt">&lt;/configuration&gt;</span>
-</span><span class='line'>     <span class="nt">&lt;/plugin&gt;&lt;br</span> <span class="nt">/&gt;</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'>   	 <span class="nt">&lt;/p&gt;</span>
+</span><span class='line'><span class="nt">&lt;plugin&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;groupid&gt;</span>org.codehaus.mojo<span class="nt">&lt;/groupid&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;artifactid&gt;</span>findbugs-maven-plugin<span class="nt">&lt;/artifactid&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;version&gt;</span>2.5.4-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;configuration&gt;</span>
+</span><span class='line'>    <span class="nt">&lt;xmloutput&gt;</span>true<span class="nt">&lt;/xmloutput&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;/configuration&gt;</span>
+</span><span class='line'><span class="nt">&lt;/plugin&gt;</span>
+</span><span class='line'><span class="nt">&lt;p&gt;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <ol>

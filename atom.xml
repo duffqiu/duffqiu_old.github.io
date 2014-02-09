@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-09T22:25:33+08:00</updated>
+  <updated>2014-02-09T22:27:53+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -310,14 +310,14 @@
 <span class="line-number">8</span>
 <span class="line-number">9</span>
 </pre></td><td class="code"><pre><code class="xml"><span class="line">   	
-</span><span class="line">   	 <span class="nt">&lt;plugin&gt;</span>
-</span><span class="line">       <span class="nt">&lt;groupId&gt;</span>org.codehaus.mojo<span class="nt">&lt;/groupId&gt;</span>
-</span><span class="line">       <span class="nt">&lt;artifactId&gt;</span>findbugs-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class="line">       <span class="nt">&lt;version&gt;</span>2.5.4-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
-</span><span class="line">       <span class="nt">&lt;configuration&gt;</span>
-</span><span class="line">         <span class="nt">&lt;xmlOutput&gt;</span>true<span class="nt">&lt;/xmlOutput&gt;</span>
-</span><span class="line">       <span class="nt">&lt;/configuration&gt;</span>
-</span><span class="line">     <span class="nt">&lt;/plugin&gt;</span>
+</span><span class="line"><span class="nt">&lt;plugin&gt;</span>
+</span><span class="line">  <span class="nt">&lt;groupId&gt;</span>org.codehaus.mojo<span class="nt">&lt;/groupId&gt;</span>
+</span><span class="line">  <span class="nt">&lt;artifactId&gt;</span>findbugs-maven-plugin<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class="line">  <span class="nt">&lt;version&gt;</span>2.5.4-SNAPSHOT<span class="nt">&lt;/version&gt;</span>
+</span><span class="line">  <span class="nt">&lt;configuration&gt;</span>
+</span><span class="line">    <span class="nt">&lt;xmlOutput&gt;</span>true<span class="nt">&lt;/xmlOutput&gt;</span>
+</span><span class="line">  <span class="nt">&lt;/configuration&gt;</span>
+</span><span class="line"><span class="nt">&lt;/plugin&gt;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <ol>
