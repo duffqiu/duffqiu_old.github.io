@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-09T21:16:21+08:00</updated>
+  <updated>2014-02-09T21:18:34+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -85,9 +85,9 @@
 
 <h3 id="repository">比较好用的repository</h3>
 
-<div style="text-decoration:underline; font-size: 16px; color: red" onmouseover="showdiv('rep-code')">repository配置</div>
+<div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('rep-code')">repository配置</div>
 
-<div style="display:none" class="rep-code" onclick="hidediv('rep-code')">
+<div style="display:none" class="prev" id="rep-code" onclick="hidediv('rep-code')">
 
 
 
