@@ -3,7 +3,7 @@ function showdiv(elemid){
   var fd = document.getElementById(elemid);
   fd.style.left = event.clientX;
   fd.style.top = event.clientY;
-  fd.style.display = "inline";
+  fd.style.display = "inline-block";
 }
 
 function hidediv(elemid){

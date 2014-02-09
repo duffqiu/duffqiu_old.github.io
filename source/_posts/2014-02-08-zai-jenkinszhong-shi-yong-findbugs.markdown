@@ -14,25 +14,22 @@ categories: [Jenkins, Findbugs]
 
 ###配置
 
-1. 在对应的maven项目中加入maven的Findbugs插件，配置示例如下：
-       
-       {% codeblock lang:sh%}
-    	 
-    	 <plugin>
-	       <groupId>org.codehaus.mojo</groupId>
-	       <artifactId>findbugs-maven-plugin</artifactId>
-	       <version>2.5.4-SNAPSHOT</version>
-	       <configuration>
-	         <xmlOutput>true</xmlOutput>
-	       </configuration>
-	     </plugin>
-	     
-	   {% endcodeblock %}  
-    
-2. 在Jenkins中安装对应的Findbugs插件“FindBugs Plug-in”
-3. 然后在Jenkins的项目配置中激活Findbugs，也就是打个勾。
-4. 给Maven的运行加入新的goald：“findbugs:findbugs”
-5. 重新构建项目就可以得到了
+- 在对应的maven项目中加入maven的Findbugs插件，配置示例如下：
+
+``` sh
+	<plugin>
+	  <groupId>org.codehaus.mojo</groupId>
+	  <artifactId>findbugs-maven-plugin</artifactId>
+	  <version>2.5.4-SNAPSHOT</version>
+	  <configuration>
+	    <xmlOutput>true</xmlOutput>
+	  </configuration>
+	</plugin>
+```  
+- 在Jenkins中安装对应的Findbugs插件“FindBugs Plug-in”  
+- 然后在Jenkins的项目配置中激活Findbugs，也就是打个勾。  
+- 给Maven的运行加入新的goald：“findbugs:findbugs”  
+- 重新构建项目就可以得到了
 
 ####小插曲：
-在Eclpse中使用的时候没有发现问题，但是到了Jenkins后，从后台的build输出确发现了一个异常的warning: “Failed to notify spy hudson.maven.Maven3Builder$JenkinsEventSpy: Failed to load edu.umd.cs.findbugs.detect.TestASM”，从而没能在Jenkins上看到Findbugs的报告。后来查了半天，尽然是Jenkins的Bug，临时的解决办法尽然是将Maven换成3.0.5的版本，不要使用3.1或3.1.1
+在Eclpse中使用的时候没有发现问题，但是到了Jenkins后，从后台的build输出确发现了一个异常的warning: “Failed to notify spy hudson.maven.Maven3Builder$JenkinsEventSpy: Failed to load edu.umd.cs.findbugs.detect.TestASM”，从而没能在Jenkins上看到Findbugs的报告。后来查了半天，尽然是Jenkins的Bug，临时的解决办法尽然是将Maven换成`3.0.5`的版本，不要使用3.1或3.1.1
