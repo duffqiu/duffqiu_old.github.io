@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Appscalre | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/appscalre/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2014-02-12T00:29:19+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Appscale安装]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/11/appscalean-zhuang/"/>
+    <updated>2014-02-11T21:49:00+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/11/appscalean-zhuang</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>之前看了下Appscale的介绍，觉得还是不错的，这两天自己装一个玩玩。</p>
+
+<h3 id="section-1">安装过程</h3>
+<hr />
+
+<h4 id="section-2">准备工作</h4>
+<ol>
+  <li>下载并安装<a href="https://www.virtualbox.org">virtual box</a></li>
+  <li>
+    <p>下载并安装<a href="https://github.com/mitchellh/vagrant">vagrant</a>，不过好像中国下载有问题，这里有个baidu pan的copy，版本<a href="http://pan.baidu.com/s/1dDtaIul">vagrant 1.4.3</a></p>
+  </li>
+  <li>下载并安装<a href="https://github.com/AppScale/appscale-tools">appscale-tools</a>，帮助安装配置appscale的，可以参照<a href="https://github.com/AppScale/appscale-tools/wiki/Installing-the-AppScale-Tools-on-Mac-OS-X">官方的安装说明</a>使用<code>brew</code>安装，</li>
+  <li>下载<a href="http://download.appscale.com/apps/AppScale%201.13.0%20VirtualBox%20Image">Appscale for mac的virtual box的image</a>，因为很大，直接下载会有问题，这里分享一个已经下好的在百度云盘的copy，版本为<a href="http://pan.baidu.com/s/1i3p4NsT">AppScale 1.13.0</a> </li>
+</ol>
+
+<h4 id="vm">安装VM过程</h4>
+<ol>
+  <li>创建一个appscale的目录</li>
+  <li>获取一个<a href="https://s3.amazonaws.com/appscale_CDN/files/Vagrantfile">Vagrant的配置文件</a>，也可以通过命令<code>vagrant init</code>获得  </li>
+  <li>打开Vagrantfile，将<code>config.vm.box_url</code>配置为你下载好的Appscale for mac的virtual box的image  </li>
+  <li>将<code>config.vm.network</code>配置成你的网络地址，但是不要用host机器的IP</li>
+  <li>
+    <p>启动vm</p>
+
+    <pre><code>vagrant up
+vagrant ssh     # now you're in the VM as the "vagrant" user
+sudo -s passwd  # change the root password
+</code></pre>
+  </li>
+</ol>
+
+<h4 id="appscale">部署AppScale</h4>
+
+<ol>
+  <li>初始化一个配置文件AppScalefile，需要执行<code>appscale init cluster</code></li>
+  <li>
+    <p>修改AppScalefile中的<code>ips_layout</code>，将IP都设置为你刚才配置的VM IP，然后启动Appscale，命令：<code>appscale up</code>      </p>
+
+    <pre><code>ips_layout:
+  master : 192.168.33.10
+  appengine: 192.168.33.10
+  database: 192.168.33.10
+  zookeeper: 192.168.33.10
+</code></pre>
+  </li>
+</ol>
+
+<h4 id="section-3">部署应用</h4>
+
+<p>用命令：<code>appscale deploy &lt;app path&gt;</code>         </p>
+
+<h4 id="section-4">关闭</h4>
+<ol>
+  <li>关闭appscale，用命令<code>appscale down</code></li>
+  <li>关闭VM，用命令<code>vagrant halt</code></li>
+</ol>
+
+<h4 id="appscale-tools">Appscale tools安装过程(官方介绍复制)</h4>
+
+<p>安装命令：</p>
+
+<pre><code>brew install wget
+brew install ssh-copy-id
+brew install swig
+wget https://github.com/AppScale/appscale-tools/archive/1.13.0.tar.gz -O appscale-tools-1.13.0.tar.gz
+tar xvf appscale-tools-1.13.0.tar.gz
+
+sudo ./appscale-tools-1.13.0/osx/appscale_install.sh
+</code></pre>
+
+<p>将<code>/usr/local/share/python:/usr/local/appscale-tools/bin</code>放入到path中就可以了</p>
+
+<p>小提示：
+1. 官网说用euca-version检查安装是否成功，但是根本就没有这个命令。这个好像是给EC2和S3用的python工具，可以用<code>port search 'euca'</code>查到
+2. Vagrant有对应的oh-my-zsh的plugins，配置进.zshrc文件中就可以了</p>
+]]></content>
+  </entry>
+  
+</feed>

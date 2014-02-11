@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Mac Tips: Path路径的查找顺序和设置 - Duff Qiu's Blog</title>
+  <title>Appscale安装 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,10 +19,7 @@
 
 
   
-  <meta name="description" content="OSX系统的PATH设置 系统读取path配置的顺序为
-1). /etc/paths wenjian 2). /etc/paths.d/目录下的所有设置文件
-3). /etc/profile 文件 4). 用户目录下的shell配置文件，如zsh的.zshrc文件 获取当前path的值的方式
-1 &hellip;">
+  <meta name="description" content="原由 之前看了下Appscale的介绍，觉得还是不错的，这两天自己装一个玩玩。 安装过程 准备工作 下载并安装virtual box 下载并安装vagrant，不过好像中国下载有问题，这里有个baidu pan的copy，版本vagrant 1.4.3 下载并安装appscale-tools， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -31,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/11/appscalean-zhuang">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -104,7 +101,7 @@
   
   <header>
     
-      <h1 class="entry-title">Mac Tips: Path路径的查找顺序和设置</h1>
+      <h1 class="entry-title">Appscale安装</h1>
     
     
       <p class="meta">
@@ -120,7 +117,7 @@
   
 
 
-<time datetime="2014-01-30T13:14:17+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2014-02-11T21:49:00+08:00" pubdate data-updated="true">Feb 11<span>th</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -130,27 +127,83 @@
   </header>
 
 
-<div class="entry-content"><h3 id="osxpath">OSX系统的PATH设置</h3>
+<div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>之前看了下Appscale的介绍，觉得还是不错的，这两天自己装一个玩玩。</p>
 
+<h3 id="section-1">安装过程</h3>
+<hr />
+
+<h4 id="section-2">准备工作</h4>
 <ol>
+  <li>下载并安装<a href="https://www.virtualbox.org">virtual box</a></li>
   <li>
-    <p>系统读取path配置的顺序为<br />
-1). /etc/paths wenjian <br />
-2). /etc/paths.d/目录下的所有设置文件<br />
-3). /etc/profile 文件 
-4). 用户目录下的shell配置文件，如zsh的.zshrc文件</p>
+    <p>下载并安装<a href="https://github.com/mitchellh/vagrant">vagrant</a>，不过好像中国下载有问题，这里有个baidu pan的copy，版本<a href="http://pan.baidu.com/s/1dDtaIul">vagrant 1.4.3</a></p>
   </li>
+  <li>下载并安装<a href="https://github.com/AppScale/appscale-tools">appscale-tools</a>，帮助安装配置appscale的，可以参照<a href="https://github.com/AppScale/appscale-tools/wiki/Installing-the-AppScale-Tools-on-Mac-OS-X">官方的安装说明</a>使用<code>brew</code>安装，</li>
+  <li>下载<a href="http://download.appscale.com/apps/AppScale%201.13.0%20VirtualBox%20Image">Appscale for mac的virtual box的image</a>，因为很大，直接下载会有问题，这里分享一个已经下好的在百度云盘的copy，版本为<a href="http://pan.baidu.com/s/1i3p4NsT">AppScale 1.13.0</a> </li>
+</ol>
+
+<h4 id="vm">安装VM过程</h4>
+<ol>
+  <li>创建一个appscale的目录</li>
+  <li>获取一个<a href="https://s3.amazonaws.com/appscale_CDN/files/Vagrantfile">Vagrant的配置文件</a>，也可以通过命令<code>vagrant init</code>获得  </li>
+  <li>打开Vagrantfile，将<code>config.vm.box_url</code>配置为你下载好的Appscale for mac的virtual box的image  </li>
+  <li>将<code>config.vm.network</code>配置成你的网络地址，但是不要用host机器的IP</li>
   <li>
-    <p>获取当前path的值的方式<br />
-1). echo $PATH<br />
-2). /usr/libexec/path_helper  </p>
-  </li>
-  <li>
-    <p>用户设置path的建议<br />
-1). 只针对用户自己的设置配知道shell的配置文件中，如.zshrc
-2). 针对系统的文件，可以在/etc/paths.d/路径中生成一个对应的配置文件</p>
+    <p>启动vm</p>
+
+    <pre><code>vagrant up
+vagrant ssh     # now you're in the VM as the "vagrant" user
+sudo -s passwd  # change the root password
+</code></pre>
   </li>
 </ol>
+
+<h4 id="appscale">部署AppScale</h4>
+
+<ol>
+  <li>初始化一个配置文件AppScalefile，需要执行<code>appscale init cluster</code></li>
+  <li>
+    <p>修改AppScalefile中的<code>ips_layout</code>，将IP都设置为你刚才配置的VM IP，然后启动Appscale，命令：<code>appscale up</code>      </p>
+
+    <pre><code>ips_layout:
+  master : 192.168.33.10
+  appengine: 192.168.33.10
+  database: 192.168.33.10
+  zookeeper: 192.168.33.10
+</code></pre>
+  </li>
+</ol>
+
+<h4 id="section-3">部署应用</h4>
+
+<p>用命令：<code>appscale deploy &lt;app path&gt;</code>         </p>
+
+<h4 id="section-4">关闭</h4>
+<ol>
+  <li>关闭appscale，用命令<code>appscale down</code></li>
+  <li>关闭VM，用命令<code>vagrant halt</code></li>
+</ol>
+
+<h4 id="appscale-tools">Appscale tools安装过程(官方介绍复制)</h4>
+
+<p>安装命令：</p>
+
+<pre><code>brew install wget
+brew install ssh-copy-id
+brew install swig
+wget https://github.com/AppScale/appscale-tools/archive/1.13.0.tar.gz -O appscale-tools-1.13.0.tar.gz
+tar xvf appscale-tools-1.13.0.tar.gz
+
+sudo ./appscale-tools-1.13.0/osx/appscale_install.sh
+</code></pre>
+
+<p>将<code>/usr/local/share/python:/usr/local/appscale-tools/bin</code>放入到path中就可以了</p>
+
+<p>小提示：
+1. 官网说用euca-version检查安装是否成功，但是根本就没有这个命令。这个好像是给EC2和S3用的python工具，可以用<code>port search 'euca'</code>查到
+2. Vagrant有对应的oh-my-zsh的plugins，配置进.zshrc文件中就可以了</p>
 </div>
 
 
@@ -173,12 +226,12 @@
   
 
 
-<time datetime="2014-01-30T13:14:17+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2014-02-11T21:49:00+08:00" pubdate data-updated="true">Feb 11<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/mac/'>MAC</a>, <a class='category' href='/blog/categories/osx/'>OSX</a>
+    <a class='category' href='/blog/categories/appscalre/'>Appscalre</a>
   
 </span>
 
@@ -194,10 +247,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/28/octopressguan-li-fu-jian/" title="Previous Post: octopress管理附件">&laquo; octopress管理附件</a>
+        <a class="basic-alignment left" href="/blog/2014/02/09/octopressshi-yong-ye-mian-biao-qian/" title="Previous Post: Octopress使用页面标签">&laquo; Octopress使用页面标签</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu/" title="Next Post: mac tips: 管理后台自动运行的服务">mac tips: 管理后台自动运行的服务 &raquo;</a>
       
     </p>
   </footer>
@@ -272,22 +323,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/11/appscalean-zhuang/">Appscale安装</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/appscalre/'>Appscalre</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/02/09/octopressshi-yong-ye-mian-biao-qian/">Octopress使用页面标签</a></h3>
         <div class="meta">
           <span class="tags">
@@ -343,6 +378,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/findbugs/'>Findbugs</a>, <a class='category' href='/blog/categories/jenkins/'>Jenkins</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/02/07/octopressdong-tai-zhan-shi-tu-pian/">Octopress动态展示图片</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
   
 </span>
 

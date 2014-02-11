@@ -12,16 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-e2da548b149115593aaf51e589f76635.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-68d57c2d5383dd6f1bec924739630481.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 当一篇blog太长的时候，总是希望有个按钮能回到某个章节上，或者是文件的开头 解决办法 因为Markdown语法没有提供这个支持，只用用Div的方式来支持了，具体方式如下 定义标签 1
-2
-3 &lt;a name=&quot;标签名&quot;&gt;&lt;/a&gt; 定义跳转链接 1 &hellip;">
+  <meta name="description" content="原由 之前看了下Appscale的介绍，觉得还是不错的，这两天自己装一个玩玩。 安装过程 准备工作 下载并安装virtual box 下载并安装vagrant，不过好像中国下载有问题，这里有个baidu pan的copy，版本vagrant 1.4.3 下载并安装appscale-tools， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -40,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-e2da548b149115593aaf51e589f76635.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-68d57c2d5383dd6f1bec924739630481.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -100,6 +98,121 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/11/appscalean-zhuang/">Appscale安装</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-11T21:49:00+08:00" pubdate data-updated="true">Feb 11<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/11/appscalean-zhuang/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>之前看了下Appscale的介绍，觉得还是不错的，这两天自己装一个玩玩。</p>
+
+<h3 id="section-1">安装过程</h3>
+<hr />
+
+<h4 id="section-2">准备工作</h4>
+<ol>
+  <li>下载并安装<a href="https://www.virtualbox.org">virtual box</a></li>
+  <li>
+    <p>下载并安装<a href="https://github.com/mitchellh/vagrant">vagrant</a>，不过好像中国下载有问题，这里有个baidu pan的copy，版本<a href="http://pan.baidu.com/s/1dDtaIul">vagrant 1.4.3</a></p>
+  </li>
+  <li>下载并安装<a href="https://github.com/AppScale/appscale-tools">appscale-tools</a>，帮助安装配置appscale的，可以参照<a href="https://github.com/AppScale/appscale-tools/wiki/Installing-the-AppScale-Tools-on-Mac-OS-X">官方的安装说明</a>使用<code>brew</code>安装，</li>
+  <li>下载<a href="http://download.appscale.com/apps/AppScale%201.13.0%20VirtualBox%20Image">Appscale for mac的virtual box的image</a>，因为很大，直接下载会有问题，这里分享一个已经下好的在百度云盘的copy，版本为<a href="http://pan.baidu.com/s/1i3p4NsT">AppScale 1.13.0</a> </li>
+</ol>
+
+<h4 id="vm">安装VM过程</h4>
+<ol>
+  <li>创建一个appscale的目录</li>
+  <li>获取一个<a href="https://s3.amazonaws.com/appscale_CDN/files/Vagrantfile">Vagrant的配置文件</a>，也可以通过命令<code>vagrant init</code>获得  </li>
+  <li>打开Vagrantfile，将<code>config.vm.box_url</code>配置为你下载好的Appscale for mac的virtual box的image  </li>
+  <li>将<code>config.vm.network</code>配置成你的网络地址，但是不要用host机器的IP</li>
+  <li>
+    <p>启动vm</p>
+
+    <pre><code>vagrant up
+vagrant ssh     # now you're in the VM as the "vagrant" user
+sudo -s passwd  # change the root password
+</code></pre>
+  </li>
+</ol>
+
+<h4 id="appscale">部署AppScale</h4>
+
+<ol>
+  <li>初始化一个配置文件AppScalefile，需要执行<code>appscale init cluster</code></li>
+  <li>
+    <p>修改AppScalefile中的<code>ips_layout</code>，将IP都设置为你刚才配置的VM IP，然后启动Appscale，命令：<code>appscale up</code>      </p>
+
+    <pre><code>ips_layout:
+  master : 192.168.33.10
+  appengine: 192.168.33.10
+  database: 192.168.33.10
+  zookeeper: 192.168.33.10
+</code></pre>
+  </li>
+</ol>
+
+<h4 id="section-3">部署应用</h4>
+
+<p>用命令：<code>appscale deploy &lt;app path&gt;</code>         </p>
+
+<h4 id="section-4">关闭</h4>
+<ol>
+  <li>关闭appscale，用命令<code>appscale down</code></li>
+  <li>关闭VM，用命令<code>vagrant halt</code></li>
+</ol>
+
+<h4 id="appscale-tools">Appscale tools安装过程(官方介绍复制)</h4>
+
+<p>安装命令：</p>
+
+<pre><code>brew install wget
+brew install ssh-copy-id
+brew install swig
+wget https://github.com/AppScale/appscale-tools/archive/1.13.0.tar.gz -O appscale-tools-1.13.0.tar.gz
+tar xvf appscale-tools-1.13.0.tar.gz
+
+sudo ./appscale-tools-1.13.0/osx/appscale_install.sh
+</code></pre>
+
+<p>将<code>/usr/local/share/python:/usr/local/appscale-tools/bin</code>放入到path中就可以了</p>
+
+<p>小提示：
+1. 官网说用euca-version检查安装是否成功，但是根本就没有这个命令。这个好像是给EC2和S3用的python工具，可以用<code>port search 'euca'</code>查到
+2. Vagrant有对应的oh-my-zsh的plugins，配置进.zshrc文件中就可以了</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1943,80 +2056,6 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/03/she-ji-mo-shi-%3Amo-ban-fang-fa/">设计模式：模版方法</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-03T14:53:40+08:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/03/she-ji-mo-shi-%3Amo-ban-fang-fa/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">模版方法模式原理</h3>
-
-<ol>
-  <li>名称：模版方法(Template Method)模式</li>
-  <li>问题：在很多时候多个对象有很多个共性，只是某个／某些行为不同，如果单独实现这些对象，则需要很多的copy - paste</li>
-  <li>解决方案：将共性的行为抽取到抽象类，将特定的行为由具体的对象来实现／或者这个具体的行为本身就是一个对象(主要由继承方式和回调方式两种实现手段)</li>
-  <li>结果：减少了相同的代码，增强了维护性</li>
-</ol>
-
-<h3 id="section-1">继承方式实现模版方法模式</h3>
-
-<p><img src="/images/TemplatePattern1.png" alt="继承方式的模版方法" /></p>
-
-<p>这里注意点：
-1. 父类是抽象类
-2. 抽象方法是个个子类需要实现的各自的具体行为
-3. 父类只是实现一个算法框架
-4. Java为了避免父类的的方法被覆盖／重写，可以将其申明为final或private</p>
-
-<h3 id="section-2">回调函数实现模版方法模式</h3>
-
-<p><img src="/images/TemplatePattern2.png" alt="回调函数的模版方法" /></p>
-
-<p>这里注意点：
-1. 主类对应的接口依赖与回调的接口定义，不是直接依赖回调对象本身
-2. 主类无需被继承，提定行为由实现回调接口的对象实现
-3. 最为常用的例子是多线程处理中，回调对象都实现了Runable接口实现特性的逻辑，控制线程的主逻辑类如ExecutorService依赖于Runable接口</p>
-
-<p>个人比较建议使用回调函数实现模版方法模式。（之前用C++的时候计较多的是用继承的方式）</p>
-
-<h4 id="vi">Vi小技巧</h4>
-<ol>
-  <li>yy 用来copy当前行</li>
-  <li>数字n＋yy  用来copy从单前行开始的n行</li>
-  <li>p 在当前光标出插入copy的内容</li>
-</ol>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -2030,6 +2069,10 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/11/appscalean-zhuang/">Appscale安装</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/02/09/octopressshi-yong-ye-mian-biao-qian/">Octopress使用页面标签</a>
@@ -2047,10 +2090,6 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
         <a href="/blog/2014/02/08/zai-jenkinszhong-shi-yong-findbugs/">在Jenkins中使用Findbugs</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/02/07/octopressdong-tai-zhan-shi-tu-pian/">Octopress动态展示图片</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -2060,7 +2099,8 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
+    <li class='category'><a href='/blog/categories/appscalre/'>Appscalre (1)</a></li>
+<li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
 <li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
 <li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (3)</a></li>
 <li class='category'><a href='/blog/categories/findbugs/'>Findbugs (1)</a></li>
