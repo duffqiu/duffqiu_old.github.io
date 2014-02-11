@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-12T00:29:19+08:00</updated>
+  <updated>2014-02-12T00:34:07+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -200,9 +200,11 @@ sudo ./appscale-tools-1.13.0/osx/appscale_install.sh
 解决的方式去掉mirror的配置，增加repository到profile中，并激活
 提示：maven下载artifactor的顺序为pom.xml上的repository配置，然后是settings.xml的mirror配置，然后才是profiles中的repository配置</p>
 
+<p><a name="rep-seq"></a></p>
+
 <div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('pic')"> Maven下载artifactor的顺序</div>
 
-<div style="display:none" class="prev" id="pic" onclick="hidediv('pic')">
+<div style="display:none" class="prev" id="pic" onclick="hidediv('pic');self.location.href='#rep-seq'">
 
 <img src="http://maven.apache.org/repository/maven-repositories.png" title="点击关闭" />
 
