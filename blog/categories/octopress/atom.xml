@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-13T00:32:11+08:00</updated>
+  <updated>2014-02-13T01:00:22+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -93,6 +93,8 @@ cmd = "java -jar " + plantuml_jar + " -pipe &gt; " + filepath + dotcmd
 </code></p>
 
 <p>因为之前发生过错误，所以需要手工清除<code>octopress/public/images/plantuml/</code>这个目录</p>
+
+<p>这个我的第一个github pull request，纪念一下</p>
 ]]></content>
   </entry>
   
