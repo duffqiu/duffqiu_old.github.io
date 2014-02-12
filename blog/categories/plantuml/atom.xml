@@ -4,7 +4,7 @@
   <title><![CDATA[Category: PlantUML | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/plantuml/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-13T01:00:22+08:00</updated>
+  <updated>2014-02-13T01:02:19+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -71,7 +71,7 @@ plantuml_background_color: "#f8f8f8"
     <p>在<code>_config.yml</code>文件中增加一个plantuml的配置项并设定dot的路径：<code>lantuml_dotpath: /opt/local/bin/dot</code></p>
   </li>
   <li>
-    <p>在plantuml.rb文件中的<code>ilename = Digest::MD5.hexdigest(code) + ".png"</code>语句上面增加dot的配置的读取</p>
+    <p>在plantuml.rb文件中的<code>filename = Digest::MD5.hexdigest(code) + ".png"</code>语句上面增加dot的配置的读取</p>
   </li>
 </ol>
 
