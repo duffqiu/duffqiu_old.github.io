@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: PlantUML | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/plantuml/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2014-02-12T22:56:43+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress中使用plantuml]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/12/octopresszhong-shi-yong-plantuml/"/>
+    <updated>2014-02-12T22:36:09+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/12/octopresszhong-shi-yong-plantuml</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>一直想便利的在Octopress使用UML，之前没有太好的办法，只能在astah画好后存为图片文件，然后再用链接的方式使用</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>现在经Leo同学推荐，使用文本的UML语言的方式可以写出UML图，他就是<a href="http://plantuml.sourceforge.net">Plant UML</a>，同时在github上有个octopress的插件可以直接支持在Markdown中使用Plant UML，它是<a href="https://github.com/yjpark/jekyll-plantuml">jekyll-plantuml</a></p>
+
+<h4 id="section-2">安装办法</h4>
+<ol>
+  <li>在octopress上建一个<code>_lib</code>的目录</li>
+  <li>下载<a href="http://plantuml.sourceforge.net/download.html">plantuml.jar</a>到上面建的<code>_lib</code>的目录</li>
+  <li>下载<a href="https://github.com/yjpark/jekyll-plantuml/raw/master/plantuml.rb">plantuml.rb</a>插件到<code>plugin</code>目录</li>
+  <li>
+    <p>修改<code>_config.yml</code>文件，增加platuml的配置如下</p>
+
+    <pre><code># PlantUML
+plantuml_jar: _lib/plantuml.jar
+plantuml_background_color: "#f8f8f8"
+</code></pre>
+  </li>
+  <li>然后用</li>
+</ol>
+
+<p><code>sh
+<center><img src='/images/plantuml/f3f38d1d042bc259f06614d2fdeb7237.png'></center>
+</code></p>
+
+<p>括上platuml的代码就可以了，下面是一个简单的示例</p>
+
+<p>源码如下：</p>
+
+<p><code>sh  
+<center><img src='/images/plantuml/701d88046b71f1849b1c4c67dd74ed25.png'></center>
+</code></p>
+
+<p>图片展示如下： </p>
+
+<p><center><img src='/images/plantuml/4b8dd507ddcb69d1776592ee5d1f6ab6.png'></center></p>
+]]></content>
+  </entry>
+  
+</feed>

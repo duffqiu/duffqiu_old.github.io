@@ -12,14 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-92e80fcd6440b65ae9f9b9bfc8e7330c.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-f086c6260dd97d2de6653f514512719e.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="模版方法模式原理 名称：模版方法(Template Method)模式 问题：在很多时候多个对象有很多个共性，只是某个／某些行为不同，如果单独实现这些对象，则需要很多的copy - paste 解决方案：将共性的行为抽取到抽象类，将特定的行为由具体的对象来实现／或者这个具体的行为本身就是一个对象( &hellip;">
+  <meta name="description" content="单例模式原理 模式名称：单例模式(Singleton Pattern) 问题：需要确保系统中的某个类只能有一个实例存在。现实中如序号ID分配器，确保ID在系统中必须是唯一的。(当然也有很多方式生成唯一ID，这里只是个例子) 解决方案：限制类被new出来，只能通过唯一的访问点（static方法） &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-92e80fcd6440b65ae9f9b9bfc8e7330c.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-f086c6260dd97d2de6653f514512719e.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -98,6 +98,790 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi/">设计模式: 单例模式</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-03T17:47:12+08:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">单例模式原理</h3>
+
+<ol>
+  <li>模式名称：单例模式(Singleton Pattern)</li>
+  <li>问题：需要确保系统中的某个类只能有一个实例存在。现实中如序号ID分配器，确保ID在系统中必须是唯一的。(当然也有很多方式生成唯一ID，这里只是个例子)</li>
+  <li>解决方案：限制类被new出来，只能通过唯一的访问点（static方法）获得一个全局的自身的实例。这个访问点确保实例不会被多次创建</li>
+  <li>结论：通过唯一访问点有效的控制实例的生成</li>
+</ol>
+
+<h3 id="singleton">简单的Singleton</h3>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kd">class</span> <span class="nc">Singleton</span> <span class="o">{</span>
+</span><span class="line">    	<span class="kd">private</span> <span class="kd">static</span> <span class="n">Singleton</span> <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Singleton</span><span class="o">();</span>
+</span><span class="line">    	<span class="c1">//public staic Singleton INSTANCE = new Singleton(); //not suggest</span>
+</span><span class="line">    	
+</span><span class="line">
+</span><span class="line">        <span class="c1">//must make the default create menthod private</span>
+</span><span class="line">        <span class="kd">private</span> <span class="nf">Singleton</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">        <span class="kd">public</span> <span class="n">staic</span> <span class="n">Singleton</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">        <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">//....</span>
+</span><span class="line">
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这里有几点注意：</p>
+
+<ol>
+  <li>默认的构造函数要设置为private，避免类被错误的new出来</li>
+  <li>尽量用方法的方式获取类的实例    </li>
+  <li>如果构造过程表负责，则需要用static{…}方式阔起来</li>
+  <li>成员变量和单例控制函数都应该是static</li>
+</ol>
+
+<h3 id="section-1">延迟初始化</h3>
+
+<p>根据<a href="">Effective Java</a>中的第55条，除非真的有必要，不然不用延迟初始化<br />
+延迟初始化一定要考虑多线程安全的问题</p>
+
+<p>使用<strong>Initialization on demand holder</strong>方式来控制延迟初始化</p>
+
+<p>在单例中，变量是static的，使用Lazy Holder的方式根据需要创建这个静态变量，同时由JVM来保证线程并发问题。</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span> (LazySingleton.java)</span> <a href="/downloads/code/DesignPatternDemo/org/duffqiu/patterndemo/LazySingleton.java">download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * The file show the lazy holder</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndemo</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * @author macbook</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> *         2014年2月4日</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">LazySingleton</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="nf">LazySingleton</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">LazyHolder</span> <span class="o">{</span>
+</span><span class="line">	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">LazySingleton</span> <span class="n">INSTANCE</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LazySingleton</span><span class="o">();</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kd">static</span> <span class="n">LazySingleton</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">	<span class="k">return</span> <span class="n">LazyHolder</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>小提示：对于非单例的类的延迟初始化要用double check的方式，具体可以参见Effective Java 第71条</p>
+
+<p>提供两个JUnit test，一个是简单比对两次生成的singleton是否相同，一个是多线程（线程数比CPU大就可）的方式同时去获取singleton，然后比对第一个和其它的是否相同</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span> (LazySingletonTest.java)</span> <a href="/downloads/code/DesignPatternDemo/org/duffqiu/patterndemotest/LazySingletonTest.java">download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+<span class="line-number">62</span>
+<span class="line-number">63</span>
+<span class="line-number">64</span>
+<span class="line-number">65</span>
+<span class="line-number">66</span>
+<span class="line-number">67</span>
+<span class="line-number">68</span>
+<span class="line-number">69</span>
+<span class="line-number">70</span>
+<span class="line-number">71</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndemotest</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">assertj</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">api</span><span class="o">.</span><span class="na">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.util.Collection</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.util.Vector</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.util.concurrent.Callable</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.util.concurrent.ExecutorService</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.util.concurrent.Executors</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.util.concurrent.TimeUnit</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kn">import</span> <span class="nn">org.duffqiu.patterndemo.LazySingleton</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * @author macbook</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> *         2014年2月4日</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">LazySingletonTest</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Test</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testEquals</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">LazySingleton</span> <span class="n">a</span> <span class="o">=</span> <span class="n">LazySingleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+</span><span class="line">	<span class="n">LazySingleton</span> <span class="n">b</span> <span class="o">=</span> <span class="n">LazySingleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">assertThat</span><span class="o">(</span><span class="n">a</span><span class="o">).</span><span class="na">isSameAs</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Test</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testMultithread</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">InterruptedException</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">	<span class="kt">int</span> <span class="n">threadNum</span> <span class="o">=</span> <span class="n">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">().</span><span class="na">availableProcessors</span><span class="o">()</span> <span class="o">+</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">	<span class="kd">final</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">LazySingleton</span><span class="o">&gt;</span> <span class="n">litSingleton</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Vector</span><span class="o">&lt;&gt;();</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">ExecutorService</span> <span class="n">manager</span> <span class="o">=</span> <span class="n">Executors</span><span class="o">.</span><span class="na">newScheduledThreadPool</span><span class="o">(</span><span class="n">threadNum</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">Collection</span><span class="o">&lt;</span><span class="n">Callable</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;&gt;</span> <span class="n">tasks</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Vector</span><span class="o">&lt;</span><span class="n">Callable</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;&gt;();</span>
+</span><span class="line">
+</span><span class="line">	<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">threadNum</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class="line">	    <span class="n">tasks</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="n">Callable</span><span class="o">&lt;</span><span class="n">Object</span><span class="o">&gt;()</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">		<span class="nd">@Override</span>
+</span><span class="line">		<span class="kd">public</span> <span class="n">Object</span> <span class="nf">call</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+</span><span class="line">		    <span class="n">LazySingleton</span> <span class="n">a</span> <span class="o">=</span> <span class="n">LazySingleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+</span><span class="line">		    <span class="n">litSingleton</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
+</span><span class="line">		    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class="line">		<span class="o">}</span>
+</span><span class="line">
+</span><span class="line">	    <span class="o">});</span>
+</span><span class="line">	<span class="o">}</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">manager</span><span class="o">.</span><span class="na">invokeAll</span><span class="o">(</span><span class="n">tasks</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">manager</span><span class="o">.</span><span class="na">awaitTermination</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">SECONDS</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">LazySingleton</span> <span class="n">b</span> <span class="o">=</span> <span class="n">litSingleton</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">	<span class="k">for</span> <span class="o">(</span><span class="n">Object</span> <span class="n">o</span> <span class="o">:</span> <span class="n">litSingleton</span><span class="o">.</span><span class="na">toArray</span><span class="o">())</span> <span class="o">{</span>
+</span><span class="line">	    <span class="n">assertThat</span><span class="o">(</span><span class="n">b</span><span class="o">).</span><span class="na">isSameAs</span><span class="o">(</span><span class="n">o</span><span class="o">);</span>
+</span><span class="line">	<span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="section-2">单例的序列化</h3>
+<p>如果单例实现了Serializable接口，则需要注意，默认情况下，反序列化都会生成一个新的对象。根据Effective Java 第74条，谨慎实现序列化接口，除非真的有必要。因为一旦发布这个类出去，再改动这个类时使用端需要重新编译的，从而降低了类的灵活性</p>
+
+<p>解决办法，利用反序列化完成前的readResolve函数重新返回本地的单例，确保系统的单例唯一性<br />
+代码演示如下。如果将readResolve方法注释掉，则单元测试将报错</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span> (SerialibleSingleton.java)</span> <a href="/downloads/code/DesignPatternDemo/org/duffqiu/patterndemo/SerialibleSingleton.java">download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+<span class="line-number">62</span>
+<span class="line-number">63</span>
+<span class="line-number">64</span>
+<span class="line-number">65</span>
+<span class="line-number">66</span>
+<span class="line-number">67</span>
+<span class="line-number">68</span>
+<span class="line-number">69</span>
+<span class="line-number">70</span>
+<span class="line-number">71</span>
+<span class="line-number">72</span>
+<span class="line-number">73</span>
+<span class="line-number">74</span>
+<span class="line-number">75</span>
+<span class="line-number">76</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndemo</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.io.Serializable</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * @author macbook</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> *         2014年2月5日</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">SerialibleSingleton</span> <span class="kd">implements</span> <span class="n">Serializable</span> <span class="o">{</span>
+</span><span class="line">    <span class="cm">/**</span>
+</span><span class="line"><span class="cm">     * </span>
+</span><span class="line"><span class="cm">     */</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="mi">7646684293730736310L</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">DEFAULT_AGO</span> <span class="o">=</span> <span class="mi">36</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;duff qiu&quot;</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="n">DEFAULT_AGO</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="nf">SerialibleSingleton</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">LazyHolder</span> <span class="o">{</span>
+</span><span class="line">	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">SerialibleSingleton</span> <span class="n">INSTANCE</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SerialibleSingleton</span><span class="o">();</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="kd">static</span> <span class="n">SerialibleSingleton</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">	<span class="k">return</span> <span class="n">LazyHolder</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="cm">/*</span>
+</span><span class="line"><span class="cm">     * (non-Javadoc)</span>
+</span><span class="line"><span class="cm">     * @see java.lang.Object#hashCode()</span>
+</span><span class="line"><span class="cm">     */</span>
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">hashCode</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">	<span class="kd">final</span> <span class="kt">int</span> <span class="n">prime</span> <span class="o">=</span> <span class="mi">31</span><span class="o">;</span>
+</span><span class="line">	<span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class="line">	<span class="n">result</span> <span class="o">=</span> <span class="n">prime</span> <span class="o">*</span> <span class="n">result</span> <span class="o">+</span> <span class="n">age</span><span class="o">;</span>
+</span><span class="line">	<span class="n">result</span> <span class="o">=</span> <span class="n">prime</span> <span class="o">*</span> <span class="n">result</span> <span class="o">+</span> <span class="o">((</span><span class="n">name</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">?</span> <span class="mi">0</span> <span class="o">:</span> <span class="n">name</span><span class="o">.</span><span class="na">hashCode</span><span class="o">());</span>
+</span><span class="line">	<span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="cm">/*</span>
+</span><span class="line"><span class="cm">     * (non-Javadoc)</span>
+</span><span class="line"><span class="cm">     * @see java.lang.Object#equals(java.lang.Object)</span>
+</span><span class="line"><span class="cm">     */</span>
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">equals</span><span class="o">(</span><span class="n">Object</span> <span class="n">obj</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">	<span class="k">if</span> <span class="o">(</span><span class="k">this</span> <span class="o">==</span> <span class="n">obj</span><span class="o">)</span>
+</span><span class="line">	    <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class="line">	<span class="k">if</span> <span class="o">(</span><span class="n">obj</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class="line">	    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class="line">	<span class="k">if</span> <span class="o">(</span><span class="n">getClass</span><span class="o">()</span> <span class="o">!=</span> <span class="n">obj</span><span class="o">.</span><span class="na">getClass</span><span class="o">())</span>
+</span><span class="line">	    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class="line">	<span class="n">SerialibleSingleton</span> <span class="n">other</span> <span class="o">=</span> <span class="o">(</span><span class="n">SerialibleSingleton</span><span class="o">)</span> <span class="n">obj</span><span class="o">;</span>
+</span><span class="line">	<span class="k">if</span> <span class="o">(</span><span class="n">age</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="na">age</span><span class="o">)</span>
+</span><span class="line">	    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class="line">	<span class="k">if</span> <span class="o">(</span><span class="n">name</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">	    <span class="k">if</span> <span class="o">(</span><span class="n">other</span><span class="o">.</span><span class="na">name</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+</span><span class="line">		<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class="line">	<span class="o">}</span> <span class="k">else</span> <span class="k">if</span> <span class="o">(!</span><span class="n">name</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">other</span><span class="o">.</span><span class="na">name</span><span class="o">))</span>
+</span><span class="line">	    <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+</span><span class="line">	<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="n">Object</span> <span class="nf">readResolve</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">	<span class="c1">//make sure the instance is the same as the local system after de-serialization </span>
+</span><span class="line">	<span class="k">return</span> <span class="n">LazyHolder</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>测试代码如下，一个自己实现的序列化和反序列化，一个是用apache common lang实现的。</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span> (SerialibleSingletonTest.java)</span> <a href="/downloads/code/DesignPatternDemo/org/duffqiu/patterndemotest/SerialibleSingletonTest.java">download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndemotest</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">assertj</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">api</span><span class="o">.</span><span class="na">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.io.ByteArrayInputStream</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.io.ByteArrayOutputStream</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.io.InputStream</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.io.ObjectInputStream</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">java.io.ObjectOutputStream</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kn">import</span> <span class="nn">org.apache.commons.lang3.SerializationUtils</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">org.duffqiu.patterndemo.SerialibleSingleton</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * @author macbook</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> *         2014年2月5日</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SerialibleSingletonTest</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Test</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">test</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">,</span> <span class="n">ClassNotFoundException</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">SerialibleSingleton</span> <span class="n">a</span> <span class="o">=</span> <span class="n">SerialibleSingleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+</span><span class="line">
+</span><span class="line">	<span class="c1">//serialization</span>
+</span><span class="line">	<span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class="line">	<span class="n">ByteArrayOutputStream</span> <span class="n">baos</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ByteArrayOutputStream</span><span class="o">();</span>
+</span><span class="line">	<span class="n">ObjectOutputStream</span> <span class="n">oos</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ObjectOutputStream</span><span class="o">(</span><span class="n">baos</span><span class="o">);</span>
+</span><span class="line">	<span class="n">oos</span><span class="o">.</span><span class="na">writeObject</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
+</span><span class="line">	<span class="n">bytes</span> <span class="o">=</span> <span class="n">baos</span><span class="o">.</span><span class="na">toByteArray</span><span class="o">();</span>
+</span><span class="line">
+</span><span class="line">	<span class="c1">//de-serialization</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">InputStream</span> <span class="n">is</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ByteArrayInputStream</span><span class="o">(</span><span class="n">bytes</span><span class="o">);</span>
+</span><span class="line">	<span class="n">ObjectInputStream</span> <span class="n">ois</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ObjectInputStream</span><span class="o">(</span><span class="n">is</span><span class="o">);</span>
+</span><span class="line">	<span class="n">SerialibleSingleton</span> <span class="n">b</span> <span class="o">=</span> <span class="o">(</span><span class="n">SerialibleSingleton</span><span class="o">)</span> <span class="n">ois</span><span class="o">.</span><span class="na">readObject</span><span class="o">();</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">assertThat</span><span class="o">(</span><span class="n">a</span><span class="o">).</span><span class="na">isSameAs</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Test</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testWithCommLang</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">	<span class="n">SerialibleSingleton</span> <span class="n">a</span> <span class="o">=</span> <span class="n">SerialibleSingleton</span><span class="o">.</span><span class="na">getInstance</span><span class="o">();</span>
+</span><span class="line">
+</span><span class="line">	<span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="n">SerializationUtils</span><span class="o">.</span><span class="na">serialize</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
+</span><span class="line">	<span class="n">SerialibleSingleton</span> <span class="n">b</span> <span class="o">=</span> <span class="n">SerializationUtils</span><span class="o">.</span><span class="na">deserialize</span><span class="o">(</span><span class="n">bytes</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">assertThat</span><span class="o">(</span><span class="n">a</span><span class="o">).</span><span class="na">isSameAs</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="enumsingleton">Enum实现singleton</h3>
+<p>这个参见Effective Java 第77条，好处是不用特别处理readResolve，也不用实现Serializable接口。缺点是无法延迟初始化，以及看起来不是太好看</p>
+
+<p>代码如下：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span> (EnumSingleton.java)</span> <a href="/downloads/code/DesignPatternDemo/org/duffqiu/patterndemo/EnumSingleton.java">download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * test git polling</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndemo</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * @author macbook</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> *         2014年2月5日</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kd">public</span> <span class="kd">enum</span> <span class="n">EnumSingleton</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">INSTANCE</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">DEFAULT_AGO</span> <span class="o">=</span> <span class="mi">36</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="n">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;duff qiu&quot;</span><span class="o">;</span>
+</span><span class="line">    <span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="n">DEFAULT_AGO</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="cm">/**</span>
+</span><span class="line"><span class="cm">     * @return the name</span>
+</span><span class="line"><span class="cm">     */</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="n">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">	<span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="cm">/**</span>
+</span><span class="line"><span class="cm">     * @param name</span>
+</span><span class="line"><span class="cm">     *            the name to set</span>
+</span><span class="line"><span class="cm">     */</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="n">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">	<span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="cm">/**</span>
+</span><span class="line"><span class="cm">     * @return the age</span>
+</span><span class="line"><span class="cm">     */</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">	<span class="k">return</span> <span class="n">age</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="cm">/**</span>
+</span><span class="line"><span class="cm">     * @param age</span>
+</span><span class="line"><span class="cm">     *            the age to set</span>
+</span><span class="line"><span class="cm">     */</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">synchronized</span> <span class="kt">void</span> <span class="nf">setAge</span><span class="o">(</span><span class="kt">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">	<span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>测试代码如下：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span> (EnumSingletonTest.java)</span> <a href="/downloads/code/DesignPatternDemo/org/duffqiu/patterndemotest/EnumSingletonTest.java">download</a></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duffqiu</span><span class="o">.</span><span class="na">patterndemotest</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">assertj</span><span class="o">.</span><span class="na">core</span><span class="o">.</span><span class="na">api</span><span class="o">.</span><span class="na">Assertions</span><span class="o">.</span><span class="na">assertThat</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kn">import</span> <span class="nn">org.apache.commons.lang3.SerializationUtils</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">org.duffqiu.patterndemo.EnumSingleton</span><span class="o">;</span>
+</span><span class="line"><span class="kn">import</span> <span class="nn">org.junit.Test</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/**</span>
+</span><span class="line"><span class="cm"> * @author macbook</span>
+</span><span class="line"><span class="cm"> * </span>
+</span><span class="line"><span class="cm"> *         2014年2月5日</span>
+</span><span class="line"><span class="cm"> */</span>
+</span><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EnumSingletonTest</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Test</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testSerialibel</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">	<span class="n">EnumSingleton</span> <span class="n">a</span> <span class="o">=</span> <span class="n">EnumSingleton</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">	<span class="kt">byte</span><span class="o">[]</span> <span class="n">bytes</span> <span class="o">=</span> <span class="n">SerializationUtils</span><span class="o">.</span><span class="na">serialize</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
+</span><span class="line">	<span class="n">EnumSingleton</span> <span class="n">b</span> <span class="o">=</span> <span class="n">SerializationUtils</span><span class="o">.</span><span class="na">deserialize</span><span class="o">(</span><span class="n">bytes</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">assertThat</span><span class="o">(</span><span class="n">a</span><span class="o">).</span><span class="na">isSameAs</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Test</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">testGetSet</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">	<span class="n">EnumSingleton</span> <span class="n">a</span> <span class="o">=</span> <span class="n">EnumSingleton</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
+</span><span class="line">	<span class="n">EnumSingleton</span> <span class="n">b</span> <span class="o">=</span> <span class="n">EnumSingleton</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">a</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="mi">30</span><span class="o">);</span>
+</span><span class="line">	<span class="n">b</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">&quot;test name&quot;</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line">	<span class="n">assertThat</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">getName</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="n">b</span><span class="o">.</span><span class="na">getName</span><span class="o">());</span>
+</span><span class="line">	<span class="n">assertThat</span><span class="o">(</span><span class="n">a</span><span class="o">.</span><span class="na">getAge</span><span class="o">()).</span><span class="na">isEqualTo</span><span class="o">(</span><span class="n">b</span><span class="o">.</span><span class="na">getAge</span><span class="o">());</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="section-3">小插曲</h3>
+<p>测试的判断，我这里用的是assertj的库，比较简单好用，参见<a href="http://joel-costigliola.github.io/assertj/index.html">assertj</a></p>
+
+<p>从上面的测试序列化和反序列化的测试例子看出来，序列化和反序列化是挺麻烦的事情，还好有开源的工具帮组我们做到简单化。可以使用<a href="http://commons.apache.org/proper/commons-lang/">apache common lang</a>的SerializationUtils。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -964,100 +1748,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/">Octopress的内部blog间关联</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-30T18:28:34+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">首先鸣谢参考资料的作者</h3>
-
-<p>参考资料来自与 <a href="http://blog.eavatar.com/post/2013/06/use-post-url-internal-link-octopress/">1</a></p>
-
-<h3 id="octopress">完善Octopress的配置</h3>
-
-<ol>
-  <li>
-    <p>获取内部关联的<a href="https://raw.github.com/michael-groble/jekyll/fix_post_url/lib/jekyll/tags/post_url.rb">post url plugin</a>，然后将其放入到plugin目录中    </p>
-  </li>
-  <li>
-    <p>确保已经安装了kramdown，如果没有，用以下命令安装</p>
-
-    <pre><code>&gt;sudo gem install kramdown
-</code></pre>
-  </li>
-  <li>
-    <p>编辑配置文件_configy.yml，注释掉markdown: rdiscount，然后增加</p>
-
-    <pre><code>#markdown: rdiscount
-markdown: kramdown
-</code></pre>
-  </li>
-</ol>
-
-<h3 id="blog">在blog中使用关联，语法如下</h3>
-
-<pre><code>[&lt;链接名字&gt;]({% post_url &lt;blog的文件名字，不要带目录和文件后缀&gt; %}) 
-</code></pre>
-
-<p>然后重新生成和部署就可以了</p>
-
-<pre><code>&gt;rake generate
-&gt;rake deploy
-</code></pre>
-
-<h3 id="section-1">一个小插曲</h3>
-<p>今天在生成地8个blog后，rake generate就出错了，报在matrix.rb文件中反馈出”Not Regular Matrix”错误，但是就是死活找不到问题所在，只要将刚生成的文件删除就好了，而文件还没写东西。后来经历反复的从头再来，终于发现了问题所在，结论是之前参照网上配置关联blog的配置，在_configy.yml中增加了以下配置：</p>
-
-<pre><code>lsi: true    
-</code></pre>
-
-<p>只要将这个选项关闭或删除就可，好像octopress已经没有用了</p>
-
-<h3 id="octopress-1">Octopress经验总结</h3>
-
-<p>尽管使用上就是用markdown的方式写文章，但是使用octopress这个平台，就像使用开发工具一样，总会出现这样那样的错误，而且还很难定位，最好的办法就是像编程一样，今早“编译”－》“试运行”－》“改错”－》“再运行”，不然当你写了很多后一次行生成出现错误就无从下手去解决问题了，只能一个一个做减法然后再试。</p>
-
-<p>最好的方式是</p>
-
-<ol>
-  <li>写一部分，就立马rake generate  </li>
-  <li>rake new_post[“<文章名>&#8221;]，不写任何东西，立马rake generate</文章名></li>
-  <li>只要用到 {%  %}这些内嵌语法，立马rake generate</li>
-  <li>更改一项_config.yml配置，立马rake generate</li>
-</ol>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1075,6 +1765,10 @@ markdown: kramdown
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/12/octopresszhong-shi-yong-plantuml/">Octopress中使用plantuml</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/11/appscalean-zhuang/">Appscale安装</a>
       </li>
     
@@ -1088,10 +1782,6 @@ markdown: kramdown
     
       <li class="post">
         <a href="/blog/2014/02/08/maven-tips-artifactcha-zhao-shun-xu/">Maven Tips: Artifact查找顺序</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/08/zai-jenkinszhong-shi-yong-findbugs/">在Jenkins中使用Findbugs</a>
       </li>
     
   </ul>
@@ -1118,7 +1808,8 @@ markdown: kramdown
 <li class='category'><a href='/blog/categories/miscellany/'>Miscellany (1)</a></li>
 <li class='category'><a href='/blog/categories/oo/'>OO (1)</a></li>
 <li class='category'><a href='/blog/categories/osx/'>OSX (3)</a></li>
-<li class='category'><a href='/blog/categories/octopress/'>Octopress (14)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>Octopress (15)</a></li>
+<li class='category'><a href='/blog/categories/plantuml/'>PlantUML (1)</a></li>
 <li class='category'><a href='/blog/categories/port/'>Port (1)</a></li>
 <li class='category'><a href='/blog/categories/proxy/'>Proxy (1)</a></li>
 <li class='category'><a href='/blog/categories/uml/'>UML (1)</a></li>

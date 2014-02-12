@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-12T00:34:07+08:00</updated>
+  <updated>2014-02-12T22:56:43+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,67 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress中使用plantuml]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/12/octopresszhong-shi-yong-plantuml/"/>
+    <updated>2014-02-12T22:36:09+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/12/octopresszhong-shi-yong-plantuml</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>一直想便利的在Octopress使用UML，之前没有太好的办法，只能在astah画好后存为图片文件，然后再用链接的方式使用</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>现在经Leo同学推荐，使用文本的UML语言的方式可以写出UML图，他就是<a href="http://plantuml.sourceforge.net">Plant UML</a>，同时在github上有个octopress的插件可以直接支持在Markdown中使用Plant UML，它是<a href="https://github.com/yjpark/jekyll-plantuml">jekyll-plantuml</a></p>
+
+<h4 id="section-2">安装办法</h4>
+<ol>
+  <li>在octopress上建一个<code>_lib</code>的目录</li>
+  <li>下载<a href="http://plantuml.sourceforge.net/download.html">plantuml.jar</a>到上面建的<code>_lib</code>的目录</li>
+  <li>下载<a href="https://github.com/yjpark/jekyll-plantuml/raw/master/plantuml.rb">plantuml.rb</a>插件到<code>plugin</code>目录</li>
+  <li>
+    <p>修改<code>_config.yml</code>文件，增加platuml的配置如下</p>
+
+    <pre><code># PlantUML
+plantuml_jar: _lib/plantuml.jar
+plantuml_background_color: "#f8f8f8"
+</code></pre>
+  </li>
+  <li>然后用</li>
+</ol>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="o">{</span>% plantuml %<span class="o">}</span>
+</span><span class="line">...
+</span><span class="line"><span class="o">{</span>% endplantuml %<span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>括上platuml的代码就可以了，下面是一个简单的示例</p>
+
+<p>源码如下：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="o">{</span>% plantuml %<span class="o">}</span>
+</span><span class="line">Alice -&gt; Bob: Authentication Request
+</span><span class="line">Bob --&gt; Alice: Authentication Response
+</span><span class="line">Alice -&gt; Bob: Another authentication Request
+</span><span class="line">Alice &lt;-- Bob: another authentication Response
+</span><span class="line"><span class="o">{</span>% endplantuml %<span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>图片展示如下： </p>
+
+<center><img src="http://duffqiu.github.io/images/plantuml/4c4dec90e6118bd5d1038e47f33555a2.png" /></center>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Appscale安装]]></title>
@@ -2264,70 +2325,6 @@ end
 </code></pre>
 
 <p>目前看除了rake generate没有那个提示，好像速度没有看出来，或许是文章的数目不多体现不出来 </p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress的内部blog间关联]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/"/>
-    <updated>2014-01-30T18:28:34+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian</id>
-    <content type="html"><![CDATA[<h3 id="section">首先鸣谢参考资料的作者</h3>
-
-<p>参考资料来自与 <a href="http://blog.eavatar.com/post/2013/06/use-post-url-internal-link-octopress/">1</a></p>
-
-<h3 id="octopress">完善Octopress的配置</h3>
-
-<ol>
-  <li>
-    <p>获取内部关联的<a href="https://raw.github.com/michael-groble/jekyll/fix_post_url/lib/jekyll/tags/post_url.rb">post url plugin</a>，然后将其放入到plugin目录中    </p>
-  </li>
-  <li>
-    <p>确保已经安装了kramdown，如果没有，用以下命令安装</p>
-
-    <pre><code>&gt;sudo gem install kramdown
-</code></pre>
-  </li>
-  <li>
-    <p>编辑配置文件_configy.yml，注释掉markdown: rdiscount，然后增加</p>
-
-    <pre><code>#markdown: rdiscount
-markdown: kramdown
-</code></pre>
-  </li>
-</ol>
-
-<h3 id="blog">在blog中使用关联，语法如下</h3>
-
-<pre><code>[&lt;链接名字&gt;]({% post_url &lt;blog的文件名字，不要带目录和文件后缀&gt; %}) 
-</code></pre>
-
-<p>然后重新生成和部署就可以了</p>
-
-<pre><code>&gt;rake generate
-&gt;rake deploy
-</code></pre>
-
-<h3 id="section-1">一个小插曲</h3>
-<p>今天在生成地8个blog后，rake generate就出错了，报在matrix.rb文件中反馈出”Not Regular Matrix”错误，但是就是死活找不到问题所在，只要将刚生成的文件删除就好了，而文件还没写东西。后来经历反复的从头再来，终于发现了问题所在，结论是之前参照网上配置关联blog的配置，在_configy.yml中增加了以下配置：</p>
-
-<pre><code>lsi: true    
-</code></pre>
-
-<p>只要将这个选项关闭或删除就可，好像octopress已经没有用了</p>
-
-<h3 id="octopress-1">Octopress经验总结</h3>
-
-<p>尽管使用上就是用markdown的方式写文章，但是使用octopress这个平台，就像使用开发工具一样，总会出现这样那样的错误，而且还很难定位，最好的办法就是像编程一样，今早“编译”－》“试运行”－》“改错”－》“再运行”，不然当你写了很多后一次行生成出现错误就无从下手去解决问题了，只能一个一个做减法然后再试。</p>
-
-<p>最好的方式是</p>
-
-<ol>
-  <li>写一部分，就立马rake generate  </li>
-  <li>rake new_post[“<文章名>&#8221;]，不写任何东西，立马rake generate</文章名></li>
-  <li>只要用到 {%  %}这些内嵌语法，立马rake generate</li>
-  <li>更改一项_config.yml配置，立马rake generate</li>
-</ol>
 ]]></content>
   </entry>
   

@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress添加bing网站分析 - Duff Qiu's Blog</title>
+  <title>Octopress中使用plantuml - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,8 +19,7 @@
 
 
   
-  <meta name="description" content="原由
-Google提供了相应的Analytics网站分析工具，同样Bing也提供了类似的工具：Bing网站管理员，同样可以给你的Octopress很快速的添加该分析工具 配置 在Bing网站管理员注册，并填写必要的信息 添加一个新网站，填写相应的信息 根据认证所有权网页配置Octopress， &hellip;">
+  <meta name="description" content="原由 一直想便利的在Octopress使用UML，之前没有太好的办法，只能在astah画好后存为图片文件，然后再用链接的方式使用 解决办法 现在经Leo同学推荐，使用文本的UML语言的方式可以写出UML图，他就是Plant UML， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,7 +28,7 @@ Google提供了相应的Analytics网站分析工具，同样Bing也提供了类�
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/02/octopresstian-jia-bingwang-zhan-fen-xi">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/12/octopresszhong-shi-yong-plantuml">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -102,7 +101,7 @@ Google提供了相应的Analytics网站分析工具，同样Bing也提供了类�
   
   <header>
     
-      <h1 class="entry-title">Octopress添加bing网站分析</h1>
+      <h1 class="entry-title">Octopress中使用plantuml</h1>
     
     
       <p class="meta">
@@ -118,7 +117,7 @@ Google提供了相应的Analytics网站分析工具，同样Bing也提供了类�
   
 
 
-<time datetime="2014-02-02T11:30:01+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2014</time>
+<time datetime="2014-02-12T22:36:09+08:00" pubdate data-updated="true">Feb 12<span>th</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -129,43 +128,58 @@ Google提供了相应的Analytics网站分析工具，同样Bing也提供了类�
 
 
 <div class="entry-content"><h3 id="section">原由</h3>
-<p>Google提供了相应的Analytics网站分析工具，同样Bing也提供了类似的工具：<a href="http://www.bing.com/toolbox/webmaster/" title="官网">Bing网站管理员</a>，同样可以给你的Octopress很快速的添加该分析工具</p>
+<hr />
+<p>一直想便利的在Octopress使用UML，之前没有太好的办法，只能在astah画好后存为图片文件，然后再用链接的方式使用</p>
 
-<h3 id="section-1">配置</h3>
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>现在经Leo同学推荐，使用文本的UML语言的方式可以写出UML图，他就是<a href="http://plantuml.sourceforge.net">Plant UML</a>，同时在github上有个octopress的插件可以直接支持在Markdown中使用Plant UML，它是<a href="https://github.com/yjpark/jekyll-plantuml">jekyll-plantuml</a></p>
 
+<h4 id="section-2">安装办法</h4>
 <ol>
-  <li>在Bing网站管理员注册，并填写必要的信息</li>
-  <li>添加一个新网站，填写相应的信息</li>
+  <li>在octopress上建一个<code>_lib</code>的目录</li>
+  <li>下载<a href="http://plantuml.sourceforge.net/download.html">plantuml.jar</a>到上面建的<code>_lib</code>的目录</li>
+  <li>下载<a href="https://github.com/yjpark/jekyll-plantuml/raw/master/plantuml.rb">plantuml.rb</a>插件到<code>plugin</code>目录</li>
   <li>
-    <p>根据认证所有权网页配置Octopress，具体如下</p>
+    <p>修改<code>_config.yml</code>文件，增加platuml的配置如下</p>
 
-    <ul>
-      <li>下载你的BingSiteAuth.xml到octopres的source目录下</li>
-      <li>
-        <p>配置_config_yml文件，设置bing analytics开关，在文件最后加入，如果以后不用bing analytics，则可以将开关设置为false就可以，不用到处改文件</p>
-
-        <pre><code># Bing Analytics  
-bing_analytics: true
+    <pre><code># PlantUML
+plantuml_jar: _lib/plantuml.jar
+plantuml_background_color: "#f8f8f8"
 </code></pre>
-      </li>
-      <li>
-        <p>修改octopres/source/_include目录下的head.html文件，在&lt;head&gt;下面增加以下内容，记得替换&lt;…&gt;bing给你的blog的标识</p>
-
-        <pre><code>{% if site.bing_analytics %}
-&lt;meta name="msvalidate.01" content="&lt;...&gt;" /&gt;
-{% endif %}
-</code></pre>
-      </li>
-      <li>
-        <p>然后重新生成并部署就可以了      </p>
-
-        <pre><code>&gt;rake generate
-&gt;rake deploy
-</code></pre>
-      </li>
-    </ul>
   </li>
+  <li>然后用</li>
 </ol>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="o">{</span>% plantuml %<span class="o">}</span>
+</span><span class="line">...
+</span><span class="line"><span class="o">{</span>% endplantuml %<span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>括上platuml的代码就可以了，下面是一个简单的示例</p>
+
+<p>源码如下：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="o">{</span>% plantuml %<span class="o">}</span>
+</span><span class="line">Alice -&gt; Bob: Authentication Request
+</span><span class="line">Bob --&gt; Alice: Authentication Response
+</span><span class="line">Alice -&gt; Bob: Another authentication Request
+</span><span class="line">Alice &lt;-- Bob: another authentication Response
+</span><span class="line"><span class="o">{</span>% endplantuml %<span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>图片展示如下： </p>
+
+<center><img src="/images/plantuml/4c4dec90e6118bd5d1038e47f33555a2.png" /></center>
 </div>
 
 
@@ -188,12 +202,12 @@ bing_analytics: true
   
 
 
-<time datetime="2014-02-02T11:30:01+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2014</time>
+<time datetime="2014-02-12T22:36:09+08:00" pubdate data-updated="true">Feb 12<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/bing/'>Bing</a>, <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/octopress/'>Octopress</a>, <a class='category' href='/blog/categories/plantuml/'>PlantUML</a>
   
 </span>
 
@@ -209,10 +223,8 @@ bing_analytics: true
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/02/01/port-tips-ruan-jian-ban-ben-xuan-ze/" title="Previous Post: Port tips: 软件版本选择">&laquo; Port tips: 软件版本选择</a>
+        <a class="basic-alignment left" href="/blog/2014/02/11/appscalean-zhuang/" title="Previous Post: Appscale安装">&laquo; Appscale安装</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/02/02/she-ji-mo-shi-kai-pian/" title="Next Post: 设计模式开篇">设计模式开篇 &raquo;</a>
       
     </p>
   </footer>
@@ -288,22 +300,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/12/octopresszhong-shi-yong-plantuml/">Octopress中使用plantuml</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>, <a class='category' href='/blog/categories/plantuml/'>PlantUML</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/02/11/appscalean-zhuang/">Appscale安装</a></h3>
         <div class="meta">
           <span class="tags">
@@ -359,6 +355,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/maven/'>Maven</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/02/08/zai-jenkinszhong-shi-yong-findbugs/">在Jenkins中使用Findbugs</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/findbugs/'>Findbugs</a>, <a class='category' href='/blog/categories/jenkins/'>Jenkins</a>
   
 </span>
 
