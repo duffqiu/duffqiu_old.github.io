@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design Pattern | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/design-pattern/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-13T23:59:12+08:00</updated>
+  <updated>2014-02-14T00:03:09+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -778,7 +778,9 @@
 
 <h3 id="section-1">继承方式实现模版方法模式</h3>
 
-<p><img src="/images/TemplatePattern1.png" alt="继承方式的模版方法" /></p>
+<!--![继承方式的模版方法](/images/TemplatePattern1.png)-->
+
+<p><center><img src='/images/plantuml/7870a5f3289a98ba21ba8ac7210df0e8.png'></center></p>
 
 <p>这里注意点：
 1. 父类是抽象类
@@ -788,7 +790,9 @@
 
 <h3 id="section-2">回调函数实现模版方法模式</h3>
 
-<p><img src="/images/TemplatePattern2.png" alt="回调函数的模版方法" /></p>
+<!--![回调函数的模版方法](/images/TemplatePattern2.png)-->
+
+<p><center><img src='/images/plantuml/d4f316bf6d908d1121e959f3b3f28ebe.png'></center></p>
 
 <p>这里注意点：
 1. 主类对应的接口依赖与回调的接口定义，不是直接依赖回调对象本身

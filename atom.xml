@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-13T23:59:12+08:00</updated>
+  <updated>2014-02-14T00:03:09+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -1870,7 +1870,9 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
 
 <h3 id="section-1">继承方式实现模版方法模式</h3>
 
-<p><img src="http://duffqiu.github.io/images/TemplatePattern1.png" alt="继承方式的模版方法" /></p>
+<!--![继承方式的模版方法](/images/TemplatePattern1.png)-->
+
+<center><img src="http://duffqiu.github.io/images/plantuml/2515b7108295d58fcfed227fd93bb039.png" /></center>
 
 <p>这里注意点：
 1. 父类是抽象类
@@ -1880,7 +1882,9 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
 
 <h3 id="section-2">回调函数实现模版方法模式</h3>
 
-<p><img src="http://duffqiu.github.io/images/TemplatePattern2.png" alt="回调函数的模版方法" /></p>
+<!--![回调函数的模版方法](/images/TemplatePattern2.png)-->
+
+<center><img src="http://duffqiu.github.io/images/plantuml/edf928f5f73da67baf7161bc71ff9098.png" /></center>
 
 <p>这里注意点：
 1. 主类对应的接口依赖与回调的接口定义，不是直接依赖回调对象本身
