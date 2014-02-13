@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Maven | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/maven/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-13T23:55:41+08:00</updated>
+  <updated>2014-02-13T23:59:12+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Maven工程中加入PlatUML]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-platuml/"/>
+    <title type="html"><![CDATA[Maven工程中加入PlantUML]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-plantuml/"/>
     <updated>2014-02-13T23:37:47+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-platuml</id>
+    <id>http://duffqiu.github.io/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-plantuml</id>
     <content type="html"><![CDATA[<h3 id="section">原由</h3>
 <p>设计于编码的最好实践是设计文档与代码文档放在最近的地方，便于同时修改和更新。最好都放入到一个代码工程中</p>
 
