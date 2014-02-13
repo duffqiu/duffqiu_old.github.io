@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress的内部blog间关联 - Duff Qiu's Blog</title>
+  <title>Maven工程中加入PlatUML - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,7 +19,9 @@
 
 
   
-  <meta name="description" content="首先鸣谢参考资料的作者 参考资料来自与 1 完善Octopress的配置 获取内部关联的post url plugin，然后将其放入到plugin目录中 确保已经安装了kramdown，如果没有，用以下命令安装 &gt;sudo gem install kramdown &hellip;">
+  <meta name="description" content="原由
+设计于编码的最好实践是设计文档与代码文档放在最近的地方，便于同时修改和更新。最好都放入到一个代码工程中 解决办法
+PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目录存放PlantUML的设计文件，txt文件就可以。如：src/main/plantuml &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -28,7 +30,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-platuml">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -101,7 +103,7 @@
   
   <header>
     
-      <h1 class="entry-title">Octopress的内部blog间关联</h1>
+      <h1 class="entry-title">Maven工程中加入PlatUML</h1>
     
     
       <p class="meta">
@@ -117,7 +119,7 @@
   
 
 
-<time datetime="2014-01-30T18:28:34+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2014-02-13T23:37:47+08:00" pubdate data-updated="true">Feb 13<span>th</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -127,62 +129,74 @@
   </header>
 
 
-<div class="entry-content"><h3 id="section">首先鸣谢参考资料的作者</h3>
+<div class="entry-content"><h3 id="section">原由</h3>
+<p>设计于编码的最好实践是设计文档与代码文档放在最近的地方，便于同时修改和更新。最好都放入到一个代码工程中</p>
 
-<p>参考资料来自与 <a href="http://blog.eavatar.com/post/2013/06/use-post-url-internal-link-octopress/">1</a></p>
-
-<h3 id="octopress">完善Octopress的配置</h3>
+<h3 id="section-1">解决办法</h3>
+<p>PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目录存放PlantUML的设计文件，txt文件就可以。如：<code>src/main/plantuml</code></p>
 
 <ol>
   <li>
-    <p>获取内部关联的<a href="https://raw.github.com/michael-groble/jekyll/fix_post_url/lib/jekyll/tags/post_url.rb">post url plugin</a>，然后将其放入到plugin目录中    </p>
+    <p>然后确保已经安装好了graphvizDot。</p>
   </li>
   <li>
-    <p>确保已经安装了kramdown，如果没有，用以下命令安装</p>
-
-    <pre><code>&gt;sudo gem install kramdown
-</code></pre>
+    <p>然后就可以写plantuml的文本</p>
   </li>
   <li>
-    <p>编辑配置文件_configy.yml，注释掉markdown: rdiscount，然后增加</p>
-
-    <pre><code>#markdown: rdiscount
-markdown: kramdown
-</code></pre>
+    <p>修改maven的工程的pom.xml文件，增加<a href="https://github.com/duffqiu/maven-plantuml-plugin">PlantUML的Maven Plugin</a>，注意用的版本，我用时maven plugin最新的版本为7954，plantuml版本是7991，代码如下</p>
   </li>
 </ol>
 
-<h3 id="blog">在blog中使用关联，语法如下</h3>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">    &lt;plugin&gt;
+</span><span class="line">      &lt;groupId&gt;com.github.jeluard&lt;/groupId&gt;
+</span><span class="line">      &lt;artifactId&gt;plantuml-maven-plugin&lt;/artifactId&gt;
+</span><span class="line">      &lt;version&gt;7954&lt;/version&gt;
+</span><span class="line">      &lt;configuration&gt;
+</span><span class="line">        &lt;graphvizDot&gt;/opt/local/bin/dot&lt;/graphvizDot&gt;
+</span><span class="line">        &lt;sourceFiles&gt;
+</span><span class="line">          &lt;directory&gt;<span class="k">${</span><span class="nv">basedir</span><span class="k">}</span>&lt;/directory&gt;
+</span><span class="line">          &lt;includes&gt;
+</span><span class="line">            &lt;include&gt;src/main/plantuml/*.txt&lt;/include&gt;
+</span><span class="line">          &lt;/includes&gt;
+</span><span class="line">        &lt;/sourceFiles&gt;
+</span><span class="line">      &lt;/configuration&gt;
+</span><span class="line">      &lt;dependencies&gt;
+</span><span class="line">        &lt;dependency&gt;
+</span><span class="line">          &lt;groupId&gt;net.sourceforge.plantuml&lt;/groupId&gt;
+</span><span class="line">          &lt;artifactId&gt;plantuml&lt;/artifactId&gt;
+</span><span class="line">          &lt;version&gt;7991&lt;/version&gt;
+</span><span class="line">        &lt;/dependency&gt;
+</span><span class="line">      &lt;/dependencies&gt;
+</span><span class="line">    &lt;/plugin&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<pre><code>[&lt;链接名字&gt;]({% post_url &lt;blog的文件名字，不要带目录和文件后缀&gt; %}) 
-</code></pre>
+<p>因为用port安装的graphvizDot目录不在<code>/usr/bin</code>下，所以需要特定指定改目录</p>
 
-<p>然后重新生成和部署就可以了</p>
+<p>然后用maven的build的target：<code>com.github.jeluard:plantuml-maven-plugin:generate</code>就可以将plantuml下的文件转成UML图形了。图形文件放在<code>target/plantuml</code>目录下</p>
 
-<pre><code>&gt;rake generate
-&gt;rake deploy
-</code></pre>
+<p>如果用Eclipse，则可以安装对应的<a href="http://plantuml.sourceforge.net/updatesitejuno/">eclipse插件，安装地址 </a>，这样在写plantuml文本的时候就可以同时看到图形了。</p>
 
-<h3 id="section-1">一个小插曲</h3>
-<p>今天在生成地8个blog后，rake generate就出错了，报在matrix.rb文件中反馈出”Not Regular Matrix”错误，但是就是死活找不到问题所在，只要将刚生成的文件删除就好了，而文件还没写东西。后来经历反复的从头再来，终于发现了问题所在，结论是之前参照网上配置关联blog的配置，在_configy.yml中增加了以下配置：</p>
-
-<pre><code>lsi: true    
-</code></pre>
-
-<p>只要将这个选项关闭或删除就可，好像octopress已经没有用了</p>
-
-<h3 id="octopress-1">Octopress经验总结</h3>
-
-<p>尽管使用上就是用markdown的方式写文章，但是使用octopress这个平台，就像使用开发工具一样，总会出现这样那样的错误，而且还很难定位，最好的办法就是像编程一样，今早“编译”－》“试运行”－》“改错”－》“再运行”，不然当你写了很多后一次行生成出现错误就无从下手去解决问题了，只能一个一个做减法然后再试。</p>
-
-<p>最好的方式是</p>
-
-<ol>
-  <li>写一部分，就立马rake generate  </li>
-  <li>rake new_post[“<文章名>&#8221;]，不写任何东西，立马rake generate</文章名></li>
-  <li>只要用到 {%  %}这些内嵌语法，立马rake generate</li>
-  <li>更改一项_config.yml配置，立马rake generate</li>
-</ol>
 </div>
 
 
@@ -205,12 +219,12 @@ markdown: kramdown
   
 
 
-<time datetime="2014-01-30T18:28:34+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2014-02-13T23:37:47+08:00" pubdate data-updated="true">Feb 13<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/maven/'>Maven</a>, <a class='category' href='/blog/categories/plantuml/'>PlantUML</a>
   
 </span>
 
@@ -226,10 +240,8 @@ markdown: kramdown
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/" title="Previous Post: Mac tips: 给用户增加用户组">&laquo; Mac tips: 给用户增加用户组</a>
+        <a class="basic-alignment left" href="/blog/2014/02/12/octopresszhong-shi-yong-plantuml/" title="Previous Post: Octopress中使用plantuml">&laquo; Octopress中使用plantuml</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/30/octopress-gemcha-jian-gslan-zhuang/" title="Next Post: Octopress gem插件gsl安装">Octopress gem插件gsl安装 &raquo;</a>
       
     </p>
   </footer>
@@ -305,22 +317,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-platuml/">Maven工程中加入PlatUML</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/maven/'>Maven</a>, <a class='category' href='/blog/categories/plantuml/'>PlantUML</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/02/12/octopresszhong-shi-yong-plantuml/">Octopress中使用plantuml</a></h3>
         <div class="meta">
           <span class="tags">
@@ -376,6 +372,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/miscellany/'>Miscellany</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/02/08/maven-tips-artifactcha-zhao-shun-xu/">Maven tips: artifact查找顺序</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/maven/'>Maven</a>
   
 </span>
 

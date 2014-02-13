@@ -12,14 +12,16 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-79ead5f45338c3d784327958138996db.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-015f02376fad089f01bc4f0b6757aee1.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 一直想便利的在Octopress使用UML，之前没有太好的办法，只能在astah画好后存为图片文件，然后再用链接的方式使用 解决办法 现在经Leo同学推荐，使用文本的UML语言的方式可以写出UML图，他就是Plant UML， &hellip;">
+  <meta name="description" content="原由
+设计于编码的最好实践是设计文档与代码文档放在最近的地方，便于同时修改和更新。最好都放入到一个代码工程中 解决办法
+PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目录存放PlantUML的设计文件，txt文件就可以。如：src/main/plantuml &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +40,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-79ead5f45338c3d784327958138996db.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-015f02376fad089f01bc4f0b6757aee1.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -98,6 +100,112 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-platuml/">Maven工程中加入PlatUML</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-13T23:37:47+08:00" pubdate data-updated="true">Feb 13<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-platuml/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<p>设计于编码的最好实践是设计文档与代码文档放在最近的地方，便于同时修改和更新。最好都放入到一个代码工程中</p>
+
+<h3 id="section-1">解决办法</h3>
+<p>PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目录存放PlantUML的设计文件，txt文件就可以。如：<code>src/main/plantuml</code></p>
+
+<ol>
+  <li>
+    <p>然后确保已经安装好了graphvizDot。</p>
+  </li>
+  <li>
+    <p>然后就可以写plantuml的文本</p>
+  </li>
+  <li>
+    <p>修改maven的工程的pom.xml文件，增加<a href="https://github.com/duffqiu/maven-plantuml-plugin">PlantUML的Maven Plugin</a>，注意用的版本，我用时maven plugin最新的版本为7954，plantuml版本是7991，代码如下</p>
+  </li>
+</ol>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">    &lt;plugin&gt;
+</span><span class="line">      &lt;groupId&gt;com.github.jeluard&lt;/groupId&gt;
+</span><span class="line">      &lt;artifactId&gt;plantuml-maven-plugin&lt;/artifactId&gt;
+</span><span class="line">      &lt;version&gt;7954&lt;/version&gt;
+</span><span class="line">      &lt;configuration&gt;
+</span><span class="line">        &lt;graphvizDot&gt;/opt/local/bin/dot&lt;/graphvizDot&gt;
+</span><span class="line">        &lt;sourceFiles&gt;
+</span><span class="line">          &lt;directory&gt;<span class="k">${</span><span class="nv">basedir</span><span class="k">}</span>&lt;/directory&gt;
+</span><span class="line">          &lt;includes&gt;
+</span><span class="line">            &lt;include&gt;src/main/plantuml/*.txt&lt;/include&gt;
+</span><span class="line">          &lt;/includes&gt;
+</span><span class="line">        &lt;/sourceFiles&gt;
+</span><span class="line">      &lt;/configuration&gt;
+</span><span class="line">      &lt;dependencies&gt;
+</span><span class="line">        &lt;dependency&gt;
+</span><span class="line">          &lt;groupId&gt;net.sourceforge.plantuml&lt;/groupId&gt;
+</span><span class="line">          &lt;artifactId&gt;plantuml&lt;/artifactId&gt;
+</span><span class="line">          &lt;version&gt;7991&lt;/version&gt;
+</span><span class="line">        &lt;/dependency&gt;
+</span><span class="line">      &lt;/dependencies&gt;
+</span><span class="line">    &lt;/plugin&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>因为用port安装的graphvizDot目录不在<code>/usr/bin</code>下，所以需要特定指定改目录</p>
+
+<p>然后用maven的build的target：<code>com.github.jeluard:plantuml-maven-plugin:generate</code>就可以将plantuml下的文件转成UML图形了。图形文件放在<code>target/plantuml</code>目录下</p>
+
+<p>如果用Eclipse，则可以安装对应的<a href="http://plantuml.sourceforge.net/updatesitejuno/">eclipse插件，安装地址 </a>，这样在写plantuml文本的时候就可以同时看到图形了。</p>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1262,154 +1370,6 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/">Octopress实时获取并展示github上其它repository的代码</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-05T01:45:57+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<p>在写blog的时候，想要直接关联github上的其它repository的代码，这样以后代码更新就不需要更新blog了。但是看octopress的文档，似乎<a href="https://gist.github.com">gist</a>可以达到该目的，但是它不是一个代码工程，无法像正常的代码工程那样去管理，编译，运行等。<br />
-所以就想看看能否给Octopress加个plugin直接展示该代码</p>
-
-<h3 id="section-1">办法</h3>
-<p>原本想改一下plugins/include_code.rb，但是感觉还是太复杂，所以想个简单的方式
-还是利用include_code这个插件，这个插件是可以将在source/downloads/code/目录下的文件展示出来的，这个目录原octopress代码没有生成，需要手工生成。<br />
-思路就是想法将github上的代码在rake generate之前先用wget获取下来放到上面这个指定的目录中<br />
-因为include_code.rb的复杂度，我选择了更改Rakefile文件，新增一个任务的方式来解决
-具体步骤如下：</p>
-
-<ol>
-  <li>
-    <p>在octopress目录下新增一个需要下载的文件的配置githubcode.cf，格式为<github repository="" name="">空格<java package="" name="">空格<java code="" file="" url="">。java的包名可以保留&#8217;.&#8217;的格式，这个插件会自动转成目录</java></java></github></p>
-
-    <pre><code>DesignPatternDemo  org.duffqiu.patterndemo  https://raw.github.com/duffqiu/DesignPatternDemo/feature/LazySingletonDemo/src/org/duffqiu/patterndemo/LazySingleton.java
-</code></pre>
-  </li>
-  <li>
-    <p>确保已经安装好wget</p>
-
-    <pre><code>sudo port install wget
-</code></pre>
-  </li>
-  <li>
-    <p>更改Rakefile文件，在最后增加一个任务</p>
-
-    <pre><code> desc "get code file from github"
- task :github_code do
-	
-   begin
-     require 'net/http'
-     require 'uri'
-     rm_rf "source/downloads"
-     mkdir_p "source/downloads/code"
-     if File.exist?("githubcode.cf")
-       IO.foreach("githubcode.cf") do |line|
-         if line.strip.empty? == false
-             cd "source/downloads/code" do
-             attr = line.split(' ')
-             repo = attr[0].strip
-             if repo.empty?
-               abort("repo name is empty")
-             end
-             package = attr[1].strip
-             file_url = attr[2].strip
-             if file_url.empty?
-               abort("file url is empty")
-             end
-             package_dir = package.gsub(/\./, '/')
-             target_dir = repo + '/' + package_dir
-             mkdir_p target_dir
-             cd target_dir do
-               system ("wget  " + file_url)
-             end
-           end
-         end
-       end
-     else
-       puts 'githubcode.cf not found'
-     end
-   end
- end        		
-</code></pre>
-  </li>
-  <li>
-    <p>在需要引用代码的地方使用以下方式</p>
-
-    <pre><code>{% include_code lang:java &lt;repository name&gt;/&lt;package name&gt;/&lt;java file name&gt; %}
-</code></pre>
-
-    <p>注意：<repository name="">前面没有&#8217;/&#8217;，<pakcage name="">要将java的包名的&#8217;.&#8217;改为&#8217;/&#8217;</pakcage></repository></p>
-  </li>
-  <li>
-    <p>每次有新增的github代码文件引入，则需要在rake generate前先调用</p>
-
-    <pre><code>rake github_code
-</code></pre>
-  </li>
-</ol>
-
-<h3 id="section-2">小插曲</h3>
-<p>####wget https访问问题</p>
-
-<p>使用wget访问github的时候，因为github使用https，则会出现说github的“证书不可信”和“证书颁发者未知”的问题。
-解决方式为</p>
-
-<ol>
-  <li>使用–no-check-certificate参数访问github，但是还是用warning，不够完美</li>
-  <li>
-    <p>决解证书问题  </p>
-
-    <ul>
-      <li>
-        <p>安装curl-ca-bundle</p>
-
-        <pre><code> sudo port install curl-ca-bundle
-</code></pre>
-      </li>
-      <li>
-        <p>配置wget</p>
-
-        <pre><code> echo CA_CERTIFICATE=/opt/local/share/curl/curl-ca-bundle.crt &gt;&gt; ~/.wgetrc
-</code></pre>
-      </li>
-    </ul>
-  </li>
-</ol>
-
-<p>然后再运行wget就不会有问题了</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1425,6 +1385,10 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-platuml/">Maven工程中加入PlatUML</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/12/octopresszhong-shi-yong-plantuml/">Octopress中使用plantuml</a>
       </li>
     
@@ -1438,10 +1402,6 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
     
       <li class="post">
         <a href="/blog/2014/02/09/ji-zhu-za-tan-1/">技术杂谈1</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/08/maven-tips-artifactcha-zhao-shun-xu/">Maven Tips: Artifact查找顺序</a>
       </li>
     
   </ul>
@@ -1464,12 +1424,12 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
 <li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>
 <li class='category'><a href='/blog/categories/jenkins/'>Jenkins (2)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>MAC (2)</a></li>
-<li class='category'><a href='/blog/categories/maven/'>Maven (1)</a></li>
+<li class='category'><a href='/blog/categories/maven/'>Maven (2)</a></li>
 <li class='category'><a href='/blog/categories/miscellany/'>Miscellany (1)</a></li>
 <li class='category'><a href='/blog/categories/oo/'>OO (1)</a></li>
 <li class='category'><a href='/blog/categories/osx/'>OSX (3)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>Octopress (15)</a></li>
-<li class='category'><a href='/blog/categories/plantuml/'>PlantUML (1)</a></li>
+<li class='category'><a href='/blog/categories/plantuml/'>PlantUML (2)</a></li>
 <li class='category'><a href='/blog/categories/port/'>Port (1)</a></li>
 <li class='category'><a href='/blog/categories/proxy/'>Proxy (1)</a></li>
 <li class='category'><a href='/blog/categories/uml/'>UML (1)</a></li>

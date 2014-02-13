@@ -4,7 +4,7 @@
   <title><![CDATA[Category: PlantUML | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/plantuml/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-13T01:02:19+08:00</updated>
+  <updated>2014-02-13T23:55:41+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,65 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Maven工程中加入PlatUML]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-platuml/"/>
+    <updated>2014-02-13T23:37:47+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-platuml</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<p>设计于编码的最好实践是设计文档与代码文档放在最近的地方，便于同时修改和更新。最好都放入到一个代码工程中</p>
+
+<h3 id="section-1">解决办法</h3>
+<p>PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目录存放PlantUML的设计文件，txt文件就可以。如：<code>src/main/plantuml</code></p>
+
+<ol>
+  <li>
+    <p>然后确保已经安装好了graphvizDot。</p>
+  </li>
+  <li>
+    <p>然后就可以写plantuml的文本</p>
+  </li>
+  <li>
+    <p>修改maven的工程的pom.xml文件，增加<a href="https://github.com/duffqiu/maven-plantuml-plugin">PlantUML的Maven Plugin</a>，注意用的版本，我用时maven plugin最新的版本为7954，plantuml版本是7991，代码如下</p>
+  </li>
+</ol>
+
+<p>``` sh</p>
+
+<pre><code>&lt;plugin&gt;
+  &lt;groupId&gt;com.github.jeluard&lt;/groupId&gt;
+  &lt;artifactId&gt;plantuml-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;7954&lt;/version&gt;
+  &lt;configuration&gt;
+    &lt;graphvizDot&gt;/opt/local/bin/dot&lt;/graphvizDot&gt;
+    &lt;sourceFiles&gt;
+      &lt;directory&gt;${basedir}&lt;/directory&gt;
+      &lt;includes&gt;
+        &lt;include&gt;src/main/plantuml/*.txt&lt;/include&gt;
+      &lt;/includes&gt;
+    &lt;/sourceFiles&gt;
+  &lt;/configuration&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;net.sourceforge.plantuml&lt;/groupId&gt;
+      &lt;artifactId&gt;plantuml&lt;/artifactId&gt;
+      &lt;version&gt;7991&lt;/version&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+&lt;/plugin&gt;
+</code></pre>
+
+<p>```</p>
+
+<p>因为用port安装的graphvizDot目录不在<code>/usr/bin</code>下，所以需要特定指定改目录</p>
+
+<p>然后用maven的build的target：<code>com.github.jeluard:plantuml-maven-plugin:generate</code>就可以将plantuml下的文件转成UML图形了。图形文件放在<code>target/plantuml</code>目录下</p>
+
+<p>如果用Eclipse，则可以安装对应的<a href="http://plantuml.sourceforge.net/updatesitejuno/">eclipse插件，安装地址 </a>，这样在写plantuml文本的时候就可以同时看到图形了。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Octopress中使用plantuml]]></title>
