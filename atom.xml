@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-14T00:03:09+08:00</updated>
+  <updated>2014-02-15T23:15:34+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式：工厂方法模式]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/15/she-ji-mo-shi-%3Agong-han-fang-fa-mo-shi/"/>
+    <updated>2014-02-15T22:15:00+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/15/she-ji-mo-shi-:gong-han-fang-fa-mo-shi</id>
+    <content type="html"><![CDATA[<h3 id="section">工厂方法模式原理</h3>
+<hr />
+<ol>
+  <li>模式名称：工厂方法模式 (Facotory Method)</li>
+  <li>
+    <p>问题：</p>
+
+    <ul>
+      <li>对象的创建比较复杂，需要关联其它对象／资源（如配置文件，数据库等）</li>
+      <li>需要写一堆if-else的方式来决定使用那个对象的具体类</li>
+      <li>希望隐藏创建过程的细节，降低偶和度</li>
+      <li>优化性能，在创建过程中缓存对象等 </li>
+      <li>使用者只关心接口，而不关心具体的类，因为用new的方式总是要和具体的类偶和 </li>
+    </ul>
+  </li>
+  <li>解决方案：使用一个类来帮助创建需要的对象，而该类有外部传入使用方，使用方只是对创建类的接口依赖（写到这里的时候，发现漫谈设计模式的书的UML的图我的理解不同，应该是client依赖与工厂接口，而不是关联工厂对象）</li>
+  <li>结论：提高对象的封装，减少了使用方的依赖</li>
+</ol>
+
+<h3 id="uml">UML图例</h3>
+<hr />
+
+<center><img src="http://duffqiu.github.io/images/plantuml/238505700deee26b99fe08922b2d466d.png" /></center>
+
+<h3 id="section-1">示例代码</h3>
+<hr />
+<p>这个比较简单就不用代码举例了，看看上面的UML图就能写出代码了。关键是在合适的场景下要想起来用到它</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Maven工程中加入PlantUML]]></title>
@@ -2342,87 +2377,6 @@ find . -name '*.js'
   <li>跳到行尾在非编辑状态下直接收入”$”      </li>
 </ol>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress通知搜索引擎]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing/"/>
-    <updated>2014-02-01T13:21:02+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing</id>
-    <content type="html"><![CDATA[<h3 id="section">目的</h3>
-<p>每次更新blog后，总希望搜索引擎可以尽快收录到，最好是多个搜索引擎都能收入到<br />
-怎么做到呢？</p>
-
-<h3 id="rake">配置搜索引擎rake任务</h3>
-<p>首先感谢原作者的介绍<a href="http://blog.eavatar.com/post/2013/06/octopress-ping-search-engines/">1</a></p>
-
-<ol>
-  <li>
-    <p>编辑octopress目录的Rakefile文件，在最后增加搜索引擎任务</p>
-
-    <pre><code>＃Google search engine
-desc 'Notify Google of the new sitemap'
- task :sitemapgoogle do
-  begin
-    require 'net/http'
-    require 'uri'
-    puts '* Pinging Google about our sitemap'
-    Net::HTTP.get('www.google.com', '/webmasters/tools/ping?sitemap=' + URI.escape('http://duffqiu.github.io/sitemap.xml'))
-  rescue LoadError
-    puts '! Could not ping Google about our sitemap, because Net::HTTP or URI could not be found.'
-  end
- end
-
-#Baidu search engine       
-desc 'Ping Baidu'
- task :pingbaidu do
-   begin
-     require 'xmlrpc/client'
-     puts '* Pinging Baidu search engine'
-     XMLRPC::Client.new('ping.baidu.com', '/ping/RPC2').call('weblogUpdates.extendedPing', 'duffqiu.github.io' , 'http://duffqiu.github.io', 'http://duffqiu.github.io', 'http://duffqiu.github.io/rss.xml')
-   rescue LoadError
-     puts '! Could not ping Baidu, because XMLRPC::Client could not be found.'
-   end
- end
-	
-#Bing search engine
-desc 'Notify Bing of the new sitemap'
- task :sitemapbing do
-   begin
-     require 'net/http'
-     require 'uri'
-     puts '* Pinging Bing about our sitemap'
-     Net::HTTP.get('www.bing.com', '/webmaster/ping.aspx?siteMap=' + URI.escape('http://duffqiu.github.io/sitemap.xml'))
-   rescue LoadError
-     puts '! Could not ping Bing about our sitemap, because Net::HTTP or URI could not be found.'
-   end
- end	
-</code></pre>
-
-    <p>将”duffqiu.github.io”换成你的blog域名字即可</p>
-  </li>
-  <li>
-    <p>增加一个批量任务同时执行三个通知</p>
-
-    <pre><code>desc "Notify various services about new content"
-task :notify =&gt; [:sitemapgoogle, :sitemapbing, :pingbaidu] do
-end
-</code></pre>
-  </li>
-  <li>
-    <p>每次部署后执行命令</p>
-
-    <pre><code>rake notify
-</code></pre>
-  </li>
-</ol>
-
-<h3 id="vi">vi小技巧</h3>
-<p>今天有用到一个vi的命令，跳转到文件最后用”:$”        </p>
-
-<h3 id="section-1">小插曲</h3>
-<p>今天发现用Mac OSX10.9可以直接投射屏幕到小米盒子(v1.3.20)了</p>
 ]]></content>
   </entry>
   

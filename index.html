@@ -12,16 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-0424dd1e1b84cb13d5c78e2b0cc9a665.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-ce6bc6731eb90cd4c7aaf4fa3f6dc70f.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由
-设计于编码的最好实践是设计文档与代码文档放在最近的地方，便于同时修改和更新。最好都放入到一个代码工程中 解决办法
-PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目录存放PlantUML的设计文件，txt文件就可以。如：src/main/plantuml &hellip;">
+  <meta name="description" content="工厂方法模式原理 模式名称：工厂方法模式 (Facotory Method) 问题： 对象的创建比较复杂，需要关联其它对象／资源（如配置文件，数据库等） 需要写一堆if-else的方式来决定使用那个对象的具体类 希望隐藏创建过程的细节，降低偶和度 优化性能，在创建过程中缓存对象等 使用者只关心接口 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -40,7 +38,7 @@ PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目�
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-0424dd1e1b84cb13d5c78e2b0cc9a665.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-ce6bc6731eb90cd4c7aaf4fa3f6dc70f.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -100,6 +98,71 @@ PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目�
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/15/she-ji-mo-shi-%3Agong-han-fang-fa-mo-shi/">设计模式：工厂方法模式</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-15T22:15:00+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/15/she-ji-mo-shi-%3Agong-han-fang-fa-mo-shi/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">工厂方法模式原理</h3>
+<hr />
+<ol>
+  <li>模式名称：工厂方法模式 (Facotory Method)</li>
+  <li>
+    <p>问题：</p>
+
+    <ul>
+      <li>对象的创建比较复杂，需要关联其它对象／资源（如配置文件，数据库等）</li>
+      <li>需要写一堆if-else的方式来决定使用那个对象的具体类</li>
+      <li>希望隐藏创建过程的细节，降低偶和度</li>
+      <li>优化性能，在创建过程中缓存对象等 </li>
+      <li>使用者只关心接口，而不关心具体的类，因为用new的方式总是要和具体的类偶和 </li>
+    </ul>
+  </li>
+  <li>解决方案：使用一个类来帮助创建需要的对象，而该类有外部传入使用方，使用方只是对创建类的接口依赖（写到这里的时候，发现漫谈设计模式的书的UML的图我的理解不同，应该是client依赖与工厂接口，而不是关联工厂对象）</li>
+  <li>结论：提高对象的封装，减少了使用方的依赖</li>
+</ol>
+
+<h3 id="uml">UML图例</h3>
+<hr />
+
+<center><img src="/images/plantuml/238505700deee26b99fe08922b2d466d.png" /></center>
+
+<h3 id="section-1">示例代码</h3>
+<hr />
+<p>这个比较简单就不用代码举例了，看看上面的UML图就能写出代码了。关键是在合适的场景下要想起来用到它</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1151,225 +1214,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi/">用Jenkins搭建基于Github和JUnit的自动化测试</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-06T20:23:53+08:00" pubdate data-updated="true">Feb 6<span>th</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<p>在用Github管理代码，同时用JUnit做单元测试，则是否有一种方式／工具帮助我们自动从Github提取最新的代码然后运行JUnit测试并报告结果呢？<br />
-答案是：<a href="http://jenkins-ci.org/">Jenkins</a></p>
-
-<h3 id="section-1">安装及启动配置</h3>
-<p>安装配置都是在Mac OSX下</p>
-
-<ol>
-  <li>下载OSX的安装包，直接安装就可以了。安装完后，程序被放在了/Applications/Jenkins/jenkins.war</li>
-  <li>启动是通过系统服务的方式启动的，启动配置文件在/Library/LaunchDaemons/org.jenkins-ci.plist，可以通过launchctl命令的方式启动／卸载服务，launchctl使用可以参见<a href="/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu/">1</a></li>
-  <li>
-    <p>如果需要卸载这个Jenkins，可以运行</p>
-
-    <pre><code> /Library/Application Support/Jenkins/Uninstall.command
-</code></pre>
-  </li>
-  <li>
-    <p>安装完成后，Jenkins会自动启动，打开本地8080端口，可以通过更改/Library/Application Support/Jenkins/jenkins-runner.sh启动脚本增加启动参数的方式更改，具体参数可以参考<a href="https://wiki.jenkins-ci.org/display/JENKINS/Starting+and+Accessing+Jenkins">2</a>。但是在Mac上可以用defaults工具来更改端口。具体命令如下</p>
-
-    <pre><code> &gt;sudo defaults write  /Library/Preferences/org.jenkins-ci httpPort 9080       
-</code></pre>
-
-    <p>然后用launchctl命令重新启动Jenkins就可以了。Java的配置参数也可以通过这个方式更改</p>
-
-    <p>小提示，可以用defaults命令查看已经配置的参数</p>
-
-    <pre><code>defaults read &lt;file&gt;
-</code></pre>
-  </li>
-  <li>默认安装后，Jenkins是用jenkins用户来运行的       </li>
-</ol>
-
-<h3 id="section-2">系统运行配置</h3>
-
-<h4 id="section-3">前置安装</h4>
-<ol>
-  <li>安装<a href="http://maven.apache.org/download.cgi">Maven</a></li>
-  <li>安装<a href="https://code.google.com/p/git-osx-installer/">Git</a></li>
-  <li>安装Java1.7</li>
-</ol>
-
-<h4 id="jenkins">安装Jenkins插件</h4>
-
-<ol>
-  <li>
-    <p>安装Git插件
-Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺后点击“系统管理”-&gt;“管理插件”-&gt;“可选插件”<br />
-然后在“Filter:”里输入“git”，然后选择安装“Jenkins GIT client plugin”和“Jenkins GIT plugin”</p>
-  </li>
-  <li>
-    <p>安装Junit插件
-同理搜索出Junit相关插件，然后安装“JUnit Attachments Plugin”和“multi-module-tests-publisher” </p>
-  </li>
-  <li>
-    <p>安装performance插件
-同理搜索出performance相关插件，然后安装“Performance plugin”  </p>
-  </li>
-  <li>
-    <p>安装代码覆盖率报告检查插件
-同理搜索出cover相关插件，然后安装“Jenkins Cobertura Plugin”   </p>
-  </li>
-  <li>
-    <p>安装代码检查报告插件
-同理搜索出“pmd”，然后安装“PMD Plug-in”   <br />
-同理搜索出“checkstyple”，然后安装“Checkstyle Plug-in” </p>
-  </li>
-</ol>
-
-<p>记得重启Jenkins激活插件     </p>
-
-<p>小提示，插件中有Github的插件，但是个人觉得不是太好用，直接用Git插件就可以了</p>
-
-<h4 id="section-4">系统配置</h4>
-<p>Jenkins已经做了不少汉化的工作，界面还算友好
-然后点击“系统管理”-&gt;“系统设置”，然后配置Git，Maven，Java以及Mail Notification就可以。（很奇怪，用QQ的STMP不行，用Google的STMP就可以。不过记得到Gmail去激活SMTP/POP3）</p>
-
-<h4 id="section-5">启动安全</h4>
-<p>最好还是激活安全配置
-点击“系统管理”-&gt;“Configure Global Security”<br />
-然后选择勾上“启用安全”，“Unix用户/组数据库”，“登录用户可以做任何事”<br />
-这样只有Mac用户可以登录并使用了</p>
-
-<h3 id="section-6">配置第一个自动测试例子</h3>
-<p>系统配置好，我们就可以来配置一个测试例子了</p>
-
-<h4 id="section-7">前置条件</h4>
-<p>为了简单方便，Java工程要变成Maven工程，如果不是熟悉Maven的，可以先看看<a href="http://www.amazon.cn/Maven实战-许晓斌/dp/B004CLZ7BA/ref=sr_1_1?ie=UTF8&amp;qid=1391746077&amp;sr=8-1&amp;keywords=maven">Maven实战</a></p>
-
-<p>如果需要cobertura覆盖率报告，<br />
-必须要在maven工程中的build plugins中使用cobertura-maven-plugin，配置例子如下：</p>
-
-<pre><code>  &lt;plugin&gt;
-    &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
-    &lt;artifactId&gt;cobertura-maven-plugin&lt;/artifactId&gt;
-    &lt;version&gt;2.6&lt;/version&gt;
-    &lt;configuration&gt;
-      &lt;instrumentation&gt;
-        &lt;excludes&gt;
-          &lt;exclude&gt;*/*Test.class&lt;/exclude&gt;
-        &lt;/excludes&gt;
-      &lt;/instrumentation&gt;
-      &lt;format&gt;xml&lt;/format&gt;
-    &lt;/configuration&gt;
-    &lt;executions&gt;
-      &lt;execution&gt;
-        &lt;goals&gt;
-          &lt;goal&gt;clean&lt;/goal&gt;
-        &lt;/goals&gt;
-      &lt;/execution&gt;
-    &lt;/executions&gt;
-  &lt;/plugin&gt;   
-</code></pre>
-
-<p>如果需要检查代码的写法则需要在maven中引入maven-jxr-plugin，maven-pmd-plugin，maven-checkstyle-plugin，具体配置例子如下：</p>
-
-<pre><code>  &lt;plugin&gt;
-    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-    &lt;artifactId&gt;maven-jxr-plugin&lt;/artifactId&gt;
-    &lt;version&gt;2.4&lt;/version&gt;
-  &lt;/plugin&gt;
-
-  &lt;plugin&gt;
-    &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-    &lt;artifactId&gt;maven-pmd-plugin&lt;/artifactId&gt;
-    &lt;version&gt;3.0.1&lt;/version&gt;
-    &lt;configuration&gt;
-      &lt;format&gt;xml&lt;/format&gt;
-    &lt;/configuration&gt;
-  &lt;/plugin&gt;   
-
-	&lt;plugin&gt;
-	  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-	  &lt;artifactId&gt;maven-checkstyle-plugin&lt;/artifactId&gt;
-	  &lt;version&gt;2.11&lt;/version&gt;
-      &lt;configuration&gt;
-        &lt;configLocation&gt;config/checkstyle.xml&lt;/configLocation&gt;
-        &lt;encoding&gt;UTF-8&lt;/encoding&gt;
-        &lt;outputFileFormat&gt;xml&lt;/outputFileFormat&gt;
-        &lt;consoleOutput&gt;true&lt;/consoleOutput&gt;
-        &lt;failsOnError&gt;false&lt;/failsOnError&gt;
-        &lt;linkXRef&gt;true&lt;/linkXRef&gt;
-      &lt;/configuration&gt;
-	&lt;/plugin&gt;
-</code></pre>
-
-<h4 id="section-8">新建一个自动测试任务</h4>
-<p>点击“新建”选择“构建一个maven2/3项目”      </p>
-
-<ol>
-  <li>配置项目基本信息，描述等   </li>
-  <li>配置Gihub的项目信息<br />
-    <ul>
-      <li>指定github repository地址如我的：https://github.com/duffqiu/DesignPatternDemo.git</li>
-      <li>指定认证用户，我用ssh的方式连接</li>
-      <li>指定代码分支，如我用“*/develop”来测试develop分支</li>
-    </ul>
-  </li>
-  <li>构建触发器，选择“Build whenever a SNAPSHOT dependency is built”，和“Poll SCM”（内容指定为“H/5 * * * *”，即5分钟查询一次github）</li>
-  <li>指定Maven Goals，我用“clean cobertura:cobertura”，这样可以生成覆盖率的报告</li>
-  <li>增加“构建后操作”
-    <ul>
-      <li>配置覆盖率报告位置，默认为：“**/target/site/cobertura/coverage.xml” </li>
-      <li>配置junit性能测试报告位置，默认为：“**/TEST-*.xml”  </li>
-    </ul>
-  </li>
-  <li>使用pmd和checkstyle报告
-    <ul>
-      <li>勾上“Publish Checkstyle analysis results”</li>
-      <li>勾上“Publish PMD analysis results”   </li>
-      <li>同时还要修改Maven Goals为：“clean cobertura:cobertura jxr:jxr checkstyle:checkstyle pmd:pmd”  </li>
-    </ul>
-  </li>
-</ol>
-
-<p>提示jxr:jxr是用来绑定报告中的代码行号   </p>
-
-<p>然后保存就可以用“立即构建”来测试了<br />
-可以通过“查克·诺里斯说：控制台输出”来查看运行过程的log输出   </p>
-
-<h3 id="section-9">小插曲</h3>
-<p>我在安装完配置后，运行一个测试总是包无法找到Maven的错误，可是路径都是对的。后来发现Jenkins是用jenkins用户来运行的，而我将Maven安装在当前的用户的home路径下，造成了jenkins无法访问到。所以应该考虑将Maven安装到/usr/local下，或者copy一份到/Users/Shared/Jenkins/下（记得更改用户权限为jenkins用户）</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1383,6 +1227,10 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/15/she-ji-mo-shi-%3Agong-han-fang-fa-mo-shi/">设计模式：工厂方法模式</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-plantuml/">Maven工程中加入PlantUML</a>
@@ -1400,10 +1248,6 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
         <a href="/blog/2014/02/09/octopressshi-yong-ye-mian-biao-qian/">Octopress使用页面标签</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/02/09/ji-zhu-za-tan-1/">技术杂谈1</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -1416,11 +1260,11 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
     <li class='category'><a href='/blog/categories/appscalre/'>Appscalre (1)</a></li>
 <li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
 <li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
-<li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (3)</a></li>
+<li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (4)</a></li>
 <li class='category'><a href='/blog/categories/findbugs/'>Findbugs (1)</a></li>
 <li class='category'><a href='/blog/categories/gsl/'>GSL (1)</a></li>
 <li class='category'><a href='/blog/categories/junit/'>JUnit (1)</a></li>
-<li class='category'><a href='/blog/categories/java/'>Java (4)</a></li>
+<li class='category'><a href='/blog/categories/java/'>Java (5)</a></li>
 <li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>
 <li class='category'><a href='/blog/categories/jenkins/'>Jenkins (2)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>MAC (2)</a></li>
