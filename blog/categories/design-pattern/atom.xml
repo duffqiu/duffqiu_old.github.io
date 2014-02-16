@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design Pattern | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/design-pattern/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-15T23:23:36+08:00</updated>
+  <updated>2014-02-16T21:09:13+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -45,6 +45,20 @@
 <h3 id="section-1">示例代码</h3>
 <hr />
 <p>这个比较简单就不用代码举例了，看看上面的UML图就能写出代码了。关键是在合适的场景下要想起来用到它</p>
+
+<h3 id="section-2">静态工厂方法</h3>
+<p>原来就是避免了过多的产生工厂类，而将自身设计为工厂，并提供静态工厂方法来创建对象。劣势是失去类面向对象的特征，无法继承、动态多态等。注意：静态方法是无法被覆盖的。</p>
+
+<p><center><img src='/images/plantuml/84cb641244f5af5df683e4dee460acf8.png'></center></p>
+
+<h3 id="section-3">书籍纠正</h3>
+<ol>
+  <li>在《漫谈设计模式》的P50页的setCurrentConnection方法没有必要提供</li>
+  <li>在《漫谈设计模式》的P51页的closeConnect方法，没有必要提供函数参数</li>
+</ol>
+
+<h3 id="threadlocal">小插曲：ThreadLocal的并发性</h3>
+<p>在工厂方法模式中，可以利用ThreadLocal来做对象的缓冲池。但是里面有个比较可爹的问题，如果在线程中被加入到ThreadLocal中，但是在线程结束前不将这个对象手动的移除出ThreadLocal，则ThreadLocal会被另外一个线程使用到。具体可以看我的Github上的<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的代码</a></p>
 ]]></content>
   </entry>
   

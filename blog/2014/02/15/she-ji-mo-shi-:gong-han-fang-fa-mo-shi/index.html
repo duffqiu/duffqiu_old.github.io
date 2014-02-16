@@ -12,7 +12,7 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-a545c7d88ea7bf9272301ab9e2597e98.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-f57e888503486e74dfbd337ab4159481.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-a545c7d88ea7bf9272301ab9e2597e98.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-f57e888503486e74dfbd337ab4159481.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -154,6 +154,20 @@
 <h3 id="section-1">示例代码</h3>
 <hr />
 <p>这个比较简单就不用代码举例了，看看上面的UML图就能写出代码了。关键是在合适的场景下要想起来用到它</p>
+
+<h3 id="section-2">静态工厂方法</h3>
+<p>原来就是避免了过多的产生工厂类，而将自身设计为工厂，并提供静态工厂方法来创建对象。劣势是失去类面向对象的特征，无法继承、动态多态等。注意：静态方法是无法被覆盖的。</p>
+
+<center><img src="/images/plantuml/47c9a8a31b4c2f69b91cd2319ca3c36e.png" /></center>
+
+<h3 id="section-3">书籍纠正</h3>
+<ol>
+  <li>在《漫谈设计模式》的P50页的setCurrentConnection方法没有必要提供</li>
+  <li>在《漫谈设计模式》的P51页的closeConnect方法，没有必要提供函数参数</li>
+</ol>
+
+<h3 id="threadlocal">小插曲：ThreadLocal的并发性</h3>
+<p>在工厂方法模式中，可以利用ThreadLocal来做对象的缓冲池。但是里面有个比较可爹的问题，如果在线程中被加入到ThreadLocal中，但是在线程结束前不将这个对象手动的移除出ThreadLocal，则ThreadLocal会被另外一个线程使用到。具体可以看我的Github上的<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的代码</a></p>
 </div>
 
 
