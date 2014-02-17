@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design Pattern | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/design-pattern/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-17T23:41:55+08:00</updated>
+  <updated>2014-02-17T23:43:20+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,40 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式：原型模式]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/17/she-ji-mo-shi-%3Ayuan-xing-mo-shi/"/>
+    <updated>2014-02-17T23:23:31+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/17/she-ji-mo-shi-:yuan-xing-mo-shi</id>
+    <content type="html"><![CDATA[<h3 id="section">原型模式原理</h3>
+<hr />
+<ol>
+  <li>模式名称：原型模式 (Prototype Pattern)</li>
+  <li>问题：在创建大的聚合对象的时候，如果从每个层次的自对象开始创建，则比较麻烦，同时带来中间过程的错误风险。而往往需要的新的对象只是某个现有对象的基础上改变一小部分的内容</li>
+  <li>解决方案：利用Java对象的clone的方式，根据实际情况对已有对象进行软复制或者硬复制（通过序列化的方式）</li>
+  <li>结论：以一个已有的对象做原型，通过最小的操作得到需要的新的对象</li>
+</ol>
+
+<h3 id="uml">UML图例</h3>
+<hr />
+
+<p><center><img src='/images/plantuml/bb3c9bde2337a86fa74b9368b4a1a21b.png'></center></p>
+
+<h3 id="section-1">模式讲解</h3>
+
+<ol>
+  <li>Java的最顶的类Object本身就提供clone方法，但是是protected的。</li>
+  <li>如果子类需要实现clone方法，还不许继承cloneable接口，然后重载这个方法，根据需要将该方法改为public的。</li>
+  <li>Object的clone方法的实现是采用逐字节的方式从内存中复制数据。如果类中引用了别的对象，则复制的是对象的应用（即对象地址），而不是复制应用对象的内容，所以这种方式是浅复制。</li>
+  <li>要实现深复制，则可以利用序列化反序列化这个工程等到一个值copy的对象。但是前提是类以及它应用的对象都必须实现serializable接口，可被序列化。</li>
+  <li>Apache的common lang提供了SerializationUtils工具类，改类的clone方法完成通过序列化的clone</li>
+</ol>
+
+<h3 id="section-2">代码以及测试参考</h3>
+<p>参见我的github代码：<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo</a>，注意改代码是通过gitflow的管理的，请参考develop branch</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[设计模式：工厂方法模式]]></title>
