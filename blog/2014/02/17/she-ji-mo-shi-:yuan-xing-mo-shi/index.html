@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Mac上用google-app-engine搭建proxy - Duff Qiu's Blog</title>
+  <title>设计模式：原型模式 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,9 +19,7 @@
 
 
   
-  <meta name="description" content="原由
-在家访问Google时总时不时就无法访问，而技术类问题的搜索在百度的结果总是与期望相差太远，要不就是国外的网站无法访问，所以最好的就是使用国外的代理，作为技术人员最好的办法就是自己搭建一个。 平台选择
-目前有多中选择，但是看了下攻略，最简单的方式就是用google app engine。 &hellip;">
+  <meta name="description" content="原型模式原理 模式名称：原型模式 (Prototype Pattern) 问题：在创建大的聚合对象的时候，如果从每个层次的自对象开始创建，则比较麻烦，同时带来中间过程的错误风险。而往往需要的新的对象只是某个现有对象的基础上改变一小部分的内容 解决方案：利用Java对象的clone的方式， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/17/she-ji-mo-shi-%3Ayuan-xing-mo-shi">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -103,7 +101,7 @@
   
   <header>
     
-      <h1 class="entry-title">Mac上用google-app-engine搭建proxy</h1>
+      <h1 class="entry-title">设计模式：原型模式</h1>
     
     
       <p class="meta">
@@ -119,7 +117,7 @@
   
 
 
-<time datetime="2014-01-28T11:20:35+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
+<time datetime="2014-02-17T23:23:31+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -129,48 +127,32 @@
   </header>
 
 
-<div class="entry-content"><h4 id="section">原由</h4>
-<p>在家访问Google时总时不时就无法访问，而技术类问题的搜索在百度的结果总是与期望相差太远，要不就是国外的网站无法访问，所以最好的就是使用国外的代理，作为技术人员最好的办法就是自己搭建一个。</p>
-
-<h4 id="section-1">平台选择</h4>
-<p>目前有多中选择，但是看了下攻略，最简单的方式就是用google app engine。而且有开源的proxy服务器软件Goagent以及有Mac上好用的GoagentX客户端，那么就它了。</p>
-
-<h4 id="goagent">安装Goagent</h4>
-<p>访问<a href="https://code.google.com/p/goagent/" title="官网">Goagent</a><br />
-但是在没有代理的时候，访问code.google.com总是很慢，这里附上一个<a href="/assets/goagent-goagent-v3.1.5.zip">Goagent 3.1.5</a><br />
-具体教程可以参考Goagent的官网
-在Mac上的简单操作就是</p>
-
+<div class="entry-content"><h3 id="section">原型模式原理</h3>
+<hr />
 <ol>
-  <li>到<a href="https://appengine.google.com/">Google App Engine</a>创建一个App</li>
-  <li>解开Goagent下载下来的软件，到server/gae目录，编写gae.py文件配置密码（避免有人偷用你的流量）</li>
-  <li>
-    <p>使用命令上传goagent并部署</p>
-
-    <pre><code> python upload.zip 然后按照提示操作就可（就是输入两次google account和密码）
-</code></pre>
-  </li>
-  <li>注意：如果提示等待x秒后尝试看看部署是否成功，等待一会就好，如果不行取消当前操作(ctrol+c)重复之前的操作直到成功为止。估计又是Great Wall的问题</li>
+  <li>模式名称：原型模式 (Prototype Pattern)</li>
+  <li>问题：在创建大的聚合对象的时候，如果从每个层次的自对象开始创建，则比较麻烦，同时带来中间过程的错误风险。而往往需要的新的对象只是某个现有对象的基础上改变一小部分的内容</li>
+  <li>解决方案：利用Java对象的clone的方式，根据实际情况对已有对象进行软复制或者硬复制（通过序列化的方式）</li>
+  <li>结论：以一个已有的对象做原型，通过最小的操作得到需要的新的对象</li>
 </ol>
 
-<h4 id="goagentx">安装GoagentX</h4>
-<p>访问<a href="http://goagentx.com">GoagentX</a>，获得一个App，打开就可
-然后就是简单配置GoagentX</p>
+<h3 id="uml">UML图例</h3>
+<hr />
+
+<center><img src="/images/plantuml/ec53b9f24e24cb7d469c33b648a3925f.png" /></center>
+
+<h3 id="section-1">模式讲解</h3>
 
 <ol>
-  <li>设置AppId</li>
-  <li>设置服务密码，就是在gae.py上设置的密码</li>
-  <li>然后启动就可</li>
-  <li>启动成功后，Mac会被自动设置了代理</li>
-  <li>接着就能够访问了(如果你能看到youtube／facebook就证明OK了)</li>
-  <li>如需在局域网共享，则将启动Goagent的地方勾上局域网选项，然后在代理设置里面也勾上代理选项（记得重启代理）</li>
-  <li>在其它机器上配置代理服务器就可以了</li>
+  <li>Java的最顶的类Object本身就提供clone方法，但是是protected的。</li>
+  <li>如果子类需要实现clone方法，还不许继承cloneable接口，然后重载这个方法，根据需要将该方法改为public的。</li>
+  <li>Object的clone方法的实现是采用逐字节的方式从内存中复制数据。如果类中引用了别的对象，则复制的是对象的应用（即对象地址），而不是复制应用对象的内容，所以这种方式是浅复制。</li>
+  <li>要实现深复制，则可以利用序列化反序列化这个工程等到一个值copy的对象。但是前提是类以及它应用的对象都必须实现serializable接口，可被序列化。</li>
+  <li>Apache的common lang提供了SerializationUtils工具类，改类的clone方法完成通过序列化的clone</li>
 </ol>
 
-<h4 id="section-2">免费增加流量</h4>
-<p>Google App Engine目前是提供28个小时的前端应用免费流量，如果需要增加则再多创建一个或多个这样的应用就可。  </p>
-
-<p>Google App Engine允许一个账户最多创建10个应用</p>
+<h3 id="section-2">代码以及测试参考</h3>
+<p>参见我的github代码：<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo</a>，注意改代码是通过gitflow的管理的，请参考develop branch</p>
 </div>
 
 
@@ -193,14 +175,8 @@
   
 
 
-<time datetime="2014-01-28T11:20:35+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
+<time datetime="2014-02-17T23:23:31+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2014</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/proxy/'>Proxy</a>
-  
-</span>
 
 
     </p>
@@ -214,10 +190,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/" title="Previous Post: octopress插入代码块的问题">&laquo; octopress插入代码块的问题</a>
+        <a class="basic-alignment left" href="/blog/2014/02/15/she-ji-mo-shi-%3Agong-han-fang-fa-mo-shi/" title="Previous Post: 设计模式：工厂方法模式">&laquo; 设计模式：工厂方法模式</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/28/octopressguan-li-fu-jian/" title="Next Post: octopress管理附件">octopress管理附件 &raquo;</a>
       
     </p>
   </footer>
@@ -293,16 +267,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/17/she-ji-mo-shi-%3Ayuan-xing-mo-shi/">设计模式：原型模式</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/02/15/she-ji-mo-shi-%3Agong-han-fang-fa-mo-shi/">设计模式：工厂方法模式</a></h3>
         <div class="meta">
           <span class="tags">
@@ -358,6 +322,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/appscalre/'>Appscalre</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/02/09/octopressshi-yong-ye-mian-biao-qian/">Octopress使用页面标签</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
   
 </span>
 
