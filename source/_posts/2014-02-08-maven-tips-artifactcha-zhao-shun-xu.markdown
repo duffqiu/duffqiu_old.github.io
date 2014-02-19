@@ -17,9 +17,11 @@ categories: Maven
 解决的方式去掉mirror的配置，增加repository到profile中，并激活
 提示：maven下载artifactor的顺序为pom.xml上的repository配置，然后是settings.xml的mirror配置，然后才是profiles中的repository配置
 
+<a name="rep-seq"></a>
+
 <div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('pic')"> Maven下载artifactor的顺序</div>
 
-<div style="display:none" class="prev" id="pic"  onclick="hidediv('pic')">
+<div style="display:none" class="prev" id="pic"  onclick="hidediv('pic');self.location.href='#rep-seq'">
 
 <img src="http://maven.apache.org/repository/maven-repositories.png" title="点击关闭">
 

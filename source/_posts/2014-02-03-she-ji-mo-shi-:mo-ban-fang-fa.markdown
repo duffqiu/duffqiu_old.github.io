@@ -15,7 +15,24 @@ categories: [Java, Design Pattern]
 
 ###继承方式实现模版方法模式
 
-![继承方式的模版方法](/images/TemplatePattern1.png)
+<!--![继承方式的模版方法](/images/TemplatePattern1.png)-->
+
+{% plantuml %}
+title Template Method (Extends Abstract Class) Design Pattern
+
+abstract class AbstractParentClass <|-- class ChildClass1
+abstract class AbstractParentClass <|-- class ChildClass2
+abstract class AbstractParentClass <|-- class ChildClass3
+
+abstract class AbstractParentClass {
++ void operation()
++ abstract void abstractOperation()
+}
+
+ChildClass1 : + void abstractOperation()
+ChildClass2 : + void abstractOperation()
+ChildClass3 : + void abstractOperation()
+{% endplantuml %}
 
 这里注意点：
 1. 父类是抽象类
@@ -25,7 +42,21 @@ categories: [Java, Design Pattern]
 
 ###回调函数实现模版方法模式
 
-![回调函数的模版方法](/images/TemplatePattern2.png)
+<!--![回调函数的模版方法](/images/TemplatePattern2.png)-->
+
+{% plantuml %}
+title Template method (Callback) design pattern
+
+class MainClass ..|> interface MainInterface
+interface MainInterface ..> interface CallbackInterface
+class CallbackClass ..|> interface CallbackInterface
+
+MainInterface : + void operation(callback : CallbackInterface)
+CallbackInterface : void callbackMethod()
+
+CallbackClass : void callbackMethod()
+MainClass : + void operation(callback : CallbackInterface)
+{% endplantuml %}
 
 这里注意点：
 1. 主类对应的接口依赖与回调的接口定义，不是直接依赖回调对象本身

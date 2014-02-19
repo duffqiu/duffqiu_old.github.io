@@ -124,3 +124,8 @@ asset_pipeline:
 
 # Bing Analytics
 bing_analytics: true
+
+# PlantUML
+plantuml_jar: _lib/plantuml.jar
+plantuml_background_color: "#f8f8f8"
+plantuml_dotpath: /opt/local/bin/dot
