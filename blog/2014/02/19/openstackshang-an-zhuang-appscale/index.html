@@ -12,7 +12,7 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-b34c89fd79db5777dc1f8eef9629724a.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-daf7062bdf78b99e904bba2fdfdd47f5.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-b34c89fd79db5777dc1f8eef9629724a.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-daf7062bdf78b99e904bba2fdfdd47f5.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -207,9 +207,9 @@
 </span><span class="line"><span class="nv">PROXYAUTH</span><span class="o">=</span>&lt;username:password&gt;
 </span><span class="line"><span class="nb">exec </span>socat STDIO PROXY:<span class="nv">$PROXY</span>:<span class="nv">$1</span>:<span class="nv">$2</span>,proxyport<span class="o">=</span><span class="nv">$PROXYPORT</span>,proxyauth<span class="o">=</span><span class="nv">$PROXYAUTH</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
-<pre><code>  然后更改gitproxy的权限为可执行`sudo  chmod +x /usr/bin/gitproxy`，最后是更改git的配置，用命令`git config --global core.gitproxy gitproxy`
-  这里有点啃爹，因为这个时候你还没有安装git，根本就没有git命令，所以只能先用 apt-get安装git，尽管Appscale的脚本有自动安装git。或者等到安装过程中git无发clone appscale的时候再配这一步
-</code></pre>
+
+<p>然后更改gitproxy的权限为可执行<code>sudo  chmod +x /usr/bin/gitproxy</code>，最后是更改git的配置，用命令<code>git config --global core.gitproxy gitproxy</code>
+   这里有点啃爹，因为这个时候你还没有安装git，根本就没有git命令，所以只能先用 apt-get安装git，尽管Appscale的脚本有自动安装git。或者等到安装过程中git无发clone appscale的时候再配这一步</p>
 
 <ul>
   <li>更新Python的pip工具
