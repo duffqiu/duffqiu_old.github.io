@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Appscale | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/appscale/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-19T23:26:23+08:00</updated>
+  <updated>2014-02-19T23:27:57+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -141,9 +141,9 @@ export PATH=${PATH}:${TOOLS_PATH}/bin
   <li>查看安装后状态</li>
 </ul>
 
-<p>如果正常启动，则可以通过http://<vm ip="">:1080/status查看当前状态。如果只是这页全现实勾也是不行的，需要用启动时配置的email登录，然后点击Monit Dashboard(这个默认用户名和密码是admin/monit)，所有的process都应该时Running的状态</vm></p>
+<p>如果正常启动，则可以通过<code>http://&lt;vm ip&gt;:1080/status</code>查看当前状态。如果只是这页全现实勾也是不行的，需要用启动时配置的email登录，然后点击Monit Dashboard(这个默认用户名和密码是admin/monit)，所有的process都应该时Running的状态</p>
 
-<p>如果正常启动，则可以通过http://<vm ip="">:1080/status查看当前状态。点击TaskQueue Monitor(这个默认用户名和密码是appscale/appscale)，则应该现实有两个工作的Workers，一个是apichecker一个是appscaledashboard</vm></p>
+<p>如果正常启动，则可以通过<code>http://&lt;vm ip&gt;:1080/status</code>查看当前状态。点击TaskQueue Monitor(这个默认用户名和密码是appscale/appscale)，则应该现实有两个工作的Workers，一个是apichecker一个是appscaledashboard</p>
 
 <p>到此，真个Appscale的手工安装就结束了，然后就是可以部署应用。Googel App Engine的开发如何做，我还没有去看，后面有机会再写这个部分</p>
 
