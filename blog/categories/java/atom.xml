@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-17T23:43:20+08:00</updated>
+  <updated>2014-02-19T21:16:32+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式：IoC和依赖注入]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/19/she-ji-mo-shi-%3Aioche-yi-lai-zhu-ru/"/>
+    <updated>2014-02-19T20:40:33+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/19/she-ji-mo-shi-:ioche-yi-lai-zhu-ru</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<p>在生成对象的时候，我们通常会用到工厂方法模式，但是这会造成factory类过多不好维护的问题，也不好测试的问题。</p>
+
+<h3 id="section-1">解决办法</h3>
+<p>为了减少factory类，现在流行的做法是使用IoC(控制反转)。这个严格上不是个模式。IoC的实现方式通常有两种：</p>
+
+<ol>
+  <li>Service Locator，服务定位器</li>
+  <li>Dependency Injection，依赖注入</li>
+</ol>
+
+<p>因为服务定位器的做法侵入代码比较严重，同时比较难测试，一般很少用。</p>
+
+<p>依赖注入比较流行，主要是因为开源框架的支持。有两大框架，一个是Spring，一个是<a href="https://code.google.com/p/google-guice/">Google Guice</a>。因为Spring还有别的功能（如template的方式我比较喜欢，很多东西都简化很多），不能整体对比，只能对比DI的功能。网上有不少的对比，但是对与一般的开发而言没有太大的参考价值，主要习惯性问题。我个人觉得需要考虑只是整体上除了DI还有没有别的需要，如果有就用Spring，没有就用Guice，毕竟Guice小而且依赖少（就两个Jar包），据说Guice速度块。（但是由速度决定开发包的选择的需求基本很少）。后面抽时间我打算好好看一遍Guice真么使用。</p>
+
+<p>注入的方式分为一下几种：
+1. Setter
+2. Constructor
+3. Annotation
+4. Interface
+5. Parameter
+6. Propagating (传播)
+7. 其它</p>
+
+<p>对于注入个人觉得需要仔细分辨具体是否需要，不要什么都通过注入完成。一些简单的对象如log对象，完全没有必要注入。</p>
+
+<h3 id="section-2">小插曲</h3>
+<p>今天和同事谈到这个注入框架的问题，顺便提到了<a href="https://code.google.com/p/guava-libraries/wiki/GuavaExplained">google guava开发库</a>，这个值得研究研究细节。尽然Google都在用，那么日常中需要封装的一些工具、通用结构等都应该涵盖了。这个开发的年代，自己再创造工具已经没有太大必要了。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[设计模式：原型模式]]></title>
@@ -889,108 +926,6 @@
   <li>yy 用来copy当前行</li>
   <li>数字n＋yy  用来copy从单前行开始的n行</li>
   <li>p 在当前光标出插入copy的内容</li>
-</ol>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[OO的一些设计原则]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/"/>
-    <updated>2014-02-02T16:05:09+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/02/oode-[?]-xie-she-ji-yuan-ze</id>
-    <content type="html"><![CDATA[<h3 id="oo">OO设计原则</h3>
-
-<ol>
-  <li>
-    <p>“开-闭”原则 (Open-Closed Principle, OCP)</p>
-
-    <ul>
-      <li>对扩展开放，对修改关闭 (如不要去覆盖一个父类的行为，但是可以在一个新的类的行为中使用父类／关联类的行为)</li>
-      <li>不允许更改系统的抽象层，是允许扩展系统的实现层  </li>
-    </ul>
-  </li>
-  <li>
-    <p>抽象类(Abstract Class)</p>
-
-    <ul>
-      <li>具体类不是用来继承的。继承要从抽象类开始，一般以abstract命名开头</li>
-      <li>如果遇到具体类的继承，最有可能的重构方式是构造一个抽象类，这两个类成为这个抽象类的子类</li>
-      <li>抽象类应当尽可能有多的共同代码</li>
-      <li>抽象类应当尽可能少的数据</li>
-      <li>针对抽象编程</li>
-      <li>正确使用继承，不要从工具类继承</li>
-    </ul>
-  </li>
-  <li>里氏代换原则(LSP)
-    <ul>
-      <li>如果程序调用适用于基类，则必定适用于其子类</li>
-      <li>反过来的代价不成立</li>
-    </ul>
-  </li>
-  <li>
-    <p>依赖倒转原则（DIP）</p>
-
-    <ul>
-      <li>要依赖于抽象，不要依赖于具体实现</li>
-      <li>三种耦合关系：
-  a. 零耦合(Nil Coupling)，两个类没有耦合关系<br />
-  b. 具体耦合(Concrete Coupling)，具体型耦合发生在两个具体类之间，有一个类对另一个具体类的直接引用造成（非继承）<br />
-  c. 抽象耦合(Abstract Coupling)，耦合关系发生在一个具体类和抽象类（或接口）之间  </li>
-      <li>DIP要求客户端依赖于抽象耦合</li>
-      <li>抽象不应当依赖于细节，细节应当依赖于抽象</li>
-      <li>针对接口编程，不针对实现编程。即使用接口和抽象类进行变量的类型声明、函数参数的类型声明、方法的返回值类型声明，以及数据类型的转换。</li>
-      <li>联合使用Java接口和抽象类</li>
-      <li>对于已经很稳定的类，客户端是可以依赖于这个具体类型的，而不用再发明抽象类型</li>
-    </ul>
-  </li>
-  <li>接口隔离原则(ISP)
-    <ul>
-      <li>使用多个专门的接口比使用单一接口要好 </li>
-      <li>一个类对于另外一个类的依赖应当建立在最小的接口上</li>
-      <li>定制服务：如果客户端仅需要某些方法，那么就应但只提供这些需要的方法，而不提供不需要的方法</li>
-    </ul>
-  </li>
-  <li>合成/聚合复用原则（CARP）  <br />
-    <ul>
-      <li>在一个新的对象中使用一些已有的对象，新的对象通过向这些旧的对象委派达到复用已有功能的目的</li>
-      <li>尽量使用合成/聚合，尽量不要使用继承</li>
-    </ul>
-  </li>
-  <li>迪米特法则(LoD)<br />
-又叫做最少知识原则(Least Knowledge Principle LKP)
-    <ul>
-      <li>只与你直接的朋友通信</li>
-      <li>不要和“陌生人”说话</li>
-      <li>朋友确定的原则：
-        <ul>
-          <li>当前对象本身（this）</li>
-          <li>以参数形式传入到当前对象方法的对象</li>
-          <li>当前对象的实例变量直接引用的对象</li>
-          <li>当前对象的实例变量如果是一个聚集，则聚集中的元素都是朋友</li>
-          <li>当前对象所创建的对象</li>
-        </ul>
-      </li>
-      <li>使用抽象陌生人重构来调用陌生对象，避免过多的原子调用转发</li>
-    </ul>
-  </li>
-  <li>
-    <p>广义迪米特法则在类上的设计</p>
-
-    <ul>
-      <li>优先考虑将一个类设置成不变类</li>
-      <li>尽量降低一个类的访问权限（package-private是默认权限，无需标示private关键字）</li>
-      <li>谨慎使用Serializable</li>
-      <li>尽量降低类成员(属性、方法、嵌套类、嵌套接口)的访问权限
-        <ul>
-          <li>private，只能类内部使用 </li>
-          <li>package-private,只能被当前包的类访问，默认权限，无需任何关键字标示</li>
-          <li>protected，但前包的类和它的子类可以访问</li>
-          <li>public,任何类都可以访问</li>
-        </ul>
-      </li>
-      <li>限制局域变量的有效访问</li>
-    </ul>
-  </li>
 </ol>
 ]]></content>
   </entry>

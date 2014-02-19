@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-17T23:43:20+08:00</updated>
+  <updated>2014-02-19T21:16:32+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式：IoC和依赖注入]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/19/she-ji-mo-shi-%3Aioche-yi-lai-zhu-ru/"/>
+    <updated>2014-02-19T20:40:33+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/19/she-ji-mo-shi-:ioche-yi-lai-zhu-ru</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<p>在生成对象的时候，我们通常会用到工厂方法模式，但是这会造成factory类过多不好维护的问题，也不好测试的问题。</p>
+
+<h3 id="section-1">解决办法</h3>
+<p>为了减少factory类，现在流行的做法是使用IoC(控制反转)。这个严格上不是个模式。IoC的实现方式通常有两种：</p>
+
+<ol>
+  <li>Service Locator，服务定位器</li>
+  <li>Dependency Injection，依赖注入</li>
+</ol>
+
+<p>因为服务定位器的做法侵入代码比较严重，同时比较难测试，一般很少用。</p>
+
+<p>依赖注入比较流行，主要是因为开源框架的支持。有两大框架，一个是Spring，一个是<a href="https://code.google.com/p/google-guice/">Google Guice</a>。因为Spring还有别的功能（如template的方式我比较喜欢，很多东西都简化很多），不能整体对比，只能对比DI的功能。网上有不少的对比，但是对与一般的开发而言没有太大的参考价值，主要习惯性问题。我个人觉得需要考虑只是整体上除了DI还有没有别的需要，如果有就用Spring，没有就用Guice，毕竟Guice小而且依赖少（就两个Jar包），据说Guice速度块。（但是由速度决定开发包的选择的需求基本很少）。后面抽时间我打算好好看一遍Guice真么使用。</p>
+
+<p>注入的方式分为一下几种：
+1. Setter
+2. Constructor
+3. Annotation
+4. Interface
+5. Parameter
+6. Propagating (传播)
+7. 其它</p>
+
+<p>对于注入个人觉得需要仔细分辨具体是否需要，不要什么都通过注入完成。一些简单的对象如log对象，完全没有必要注入。</p>
+
+<h3 id="section-2">小插曲</h3>
+<p>今天和同事谈到这个注入框架的问题，顺便提到了<a href="https://code.google.com/p/guava-libraries/wiki/GuavaExplained">google guava开发库</a>，这个值得研究研究细节。尽然Google都在用，那么日常中需要封装的一些工具、通用结构等都应该涵盖了。这个开发的年代，自己再创造工具已经没有太大必要了。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[设计模式：原型模式]]></title>
@@ -2251,36 +2288,6 @@ bing_analytics: true
     </ul>
   </li>
 </ol>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Port Tips: 软件版本选择]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/01/port-tips-ruan-jian-ban-ben-xuan-ze/"/>
-    <updated>2014-02-01T23:30:20+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/01/port-tips-ruan-jian-ban-ben-xuan-ze</id>
-    <content type="html"><![CDATA[<h3 id="port">port查看本地已安装的文件</h3>
-
-<pre><code>&gt;port installed
-</code></pre>
-
-<h3 id="port-1">port查看同一个软件的不同版本</h3>
-
-<pre><code>&gt;port select --list python    #这里查看的已经安装了的python的版本
-</code></pre>
-
-<p>我的机器情况是：    </p>
-
-<p><img src="http://duffqiu.github.io/images/Snip20140201_1.png" alt="image" />    </p>
-
-<p>显示为none指的是系统自带的版本</p>
-
-<h3 id="section">激活某个版本</h3>
-
-<pre><code>&gt;sudo port select --set python python2.7
-</code></pre>
-
-<p><strong>注意：</strong> 只有那些有对应的select软件包的软件才可以设置版本    </p>
 ]]></content>
   </entry>
   

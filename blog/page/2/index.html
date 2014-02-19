@@ -12,7 +12,7 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-c95be996d63cb2ed57694c22c3c7abe3.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-748fb6ee29369dc1d2931bf449fdbad4.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -20,8 +20,8 @@
 
   
   <meta name="description" content="原由
-之前做了个Octopress实时获取并展示github上其它repository的代码的rake任务，参见1，但是每次都要打开github来获取文件的连接，还是比较烦。如果需要更改github branch的名字就需要重新更改整个链接。 解决方案
-github上的代码存放实际上是有规则的。 &hellip;">
+在Octopress中如果展示图片太大，这回占用屏幕很大的篇幅，最好的办法是先隐藏起来，需要的时候点击展开 解决办法
+利用div的display的设置的方式实现 具体的实现方式是 增加两个javascript的方法，一个展示图片，一个隐藏图片，简单的方式可以直接将他们放入到source/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -40,7 +40,7 @@ github上的代码存放实际上是有规则的。 &hellip;">
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-c95be996d63cb2ed57694c22c3c7abe3.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-748fb6ee29369dc1d2931bf449fdbad4.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -100,6 +100,125 @@ github上的代码存放实际上是有规则的。 &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/07/octopressdong-tai-zhan-shi-tu-pian/">Octopress动态展示图片</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-07T20:39:21+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/07/octopressdong-tai-zhan-shi-tu-pian/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<p>在Octopress中如果展示图片太大，这回占用屏幕很大的篇幅，最好的办法是先隐藏起来，需要的时候点击展开 </p>
+
+<h3 id="section-1">解决办法</h3>
+<p>利用div的display的设置的方式实现</p>
+
+<p>具体的实现方式是  </p>
+
+<ul>
+  <li>增加两个javascript的方法，一个展示图片，一个隐藏图片，简单的方式可以直接将他们放入到source/javascripts/octopress.js文件的最开头  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+</pre></td><td class="code"><pre><code class="js"><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="kd">function</span> <span class="nx">showdiv</span><span class="p">(</span><span class="nx">elemid</span><span class="p">){</span>
+</span><span class="line">
+</span><span class="line"><span class="kd">var</span> <span class="nx">fd</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">elemid</span><span class="p">);</span>
+</span><span class="line"><span class="nx">fd</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">left</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientX</span><span class="p">;</span>
+</span><span class="line"><span class="nx">fd</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">top</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">clientY</span><span class="p">;</span>
+</span><span class="line"><span class="nx">fd</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s2">&quot;inline&quot;</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="kd">function</span> <span class="nx">hidediv</span><span class="p">(</span><span class="nx">elemid</span><span class="p">){</span>
+</span><span class="line">
+</span><span class="line"><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">elemid</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">display</span> <span class="o">=</span> <span class="s2">&quot;none&quot;</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="p">}</span>	
+</span><span class="line">	
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>在blog中增加使用图片的div的代码</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">	
+</span><span class="line">&lt;div <span class="nv">style</span><span class="o">=</span><span class="s2">&quot;text-decoration:underline; font-size: 24px; color: red&quot;</span> <span class="nv">onclick</span><span class="o">=</span><span class="s2">&quot;showdiv(&#39;pic&#39;)&quot;</span>&gt; Picture Show Text &lt;/div&gt;
+</span><span class="line">
+</span><span class="line">&lt;div <span class="nv">style</span><span class="o">=</span><span class="s2">&quot;display:none&quot;</span> <span class="nv">class</span><span class="o">=</span><span class="s2">&quot;prev&quot;</span> <span class="nv">id</span><span class="o">=</span><span class="s2">&quot;pic&quot;</span>  <span class="nv">onclick</span><span class="o">=</span><span class="s2">&quot;hidediv(&#39;pic&#39;)&quot;</span>&gt;
+</span><span class="line">
+</span><span class="line">&lt;img <span class="nv">src</span><span class="o">=</span><span class="s2">&quot;xxx.png&quot;</span> <span class="nv">title</span><span class="o">=</span><span class="s2">&quot;点击关闭&quot;</span>&gt;
+</span><span class="line">
+</span><span class="line">&lt;/div&gt;
+</span><span class="line">	
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>效果是点击图片文字展开图片，点击图片后隐藏。     </p>
+
+<h3 id="section-2">小插曲</h3>
+<p>整个2014春节假期就要过去了，回顾一下，整整写了24篇blog，有不少是跑题写出来。很多题目只是开了个头，也期待自己后面继续努力！   </p>
+
+<p>在octopress的source/_post目录里用命令，实际就是将ls输出用wc工具再统计</p>
+
+<pre><code>&gt;ls |wc -l
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1855,66 +1974,6 @@ bing_analytics: true
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/01/port-tips-ruan-jian-ban-ben-xuan-ze/">Port Tips: 软件版本选择</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-01T23:30:20+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/01/port-tips-ruan-jian-ban-ben-xuan-ze/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="port">port查看本地已安装的文件</h3>
-
-<pre><code>&gt;port installed
-</code></pre>
-
-<h3 id="port-1">port查看同一个软件的不同版本</h3>
-
-<pre><code>&gt;port select --list python    #这里查看的已经安装了的python的版本
-</code></pre>
-
-<p>我的机器情况是：    </p>
-
-<p><img src="/images/Snip20140201_1.png" alt="image" />    </p>
-
-<p>显示为none指的是系统自带的版本</p>
-
-<h3 id="section">激活某个版本</h3>
-
-<pre><code>&gt;sudo port select --set python python2.7
-</code></pre>
-
-<p><strong>注意：</strong> 只有那些有对应的select软件包的软件才可以设置版本    </p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1932,6 +1991,10 @@ bing_analytics: true
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/19/she-ji-mo-shi-%3Aioche-yi-lai-zhu-ru/">设计模式：IoC和依赖注入</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/17/she-ji-mo-shi-%3Ayuan-xing-mo-shi/">设计模式：原型模式</a>
       </li>
     
@@ -1947,10 +2010,6 @@ bing_analytics: true
         <a href="/blog/2014/02/12/octopresszhong-shi-yong-plantuml/">Octopress中使用plantuml</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/02/11/appscalean-zhuang/">Appscale安装</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -1960,14 +2019,14 @@ bing_analytics: true
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/appscalre/'>Appscalre (1)</a></li>
+    <li class='category'><a href='/blog/categories/appscale/'>Appscale (1)</a></li>
 <li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
 <li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
-<li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (5)</a></li>
+<li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (6)</a></li>
 <li class='category'><a href='/blog/categories/findbugs/'>Findbugs (1)</a></li>
 <li class='category'><a href='/blog/categories/gsl/'>GSL (1)</a></li>
 <li class='category'><a href='/blog/categories/junit/'>JUnit (1)</a></li>
-<li class='category'><a href='/blog/categories/java/'>Java (6)</a></li>
+<li class='category'><a href='/blog/categories/java/'>Java (7)</a></li>
 <li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>
 <li class='category'><a href='/blog/categories/jenkins/'>Jenkins (2)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>MAC (2)</a></li>
