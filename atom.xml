@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-19T21:16:32+08:00</updated>
+  <updated>2014-02-19T23:23:04+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,158 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Openstack上安装AppScale]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/19/openstackshang-an-zhuang-appscale/"/>
+    <updated>2014-02-19T21:44:13+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/19/openstackshang-an-zhuang-appscale</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>之前用Mac安装了virtual box的Appscale，因为是Appscale的一个安装好的Image，配置一下启动就能用。但是如果真要安装到虚拟主机上，就不是这个方式了。所以找了个Openstack的Unbuntu的虚拟主机尝试安装，结果血泪不少，需要配置proxy是最啃爹的部分。估计官方没有试过在用proxy的情况下安装。</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>因为官网的文档在openstack上安装只是简单的介绍，所以中间的问题都需要自己解决了。</p>
+
+<ul>
+  <li>
+    <p>安装unbuntu VM
+在Openstack中生成一个instance，我这里选用了unbuntu server 12.04，估计redhat也可以，不过我没有试，配置至少要3-4G RAM，20G的硬盘，2个virtual CPU，然后启动该VM，并看看该VM最后的IP地址</p>
+  </li>
+  <li>
+    <p>设置SSH配置
+ 如果用openstack安装VM后，需要用private key才可以登录(<code>ssh root@service_IP</code>)，则必须先修改SSH的配置，然密码可登录，具体方式是更改<code>/etc/ssh/sshd_conf</code>文件，将<code>PasswordAuthentication</code>参数设置为<code>true</code>，然后更改root密码用命令<code>passwd</code>，最后重启SSH，用命令<code>/etc/init.d/ssh restart</code></p>
+  </li>
+  <li>
+    <p>设置各种应用的代理</p>
+    <ul>
+      <li>首先设置apt-get的代理，新增一个<code>/etc/apt/apt.conf</code>配置文件，内容为</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   Acquire::http::proxy "http://&lt;username&gt;:&lt;password&gt;@&lt;proxy&gt;:&lt;port&gt;/";
+</span><span class="line">   Acquire::ftp::proxy "ftp://&lt;username&gt;:&lt;password&gt;@&lt;proxy&gt;:&lt;port&gt;/";
+</span><span class="line">   Acquire::https::proxy "https://&lt;username&gt;:&lt;password&gt;@&lt;proxy&gt;:&lt;port&gt;/";</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>将proxy改为对应的代理地址，port为代理端口，如果需要认证，则设置用户名和密码，不然就去掉用户名和密码</p>
+
+<p>－ 设置ruby的gem的代理，在root的home目录下，创建.gemrc文件</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">http_proxy: http://&lt;username&gt;:&lt;password&gt;@&lt;proxy&gt;:&lt;port&gt;
+</span><span class="line">https_proxy: http://&lt;username&gt;:&lt;password&gt;@&lt;proxy&gt;:&lt;port&gt;
+</span><span class="line">ftp_proxy: http://&lt;username&gt;:&lt;password&gt;@&lt;proxy&gt;:&lt;port&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>设置wget以及其它代理，在对应的shell文件中(如bash的.bashrc)，增加代理变量设置，然后激活<code>source .bashrc</code></li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">export http_proxy=http://&lt;username&gt;:&lt;password&gt;@&lt;proxy&gt;:&lt;port&gt;
+</span><span class="line">export https_proxy=http://&lt;username&gt;:&lt;password&gt;@&lt;proxy&gt;:&lt;port&gt;
+</span><span class="line">export ftp_proxy=http://&lt;username&gt;:&lt;password&gt;@&lt;proxy&gt;:&lt;port&gt;
+</span><span class="line">export HTTP_PROXY=http://&lt;username&gt;:&lt;password&gt;@&lt;proxy&gt;:&lt;port&gt;
+</span><span class="line">export HTTPS_PROXY=http://&lt;username&gt;:&lt;password&gt;@&lt;proxy&gt;:&lt;port&gt;
+</span><span class="line">export FTP_PROXY=http://&lt;username&gt;:&lt;password&gt;@&lt;proxy&gt;:&lt;port&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>设置java代理，因为安装的中间会用到java的下载等，在对应的shell文件中(如bash的.bashrc)，增加代理变量设置</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">export _JAVA_OPTIONS='-Dhttp.proxyHost=&lt;proxy&gt; -Dhttp.proxyPort=&lt;port&gt;'</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>增加git代理（针对git协议），因为要用到apt-get，所以apt-get的代理设置要先安装好
+ 先用apt-get安装socat
+ <code>sudo apt-get install socat</code>，
+ 然后配置git代理文件，先<code>sudo touch /usr/bin/gitproxy</code>，然后编辑该文件的内容为</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="nv">PROXY</span><span class="o">=</span>&lt;proxy&gt;
+</span><span class="line"><span class="nv">PROXYPORT</span><span class="o">=</span>&lt;port&gt;
+</span><span class="line"><span class="nv">PROXYAUTH</span><span class="o">=</span>&lt;username:password&gt;
+</span><span class="line"><span class="nb">exec </span>socat STDIO PROXY:<span class="nv">$PROXY</span>:<span class="nv">$1</span>:<span class="nv">$2</span>,proxyport<span class="o">=</span><span class="nv">$PROXYPORT</span>,proxyauth<span class="o">=</span><span class="nv">$PROXYAUTH</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<pre><code>  然后更改gitproxy的权限为可执行`sudo  chmod +x /usr/bin/gitproxy`，最后是更改git的配置，用命令`git config --global core.gitproxy gitproxy`
+  这里有点啃爹，因为这个时候你还没有安装git，根本就没有git命令，所以只能先用 apt-get安装git，尽管Appscale的脚本有自动安装git。或者等到安装过程中git无发clone appscale的时候再配这一步
+</code></pre>
+
+<ul>
+  <li>更新Python的pip工具
+ 这个是最坑爹的，因为pip依赖与Python，而如果VM没有带Python，只能等到安装到pip这一步出错了再来配置它，因为Appscale依赖的python的版本的问题，自行先安装Python似乎不是太好。这里需要更新pip是因为Appscale安装的是1.0版本，这个版本太低，无法用代理的方式（似乎是没有读取系统代理变量），所以需要更新到新的版本。执行一下命令：</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">sudo apt-get purge python-pip
+</span><span class="line">curl https://raw.github.com/pypa/pip/master/contrib/get-pip.py | sudo python
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>
+    <p>设置path</p>
+
+    <p>增加<code>/usr/local/bin</code> (因为pip安装在这个目录中)，并在home目录激活shell配置<code>source .bashrc</code></p>
+  </li>
+  <li>安装AppScale
+    <ol>
+      <li>可以用密码登录SSH了和apt-get以及wget的代理已经配置好</li>
+      <li>执行命令：<code>export HOME=/root</code> 和<code>wget -O - http://bootstrap.appscale.com | sh</code></li>
+      <li>如果错误提示是git，则安装git代理，重新这行2的命令</li>
+      <li>如果错误提示是pip，则无需重新执行2的命令，因为appscale目录已经存在，只需要到<code>appscale/debian</code>目录下执行<code>appscale_build.sh</code>就可</li>
+      <li>如果错误提示是java，则安装JAVA代理，然后执行4</li>
+    </ol>
+  </li>
+  <li>安装AppScale-Tool
+到<code>appscale-tools/debian</code>目录下执行<code>appscale_build.sh</code>，然后确保一下内容已经配置到shell文件(.bashrc)中</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="nb">export </span><span class="nv">TOOLS_PATH</span><span class="o">=</span>/usr/local/appscale-tools
+</span><span class="line"><span class="nb">export </span><span class="nv">PATH</span><span class="o">=</span><span class="k">${</span><span class="nv">PATH</span><span class="k">}</span>:<span class="k">${</span><span class="nv">TOOLS_PATH</span><span class="k">}</span>/bin
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>配置Appscale</li>
+</ul>
+
+<p>执行<code>appscale init cluster</code>，然后更改AppScalefile，将<code>ips_layout</code>里的IP地址都改为VM的地址</p>
+
+<ul>
+  <li>运行AppScale</li>
+</ul>
+
+<p>执行<code>appscale up</code>
+中间会要求输入admin的管理员的email和密码</p>
+
+<ul>
+  <li>查看安装后状态</li>
+</ul>
+
+<p>如果正常启动，则可以通过http://<vm ip="">:1080/status查看当前状态。如果只是这页全现实勾也是不行的，需要用启动时配置的email登录，然后点击Monit Dashboard(这个默认用户名和密码是admin/monit)，所有的process都应该时Running的状态</vm></p>
+
+<p>如果正常启动，则可以通过http://<vm ip="">:1080/status查看当前状态。点击TaskQueue Monitor(这个默认用户名和密码是appscale/appscale)，则应该现实有两个工作的Workers，一个是apichecker一个是appscaledashboard</vm></p>
+
+<p>到此，真个Appscale的手工安装就结束了，然后就是可以部署应用。Googel App Engine的开发如何做，我还没有去看，后面有机会再写这个部分</p>
+
+<p><strong>个人感叹：Open source真个给我们带来了很多的便利和选择，但是这的有很多坑是这些创始者没有遇到过。真的是需要有个个方面的能力才能去在生产环境中到它。</strong></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[设计模式：IoC和依赖注入]]></title>
@@ -2242,52 +2394,6 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
 <p>不是说能套上设计模式就是好的设计，好的设计需要多个方面的积累，AOP、BDD、TDD。。。<br />
 模式更像是独孤九剑，最后是忘记模式而自然而然的使用模式(好像有些玄乎？)<br />
 设计模式的基础还是OO，只有用好OO才能更好的理解和用好设计模式</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress添加bing网站分析]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/02/octopresstian-jia-bingwang-zhan-fen-xi/"/>
-    <updated>2014-02-02T11:30:01+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/02/octopresstian-jia-bingwang-zhan-fen-xi</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<p>Google提供了相应的Analytics网站分析工具，同样Bing也提供了类似的工具：<a href="http://www.bing.com/toolbox/webmaster/" title="官网">Bing网站管理员</a>，同样可以给你的Octopress很快速的添加该分析工具</p>
-
-<h3 id="section-1">配置</h3>
-
-<ol>
-  <li>在Bing网站管理员注册，并填写必要的信息</li>
-  <li>添加一个新网站，填写相应的信息</li>
-  <li>
-    <p>根据认证所有权网页配置Octopress，具体如下</p>
-
-    <ul>
-      <li>下载你的BingSiteAuth.xml到octopres的source目录下</li>
-      <li>
-        <p>配置_config_yml文件，设置bing analytics开关，在文件最后加入，如果以后不用bing analytics，则可以将开关设置为false就可以，不用到处改文件</p>
-
-        <pre><code># Bing Analytics  
-bing_analytics: true
-</code></pre>
-      </li>
-      <li>
-        <p>修改octopres/source/_include目录下的head.html文件，在&lt;head&gt;下面增加以下内容，记得替换&lt;…&gt;bing给你的blog的标识</p>
-
-        <pre><code>{% if site.bing_analytics %}
-&lt;meta name="msvalidate.01" content="&lt;...&gt;" /&gt;
-{% endif %}
-</code></pre>
-      </li>
-      <li>
-        <p>然后重新生成并部署就可以了      </p>
-
-        <pre><code>&gt;rake generate
-&gt;rake deploy
-</code></pre>
-      </li>
-    </ul>
-  </li>
-</ol>
 ]]></content>
   </entry>
   

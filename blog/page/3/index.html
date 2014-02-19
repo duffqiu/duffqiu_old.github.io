@@ -12,14 +12,15 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-748fb6ee29369dc1d2931bf449fdbad4.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-b34c89fd79db5777dc1f8eef9629724a.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="port查看本地已安装的文件 &gt;port installed port查看同一个软件的不同版本 &gt;port select --list python #这里查看的已经安装了的python的版本 我的机器情况是： 显示为none指的是系统自带的版本 激活某个版本 &gt;sudo &hellip;">
+  <meta name="description" content="原由
+Google提供了相应的Analytics网站分析工具，同样Bing也提供了类似的工具：Bing网站管理员，同样可以给你的Octopress很快速的添加该分析工具 配置 在Bing网站管理员注册，并填写必要的信息 添加一个新网站，填写相应的信息 根据认证所有权网页配置Octopress， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +39,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-748fb6ee29369dc1d2931bf449fdbad4.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-b34c89fd79db5777dc1f8eef9629724a.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -98,6 +99,82 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/02/octopresstian-jia-bingwang-zhan-fen-xi/">Octopress添加bing网站分析</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-02T11:30:01+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/02/octopresstian-jia-bingwang-zhan-fen-xi/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<p>Google提供了相应的Analytics网站分析工具，同样Bing也提供了类似的工具：<a href="http://www.bing.com/toolbox/webmaster/" title="官网">Bing网站管理员</a>，同样可以给你的Octopress很快速的添加该分析工具</p>
+
+<h3 id="section-1">配置</h3>
+
+<ol>
+  <li>在Bing网站管理员注册，并填写必要的信息</li>
+  <li>添加一个新网站，填写相应的信息</li>
+  <li>
+    <p>根据认证所有权网页配置Octopress，具体如下</p>
+
+    <ul>
+      <li>下载你的BingSiteAuth.xml到octopres的source目录下</li>
+      <li>
+        <p>配置_config_yml文件，设置bing analytics开关，在文件最后加入，如果以后不用bing analytics，则可以将开关设置为false就可以，不用到处改文件</p>
+
+        <pre><code># Bing Analytics  
+bing_analytics: true
+</code></pre>
+      </li>
+      <li>
+        <p>修改octopres/source/_include目录下的head.html文件，在&lt;head&gt;下面增加以下内容，记得替换&lt;…&gt;bing给你的blog的标识</p>
+
+        <pre><code>{% if site.bing_analytics %}
+&lt;meta name="msvalidate.01" content="&lt;...&gt;" /&gt;
+{% endif %}
+</code></pre>
+      </li>
+      <li>
+        <p>然后重新生成并部署就可以了      </p>
+
+        <pre><code>&gt;rake generate
+&gt;rake deploy
+</code></pre>
+      </li>
+    </ul>
+  </li>
+</ol>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -889,86 +966,6 @@ rake deploy
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/">Mac上用google-app-engine搭建proxy</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-28T11:20:35+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4 id="section">原由</h4>
-<p>在家访问Google时总时不时就无法访问，而技术类问题的搜索在百度的结果总是与期望相差太远，要不就是国外的网站无法访问，所以最好的就是使用国外的代理，作为技术人员最好的办法就是自己搭建一个。</p>
-
-<h4 id="section-1">平台选择</h4>
-<p>目前有多中选择，但是看了下攻略，最简单的方式就是用google app engine。而且有开源的proxy服务器软件Goagent以及有Mac上好用的GoagentX客户端，那么就它了。</p>
-
-<h4 id="goagent">安装Goagent</h4>
-<p>访问<a href="https://code.google.com/p/goagent/" title="官网">Goagent</a><br />
-但是在没有代理的时候，访问code.google.com总是很慢，这里附上一个<a href="/assets/goagent-goagent-v3.1.5.zip">Goagent 3.1.5</a><br />
-具体教程可以参考Goagent的官网
-在Mac上的简单操作就是</p>
-
-<ol>
-  <li>到<a href="https://appengine.google.com/">Google App Engine</a>创建一个App</li>
-  <li>解开Goagent下载下来的软件，到server/gae目录，编写gae.py文件配置密码（避免有人偷用你的流量）</li>
-  <li>
-    <p>使用命令上传goagent并部署</p>
-
-    <pre><code> python upload.zip 然后按照提示操作就可（就是输入两次google account和密码）
-</code></pre>
-  </li>
-  <li>注意：如果提示等待x秒后尝试看看部署是否成功，等待一会就好，如果不行取消当前操作(ctrol+c)重复之前的操作直到成功为止。估计又是Great Wall的问题</li>
-</ol>
-
-<h4 id="goagentx">安装GoagentX</h4>
-<p>访问<a href="http://goagentx.com">GoagentX</a>，获得一个App，打开就可
-然后就是简单配置GoagentX</p>
-
-<ol>
-  <li>设置AppId</li>
-  <li>设置服务密码，就是在gae.py上设置的密码</li>
-  <li>然后启动就可</li>
-  <li>启动成功后，Mac会被自动设置了代理</li>
-  <li>接着就能够访问了(如果你能看到youtube／facebook就证明OK了)</li>
-  <li>如需在局域网共享，则将启动Goagent的地方勾上局域网选项，然后在代理设置里面也勾上代理选项（记得重启代理）</li>
-  <li>在其它机器上配置代理服务器就可以了</li>
-</ol>
-
-<h4 id="section-2">免费增加流量</h4>
-<p>Google App Engine目前是提供28个小时的前端应用免费流量，如果需要增加则再多创建一个或多个这样的应用就可。  </p>
-
-<p>Google App Engine允许一个账户最多创建10个应用</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -986,6 +983,10 @@ rake deploy
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/19/openstackshang-an-zhuang-appscale/">Openstack上安装AppScale</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/19/she-ji-mo-shi-%3Aioche-yi-lai-zhu-ru/">设计模式：IoC和依赖注入</a>
       </li>
     
@@ -1001,10 +1002,6 @@ rake deploy
         <a href="/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-plantuml/">Maven工程中加入PlantUML</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/02/12/octopresszhong-shi-yong-plantuml/">Octopress中使用plantuml</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -1014,7 +1011,7 @@ rake deploy
 <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/appscale/'>Appscale (1)</a></li>
+    <li class='category'><a href='/blog/categories/appscale/'>Appscale (2)</a></li>
 <li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
 <li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
 <li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (6)</a></li>
