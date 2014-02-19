@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-19T23:27:57+08:00</updated>
+  <updated>2014-02-19T23:29:04+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -120,7 +120,7 @@
 <h3 id="section-2">静态工厂方法</h3>
 <p>原来就是避免了过多的产生工厂类，而将自身设计为工厂，并提供静态工厂方法来创建对象。劣势是失去类面向对象的特征，无法继承、动态多态等。注意：静态方法是无法被覆盖的。</p>
 
-<p><center><img src='/images/plantuml/84cb641244f5af5df683e4dee460acf8.png'></center></p>
+<p><center><img src='/images/plantuml/f51c58048fb92a04a0003701dccd2012.png'></center></p>
 
 <h3 id="section-3">书籍纠正</h3>
 <ol>
