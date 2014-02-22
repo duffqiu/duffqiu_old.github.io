@@ -4,7 +4,7 @@
   <title><![CDATA[Category: PlantUML | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/plantuml/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-19T23:29:04+08:00</updated>
+  <updated>2014-02-22T15:35:37+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,95 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[PlantUML小技巧]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/22/plantumlxiao-ji-qiao/"/>
+    <updated>2014-02-22T15:10:21+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/22/plantumlxiao-ji-qiao</id>
+    <content type="html"><![CDATA[<h3 id="plantuml">PlantUML画模块图/组件图的问题</h3>
+
+<p>在使用PlantUML的时候，如果模块中嵌套模块然后将关联关系定义在子模块中，则很容易造成模块的混沦。</p>
+
+<h3 id="section">解决办法</h3>
+<p>我个人一个比较好的practice是这样一个模式
+同时最好的方式现在纸上先用笔画好初稿</p>
+
+<p>```
+@startuml
+title “组件图Best Practice”</p>
+
+<p>‘全局的component
+component [global 1]
+component [global 2]
+interface “inferface 1” as if1
+interface “inferface 2” as if2
+…</p>
+
+<p>‘模块定义
+package “Parent1” {
+	package “Children1-1” {
+		‘只定义component，不定义关心
+		component [1-1-1]
+		component [1-1-2]
+		…
+	}
+	package “Children1-2” {
+		component [1-2-1]
+		component [1-2-2]
+		…
+	}</p>
+
+<p>}</p>
+
+<p>package “Parent2” {
+	package “Children2-1” {
+		‘只定义component，不定义关心
+		component [2-1-1]
+		component [2-1-2]
+		…
+	}
+	package “Children2-2” {
+		component [2-2-1]
+		component [2-2-2]
+		…
+	}</p>
+
+<p>}</p>
+
+<p>‘完成component定义后再定义关系不要再component中定义关系，容易造成有些component还未必定义就被使用</p>
+
+<p>‘定义全局和子模块的关系
+[global 1]..&gt;[global 2]
+[global 1] - if1
+[global 2] - if2
+[global 1] ..&gt; [1-1-1]</p>
+
+<p>‘定义Parent1和children间的关系已经与其它Parent或children的关系
+[1-1-1]..&gt;[1-1-2]
+[1-1-1]..&gt;[1-2-1]
+[1-2-1]..&gt;[1-2-2]
+[1-1-1]..&gt;[2-1-1]</p>
+
+<p>‘定义Parent2和children间的关系已经与其它Parent或children的关系
+[2-1-1]..&gt;[2-1-2]
+[2-1-1]..&gt;[2-2-1]
+[2-1-1]..&gt;[2-2-2]</p>
+
+<p>@enduml
+```</p>
+
+<div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('componentuml')"> 最后的UML图如下： </div>
+
+<div style="display:none" class="prev" id="componentuml" onclick="hidediv('componentuml')" title="点击关闭">
+
+
+
+<center><img src='/images/plantuml/1342eb5869c6a1040f2c1b269144edb8.png'></center>
+
+</div>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Maven工程中加入PlantUML]]></title>

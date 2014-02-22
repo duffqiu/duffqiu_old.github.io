@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>设计模式：模版方法 - Duff Qiu's Blog</title>
+  <title>PlantUML小技巧 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,7 +19,20 @@
 
 
   
-  <meta name="description" content="模版方法模式原理 名称：模版方法(Template Method)模式 问题：在很多时候多个对象有很多个共性，只是某个／某些行为不同，如果单独实现这些对象，则需要很多的copy - paste 解决方案：将共性的行为抽取到抽象类，将特定的行为由具体的对象来实现／或者这个具体的行为本身就是一个对象( &hellip;">
+  <meta name="description" content="PlantUML画模块图/组件图的问题 在使用PlantUML的时候，如果模块中嵌套模块然后将关联关系定义在子模块中，则很容易造成模块的混沦。 解决办法
+我个人一个比较好的practice是这样一个模式
+同时最好的方式现在纸上先用笔画好初稿 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -28,7 +41,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/03/she-ji-mo-shi-%3Amo-ban-fang-fa">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/22/plantumlxiao-ji-qiao">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -101,7 +114,7 @@
   
   <header>
     
-      <h1 class="entry-title">设计模式：模版方法</h1>
+      <h1 class="entry-title">PlantUML小技巧</h1>
     
     
       <p class="meta">
@@ -117,7 +130,7 @@
   
 
 
-<time datetime="2014-02-03T14:53:40+08:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+<time datetime="2014-02-22T15:10:21+08:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -127,46 +140,146 @@
   </header>
 
 
-<div class="entry-content"><h3 id="section">模版方法模式原理</h3>
+<div class="entry-content"><h3 id="plantuml">PlantUML画模块图/组件图的问题</h3>
 
-<ol>
-  <li>名称：模版方法(Template Method)模式</li>
-  <li>问题：在很多时候多个对象有很多个共性，只是某个／某些行为不同，如果单独实现这些对象，则需要很多的copy - paste</li>
-  <li>解决方案：将共性的行为抽取到抽象类，将特定的行为由具体的对象来实现／或者这个具体的行为本身就是一个对象(主要由继承方式和回调方式两种实现手段)</li>
-  <li>结果：减少了相同的代码，增强了维护性</li>
-</ol>
+<p>在使用PlantUML的时候，如果模块中嵌套模块然后将关联关系定义在子模块中，则很容易造成模块的混沦。</p>
 
-<h3 id="section-1">继承方式实现模版方法模式</h3>
+<h3 id="section">解决办法</h3>
+<p>我个人一个比较好的practice是这样一个模式
+同时最好的方式现在纸上先用笔画好初稿</p>
 
-<!--![继承方式的模版方法](/images/TemplatePattern1.png)-->
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">@startuml
+</span><span class="line">title "组件图Best Practice"
+</span><span class="line">
+</span><span class="line">'全局的component
+</span><span class="line">component [global 1]
+</span><span class="line">component [global 2]
+</span><span class="line">interface "inferface 1" as if1
+</span><span class="line">interface "inferface 2" as if2
+</span><span class="line">...
+</span><span class="line">
+</span><span class="line">'模块定义
+</span><span class="line">package "Parent1" {
+</span><span class="line">	package "Children1-1" {
+</span><span class="line">		'只定义component，不定义关心
+</span><span class="line">		component [1-1-1]
+</span><span class="line">		component [1-1-2]
+</span><span class="line">		...
+</span><span class="line">	}
+</span><span class="line">	package "Children1-2" {
+</span><span class="line">		component [1-2-1]
+</span><span class="line">		component [1-2-2]
+</span><span class="line">		...
+</span><span class="line">	}
+</span><span class="line">	
+</span><span class="line">}
+</span><span class="line">
+</span><span class="line">package "Parent2" {
+</span><span class="line">	package "Children2-1" {
+</span><span class="line">		'只定义component，不定义关心
+</span><span class="line">		component [2-1-1]
+</span><span class="line">		component [2-1-2]
+</span><span class="line">		...
+</span><span class="line">	}
+</span><span class="line">	package "Children2-2" {
+</span><span class="line">		component [2-2-1]
+</span><span class="line">		component [2-2-2]
+</span><span class="line">		...
+</span><span class="line">	}
+</span><span class="line">	
+</span><span class="line">}
+</span><span class="line">
+</span><span class="line">'完成component定义后再定义关系不要再component中定义关系，容易造成有些component还未必定义就被使用
+</span><span class="line">
+</span><span class="line">'定义全局和子模块的关系
+</span><span class="line">[global 1]..&gt;[global 2]
+</span><span class="line">[global 1] - if1
+</span><span class="line">[global 2] - if2
+</span><span class="line">[global 1] ..&gt; [1-1-1]
+</span><span class="line">
+</span><span class="line">'定义Parent1和children间的关系已经与其它Parent或children的关系
+</span><span class="line">[1-1-1]..&gt;[1-1-2]
+</span><span class="line">[1-1-1]..&gt;[1-2-1]
+</span><span class="line">[1-2-1]..&gt;[1-2-2]
+</span><span class="line">[1-1-1]..&gt;[2-1-1]
+</span><span class="line">
+</span><span class="line">'定义Parent2和children间的关系已经与其它Parent或children的关系
+</span><span class="line">[2-1-1]..&gt;[2-1-2]
+</span><span class="line">[2-1-1]..&gt;[2-2-1]
+</span><span class="line">[2-1-1]..&gt;[2-2-2]
+</span><span class="line">
+</span><span class="line">@enduml</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<center><img src="/images/plantuml/2515b7108295d58fcfed227fd93bb039.png" /></center>
+<div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('componentuml')"> 最后的UML图如下： </div>
 
-<p>这里注意点：
-1. 父类是抽象类
-2. 抽象方法是个个子类需要实现的各自的具体行为
-3. 父类只是实现一个算法框架
-4. Java为了避免父类的的方法被覆盖／重写，可以将其申明为final或private</p>
+<div style="display:none" class="prev" id="componentuml" onclick="hidediv('componentuml')" title="点击关闭">
 
-<h3 id="section-2">回调函数实现模版方法模式</h3>
 
-<!--![回调函数的模版方法](/images/TemplatePattern2.png)-->
 
-<center><img src="/images/plantuml/edf928f5f73da67baf7161bc71ff9098.png" /></center>
+<center><img src="/images/plantuml/0fc7dd179febc49855cadf23e3f82408.png" /></center>
 
-<p>这里注意点：
-1. 主类对应的接口依赖与回调的接口定义，不是直接依赖回调对象本身
-2. 主类无需被继承，提定行为由实现回调接口的对象实现
-3. 最为常用的例子是多线程处理中，回调对象都实现了Runable接口实现特性的逻辑，控制线程的主逻辑类如ExecutorService依赖于Runable接口</p>
-
-<p>个人比较建议使用回调函数实现模版方法模式。（之前用C++的时候计较多的是用继承的方式）</p>
-
-<h4 id="vi">Vi小技巧</h4>
-<ol>
-  <li>yy 用来copy当前行</li>
-  <li>数字n＋yy  用来copy从单前行开始的n行</li>
-  <li>p 在当前光标出插入copy的内容</li>
-</ol>
+</div>
 </div>
 
 
@@ -189,12 +302,12 @@
   
 
 
-<time datetime="2014-02-03T14:53:40+08:00" pubdate data-updated="true">Feb 3<span>rd</span>, 2014</time>
+<time datetime="2014-02-22T15:10:21+08:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a>
+    <a class='category' href='/blog/categories/plantuml/'>PlantUML</a>
   
 </span>
 
@@ -210,10 +323,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/02/02/umllei-tu/" title="Previous Post: UML类图">&laquo; UML类图</a>
+        <a class="basic-alignment left" href="/blog/2014/02/22/she-ji-mo-shi-%3Azhuang-shi-qi-mo-shi/" title="Previous Post: 设计模式：装饰器模式">&laquo; 设计模式：装饰器模式</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi/" title="Next Post: 设计模式: 单例模式">设计模式: 单例模式 &raquo;</a>
       
     </p>
   </footer>
@@ -290,22 +401,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/22/plantumlxiao-ji-qiao/">PlantUML小技巧</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/plantuml/'>PlantUML</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/02/22/she-ji-mo-shi-%3Azhuang-shi-qi-mo-shi/">设计模式：装饰器模式</a></h3>
         <div class="meta">
           <span class="tags">
@@ -355,6 +450,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
     
       <article>
         <h3 class="title"><a href="/blog/2014/02/17/she-ji-mo-shi-%3Ayuan-xing-mo-shi/">设计模式：原型模式</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/02/15/she-ji-mo-shi-%3Agong-han-fang-fa-mo-shi/">设计模式：工厂方法模式</a></h3>
         <div class="meta">
           <span class="tags">
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design Pattern | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/design-pattern/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-19T23:29:04+08:00</updated>
+  <updated>2014-02-22T15:35:37+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,18 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式：装饰器模式]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/22/she-ji-mo-shi-%3Azhuang-shi-qi-mo-shi/"/>
+    <updated>2014-02-22T15:09:29+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/22/she-ji-mo-shi-:zhuang-shi-qi-mo-shi</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+
+<h3 id="section-1">解决办法</h3>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[设计模式：IoC和依赖注入]]></title>
@@ -879,54 +891,6 @@
 <p>测试的判断，我这里用的是assertj的库，比较简单好用，参见<a href="http://joel-costigliola.github.io/assertj/index.html">assertj</a></p>
 
 <p>从上面的测试序列化和反序列化的测试例子看出来，序列化和反序列化是挺麻烦的事情，还好有开源的工具帮组我们做到简单化。可以使用<a href="http://commons.apache.org/proper/commons-lang/">apache common lang</a>的SerializationUtils。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式：模版方法]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/03/she-ji-mo-shi-%3Amo-ban-fang-fa/"/>
-    <updated>2014-02-03T14:53:40+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/03/she-ji-mo-shi-:mo-ban-fang-fa</id>
-    <content type="html"><![CDATA[<h3 id="section">模版方法模式原理</h3>
-
-<ol>
-  <li>名称：模版方法(Template Method)模式</li>
-  <li>问题：在很多时候多个对象有很多个共性，只是某个／某些行为不同，如果单独实现这些对象，则需要很多的copy - paste</li>
-  <li>解决方案：将共性的行为抽取到抽象类，将特定的行为由具体的对象来实现／或者这个具体的行为本身就是一个对象(主要由继承方式和回调方式两种实现手段)</li>
-  <li>结果：减少了相同的代码，增强了维护性</li>
-</ol>
-
-<h3 id="section-1">继承方式实现模版方法模式</h3>
-
-<!--![继承方式的模版方法](/images/TemplatePattern1.png)-->
-
-<p><center><img src='/images/plantuml/7870a5f3289a98ba21ba8ac7210df0e8.png'></center></p>
-
-<p>这里注意点：
-1. 父类是抽象类
-2. 抽象方法是个个子类需要实现的各自的具体行为
-3. 父类只是实现一个算法框架
-4. Java为了避免父类的的方法被覆盖／重写，可以将其申明为final或private</p>
-
-<h3 id="section-2">回调函数实现模版方法模式</h3>
-
-<!--![回调函数的模版方法](/images/TemplatePattern2.png)-->
-
-<p><center><img src='/images/plantuml/d4f316bf6d908d1121e959f3b3f28ebe.png'></center></p>
-
-<p>这里注意点：
-1. 主类对应的接口依赖与回调的接口定义，不是直接依赖回调对象本身
-2. 主类无需被继承，提定行为由实现回调接口的对象实现
-3. 最为常用的例子是多线程处理中，回调对象都实现了Runable接口实现特性的逻辑，控制线程的主逻辑类如ExecutorService依赖于Runable接口</p>
-
-<p>个人比较建议使用回调函数实现模版方法模式。（之前用C++的时候计较多的是用继承的方式）</p>
-
-<h4 id="vi">Vi小技巧</h4>
-<ol>
-  <li>yy 用来copy当前行</li>
-  <li>数字n＋yy  用来copy从单前行开始的n行</li>
-  <li>p 在当前光标出插入copy的内容</li>
-</ol>
 ]]></content>
   </entry>
   
