@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Guice | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/guice/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-23T15:10:58+08:00</updated>
+  <updated>2014-02-23T15:19:17+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -80,7 +80,7 @@ return new ConnectionDescription("Audit with SMPP",
 <h3 id="section-1">解决办法</h3>
 <hr />
 
-<p>在前面我们已经介绍过<a href="#">IoC</a>。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个。主要有Spring和<a href="https://code.google.com/p/google-guice/">Google Guice</a>。这里主要讲一下如何使用Google Guice，这是一个基本的入门使用，后面如果用到高级的地方再讲。</p>
+<p>在前面我们已经介绍过<a href="/blog/2014/02/19/she-ji-mo-shi-%3Aioche-yi-lai-zhu-ru/">IoC</a>。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个。主要有Spring和<a href="https://code.google.com/p/google-guice/">Google Guice</a>。这里主要讲一下如何使用Google Guice，这是一个基本的入门使用，后面如果用到高级的地方再讲。</p>
 
 <h3 id="guice">Guice的使用</h3>
 
