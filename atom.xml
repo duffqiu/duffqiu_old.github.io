@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-23T13:02:01+08:00</updated>
+  <updated>2014-02-23T14:38:06+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,77 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Google Guice入门2]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/23/google-guiceru-men-2/"/>
+    <updated>2014-02-23T14:26:45+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/23/google-guiceru-men-2</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在使用Guice做依赖注入的时候，很可能会发生在一个依赖模块（Module）中有多个同类型的接口需要注入，但是又需要根据不同的使用类注入不同的具体对象。如果只是简单的申明为接口注入对象，则会使用同一个对象。如：<code>bind(IDescription.class).to(ConnectionDescription.class);</code></p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>使用<code>@Named("&lt;xxxx&gt;")</code>来命名需要注入的接口，然后在注入的时候指定名称来特定注入，如： </p>
+
+<p>顶层使用类中：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="nd">@Inject</span>
+</span><span class="line"><span class="nd">@Named</span><span class="o">(</span><span class="s">&quot;SendMsgWithAuditDesc&quot;</span><span class="o">)</span>
+</span><span class="line"><span class="kd">private</span> <span class="n">IDescription</span> <span class="n">desc</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Module configure方法中</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="c1">//为什么的注入</span>
+</span><span class="line"><span class="n">bind</span><span class="o">(</span><span class="n">IDescription</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">to</span><span class="o">(</span><span class="n">ConnectionDescription</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">//指定名称的注入</span>
+</span><span class="line"><span class="n">bind</span><span class="o">(</span><span class="n">IDescription</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">annotatedWith</span><span class="o">(</span>
+</span><span class="line">	        <span class="n">Names</span><span class="o">.</span><span class="na">named</span><span class="o">(</span><span class="s">&quot;SendMsgWithAuditDesc&quot;</span><span class="o">)).</span><span class="na">toProvider</span><span class="o">(</span>
+</span><span class="line">	        <span class="n">SendMessageWithAuditDescriptionProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这里用了prvoider是因为需要使用参数的构造函数。Provider类如下：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SendMessageWithAuditDescriptionProvider</span> <span class="kd">implements</span>
+</span><span class="line">        <span class="n">Provider</span><span class="o">&lt;</span><span class="n">ConnectionDescription</span><span class="o">&gt;</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">final</span> <span class="n">ConnectionDescription</span> <span class="nf">get</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">	<span class="k">return</span> <span class="k">new</span> <span class="nf">ConnectionDescription</span><span class="o">(</span><span class="s">&quot;Audit with SMPP&quot;</span><span class="o">,</span>
+</span><span class="line">	        <span class="s">&quot;Send Msg with audit via SMPP&quot;</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Google Guice入门1]]></title>
@@ -2411,54 +2482,6 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
 <p>测试的判断，我这里用的是assertj的库，比较简单好用，参见<a href="http://joel-costigliola.github.io/assertj/index.html">assertj</a></p>
 
 <p>从上面的测试序列化和反序列化的测试例子看出来，序列化和反序列化是挺麻烦的事情，还好有开源的工具帮组我们做到简单化。可以使用<a href="http://commons.apache.org/proper/commons-lang/">apache common lang</a>的SerializationUtils。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式：模版方法]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/03/she-ji-mo-shi-%3Amo-ban-fang-fa/"/>
-    <updated>2014-02-03T14:53:40+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/03/she-ji-mo-shi-:mo-ban-fang-fa</id>
-    <content type="html"><![CDATA[<h3 id="section">模版方法模式原理</h3>
-
-<ol>
-  <li>名称：模版方法(Template Method)模式</li>
-  <li>问题：在很多时候多个对象有很多个共性，只是某个／某些行为不同，如果单独实现这些对象，则需要很多的copy - paste</li>
-  <li>解决方案：将共性的行为抽取到抽象类，将特定的行为由具体的对象来实现／或者这个具体的行为本身就是一个对象(主要由继承方式和回调方式两种实现手段)</li>
-  <li>结果：减少了相同的代码，增强了维护性</li>
-</ol>
-
-<h3 id="section-1">继承方式实现模版方法模式</h3>
-
-<!--![继承方式的模版方法](/images/TemplatePattern1.png)-->
-
-<center><img src="http://duffqiu.github.io/images/plantuml/2515b7108295d58fcfed227fd93bb039.png" /></center>
-
-<p>这里注意点：
-1. 父类是抽象类
-2. 抽象方法是个个子类需要实现的各自的具体行为
-3. 父类只是实现一个算法框架
-4. Java为了避免父类的的方法被覆盖／重写，可以将其申明为final或private</p>
-
-<h3 id="section-2">回调函数实现模版方法模式</h3>
-
-<!--![回调函数的模版方法](/images/TemplatePattern2.png)-->
-
-<center><img src="http://duffqiu.github.io/images/plantuml/edf928f5f73da67baf7161bc71ff9098.png" /></center>
-
-<p>这里注意点：
-1. 主类对应的接口依赖与回调的接口定义，不是直接依赖回调对象本身
-2. 主类无需被继承，提定行为由实现回调接口的对象实现
-3. 最为常用的例子是多线程处理中，回调对象都实现了Runable接口实现特性的逻辑，控制线程的主逻辑类如ExecutorService依赖于Runable接口</p>
-
-<p>个人比较建议使用回调函数实现模版方法模式。（之前用C++的时候计较多的是用继承的方式）</p>
-
-<h4 id="vi">Vi小技巧</h4>
-<ol>
-  <li>yy 用来copy当前行</li>
-  <li>数字n＋yy  用来copy从单前行开始的n行</li>
-  <li>p 在当前光标出插入copy的内容</li>
-</ol>
 ]]></content>
   </entry>
   

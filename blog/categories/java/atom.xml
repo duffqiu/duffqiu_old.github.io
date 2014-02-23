@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-23T13:02:01+08:00</updated>
+  <updated>2014-02-23T14:38:06+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,61 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Google Guice入门2]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/23/google-guiceru-men-2/"/>
+    <updated>2014-02-23T14:26:45+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/23/google-guiceru-men-2</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在使用Guice做依赖注入的时候，很可能会发生在一个依赖模块（Module）中有多个同类型的接口需要注入，但是又需要根据不同的使用类注入不同的具体对象。如果只是简单的申明为接口注入对象，则会使用同一个对象。如：<code>bind(IDescription.class).to(ConnectionDescription.class);</code></p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>使用<code>@Named("&lt;xxxx&gt;")</code>来命名需要注入的接口，然后在注入的时候指定名称来特定注入，如： </p>
+
+<p>顶层使用类中：</p>
+
+<p><code>java
+@Inject
+@Named("SendMsgWithAuditDesc")
+private IDescription desc;
+</code></p>
+
+<p>Module configure方法中</p>
+
+<p>``` java</p>
+
+<p>//为什么的注入
+bind(IDescription.class).to(ConnectionDescription.class);</p>
+
+<p>//指定名称的注入
+bind(IDescription.class).annotatedWith(
+	        Names.named(“SendMsgWithAuditDesc”)).toProvider(
+	        SendMessageWithAuditDescriptionProvider.class);
+```</p>
+
+<p>这里用了prvoider是因为需要使用参数的构造函数。Provider类如下：</p>
+
+<p>``` java
+public class SendMessageWithAuditDescriptionProvider implements
+        Provider<connectiondescription> {</connectiondescription></p>
+
+<pre><code>@Override
+public final ConnectionDescription get() {
+
+return new ConnectionDescription("Audit with SMPP",
+        "Send Msg with audit via SMPP");
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Google Guice入门1]]></title>
@@ -204,55 +259,6 @@ sender.xxx();
 
 <h3 id="section-2">代码以及测试参考</h3>
 <p>参见我的github代码：<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo</a>，注意改代码是通过gitflow的管理的，请参考develop branch</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式：工厂方法模式]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/15/she-ji-mo-shi-%3Agong-han-fang-fa-mo-shi/"/>
-    <updated>2014-02-15T22:15:00+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/15/she-ji-mo-shi-:gong-han-fang-fa-mo-shi</id>
-    <content type="html"><![CDATA[<h3 id="section">工厂方法模式原理</h3>
-<hr />
-<ol>
-  <li>模式名称：工厂方法模式 (Facotory Method)</li>
-  <li>
-    <p>问题：</p>
-
-    <ul>
-      <li>对象的创建比较复杂，需要关联其它对象／资源（如配置文件，数据库等）</li>
-      <li>需要写一堆if-else的方式来决定使用那个对象的具体类</li>
-      <li>希望隐藏创建过程的细节，降低偶和度</li>
-      <li>优化性能，在创建过程中缓存对象等 </li>
-      <li>使用者只关心接口，而不关心具体的类，因为用new的方式总是要和具体的类偶和 </li>
-    </ul>
-  </li>
-  <li>解决方案：使用一个类来帮助创建需要的对象，而该类有外部传入使用方，使用方只是对创建类的接口依赖（写到这里的时候，发现漫谈设计模式的书的UML的图我的理解不同，应该是client依赖与工厂接口，而不是关联工厂对象）</li>
-  <li>结论：提高对象的封装，减少了使用方的依赖</li>
-</ol>
-
-<h3 id="uml">UML图例</h3>
-<hr />
-
-<p><center><img src='/images/plantuml/9b1120b02eb010486c2bc09e8f14af70.png'></center></p>
-
-<h3 id="section-1">示例代码</h3>
-<hr />
-<p>这个比较简单就不用代码举例了，看看上面的UML图就能写出代码了。关键是在合适的场景下要想起来用到它</p>
-
-<h3 id="section-2">静态工厂方法</h3>
-<p>原来就是避免了过多的产生工厂类，而将自身设计为工厂，并提供静态工厂方法来创建对象。劣势是失去类面向对象的特征，无法继承、动态多态等。注意：静态方法是无法被覆盖的。</p>
-
-<p><center><img src='/images/plantuml/f51c58048fb92a04a0003701dccd2012.png'></center></p>
-
-<h3 id="section-3">书籍纠正</h3>
-<ol>
-  <li>在《漫谈设计模式》的P50页的setCurrentConnection方法没有必要提供</li>
-  <li>在《漫谈设计模式》的P51页的closeConnect方法，没有必要提供函数参数</li>
-</ol>
-
-<h3 id="threadlocal">小插曲：ThreadLocal的并发性</h3>
-<p>在工厂方法模式中，可以利用ThreadLocal来做对象的缓冲池。但是里面有个比较可爹的问题，如果在线程中被加入到ThreadLocal中，但是在线程结束前不将这个对象手动的移除出ThreadLocal，则ThreadLocal会被另外一个线程使用到。具体可以看我的Github上的<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的代码</a></p>
 ]]></content>
   </entry>
   

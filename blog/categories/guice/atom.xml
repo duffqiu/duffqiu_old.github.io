@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Guice | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/guice/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-23T13:02:01+08:00</updated>
+  <updated>2014-02-23T14:38:06+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,61 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Google Guice入门2]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/23/google-guiceru-men-2/"/>
+    <updated>2014-02-23T14:26:45+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/23/google-guiceru-men-2</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在使用Guice做依赖注入的时候，很可能会发生在一个依赖模块（Module）中有多个同类型的接口需要注入，但是又需要根据不同的使用类注入不同的具体对象。如果只是简单的申明为接口注入对象，则会使用同一个对象。如：<code>bind(IDescription.class).to(ConnectionDescription.class);</code></p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>使用<code>@Named("&lt;xxxx&gt;")</code>来命名需要注入的接口，然后在注入的时候指定名称来特定注入，如： </p>
+
+<p>顶层使用类中：</p>
+
+<p><code>java
+@Inject
+@Named("SendMsgWithAuditDesc")
+private IDescription desc;
+</code></p>
+
+<p>Module configure方法中</p>
+
+<p>``` java</p>
+
+<p>//为什么的注入
+bind(IDescription.class).to(ConnectionDescription.class);</p>
+
+<p>//指定名称的注入
+bind(IDescription.class).annotatedWith(
+	        Names.named(“SendMsgWithAuditDesc”)).toProvider(
+	        SendMessageWithAuditDescriptionProvider.class);
+```</p>
+
+<p>这里用了prvoider是因为需要使用参数的构造函数。Provider类如下：</p>
+
+<p>``` java
+public class SendMessageWithAuditDescriptionProvider implements
+        Provider<connectiondescription> {</connectiondescription></p>
+
+<pre><code>@Override
+public final ConnectionDescription get() {
+
+return new ConnectionDescription("Audit with SMPP",
+        "Send Msg with audit via SMPP");
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Google Guice入门1]]></title>
