@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-23T14:38:06+08:00</updated>
+  <updated>2014-02-23T15:08:30+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -80,7 +80,7 @@ return new ConnectionDescription("Audit with SMPP",
 <h3 id="section-1">解决办法</h3>
 <hr />
 
-<p>在前面我们已经介绍过<a href="#">IoC</a>。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个。主要有Spring和<a href="https://code.google.com/p/google-guice/">Google Guice</a>。这里主要讲一下如何使用Google Guice，这是一个基本的入门使用，后面如果用到高级的地方再讲。</p>
+<p>在前面我们已经介绍过<a href="{%post_url 2014-02-19-she-ji-mo-shi-/ioche-yi-lai-zhu-ru %}">IoC</a>。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个。主要有Spring和<a href="https://code.google.com/p/google-guice/">Google Guice</a>。这里主要讲一下如何使用Google Guice，这是一个基本的入门使用，后面如果用到高级的地方再讲。</p>
 
 <h3 id="guice">Guice的使用</h3>
 
@@ -186,8 +186,52 @@ sender.xxx();
 <h3 id="section-1">案例说明</h3>
 <hr />
 <p>这里提供一个简单的业务需求来完成这个例子。
-需求的简单说明如下 ：系统一个模块给系统的其它部分用以发送用户通知。原本已经实现好了发送的功能，但是现在为了统计方便，需要在每次发送时记录到文件中，以便审计，但是这个对于客户端使用必须是透明的</p>
+需求的简单说明如下 ：系统一个模块给系统的其它部分用以发送用户通知。原本已经实现好了SMPP发送的功能，但是现在为了统计方便，需要在每次发送时记录到内存中/文件中，以便审计，但是这个对于客户端使用必须是透明的</p>
 
+<h4 id="uml">UML图</h4>
+
+<p>{% plantuml %}</p>
+
+<p>title Decorator Design Pattern</p>
+
+<p>class SendMessageWithAuditImpl {
+	-ISendMessage sender
+	+ int sendMessage()
+}</p>
+
+<p>class SendMessageWithLogImpl {
+    -ISendMessage sender
+	+ int sendMessage()
+}</p>
+
+<p>interface ISendMessage {
+	+ int sendMessage()
+}</p>
+
+<p>class SendMessageImpl {
+	+ int sendMessage()
+}</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>ISendMessage &lt;</td>
+      <td>.. SendMessageWithAuditImpl : «realize»</td>
+    </tr>
+    <tr>
+      <td>ISendMessage &lt;</td>
+      <td>.. SendMessageImpl</td>
+    </tr>
+    <tr>
+      <td>ISendMessage &lt;</td>
+      <td>.. SendMessageWithLogImpl</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>SendMessageWithAuditImpl “1” o–&gt; “  1”  ISendMessage : «aggregate»</p>
+
+<p>{% endplatuml %}</p>
 ]]></content>
   </entry>
   
@@ -245,7 +289,36 @@ sender.xxx();
 <h3 id="uml">UML图例</h3>
 <hr />
 
-<p><center><img src='/images/plantuml/bb3c9bde2337a86fa74b9368b4a1a21b.png'></center></p>
+<p>{% plantuml %}</p>
+
+<p>title Prototype Pattern Design</p>
+
+<p>interface Cloneable{
+}</p>
+
+<p>class Object{
++ Object clone()
+}</p>
+
+<p>class Product{
+- float price
+- String name</p>
+
+<ul>
+  <li>Object clone()</li>
+  <li>Product cloneProduct(String newName, float newPrice)
+}</li>
+</ul>
+
+<p>class Client</p>
+
+<p>Product..|&gt;Cloneable
+Product–|&gt;Object
+Client –&gt;Product</p>
+
+<p>note right of Product : clone current product\n and reset name and price </p>
+
+<p>{% endplantuml %}</p>
 
 <h3 id="section-1">模式讲解</h3>
 

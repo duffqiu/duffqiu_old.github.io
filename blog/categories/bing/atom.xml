@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Bing | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/bing/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-23T14:38:06+08:00</updated>
+  <updated>2014-02-23T15:08:30+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -41,13 +41,13 @@ bing_analytics: true
       <li>
         <p>修改octopres/source/_include目录下的head.html文件，在&lt;head&gt;下面增加以下内容，记得替换&lt;…&gt;bing给你的blog的标识</p>
 
-        <pre><code>
+        <pre><code>{% raw %}
      
 {% if site.bing_analytics %}
 &lt;meta name="msvalidate.01" content="&lt;...&gt;" /&gt;
 {% endif %}
      
-
+{% endraw %}
 </code></pre>
       </li>
       <li>
