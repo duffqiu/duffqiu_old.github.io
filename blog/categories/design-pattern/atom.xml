@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design Pattern | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/design-pattern/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-23T16:33:14+08:00</updated>
+  <updated>2014-02-23T16:48:00+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -38,7 +38,8 @@
 
 <h3 id="section-2">模式要点</h3>
 
-<p>一个类A实现接口I，同时拥有一个同样实现接口I的对象。客户端调用的时候，可以实例化多个实现接口I的对象，然后叠加在一起后给客户端使用。客户端只是看到I提供的功能描述，并不知道具体的实现叠加了多少。</p>
+<p>一个类A实现接口I，同时拥有一个同样实现接口I的对象。客户端调用的时候，可以实例化多个实现接口I的对象，然后叠加在一起后给客户端使用。客户端只是看到I提供的功能描述，并不知道具体的实现叠加了多少。
+这个模式的最大目的就是能够动态的给类增加功能。</p>
 
 <p>使用中可以通过I i = new A(new B(new C))的方式使用，可以通过Guice等通过Inject的方式组装。在<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a>例子中同时提供了这两种方式的代码。</p>
 ]]></content>
