@@ -12,7 +12,7 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-54bd067adc0e939e17381cea416f88a7.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-cddcf886fab9cc8d3e65b7473ea5e415.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-54bd067adc0e939e17381cea416f88a7.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-cddcf886fab9cc8d3e65b7473ea5e415.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -168,9 +168,16 @@
   <li>
     <p>在依赖的顶层被使用的类上指明要注入的类</p>
 
-    <p>注入方式有：<br />
-  - 属性注入：在对应的属性上使用<code>@inject</code>的annotation，前提是要有默认的public的无參构造函数，建议这种方式
-  - 构造函数注入：在对应的构造函数上使用<code>@inject</code>的annotation，前提是该构造函数带有需要被注入的参数。</p>
+    <p>注入方式有：  </p>
+
+    <ul>
+      <li>
+        <p>属性注入：在对应的属性上使用<code>@inject</code>的annotation，前提是要有默认的public的无參构造函数，建议这种方式</p>
+      </li>
+      <li>
+        <p>构造函数注入：在对应的构造函数上使用<code>@inject</code>的annotation，前提是该构造函数带有需要被注入的参数。</p>
+      </li>
+    </ul>
   </li>
 </ul>
 
@@ -201,10 +208,17 @@
   <li>
     <p>如果注入的类必须使用带参数的构造函数，则必须手工完成类的实例的生成。但是都必须在module类中指定。</p>
 
-    <p>主要有两种方式手工完成类的实例的生成：
-－ 使用<code>@provider</code> annotation指定类的生成方法，该方法必须是返回一个该类的实例，但是这种方式无法让Guice自动完成Singleton。
-- 给需要手工生成实例的类创建一个provider类，该类实现 <code>Provider&lt;T&gt;</code>接口，然后在<code>configure</code>方法中使用<code>bind(xxx.class).toProvider(yyy.class)</code>指定手工生成实例的类。如果需要Singleton则在后面增加指定如<code>bind(xxx.class).toProvider(yyy.class).in(
-          Singleton.class)</code>。Best Practice：该类的命名后缀建议为Provider。</p>
+    <p>主要有两种方式手工完成类的实例的生成：</p>
+
+    <ul>
+      <li>
+        <p>使用<code>@provider</code> annotation指定类的生成方法，该方法必须是返回一个该类的实例，但是这种方式无法让Guice自动完成Singleton。</p>
+      </li>
+      <li>
+        <p>给需要手工生成实例的类创建一个provider类，该类实现 <code>Provider&lt;T&gt;</code>接口，然后在<code>configure</code>方法中使用<code>bind(xxx.class).toProvider(yyy.class)</code>指定手工生成实例的类。如果需要Singleton则在后面增加指定如<code>bind(xxx.class).toProvider(yyy.class).in(
+        Singleton.class)</code>。Best Practice：该类的命名后缀建议为Provider。</p>
+      </li>
+    </ul>
   </li>
   <li>
     <p>客户端的使用方式 </p>
@@ -224,7 +238,7 @@
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <h3 id="section-3">小插曲</h3>
-<p>这是在写Decorator设计模式的时候分心出来写的，代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo</a></p>
+<p>这是在写Decorator设计模式的时候分心出来写的，代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a></p>
 
 </div>
   
