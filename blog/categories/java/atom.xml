@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-23T15:08:30+08:00</updated>
+  <updated>2014-02-23T15:10:58+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -80,7 +80,7 @@ return new ConnectionDescription("Audit with SMPP",
 <h3 id="section-1">解决办法</h3>
 <hr />
 
-<p>在前面我们已经介绍过<a href="{%post_url 2014-02-19-she-ji-mo-shi-/ioche-yi-lai-zhu-ru %}">IoC</a>。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个。主要有Spring和<a href="https://code.google.com/p/google-guice/">Google Guice</a>。这里主要讲一下如何使用Google Guice，这是一个基本的入门使用，后面如果用到高级的地方再讲。</p>
+<p>在前面我们已经介绍过<a href="#">IoC</a>。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个。主要有Spring和<a href="https://code.google.com/p/google-guice/">Google Guice</a>。这里主要讲一下如何使用Google Guice，这是一个基本的入门使用，后面如果用到高级的地方再讲。</p>
 
 <h3 id="guice">Guice的使用</h3>
 
@@ -179,7 +179,7 @@ sender.xxx();
 <ol>
   <li>模式名称：装饰器模式 (Decorator Pattern)</li>
   <li>问题：在开发过程，当一个比较大的类实现并测试后，将逐渐被稳定下来。但是这个时候有了新的需求，需要增强原由的功能，一般的做法是直接修改原由的类，但是会影响到原有类的稳定性，所有的测试都要回归，并且新增代码会对已有功能的稳定性带来影响，而且违背OO的开放－封闭原则。另外一个做法是继承原有的类然后扩展功，但是会造成代码重复，而且扩展性不高，同时如果类已经是final的则无法通过这种方式达到目的。</li>
-  <li>解决方案：提供一个与原来相同接口的类，但是原来的实现累作为新累的一个部分。这样对于客户端而言并没有改变，但是实际行为变成了除原有的功能外，新增了功能。同时可以由多个新增功能的类叠加来处理。简单讲就是<code>A a = new A();</code>变成了<code>A a = new B(new A)</code></li>
+  <li>解决方案：提供一个与原来相同接口的类，但是原来的实现累作为新累的一个部分。这样对于客户端而言并没有改变，但是实际行为变成了除原有的功能外，新增了功能。同时可以由多个新增功能的类叠加来处理。简单讲就是<code>Interface i = new A();</code>变成了<code>Interface i = new B(new A)</code></li>
   <li>结论：无需静态继承，可以灵活扩展。可以作为AOP的简单实现。缺点是产生很多类似的类，容易引起歧异。</li>
 </ol>
 
@@ -190,48 +190,7 @@ sender.xxx();
 
 <h4 id="uml">UML图</h4>
 
-<p>{% plantuml %}</p>
-
-<p>title Decorator Design Pattern</p>
-
-<p>class SendMessageWithAuditImpl {
-	-ISendMessage sender
-	+ int sendMessage()
-}</p>
-
-<p>class SendMessageWithLogImpl {
-    -ISendMessage sender
-	+ int sendMessage()
-}</p>
-
-<p>interface ISendMessage {
-	+ int sendMessage()
-}</p>
-
-<p>class SendMessageImpl {
-	+ int sendMessage()
-}</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>ISendMessage &lt;</td>
-      <td>.. SendMessageWithAuditImpl : «realize»</td>
-    </tr>
-    <tr>
-      <td>ISendMessage &lt;</td>
-      <td>.. SendMessageImpl</td>
-    </tr>
-    <tr>
-      <td>ISendMessage &lt;</td>
-      <td>.. SendMessageWithLogImpl</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>SendMessageWithAuditImpl “1” o–&gt; “  1”  ISendMessage : «aggregate»</p>
-
-<p>{% endplatuml %}</p>
+<p><center><img src='/images/plantuml/6315d532d32d6a1c697023198bdd2f7a.png'></center></p>
 ]]></content>
   </entry>
   
@@ -289,36 +248,7 @@ sender.xxx();
 <h3 id="uml">UML图例</h3>
 <hr />
 
-<p>{% plantuml %}</p>
-
-<p>title Prototype Pattern Design</p>
-
-<p>interface Cloneable{
-}</p>
-
-<p>class Object{
-+ Object clone()
-}</p>
-
-<p>class Product{
-- float price
-- String name</p>
-
-<ul>
-  <li>Object clone()</li>
-  <li>Product cloneProduct(String newName, float newPrice)
-}</li>
-</ul>
-
-<p>class Client</p>
-
-<p>Product..|&gt;Cloneable
-Product–|&gt;Object
-Client –&gt;Product</p>
-
-<p>note right of Product : clone current product\n and reset name and price </p>
-
-<p>{% endplantuml %}</p>
+<p><center><img src='/images/plantuml/bb3c9bde2337a86fa74b9368b4a1a21b.png'></center></p>
 
 <h3 id="section-1">模式讲解</h3>
 

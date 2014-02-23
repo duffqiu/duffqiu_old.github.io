@@ -4,7 +4,7 @@
   <title><![CDATA[Category: PlantUML | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/plantuml/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-23T15:08:30+08:00</updated>
+  <updated>2014-02-23T15:10:58+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -96,66 +96,7 @@ package “Parent1” {
 
 
 
-{% plantuml %}
-title "组件图Best Practice"
-
-'全局的component
-component [global 1]
-component [global 2]
-interface "inferface 1" as if1
-interface "inferface 2" as if2
-
-'模块定义
-package "Parent1" {
-	package "Children1-1" {
-		'只定义component，不定义关心
-		component [1-1-1]
-		component [1-1-2]
-
-	}
-	package "Children1-2" {
-		component [1-2-1]
-		component [1-2-2]
-
-	}
-	
-}
-
-package "Parent2" {
-	package "Children2-1" {
-		'只定义component，不定义关心
-		component [2-1-1]
-		component [2-1-2]
-
-	}
-	package "Children2-2" {
-		component [2-2-1]
-		component [2-2-2]
-
-	}
-	
-}
-
-'完成component定义后再定义关系不要再component中定义关系，容易造成有些component还未必定义就被使用
-
-'定义全局和子模块的关系
-[global 1]..&gt;[global 2]
-[global 1] - if1
-[global 2] - if2
-[global 1] ..&gt; [1-1-1]
-
-'定义Parent1和children间的关系已经与其它Parent或children的关系
-[1-1-1]..&gt;[1-1-2]
-[1-1-1]..&gt;[1-2-1]
-[1-2-1]..&gt;[1-2-2]
-[1-1-1]..&gt;[2-1-1]
-
-'定义Parent2和children间的关系已经与其它Parent或children的关系
-[2-1-1]..&gt;[2-1-2]
-[2-1-1]..&gt;[2-2-1]
-[2-1-1]..&gt;[2-2-2]
-
-{% endplantuml %}
+<center><img src='/images/plantuml/1342eb5869c6a1040f2c1b269144edb8.png'></center>
 
 </div>
 ]]></content>
@@ -250,9 +191,7 @@ plantuml_background_color: "#f8f8f8"
 </ol>
 
 <p><code>sh
-{% plantuml %}
-...
-{% endplantuml %}
+<center><img src='/images/plantuml/f3f38d1d042bc259f06614d2fdeb7237.png'></center>
 </code></p>
 
 <p>括上platuml的代码就可以了，下面是一个简单的示例</p>
@@ -260,39 +199,16 @@ plantuml_background_color: "#f8f8f8"
 <p>源码如下：</p>
 
 <p><code>sh  
-{% plantuml %}  
-Alice -&gt; Bob: Authentication Request  
-Bob --&gt; Alice: Authentication Response
-Alice -&gt; Bob: Another authentication Request  
-Alice &lt;-- Bob: another authentication Response
-{% endplantuml %}
+<center><img src='/images/plantuml/701d88046b71f1849b1c4c67dd74ed25.png'></center>
 </code></p>
 
 <p>图片展示如下： </p>
 
-<p>{% plantuml %}<br />
-Alice -&gt; Bob: Authentication Request<br />
-Bob –&gt; Alice: Authentication Response</p>
-
-<p>Alice -&gt; Bob: Another authentication Request<br />
-Alice &lt;– Bob: another authentication Response
-{% endplantuml %}</p>
+<p><center><img src='/images/plantuml/4b8dd507ddcb69d1776592ee5d1f6ab6.png'></center></p>
 
 <p>类的表示方式如下：</p>
 
-<p>{% plantuml %} 
-scale 900 width
-Class01 &lt;|– Class02
-Class03 <em>– Class04
-Class05 o– Class06
-Class07 .. Class08
-Class09 – Class10
-Class11 &lt;|.. Class12
-Class13 –&gt; Class14
-Class15 ..&gt; Class16
-Class17 ..|&gt; Class18
-Class19 &lt;–</em> Class20
-{% endplantuml %}</p>
+<p><center><img src='/images/plantuml/22b7fb4839fbcdfac523806c58c514ca.png'></center></p>
 
 <h3 id="section-3">小插曲</h3>
 <p>默认情况下，plantuml只能支持sequence图的生成，如果要生成其它图，则需要用到Graphiz。<br />
