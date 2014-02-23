@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-22T15:35:37+08:00</updated>
+  <updated>2014-02-23T12:56:24+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,110 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Google Guice入门1]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/22/google-guiceru-men-1/"/>
+    <updated>2014-02-22T20:26:34+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/22/google-guiceru-men-1</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在一个系统中，多个模块总是通过各种关系关联在一起的。但是一般的编程方式总是讲如何组装各种模块与处理业务逻辑混合在一块，造成代码的维护比较困看，也容易造成代码的行数很大。</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>在前面我们已经介绍过<a href="#">IoC</a>。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个。主要有Spring和<a href="https://code.google.com/p/google-guice/">Google Guice</a>。这里主要讲一下如何使用Google Guice，这是一个基本的入门使用，后面如果用到高级的地方再讲。</p>
+
+<h3 id="guice">Guice的使用</h3>
+
+<h4 id="section-2">简介</h4>
+
+<p>Google Guice是通过代码的方式来简单维护类间的依赖关系，不象Spring通过XML或annotation然后通过autoscan的方式来维护依赖。个人感觉好的地方是，对于程序员而言，代码方式更加贴近，也更容易理解。</p>
+
+<h4 id="maven">使用方式(基于maven)</h4>
+<ul>
+  <li>在maven项目中增加Guice的jar包。注意，这里我们没有用AOP，所以特地讲AOP去掉，从而减少了对AOP的依赖</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">&lt;dependency&gt;
+</span><span class="line">	&lt;groupId&gt;com.google.inject&lt;/groupId&gt;
+</span><span class="line">	&lt;artifactId&gt;guice&lt;/artifactId&gt;
+</span><span class="line">	&lt;version&gt;3.0&lt;/version&gt;
+</span><span class="line">	&lt;classifier&gt;no_aop&lt;/classifier&gt;
+</span><span class="line">&lt;/dependency&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>
+    <p>在依赖的顶层被使用的类上指明要注入的类</p>
+
+    <p>注入方式有：<br />
+  - 属性注入：在对应的属性上使用<code>@inject</code>的annotation，前提是要有默认的public的无參构造函数，建议这种方式
+  - 构造函数注入：在对应的构造函数上使用<code>@inject</code>的annotation，前提是该构造函数带有需要被注入的参数。</p>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SendMessageImpl</span> <span class="kd">implements</span> <span class="n">ISendMessage</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Inject</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">SmppSendMsg</span> <span class="n">smpp</span><span class="o">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Inject</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">IDescription</span> <span class="n">desc</span><span class="o">;</span>
+</span><span class="line">    <span class="o">...</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>
+    <p>生成绑定关系的类，该类必须是继承于AbstractModule，然后在重载<code>configure</code>方法，在该方法中指定绑定关系。Best Practice：该类的命名后缀建议为BindingModule。如果注入的为具体的类，则无需在<code>configure</code>方法中指定绑定关系，如果为接口，则需要绑定到具体的类如：<code>bind(&lt;Interface&gt;.class).to(&lt;ConcreteClass&gt;.class)</code>。注意就算<code>configure</code>方法为空，都要生成一个Module类。Best Practise：尽量使用接口而不是具体的类，以便于以后更改类的实现而不用更改业务类的代码，因为注入都是在这个Module类完成。</p>
+  </li>
+  <li>
+    <p>如果注入的类必须使用带参数的构造函数，则必须手工完成类的实例的生成。但是都必须在module类中指定。</p>
+
+    <p>主要有两种方式手工完成类的实例的生成：
+－ 使用<code>@provider</code> annotation指定类的生成方法，该方法必须是返回一个该类的实例，但是这种方式无法让Guice自动完成Singleton。
+- 给需要手工生成实例的类创建一个provider类，该类实现 <code>Provider&lt;T&gt;</code>接口，然后在<code>configure</code>方法中使用<code>bind(xxx.class).toProvider(yyy.class)</code>指定手工生成实例的类。如果需要Singleton则在后面增加指定如<code>bind(xxx.class).toProvider(yyy.class).in(
+          Singleton.class)</code>。Best Practice：该类的命名后缀建议为Provider。</p>
+  </li>
+  <li>
+    <p>客户端的使用方式 </p>
+
+    <p>使用生成的BindingModule获取一个Inject实例，然后使用该实例创建需要的对象。如： </p>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Injector</span> <span class="n">injector</span> <span class="o">=</span> <span class="n">Guice</span><span class="o">.</span><span class="na">createInjector</span><span class="o">(</span><span class="k">new</span> <span class="n">SendMessageBindingModule</span><span class="o">());</span>
+</span><span class="line"><span class="n">ISendMessage</span> <span class="n">sender</span> <span class="o">=</span> <span class="n">injector</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">SendMessageImpl</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class="line"><span class="n">sender</span><span class="o">.</span><span class="na">xxx</span><span class="o">();</span>
+</span><span class="line"><span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="section-3">小插曲</h3>
+<p>这是在写Decorator设计模式的时候分心出来写的，代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo</a></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[PlantUML小技巧]]></title>
@@ -23,8 +127,8 @@
 <p>在使用PlantUML的时候，如果模块中嵌套模块然后将关联关系定义在子模块中，则很容易造成模块的混沦。</p>
 
 <h3 id="section">解决办法</h3>
-<p>我个人一个比较好的practice是这样一个模式
-同时最好的方式现在纸上先用笔画好初稿</p>
+<p>我个人一个比较好的practice是这样一个模式，PlantUML代码如下<br />
+同时最好的方式是在纸上先用笔画好初稿</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -166,9 +270,19 @@
     <link href="http://duffqiu.github.io/blog/2014/02/22/she-ji-mo-shi-%3Azhuang-shi-qi-mo-shi/"/>
     <updated>2014-02-22T15:09:29+08:00</updated>
     <id>http://duffqiu.github.io/blog/2014/02/22/she-ji-mo-shi-:zhuang-shi-qi-mo-shi</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+    <content type="html"><![CDATA[<h3 id="section">装饰器模式原理</h3>
+<hr />
+<ol>
+  <li>模式名称：装饰器模式 (Decorator Pattern)</li>
+  <li>问题：在开发过程，当一个比较大的类实现并测试后，将逐渐被稳定下来。但是这个时候有了新的需求，需要增强原由的功能，一般的做法是直接修改原由的类，但是会影响到原有类的稳定性，所有的测试都要回归，并且新增代码会对已有功能的稳定性带来影响，而且违背OO的开放－封闭原则。另外一个做法是继承原有的类然后扩展功，但是会造成代码重复，而且扩展性不高，同时如果类已经是final的则无法通过这种方式达到目的。</li>
+  <li>解决方案：提供一个与原来相同接口的类，但是原来的实现累作为新累的一个部分。这样对于客户端而言并没有改变，但是实际行为变成了除原有的功能外，新增了功能。同时可以由多个新增功能的类叠加来处理。简单讲就是<code>A a = new A();</code>变成了<code>A a = new B(new A)</code></li>
+  <li>结论：无需静态继承，可以灵活扩展。可以作为AOP的简单实现。缺点是产生很多类似的类，容易引起歧异。</li>
+</ol>
 
-<h3 id="section-1">解决办法</h3>
+<h3 id="section-1">案例说明</h3>
+<hr />
+<p>这里提供一个简单的业务需求来完成这个例子。
+需求的简单说明如下 ：系统一个模块给系统的其它部分用以发送用户通知。原本已经实现好了发送的功能，但是现在为了统计方便，需要在每次发送时记录到文件中，以便审计，但是这个对于客户端使用必须是透明的</p>
 
 ]]></content>
   </entry>
@@ -2331,94 +2445,6 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
   <li>数字n＋yy  用来copy从单前行开始的n行</li>
   <li>p 在当前光标出插入copy的内容</li>
 </ol>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[UML类图]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/02/umllei-tu/"/>
-    <updated>2014-02-02T20:44:44+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/02/umllei-tu</id>
-    <content type="html"><![CDATA[<h3 id="uml">UML工具</h3>
-<p>推荐大家用<a href="http://members.change-vision.com/files/astah_community" title="官网">astah</a>，Community版本就够了</p>
-
-<h3 id="section">类图的描述</h3>
-
-<ol>
-  <li>类名：正体字为实例化类， 斜体字是抽象类，接口类有interface标识(也可以是个圆形，不过建议在类图中还是使用长方形的图形标识)</li>
-  <li>属性：<strong><em>+</em></strong>表示puiblic， <strong><em>-</em></strong>表示private， <strong><em>#</em></strong>表示protected</li>
-  <li>方法：<strong><em>+</em></strong>表示puiblic， <strong><em>-</em></strong>表示private， <strong><em>#</em></strong>表示protected, 有下划线表示      <font style="border-bottom:1px solid #000;">静态方法</font></li>
-</ol>
-
-<p><img src="http://duffqiu.github.io/images/ClassDiagram.png" alt="类图和继承与实现" /></p>
-
-<h3 id="section-1">类图中类与类的关系</h3>
-
-<h4 id="section-2">继承与实现</h4>
-
-<ol>
-  <li>
-    <p>继承关系，用带实线的闭合空心箭头</p>
-
-    <div style="font-size: 36px"> ⇾ </div>
-
-    <p>表示，Java语言中<strong>extends</strong>体现</p>
-  </li>
-  <li>
-    <p>接口实现关系，用虚线带的闭合空心箭头</p>
-
-    <div style="font-size: 36px"> ­­­­⁃⁃⇾ </div>
-
-    <p>表示，Java语言中<strong>implements</strong>体现</p>
-  </li>
-</ol>
-
-<h4 id="section-3">关联关系(体现类与类的实例变量的关系)</h4>
-
-<p>提示： 实践中，要将所有的关联关系都要画清楚</p>
-
-<ol>
-  <li>
-    <p>类与类的关联关系：(association)，体现类与类的实例变量的关系，可以是单向关联（单箭头），也可以是双向关联（双箭头/无箭头，不鼓励有这种关系）。关联关系还可以有个基数，表明这一端的类有几个该类型的实例（0..1, 0..*, 1, 1..*），使用实线开放式箭头表示</p>
-
-    <div style="font-size: 36px"> ➔ </div>
-  </li>
-  <li>
-    <p>聚合关系（aggregation），关联关系的一种，是强的关联关系，是整体和个体间的关系(个体可以单独存在)，也是通过实例变量体现。Java语法是无法区分聚合和关联关系的。如果不是太确定，可以设置为关联关系。同样具有基数。实例类用空的菱形表示  </p>
-
-    <div style="font-size: 36px"> ◇⟶ </div>
-  </li>
-  <li>
-    <p>合成关系(Composition)，关联关系的一种，是比聚合关系<strong>强</strong>的关联关系。该关系和聚合关系的区别是，代表整体的部分负责代表部分的对象的生命周期，即部分对象不会独立于整体存在，且不能共享。实例类用实心的菱形表示，也是通过实例变量体现。如果不是太确定则用聚合/关联关系表示</p>
-
-    <div style="font-size: 36px"> ◆⟶ </div>
-  </li>
-</ol>
-
-<h4 id="section-4">依赖关系(体现为局部变量、方法参数，以及对静态方法的调用)</h4>
-
-<p>提示： 这些表示在astah中都可以容易使用，要做到的事情时清楚其具体含义 </p>
-
-<ol>
-  <li>
-    <p>依赖关系(dependency)，依赖总是单向。Java中体现为局部变量、方法参数，以及对静态方法的调用，图形通过虚线开放箭头表示</p>
-
-    <div style="font-size: 36px"> ⤑ </div>
-
-    <p>实践中没有必要将所有的依赖都画出来，只画出重要部分</p>
-  </li>
-</ol>
-
-<h5 id="astah">类的关联关系和依赖关系在astah中的表示如下：</h5>
-
-<p><img src="http://duffqiu.github.io/images/ClassRelationship.png" alt="类的关联关系和依赖关系" />   </p>
-
-<p>尽管前面讲了使用UML不要太教条，试用就好，但是图的表示含义还是要准确的好
-本章节的astah的文件：<a href="http://duffqiu.github.io/assets/ClassDiagram.asta">类的UML说明</a></p>
-
-<h3 id="section-5">小插曲</h3>
-
-<p>今天在家下载astah很慢，就用baidu的离线下载（普通下载方式），先交由baidu下载到网盘上，然后再到网盘上下载下来，速度很快，比直接下载好多了</p>
 ]]></content>
   </entry>
   

@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>PlantUML小技巧 - Duff Qiu's Blog</title>
+  <title>Google Guice入门1 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,16 +19,7 @@
 
 
   
-  <meta name="description" content="PlantUML画模块图/组件图的问题 在使用PlantUML的时候，如果模块中嵌套模块然后将关联关系定义在子模块中，则很容易造成模块的混沦。 解决办法
-我个人一个比较好的practice是这样一个模式，PlantUML代码如下
-同时最好的方式是在纸上先用笔画好初稿 1
-2
-3
-4
-5
-6
-7
-8 &hellip;">
+  <meta name="description" content="原由 在一个系统中，多个模块总是通过各种关系关联在一起的。但是一般的编程方式总是讲如何组装各种模块与处理业务逻辑混合在一块，造成代码的维护比较困看，也容易造成代码的行数很大。 解决办法 在前面我们已经介绍过IoC。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -37,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/22/plantumlxiao-ji-qiao">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/22/google-guiceru-men-1">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -110,7 +101,7 @@
   
   <header>
     
-      <h1 class="entry-title">PlantUML小技巧</h1>
+      <h1 class="entry-title">Google Guice入门1</h1>
     
     
       <p class="meta">
@@ -126,7 +117,7 @@
   
 
 
-<time datetime="2014-02-22T15:10:21+08:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time>
+<time datetime="2014-02-22T20:26:34+08:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -136,15 +127,51 @@
   </header>
 
 
-<div class="entry-content"><h3 id="plantuml">PlantUML画模块图/组件图的问题</h3>
+<div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>在一个系统中，多个模块总是通过各种关系关联在一起的。但是一般的编程方式总是讲如何组装各种模块与处理业务逻辑混合在一块，造成代码的维护比较困看，也容易造成代码的行数很大。</p>
 
-<p>在使用PlantUML的时候，如果模块中嵌套模块然后将关联关系定义在子模块中，则很容易造成模块的混沦。</p>
+<h3 id="section-1">解决办法</h3>
+<hr />
 
-<h3 id="section">解决办法</h3>
-<p>我个人一个比较好的practice是这样一个模式，PlantUML代码如下<br />
-同时最好的方式是在纸上先用笔画好初稿</p>
+<p>在前面我们已经介绍过<a href="#">IoC</a>。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个。主要有Spring和<a href="https://code.google.com/p/google-guice/">Google Guice</a>。这里主要讲一下如何使用Google Guice，这是一个基本的入门使用，后面如果用到高级的地方再讲。</p>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<h3 id="guice">Guice的使用</h3>
+
+<h4 id="section-2">简介</h4>
+
+<p>Google Guice是通过代码的方式来简单维护类间的依赖关系，不象Spring通过XML或annotation然后通过autoscan的方式来维护依赖。个人感觉好的地方是，对于程序员而言，代码方式更加贴近，也更容易理解。</p>
+
+<h4 id="maven">使用方式(基于maven)</h4>
+<ul>
+  <li>在maven项目中增加Guice的jar包。注意，这里我们没有用AOP，所以特地讲AOP去掉，从而减少了对AOP的依赖</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">&lt;dependency&gt;
+</span><span class="line">	&lt;groupId&gt;com.google.inject&lt;/groupId&gt;
+</span><span class="line">	&lt;artifactId&gt;guice&lt;/artifactId&gt;
+</span><span class="line">	&lt;version&gt;3.0&lt;/version&gt;
+</span><span class="line">	&lt;classifier&gt;no_aop&lt;/classifier&gt;
+</span><span class="line">&lt;/dependency&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>
+    <p>在依赖的顶层被使用的类上指明要注入的类</p>
+
+    <p>注入方式有：<br />
+  - 属性注入：在对应的属性上使用<code>@inject</code>的annotation，前提是要有默认的public的无參构造函数，建议这种方式
+  - 构造函数注入：在对应的构造函数上使用<code>@inject</code>的annotation，前提是该构造函数带有需要被注入的参数。</p>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
@@ -153,129 +180,49 @@
 <span class="line-number">7</span>
 <span class="line-number">8</span>
 <span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-<span class="line-number">39</span>
-<span class="line-number">40</span>
-<span class="line-number">41</span>
-<span class="line-number">42</span>
-<span class="line-number">43</span>
-<span class="line-number">44</span>
-<span class="line-number">45</span>
-<span class="line-number">46</span>
-<span class="line-number">47</span>
-<span class="line-number">48</span>
-<span class="line-number">49</span>
-<span class="line-number">50</span>
-<span class="line-number">51</span>
-<span class="line-number">52</span>
-<span class="line-number">53</span>
-<span class="line-number">54</span>
-<span class="line-number">55</span>
-<span class="line-number">56</span>
-<span class="line-number">57</span>
-<span class="line-number">58</span>
-<span class="line-number">59</span>
-<span class="line-number">60</span>
-<span class="line-number">61</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">@startuml
-</span><span class="line">title "组件图Best Practice"
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SendMessageImpl</span> <span class="kd">implements</span> <span class="n">ISendMessage</span> <span class="o">{</span>
 </span><span class="line">
-</span><span class="line">'全局的component
-</span><span class="line">component [global 1]
-</span><span class="line">component [global 2]
-</span><span class="line">interface "inferface 1" as if1
-</span><span class="line">interface "inferface 2" as if2
-</span><span class="line">...
+</span><span class="line">    <span class="nd">@Inject</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">SmppSendMsg</span> <span class="n">smpp</span><span class="o">;</span>
 </span><span class="line">
-</span><span class="line">'模块定义
-</span><span class="line">package "Parent1" {
-</span><span class="line">	package "Children1-1" {
-</span><span class="line">		'只定义component，不定义关心
-</span><span class="line">		component [1-1-1]
-</span><span class="line">		component [1-1-2]
-</span><span class="line">		...
-</span><span class="line">	}
-</span><span class="line">	package "Children1-2" {
-</span><span class="line">		component [1-2-1]
-</span><span class="line">		component [1-2-2]
-</span><span class="line">		...
-</span><span class="line">	}
-</span><span class="line">	
-</span><span class="line">}
-</span><span class="line">
-</span><span class="line">package "Parent2" {
-</span><span class="line">	package "Children2-1" {
-</span><span class="line">		'只定义component，不定义关心
-</span><span class="line">		component [2-1-1]
-</span><span class="line">		component [2-1-2]
-</span><span class="line">		...
-</span><span class="line">	}
-</span><span class="line">	package "Children2-2" {
-</span><span class="line">		component [2-2-1]
-</span><span class="line">		component [2-2-2]
-</span><span class="line">		...
-</span><span class="line">	}
-</span><span class="line">	
-</span><span class="line">}
-</span><span class="line">
-</span><span class="line">'完成component定义后再定义关系不要再component中定义关系，容易造成有些component还未必定义就被使用
-</span><span class="line">
-</span><span class="line">'定义全局和子模块的关系
-</span><span class="line">[global 1]..&gt;[global 2]
-</span><span class="line">[global 1] - if1
-</span><span class="line">[global 2] - if2
-</span><span class="line">[global 1] ..&gt; [1-1-1]
-</span><span class="line">
-</span><span class="line">'定义Parent1和children间的关系已经与其它Parent或children的关系
-</span><span class="line">[1-1-1]..&gt;[1-1-2]
-</span><span class="line">[1-1-1]..&gt;[1-2-1]
-</span><span class="line">[1-2-1]..&gt;[1-2-2]
-</span><span class="line">[1-1-1]..&gt;[2-1-1]
-</span><span class="line">
-</span><span class="line">'定义Parent2和children间的关系已经与其它Parent或children的关系
-</span><span class="line">[2-1-1]..&gt;[2-1-2]
-</span><span class="line">[2-1-1]..&gt;[2-2-1]
-</span><span class="line">[2-1-1]..&gt;[2-2-2]
-</span><span class="line">
-</span><span class="line">@enduml</span></code></pre></td></tr></table></div></figure></notextile></div>
+</span><span class="line">    <span class="nd">@Inject</span>
+</span><span class="line">    <span class="kd">private</span> <span class="n">IDescription</span> <span class="n">desc</span><span class="o">;</span>
+</span><span class="line">    <span class="o">...</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('componentuml')"> 最后的UML图如下： </div>
+<ul>
+  <li>
+    <p>生成绑定关系的类，该类必须是继承于AbstractModule，然后在重载<code>configure</code>方法，在该方法中指定绑定关系。Best Practice：该类的命名后缀建议为BindingModule。如果注入的为具体的类，则无需在<code>configure</code>方法中指定绑定关系，如果为接口，则需要绑定到具体的类如：<code>bind(&lt;Interface&gt;.class).to(&lt;ConcreteClass&gt;.class)</code>。注意就算<code>configure</code>方法为空，都要生成一个Module类。Best Practise：尽量使用接口而不是具体的类，以便于以后更改类的实现而不用更改业务类的代码，因为注入都是在这个Module类完成。</p>
+  </li>
+  <li>
+    <p>如果注入的类必须使用带参数的构造函数，则必须手工完成类的实例的生成。但是都必须在module类中指定。</p>
 
-<div style="display:none" class="prev" id="componentuml" onclick="hidediv('componentuml')" title="点击关闭">
+    <p>主要有两种方式手工完成类的实例的生成：
+－ 使用<code>@provider</code> annotation指定类的生成方法，该方法必须是返回一个该类的实例，但是这种方式无法让Guice自动完成Singleton。
+- 给需要手工生成实例的类创建一个provider类，该类实现 <code>Provider&lt;T&gt;</code>接口，然后在<code>configure</code>方法中使用<code>bind(xxx.class).toProvider(yyy.class)</code>指定手工生成实例的类。如果需要Singleton则在后面增加指定如<code>bind(xxx.class).toProvider(yyy.class).in(
+          Singleton.class)</code>。Best Practice：该类的命名后缀建议为Provider。</p>
+  </li>
+  <li>
+    <p>客户端的使用方式 </p>
 
+    <p>使用生成的BindingModule获取一个Inject实例，然后使用该实例创建需要的对象。如： </p>
+  </li>
+</ul>
 
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Injector</span> <span class="n">injector</span> <span class="o">=</span> <span class="n">Guice</span><span class="o">.</span><span class="na">createInjector</span><span class="o">(</span><span class="k">new</span> <span class="n">SendMessageBindingModule</span><span class="o">());</span>
+</span><span class="line"><span class="n">ISendMessage</span> <span class="n">sender</span> <span class="o">=</span> <span class="n">injector</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">SendMessageImpl</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class="line"><span class="n">sender</span><span class="o">.</span><span class="na">xxx</span><span class="o">();</span>
+</span><span class="line"><span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<center><img src="/images/plantuml/0fc7dd179febc49855cadf23e3f82408.png" /></center>
+<h3 id="section-3">小插曲</h3>
+<p>这是在写Decorator设计模式的时候分心出来写的，代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo</a></p>
 
-</div>
 </div>
 
 
@@ -298,12 +245,12 @@
   
 
 
-<time datetime="2014-02-22T15:10:21+08:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time>
+<time datetime="2014-02-22T20:26:34+08:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/plantuml/'>PlantUML</a>
+    <a class='category' href='/blog/categories/guice/'>Guice</a>, <a class='category' href='/blog/categories/java/'>Java</a>
   
 </span>
 
@@ -319,10 +266,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/02/22/she-ji-mo-shi-%3Azhuang-shi-qi-mo-shi/" title="Previous Post: 设计模式：装饰器模式">&laquo; 设计模式：装饰器模式</a>
+        <a class="basic-alignment left" href="/blog/2014/02/22/plantumlxiao-ji-qiao/" title="Previous Post: PlantUML小技巧">&laquo; PlantUML小技巧</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/02/22/google-guiceru-men-1/" title="Next Post: Google Guice入门1">Google Guice入门1 &raquo;</a>
       
     </p>
   </footer>
@@ -400,13 +345,13 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/02/22/google-guiceru-men-1/">Google Guice入门1</a></h3>
+        <h3 class="title"><a href="/blog/2014/02/22/plantumlxiao-ji-qiao/">PlantUML小技巧</a></h3>
         <div class="meta">
           <span class="tags">
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/guice/'>Guice</a>, <a class='category' href='/blog/categories/java/'>Java</a>
+    <a class='category' href='/blog/categories/plantuml/'>PlantUML</a>
   
 </span>
 

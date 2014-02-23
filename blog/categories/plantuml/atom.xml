@@ -4,7 +4,7 @@
   <title><![CDATA[Category: PlantUML | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/plantuml/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-22T15:35:37+08:00</updated>
+  <updated>2014-02-23T12:56:24+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -23,8 +23,8 @@
 <p>在使用PlantUML的时候，如果模块中嵌套模块然后将关联关系定义在子模块中，则很容易造成模块的混沦。</p>
 
 <h3 id="section">解决办法</h3>
-<p>我个人一个比较好的practice是这样一个模式
-同时最好的方式现在纸上先用笔画好初稿</p>
+<p>我个人一个比较好的practice是这样一个模式，PlantUML代码如下<br />
+同时最好的方式是在纸上先用笔画好初稿</p>
 
 <p>```
 @startuml
