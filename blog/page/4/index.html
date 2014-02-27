@@ -12,15 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-5f962741cd16f4b6be90a7f3cc8a9a53.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-8e3d32882a588e132cd0b5034afe2d3c.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="查看用户所在用户组 &gt;groups 查看当前有那些用户 &gt;uers 给用户增加用户组
-通过用户管理创建的用户，如果赋予管理员权限，则用户在admin组，当时有时候需要将用户增加到wheel组，但是OSX没有像相关的命令，似乎apple就不想普通用户像linux那样操作OSX。 &hellip;">
+  <meta name="description" content="首先鸣谢参考资料的作者 参考资料来自与 1 完善Octopress的配置 获取内部关联的post url plugin，然后将其放入到plugin目录中 确保已经安装了kramdown，如果没有，用以下命令安装 &gt;sudo gem install kramdown &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -39,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-5f962741cd16f4b6be90a7f3cc8a9a53.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-8e3d32882a588e132cd0b5034afe2d3c.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -99,6 +98,100 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/">Octopress的内部blog间关联</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-30T18:28:34+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">首先鸣谢参考资料的作者</h3>
+
+<p>参考资料来自与 <a href="http://blog.eavatar.com/post/2013/06/use-post-url-internal-link-octopress/">1</a></p>
+
+<h3 id="octopress">完善Octopress的配置</h3>
+
+<ol>
+  <li>
+    <p>获取内部关联的<a href="https://raw.github.com/michael-groble/jekyll/fix_post_url/lib/jekyll/tags/post_url.rb">post url plugin</a>，然后将其放入到plugin目录中    </p>
+  </li>
+  <li>
+    <p>确保已经安装了kramdown，如果没有，用以下命令安装</p>
+
+    <pre><code>&gt;sudo gem install kramdown
+</code></pre>
+  </li>
+  <li>
+    <p>编辑配置文件_configy.yml，注释掉markdown: rdiscount，然后增加</p>
+
+    <pre><code>#markdown: rdiscount
+markdown: kramdown
+</code></pre>
+  </li>
+</ol>
+
+<h3 id="blog">在blog中使用关联，语法如下</h3>
+
+<pre><code>[&lt;链接名字&gt;]({% post_url &lt;blog的文件名字，不要带目录和文件后缀&gt; %}) 
+</code></pre>
+
+<p>然后重新生成和部署就可以了</p>
+
+<pre><code>&gt;rake generate
+&gt;rake deploy
+</code></pre>
+
+<h3 id="section-1">一个小插曲</h3>
+<p>今天在生成地8个blog后，rake generate就出错了，报在matrix.rb文件中反馈出”Not Regular Matrix”错误，但是就是死活找不到问题所在，只要将刚生成的文件删除就好了，而文件还没写东西。后来经历反复的从头再来，终于发现了问题所在，结论是之前参照网上配置关联blog的配置，在_configy.yml中增加了以下配置：</p>
+
+<pre><code>lsi: true    
+</code></pre>
+
+<p>只要将这个选项关闭或删除就可，好像octopress已经没有用了</p>
+
+<h3 id="octopress-1">Octopress经验总结</h3>
+
+<p>尽管使用上就是用markdown的方式写文章，但是使用octopress这个平台，就像使用开发工具一样，总会出现这样那样的错误，而且还很难定位，最好的办法就是像编程一样，今早“编译”－》“试运行”－》“改错”－》“再运行”，不然当你写了很多后一次行生成出现错误就无从下手去解决问题了，只能一个一个做减法然后再试。</p>
+
+<p>最好的方式是</p>
+
+<ol>
+  <li>写一部分，就立马rake generate  </li>
+  <li>rake new_post[“<文章名>&#8221;]，不写任何东西，立马rake generate</文章名></li>
+  <li>只要用到 {%  %}这些内嵌语法，立马rake generate</li>
+  <li>更改一项_config.yml配置，立马rake generate</li>
+</ol>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -923,6 +1016,10 @@ git push origin source
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/02/23/she-ji-mo-shi-%3Adai-li-mo-shi/">设计模式：代理模式</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/23/google-guiceru-men-2/">Google Guice入门2</a>
       </li>
     
@@ -938,10 +1035,6 @@ git push origin source
         <a href="/blog/2014/02/22/she-ji-mo-shi-%3Azhuang-shi-qi-mo-shi/">设计模式：装饰器模式</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/02/19/openstackshang-an-zhuang-appscale/">Openstack上安装AppScale</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -954,13 +1047,13 @@ git push origin source
     <li class='category'><a href='/blog/categories/appscale/'>Appscale (3)</a></li>
 <li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
 <li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
-<li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (7)</a></li>
+<li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (8)</a></li>
 <li class='category'><a href='/blog/categories/docker/'>Docker (1)</a></li>
 <li class='category'><a href='/blog/categories/findbugs/'>Findbugs (1)</a></li>
 <li class='category'><a href='/blog/categories/gsl/'>GSL (1)</a></li>
 <li class='category'><a href='/blog/categories/guice/'>Guice (2)</a></li>
 <li class='category'><a href='/blog/categories/junit/'>JUnit (1)</a></li>
-<li class='category'><a href='/blog/categories/java/'>Java (10)</a></li>
+<li class='category'><a href='/blog/categories/java/'>Java (11)</a></li>
 <li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>
 <li class='category'><a href='/blog/categories/jenkins/'>Jenkins (2)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>MAC (2)</a></li>
