@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-02-27T22:16:45+08:00</updated>
+  <updated>2014-03-01T11:57:10+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -30,7 +30,7 @@
 
 <h3 id="uml">UML图</h3>
 
-<center><img src="http://duffqiu.github.io/images/plantuml/14e8803459c1185b99eeb417093e5506.png" /></center>
+<center><img src="http://duffqiu.github.io/images/plantuml/98d572a73413b32c676af3704f3fa8e2.png" /></center>
 
 <h3 id="proxydecorate">Proxy与Decorate的区别</h3>
 
