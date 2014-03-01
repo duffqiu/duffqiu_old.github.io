@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-03-01T11:57:10+08:00</updated>
+  <updated>2014-03-02T01:46:48+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,84 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式：动态代理]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/03/01/she-ji-mo-shi-%3Adong-tai-dai-li/"/>
+    <updated>2014-03-01T23:31:47+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/03/01/she-ji-mo-shi-:dong-tai-dai-li</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>之前我们讲了如何使用代理模式，但是代理必须实现被代理对象共同的接口，如果需要用到代理模式的类表多，则同一个扩展功能就必须实现很多个相似的代理类。从而造成代码的重复。
+有没有更简单的方法生成代理，而对于一个扩展只需要一个代理类呢 ？</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<h4 id="jdkjavalangreflect">JDK的java.lang.reflect</h4>
+<p>JDK的反射机制中动态代理类和接口就可以帮助我们简化代理类的生成。
+具体代码建议模版为：</p>
+
+<ul>
+  <li>生成一个实现<code>InvocationHandler</code>接口的类，建议命名为xxxDynamicProxy</li>
+  <li>设计一个私有变量来存储被代理的对象，并提供一个带参数的构造方法，该参数为被代理的对象。为了通用，使用Object或者范型的形式。我使用范型的方式：</li>
+</ul>
+
+<p>``` java
+public final class xxxDynamicProxy<t> implements InvocationHandler {</t></p>
+
+<pre><code>private T delegate;
+....
+
+public LoggingDynamicProxy(T t) {
+this.delegate = t;
+}
+
+... }         ```
+</code></pre>
+
+<ul>
+  <li>设计一个静态工厂方法函数，帮助生成代理对象</li>
+</ul>
+
+<p>``` java
+@SuppressWarnings(“unchecked”)
+public static <t> T createProxyInstance(T t) {</t></p>
+
+<p>return (T) Proxy.newProxyInstance(t.getClass().getClassLoader(), t
+	        .getClass().getInterfaces(), new LoggingDynamicProxy<t>(t));
+}
+```</t></p>
+
+<ul>
+  <li>使用方式就是先生成被代理对象，然后用动态代理类的工厂方法来生成代理对象，接着就可以像被代理对象那样使用了。</li>
+</ul>
+
+<p>注意1：JDK这个动态代理的方式是有约束性的，被代理的对象一定要实现某个接口，不然会有运行时错误。</p>
+
+<p>注意2：代理对象也可以被另外一个代理对象所代理，从而实现功能叠加的效果。也就是装饰模式的叠加效果。从这点上看，JDK这个动态代理的方式其实也是装饰模式。</p>
+
+<h4 id="google-guava">Google Guava的动态代理</h4>
+<p>原理上Google Guava的动态代理也是使用JDK的动态代理，这是做了封装，更加简便。另外一点是能够很好的检查需要代理的对象必须拥有接口。使用<code>Class类的isInterface()</code>来做检查。从我自己的实现的例子看，当代理作为下一个代理的输入时，这个检查将实效。</p>
+
+<p>Google Guava的动态代理的使用方式</p>
+
+<ul>
+  <li>类似上面的步骤生成代理类，但是不用生成静态的工厂方法了。</li>
+  <li>
+    <p>使用方式为调用<code>Reflection.newProxy(...)</code>来生成代理类。</p>
+  </li>
+  <li>如果需要比对用相同的handler生成的prxoy是相等的(并非同一个对象)，则可以通过继承<code>AbstractInvocationHandler</code>来简化编码。因为这个抽象类已经实现了相等的相关操作。</li>
+</ul>
+
+<h4 id="cglib">CGLIB</h4>
+<p>CGLIB对于dynamic proxy的支持个人理解已经太老了，虽然可以对没有实现接口的类支持代理，但是对于final类还是不行。</p>
+
+<h3 id="section-2">总结</h3>
+
+<p>使用Guava来开发代理吧。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[设计模式：代理模式]]></title>
@@ -236,43 +314,6 @@ sender.xxx();
 这个模式的最大目的就是能够动态的给类增加功能。</p>
 
 <p>使用中可以通过I i = new A(new B(new C))的方式使用，可以通过Guice等通过Inject的方式组装。在<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a>例子中同时提供了这两种方式的代码。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式：IoC和依赖注入]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/19/she-ji-mo-shi-%3Aioche-yi-lai-zhu-ru/"/>
-    <updated>2014-02-19T20:40:33+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/19/she-ji-mo-shi-:ioche-yi-lai-zhu-ru</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<p>在生成对象的时候，我们通常会用到工厂方法模式，但是这会造成factory类过多不好维护的问题，也不好测试的问题。</p>
-
-<h3 id="section-1">解决办法</h3>
-<p>为了减少factory类，现在流行的做法是使用IoC(控制反转)。这个严格上不是个模式。IoC的实现方式通常有两种：</p>
-
-<ol>
-  <li>Service Locator，服务定位器</li>
-  <li>Dependency Injection，依赖注入</li>
-</ol>
-
-<p>因为服务定位器的做法侵入代码比较严重，同时比较难测试，一般很少用。</p>
-
-<p>依赖注入比较流行，主要是因为开源框架的支持。有两大框架，一个是Spring，一个是<a href="https://code.google.com/p/google-guice/">Google Guice</a>。因为Spring还有别的功能（如template的方式我比较喜欢，很多东西都简化很多），不能整体对比，只能对比DI的功能。网上有不少的对比，但是对与一般的开发而言没有太大的参考价值，主要习惯性问题。我个人觉得需要考虑只是整体上除了DI还有没有别的需要，如果有就用Spring，没有就用Guice，毕竟Guice小而且依赖少（就两个Jar包），据说Guice速度块。（但是由速度决定开发包的选择的需求基本很少）。后面抽时间我打算好好看一遍Guice真么使用。</p>
-
-<p>注入的方式分为一下几种：
-1. Setter
-2. Constructor
-3. Annotation
-4. Interface
-5. Parameter
-6. Propagating (传播)
-7. 其它</p>
-
-<p>对于注入个人觉得需要仔细分辨具体是否需要，不要什么都通过注入完成。一些简单的对象如log对象，完全没有必要注入。</p>
-
-<h3 id="section-2">小插曲</h3>
-<p>今天和同事谈到这个注入框架的问题，顺便提到了<a href="https://code.google.com/p/guava-libraries/wiki/GuavaExplained">google guava开发库</a>，这个值得研究研究细节。尽然Google都在用，那么日常中需要封装的一些工具、通用结构等都应该涵盖了。这个开发的年代，自己再创造工具已经没有太大必要了。</p>
-
 ]]></content>
   </entry>
   

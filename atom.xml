@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-03-01T11:57:10+08:00</updated>
+  <updated>2014-03-02T01:46:48+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,100 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式：动态代理]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/03/01/she-ji-mo-shi-%3Adong-tai-dai-li/"/>
+    <updated>2014-03-01T23:31:47+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/03/01/she-ji-mo-shi-:dong-tai-dai-li</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>之前我们讲了如何使用代理模式，但是代理必须实现被代理对象共同的接口，如果需要用到代理模式的类表多，则同一个扩展功能就必须实现很多个相似的代理类。从而造成代码的重复。
+有没有更简单的方法生成代理，而对于一个扩展只需要一个代理类呢 ？</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<h4 id="jdkjavalangreflect">JDK的java.lang.reflect</h4>
+<p>JDK的反射机制中动态代理类和接口就可以帮助我们简化代理类的生成。
+具体代码建议模版为：</p>
+
+<ul>
+  <li>生成一个实现<code>InvocationHandler</code>接口的类，建议命名为xxxDynamicProxy</li>
+  <li>设计一个私有变量来存储被代理的对象，并提供一个带参数的构造方法，该参数为被代理的对象。为了通用，使用Object或者范型的形式。我使用范型的方式：</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">xxxDynamicProxy</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">InvocationHandler</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">private</span> <span class="n">T</span> <span class="n">delegate</span><span class="o">;</span>
+</span><span class="line">    <span class="o">....</span>
+</span><span class="line">
+</span><span class="line">    <span class="kd">public</span> <span class="nf">LoggingDynamicProxy</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">	<span class="k">this</span><span class="o">.</span><span class="na">delegate</span> <span class="o">=</span> <span class="n">t</span><span class="o">;</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="o">...</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>设计一个静态工厂方法函数，帮助生成代理对象</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&quot;unchecked&quot;</span><span class="o">)</span>
+</span><span class="line"><span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="n">createProxyInstance</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line"><span class="k">return</span> <span class="o">(</span><span class="n">T</span><span class="o">)</span> <span class="n">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getClassLoader</span><span class="o">(),</span> <span class="n">t</span>
+</span><span class="line">	        <span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getInterfaces</span><span class="o">(),</span> <span class="k">new</span> <span class="n">LoggingDynamicProxy</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;(</span><span class="n">t</span><span class="o">));</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>使用方式就是先生成被代理对象，然后用动态代理类的工厂方法来生成代理对象，接着就可以像被代理对象那样使用了。</li>
+</ul>
+
+<p>注意1：JDK这个动态代理的方式是有约束性的，被代理的对象一定要实现某个接口，不然会有运行时错误。</p>
+
+<p>注意2：代理对象也可以被另外一个代理对象所代理，从而实现功能叠加的效果。也就是装饰模式的叠加效果。从这点上看，JDK这个动态代理的方式其实也是装饰模式。</p>
+
+<h4 id="google-guava">Google Guava的动态代理</h4>
+<p>原理上Google Guava的动态代理也是使用JDK的动态代理，这是做了封装，更加简便。另外一点是能够很好的检查需要代理的对象必须拥有接口。使用<code>Class类的isInterface()</code>来做检查。从我自己的实现的例子看，当代理作为下一个代理的输入时，这个检查将实效。</p>
+
+<p>Google Guava的动态代理的使用方式</p>
+
+<ul>
+  <li>类似上面的步骤生成代理类，但是不用生成静态的工厂方法了。</li>
+  <li>
+    <p>使用方式为调用<code>Reflection.newProxy(...)</code>来生成代理类。</p>
+  </li>
+  <li>如果需要比对用相同的handler生成的prxoy是相等的(并非同一个对象)，则可以通过继承<code>AbstractInvocationHandler</code>来简化编码。因为这个抽象类已经实现了相等的相关操作。</li>
+</ul>
+
+<h4 id="cglib">CGLIB</h4>
+<p>CGLIB对于dynamic proxy的支持个人理解已经太老了，虽然可以对没有实现接口的类支持代理，但是对于final类还是不行。</p>
+
+<h3 id="section-2">总结</h3>
+
+<p>使用Guava来开发代理吧。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[设计模式：代理模式]]></title>
@@ -1658,124 +1752,6 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
 
 <h3 id="section-9">小插曲</h3>
 <p>我在安装完配置后，运行一个测试总是包无法找到Maven的错误，可是路径都是对的。后来发现Jenkins是用jenkins用户来运行的，而我将Maven安装在当前的用户的home路径下，造成了jenkins无法访问到。所以应该考虑将Maven安装到/usr/local下，或者copy一份到/Users/Shared/Jenkins/下（记得更改用户权限为jenkins用户）</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress实时获取并展示github上其它repository的代码]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/"/>
-    <updated>2014-02-05T01:45:57+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<p>在写blog的时候，想要直接关联github上的其它repository的代码，这样以后代码更新就不需要更新blog了。但是看octopress的文档，似乎<a href="https://gist.github.com">gist</a>可以达到该目的，但是它不是一个代码工程，无法像正常的代码工程那样去管理，编译，运行等。<br />
-所以就想看看能否给Octopress加个plugin直接展示该代码</p>
-
-<h3 id="section-1">办法</h3>
-<p>原本想改一下plugins/include_code.rb，但是感觉还是太复杂，所以想个简单的方式
-还是利用include_code这个插件，这个插件是可以将在source/downloads/code/目录下的文件展示出来的，这个目录原octopress代码没有生成，需要手工生成。<br />
-思路就是想法将github上的代码在rake generate之前先用wget获取下来放到上面这个指定的目录中<br />
-因为include_code.rb的复杂度，我选择了更改Rakefile文件，新增一个任务的方式来解决
-具体步骤如下：</p>
-
-<ol>
-  <li>
-    <p>在octopress目录下新增一个需要下载的文件的配置githubcode.cf，格式为<github repository="" name="">空格<java package="" name="">空格<java code="" file="" url="">。java的包名可以保留&#8217;.&#8217;的格式，这个插件会自动转成目录</java></java></github></p>
-
-    <pre><code>DesignPatternDemo  org.duffqiu.patterndemo  https://raw.github.com/duffqiu/DesignPatternDemo/feature/LazySingletonDemo/src/org/duffqiu/patterndemo/LazySingleton.java
-</code></pre>
-  </li>
-  <li>
-    <p>确保已经安装好wget</p>
-
-    <pre><code>sudo port install wget
-</code></pre>
-  </li>
-  <li>
-    <p>更改Rakefile文件，在最后增加一个任务</p>
-
-    <pre><code> desc "get code file from github"
- task :github_code do
-	
-   begin
-     require 'net/http'
-     require 'uri'
-     rm_rf "source/downloads"
-     mkdir_p "source/downloads/code"
-     if File.exist?("githubcode.cf")
-       IO.foreach("githubcode.cf") do |line|
-         if line.strip.empty? == false
-             cd "source/downloads/code" do
-             attr = line.split(' ')
-             repo = attr[0].strip
-             if repo.empty?
-               abort("repo name is empty")
-             end
-             package = attr[1].strip
-             file_url = attr[2].strip
-             if file_url.empty?
-               abort("file url is empty")
-             end
-             package_dir = package.gsub(/\./, '/')
-             target_dir = repo + '/' + package_dir
-             mkdir_p target_dir
-             cd target_dir do
-               system ("wget  " + file_url)
-             end
-           end
-         end
-       end
-     else
-       puts 'githubcode.cf not found'
-     end
-   end
- end        		
-</code></pre>
-  </li>
-  <li>
-    <p>在需要引用代码的地方使用以下方式</p>
-
-    <pre><code>{% include_code lang:java &lt;repository name&gt;/&lt;package name&gt;/&lt;java file name&gt; %}
-</code></pre>
-
-    <p>注意：<repository name="">前面没有&#8217;/&#8217;，<pakcage name="">要将java的包名的&#8217;.&#8217;改为&#8217;/&#8217;</pakcage></repository></p>
-  </li>
-  <li>
-    <p>每次有新增的github代码文件引入，则需要在rake generate前先调用</p>
-
-    <pre><code>rake github_code
-</code></pre>
-  </li>
-</ol>
-
-<h3 id="section-2">小插曲</h3>
-<p>####wget https访问问题</p>
-
-<p>使用wget访问github的时候，因为github使用https，则会出现说github的“证书不可信”和“证书颁发者未知”的问题。
-解决方式为</p>
-
-<ol>
-  <li>使用–no-check-certificate参数访问github，但是还是用warning，不够完美</li>
-  <li>
-    <p>决解证书问题  </p>
-
-    <ul>
-      <li>
-        <p>安装curl-ca-bundle</p>
-
-        <pre><code> sudo port install curl-ca-bundle
-</code></pre>
-      </li>
-      <li>
-        <p>配置wget</p>
-
-        <pre><code> echo CA_CERTIFICATE=/opt/local/share/curl/curl-ca-bundle.crt &gt;&gt; ~/.wgetrc
-</code></pre>
-      </li>
-    </ul>
-  </li>
-</ol>
-
-<p>然后再运行wget就不会有问题了</p>
 ]]></content>
   </entry>
   

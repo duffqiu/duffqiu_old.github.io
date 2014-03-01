@@ -12,14 +12,15 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-6f1c8357d5e76b9a5ce26f0af4a965ad.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-288d31f2e29d7ccb9cb67c0ce5fdb5a4.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="单例模式原理 模式名称：单例模式(Singleton Pattern) 问题：需要确保系统中的某个类只能有一个实例存在。现实中如序号ID分配器，确保ID在系统中必须是唯一的。(当然也有很多方式生成唯一ID，这里只是个例子) 解决方案：限制类被new出来，只能通过唯一的访问点（static方法） &hellip;">
+  <meta name="description" content="原由
+在写blog的时候，想要直接关联github上的其它repository的代码，这样以后代码更新就不需要更新blog了。但是看octopress的文档，似乎gist可以达到该目的，但是它不是一个代码工程，无法像正常的代码工程那样去管理，编译，运行等。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +39,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-6f1c8357d5e76b9a5ce26f0af4a965ad.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-288d31f2e29d7ccb9cb67c0ce5fdb5a4.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -98,6 +99,154 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/">Octopress实时获取并展示github上其它repository的代码</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-05T01:45:57+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<p>在写blog的时候，想要直接关联github上的其它repository的代码，这样以后代码更新就不需要更新blog了。但是看octopress的文档，似乎<a href="https://gist.github.com">gist</a>可以达到该目的，但是它不是一个代码工程，无法像正常的代码工程那样去管理，编译，运行等。<br />
+所以就想看看能否给Octopress加个plugin直接展示该代码</p>
+
+<h3 id="section-1">办法</h3>
+<p>原本想改一下plugins/include_code.rb，但是感觉还是太复杂，所以想个简单的方式
+还是利用include_code这个插件，这个插件是可以将在source/downloads/code/目录下的文件展示出来的，这个目录原octopress代码没有生成，需要手工生成。<br />
+思路就是想法将github上的代码在rake generate之前先用wget获取下来放到上面这个指定的目录中<br />
+因为include_code.rb的复杂度，我选择了更改Rakefile文件，新增一个任务的方式来解决
+具体步骤如下：</p>
+
+<ol>
+  <li>
+    <p>在octopress目录下新增一个需要下载的文件的配置githubcode.cf，格式为<github repository="" name="">空格<java package="" name="">空格<java code="" file="" url="">。java的包名可以保留&#8217;.&#8217;的格式，这个插件会自动转成目录</java></java></github></p>
+
+    <pre><code>DesignPatternDemo  org.duffqiu.patterndemo  https://raw.github.com/duffqiu/DesignPatternDemo/feature/LazySingletonDemo/src/org/duffqiu/patterndemo/LazySingleton.java
+</code></pre>
+  </li>
+  <li>
+    <p>确保已经安装好wget</p>
+
+    <pre><code>sudo port install wget
+</code></pre>
+  </li>
+  <li>
+    <p>更改Rakefile文件，在最后增加一个任务</p>
+
+    <pre><code> desc "get code file from github"
+ task :github_code do
+	
+   begin
+     require 'net/http'
+     require 'uri'
+     rm_rf "source/downloads"
+     mkdir_p "source/downloads/code"
+     if File.exist?("githubcode.cf")
+       IO.foreach("githubcode.cf") do |line|
+         if line.strip.empty? == false
+             cd "source/downloads/code" do
+             attr = line.split(' ')
+             repo = attr[0].strip
+             if repo.empty?
+               abort("repo name is empty")
+             end
+             package = attr[1].strip
+             file_url = attr[2].strip
+             if file_url.empty?
+               abort("file url is empty")
+             end
+             package_dir = package.gsub(/\./, '/')
+             target_dir = repo + '/' + package_dir
+             mkdir_p target_dir
+             cd target_dir do
+               system ("wget  " + file_url)
+             end
+           end
+         end
+       end
+     else
+       puts 'githubcode.cf not found'
+     end
+   end
+ end        		
+</code></pre>
+  </li>
+  <li>
+    <p>在需要引用代码的地方使用以下方式</p>
+
+    <pre><code>{% include_code lang:java &lt;repository name&gt;/&lt;package name&gt;/&lt;java file name&gt; %}
+</code></pre>
+
+    <p>注意：<repository name="">前面没有&#8217;/&#8217;，<pakcage name="">要将java的包名的&#8217;.&#8217;改为&#8217;/&#8217;</pakcage></repository></p>
+  </li>
+  <li>
+    <p>每次有新增的github代码文件引入，则需要在rake generate前先调用</p>
+
+    <pre><code>rake github_code
+</code></pre>
+  </li>
+</ol>
+
+<h3 id="section-2">小插曲</h3>
+<p>####wget https访问问题</p>
+
+<p>使用wget访问github的时候，因为github使用https，则会出现说github的“证书不可信”和“证书颁发者未知”的问题。
+解决方式为</p>
+
+<ol>
+  <li>使用–no-check-certificate参数访问github，但是还是用warning，不够完美</li>
+  <li>
+    <p>决解证书问题  </p>
+
+    <ul>
+      <li>
+        <p>安装curl-ca-bundle</p>
+
+        <pre><code> sudo port install curl-ca-bundle
+</code></pre>
+      </li>
+      <li>
+        <p>配置wget</p>
+
+        <pre><code> echo CA_CERTIFICATE=/opt/local/share/curl/curl-ca-bundle.crt &gt;&gt; ~/.wgetrc
+</code></pre>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p>然后再运行wget就不会有问题了</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1695,63 +1844,6 @@ end
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/30/octopress-gemcha-jian-gslan-zhuang/">Octopress Gem插件gsl安装</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-30T20:00:10+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/01/30/octopress-gemcha-jian-gslan-zhuang/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<p>Octopress用rake generate的时候会提示使用GSL将会加速文件的生成，速度是原来的的10+倍，但是需要安装<a href="http://rb-gsl.rubyforge.org/">Ruby GSL</a>插件。</p>
-
-<h3 id="section-1">安装</h3>
-<p>当使用命令安装Ruby GSL的时候确发现了问题 </p>
-
-<pre><code>gem install gsl
-</code></pre>
-
-<p>原因是缺少了<a href="http://www.gnu.org/software/gsl/" title="GSL Library官网">GSL的C的开发库</a>    </p>
-
-<p>然后在GSL Library官网下载了最新的GSL1.16，然后编译安装，然后再重新安装Ruby GSL，但是还是出现错误，后来搜索<a href="http://stackoverflow.com">stackoverflow</a>找到一个说明，说是GSL和Ruby GSL配合的版本只能用1.14的。所以再次下载GSL1.14编译、安装然后再安装Ruby GSL就可以了</p>
-
-<h3 id="section-2">使用</h3>
-
-<pre><code>rake notify
-</code></pre>
-
-<p>目前看除了rake generate没有那个提示，好像速度没有看出来，或许是文章的数目不多体现不出来 </p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1769,6 +1861,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/01/she-ji-mo-shi-%3Adong-tai-dai-li/">设计模式：动态代理</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/02/23/she-ji-mo-shi-%3Adai-li-mo-shi/">设计模式：代理模式</a>
       </li>
     
@@ -1784,10 +1880,6 @@ end
         <a href="/blog/2014/02/22/plantumlxiao-ji-qiao/">PlantUML小技巧</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/02/22/she-ji-mo-shi-%3Azhuang-shi-qi-mo-shi/">设计模式：装饰器模式</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -1801,12 +1893,14 @@ end
 <li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
 <li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
 <li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (8)</a></li>
+<li class='category'><a href='/blog/categories/desing-pattern/'>Desing Pattern (1)</a></li>
 <li class='category'><a href='/blog/categories/docker/'>Docker (1)</a></li>
 <li class='category'><a href='/blog/categories/findbugs/'>Findbugs (1)</a></li>
 <li class='category'><a href='/blog/categories/gsl/'>GSL (1)</a></li>
+<li class='category'><a href='/blog/categories/guava/'>Guava (1)</a></li>
 <li class='category'><a href='/blog/categories/guice/'>Guice (2)</a></li>
 <li class='category'><a href='/blog/categories/junit/'>JUnit (1)</a></li>
-<li class='category'><a href='/blog/categories/java/'>Java (11)</a></li>
+<li class='category'><a href='/blog/categories/java/'>Java (12)</a></li>
 <li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>
 <li class='category'><a href='/blog/categories/jenkins/'>Jenkins (2)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>MAC (2)</a></li>
