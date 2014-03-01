@@ -117,9 +117,13 @@ task :new_post, :title do |t, args|
     post.puts "---"
     post.puts ""
     post.puts "###原由"
+    post.puts "---"
+    post.puts ""
     post.puts ""
     post.puts ""
     post.puts "###解决办法"
+    post.puts "---"
+    post.puts ""
     post.puts ""
     post.puts ""
   end

@@ -3,7 +3,7 @@ layout: post
 title: "技术杂谈1"
 date: 2014-02-09 18:15:58 +0800
 comments: true
-categories: Miscellany
+categories: [Miscellany, Appscale, Docker]
 ---
 
 ### 原由
