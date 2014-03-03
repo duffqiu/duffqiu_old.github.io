@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: REST | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/rest/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2014-03-03T22:02:25+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[如何定义一个好的REST接口]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou/"/>
+    <updated>2014-03-03T21:25:32+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/03/03/ru-he-ding-yi-[?]-ge-hao-de-restjie-kou</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>现在<a href="http://www.json.org">基于JSON的REST接口</a>使用的是越来越多了，但是在自己去定义JSON的REST API的时候，我们确难免遇到不少疑惑，以下我们来谈谈这些疑惑 </p>
+
+<h3 id="rcp-based-or-rest-based">RCP-BASED or REST-BASED</h3>
+<hr />
+
+<p>在接口定义上，我们以往一般都是去定义请求什么，然后响应是什么，这就是典型的RPC(Remote Procedure Call)接口的定义方式。一般可以使用IDL（Interface Description Language，IDL）的方式来描述，如典型的WSDL等。RPC我的理解是，更多的是描述响应端提供什么样的行为给请求端调用。响应端会提供一个服务接入端点(End Point)，依据请求来返回响应。</p>
+
+<p>对于REST-BASED的接口定义，通常针对的是响应端提供什么样的资源给客户端使用。这里有一个很重要的特点是，所有的行为都是围绕“资源”来进行的。主要有：</p>
+
+<ul>
+  <li>GET  获取资源(可以是一个或多个)</li>
+  <li>PUT  更新资源，PUT方法有个很重要的特性就是多次调用，结果是一直的。</li>
+  <li>POST 创建资源，这个方法不是幂等</li>
+  <li>DELETE 删除资源 </li>
+</ul>
+
+<p>其实对于使用JSON在RPC-Based上还是REST-Based都可以。接口定义成RPC-Based上还是REST-Based没有绝对的好坏，而是根据实际的使用场景。简单来说就是如果可以能被描述成“资源”(如：用户账户、购物车等等)，则用REST-Based更合适，如果是需要执行某些动作(如：发送邮件等)则RPC-Based更合适。</p>
+
+<h3 id="rest-based-best-practice">REST-BASED BEST PRACTICE</h3>
+
+<p>如果使用REST-Based，建议可以参考<a href="https://developers.google.com/google-apps/calendar/v3/reference/">Google Canlendar的API定义</a>。主要的要点如下：</p>
+
+<ol>
+  <li>确定什么是资源，如calendar, event…</li>
+  <li>列举每个资源能提供的操作简要</li>
+  <li>
+    <p>详细描述每个资源操作</p>
+
+    <ul>
+      <li>http request形式，如</li>
+    </ul>
+
+    <p><code>
+POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
+</code></p>
+
+    <ul>
+      <li>http request parameter</li>
+    </ul>
+
+    <h2 id="parameter-name-value--description---------">|Parameter name	| Value	 | Description         |</h2>
+    <p>|Path parameters                               |
+———————————————–
+|calendarId      | string  | Calendar identifier| <br />
+|                |         |                   |
+|Path parameters                               |
+———————————————–
+|                |         |                   |</p>
+  </li>
+</ol>
+
+<h3 id="json-style-guideline">JSON Style Guideline</h3>
+
+<p>如何编写JSON，可以参见<a href="https://google-styleguide.googlecode.com/svn/trunk/jsoncstyleguide.xml">Google JSON STYLE</a></p>
+]]></content>
+  </entry>
+  
+</feed>

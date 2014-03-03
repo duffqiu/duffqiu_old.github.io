@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-03-02T01:46:48+08:00</updated>
+  <updated>2014-03-03T22:02:25+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -41,7 +41,7 @@ public final class xxxDynamicProxy<t> implements InvocationHandler {</t></p>
 <pre><code>private T delegate;
 ....
 
-public LoggingDynamicProxy(T t) {
+public xxxDynamicProxy(T t) {
 this.delegate = t;
 }
 

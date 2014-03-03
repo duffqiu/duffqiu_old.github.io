@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress通知搜索引擎 - Duff Qiu's Blog</title>
+  <title>如何定义一个好的REST接口 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,11 +19,7 @@
 
 
   
-  <meta name="description" content="目的
-每次更新blog后，总希望搜索引擎可以尽快收录到，最好是多个搜索引擎都能收入到
-怎么做到呢？ 配置搜索引擎rake任务
-首先感谢原作者的介绍1 编辑octopress目录的Rakefile文件，在最后增加搜索引擎任务 ＃Google search engine
-desc 'Notify &hellip;">
+  <meta name="description" content="原由 现在基于JSON的REST接口使用的是越来越多了，但是在自己去定义JSON的REST API的时候，我们确难免遇到不少疑惑，以下我们来谈谈这些疑惑 RCP-BASED or REST-BASED 在接口定义上，我们以往一般都是去定义请求什么，然后响应是什么，这就是典型的RPC(Remote &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -32,7 +28,7 @@ desc 'Notify &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -105,7 +101,7 @@ desc 'Notify &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Octopress通知搜索引擎</h1>
+      <h1 class="entry-title">如何定义一个好的REST接口</h1>
     
     
       <p class="meta">
@@ -121,7 +117,7 @@ desc 'Notify &hellip;">
   
 
 
-<time datetime="2014-02-01T13:21:02+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
+<time datetime="2014-03-03T21:25:32+08:00" pubdate data-updated="true">Mar 3<span>rd</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -131,79 +127,62 @@ desc 'Notify &hellip;">
   </header>
 
 
-<div class="entry-content"><h3 id="section">目的</h3>
-<p>每次更新blog后，总希望搜索引擎可以尽快收录到，最好是多个搜索引擎都能收入到<br />
-怎么做到呢？</p>
+<div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>现在<a href="http://www.json.org">基于JSON的REST接口</a>使用的是越来越多了，但是在自己去定义JSON的REST API的时候，我们确难免遇到不少疑惑，以下我们来谈谈这些疑惑 </p>
 
-<h3 id="rake">配置搜索引擎rake任务</h3>
-<p>首先感谢原作者的介绍<a href="http://blog.eavatar.com/post/2013/06/octopress-ping-search-engines/">1</a></p>
+<h3 id="rcp-based-or-rest-based">RCP-BASED or REST-BASED</h3>
+<hr />
+
+<p>在接口定义上，我们以往一般都是去定义请求什么，然后响应是什么，这就是典型的RPC(Remote Procedure Call)接口的定义方式。一般可以使用IDL（Interface Description Language，IDL）的方式来描述，如典型的WSDL等。RPC我的理解是，更多的是描述响应端提供什么样的行为给请求端调用。响应端会提供一个服务接入端点(End Point)，依据请求来返回响应。</p>
+
+<p>对于REST-BASED的接口定义，通常针对的是响应端提供什么样的资源给客户端使用。这里有一个很重要的特点是，所有的行为都是围绕“资源”来进行的。主要有：</p>
+
+<ul>
+  <li>GET  获取资源(可以是一个或多个)</li>
+  <li>PUT  更新资源，PUT方法有个很重要的特性就是多次调用，结果是一直的。</li>
+  <li>POST 创建资源，这个方法不是幂等</li>
+  <li>DELETE 删除资源 </li>
+</ul>
+
+<p>其实对于使用JSON在RPC-Based上还是REST-Based都可以。接口定义成RPC-Based上还是REST-Based没有绝对的好坏，而是根据实际的使用场景。简单来说就是如果可以能被描述成“资源”(如：用户账户、购物车等等)，则用REST-Based更合适，如果是需要执行某些动作(如：发送邮件等)则RPC-Based更合适。</p>
+
+<h3 id="rest-based-best-practice">REST-BASED BEST PRACTICE</h3>
+
+<p>如果使用REST-Based，建议可以参考<a href="https://developers.google.com/google-apps/calendar/v3/reference/">Google Canlendar的API定义</a>。主要的要点如下：</p>
 
 <ol>
+  <li>确定什么是资源，如calendar, event…</li>
+  <li>列举每个资源能提供的操作简要</li>
   <li>
-    <p>编辑octopress目录的Rakefile文件，在最后增加搜索引擎任务</p>
+    <p>详细描述每个资源操作</p>
 
-    <pre><code>＃Google search engine
-desc 'Notify Google of the new sitemap'
- task :sitemapgoogle do
-  begin
-    require 'net/http'
-    require 'uri'
-    puts '* Pinging Google about our sitemap'
-    Net::HTTP.get('www.google.com', '/webmasters/tools/ping?sitemap=' + URI.escape('http://duffqiu.github.io/sitemap.xml'))
-  rescue LoadError
-    puts '! Could not ping Google about our sitemap, because Net::HTTP or URI could not be found.'
-  end
- end
+    <ul>
+      <li>http request形式，如</li>
+    </ul>
 
-#Baidu search engine       
-desc 'Ping Baidu'
- task :pingbaidu do
-   begin
-     require 'xmlrpc/client'
-     puts '* Pinging Baidu search engine'
-     XMLRPC::Client.new('ping.baidu.com', '/ping/RPC2').call('weblogUpdates.extendedPing', 'duffqiu.github.io' , 'http://duffqiu.github.io', 'http://duffqiu.github.io', 'http://duffqiu.github.io/rss.xml')
-   rescue LoadError
-     puts '! Could not ping Baidu, because XMLRPC::Client could not be found.'
-   end
- end
-	
-#Bing search engine
-desc 'Notify Bing of the new sitemap'
- task :sitemapbing do
-   begin
-     require 'net/http'
-     require 'uri'
-     puts '* Pinging Bing about our sitemap'
-     Net::HTTP.get('www.bing.com', '/webmaster/ping.aspx?siteMap=' + URI.escape('http://duffqiu.github.io/sitemap.xml'))
-   rescue LoadError
-     puts '! Could not ping Bing about our sitemap, because Net::HTTP or URI could not be found.'
-   end
- end	
-</code></pre>
+    <p><code>
+POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
+</code></p>
 
-    <p>将”duffqiu.github.io”换成你的blog域名字即可</p>
-  </li>
-  <li>
-    <p>增加一个批量任务同时执行三个通知</p>
+    <ul>
+      <li>http request parameter</li>
+    </ul>
 
-    <pre><code>desc "Notify various services about new content"
-task :notify =&gt; [:sitemapgoogle, :sitemapbing, :pingbaidu] do
-end
-</code></pre>
-  </li>
-  <li>
-    <p>每次部署后执行命令</p>
-
-    <pre><code>rake notify
-</code></pre>
+    <h2 id="parameter-name-value--description---------">|Parameter name	| Value	 | Description         |</h2>
+    <p>|Path parameters                               |
+———————————————–
+|calendarId      | string  | Calendar identifier| <br />
+|                |         |                   |
+|Path parameters                               |
+———————————————–
+|                |         |                   |</p>
   </li>
 </ol>
 
-<h3 id="vi">vi小技巧</h3>
-<p>今天有用到一个vi的命令，跳转到文件最后用”:$”        </p>
+<h3 id="json-style-guideline">JSON Style Guideline</h3>
 
-<h3 id="section-1">小插曲</h3>
-<p>今天发现用Mac OSX10.9可以直接投射屏幕到小米盒子(v1.3.20)了</p>
+<p>如何编写JSON，可以参见<a href="https://google-styleguide.googlecode.com/svn/trunk/jsoncstyleguide.xml">Google JSON STYLE</a></p>
 </div>
 
 
@@ -226,12 +205,12 @@ end
   
 
 
-<time datetime="2014-02-01T13:21:02+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
+<time datetime="2014-03-03T21:25:32+08:00" pubdate data-updated="true">Mar 3<span>rd</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/rest/'>REST</a>
   
 </span>
 
@@ -247,10 +226,8 @@ end
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/30/octopress-gemcha-jian-gslan-zhuang/" title="Previous Post: Octopress gem插件gsl安装">&laquo; Octopress gem插件gsl安装</a>
+        <a class="basic-alignment left" href="/blog/2014/03/01/she-ji-mo-shi-%3Adong-tai-dai-li/" title="Previous Post: 设计模式：动态代理">&laquo; 设计模式：动态代理</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/02/01/jia-su-octopressde-zhuang-zai/" title="Next Post: 加速Octopress的装载">加速Octopress的装载 &raquo;</a>
       
     </p>
   </footer>
@@ -331,22 +308,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou/">如何定义一个好的REST接口</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/rest/'>REST</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/03/01/she-ji-mo-shi-%3Adong-tai-dai-li/">设计模式：动态代理</a></h3>
         <div class="meta">
           <span class="tags">
@@ -402,6 +363,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/guice/'>Guice</a>, <a class='category' href='/blog/categories/java/'>Java</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/02/22/plantumlxiao-ji-qiao/">PlantUML小技巧</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/plantuml/'>PlantUML</a>
   
 </span>
 
