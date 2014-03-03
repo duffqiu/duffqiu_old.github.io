@@ -4,7 +4,7 @@
   <title><![CDATA[Category: REST | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/rest/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-03-03T22:27:30+08:00</updated>
+  <updated>2014-03-03T22:36:04+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -57,7 +57,11 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 </code></p>
 
     <ul>
-      <li>http request parameter</li>
+      <li>
+        <p>http request parameter</p>
+
+        <p>这里需要注意的是什么放在Path上，什么放在query parameter上。一般而言，一个资源的子资源放在path上，定位资源的条件放在query paramenter上</p>
+      </li>
     </ul>
   </li>
 </ol>
@@ -102,8 +106,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
     </tr>
   </tbody>
 </table>
-
-<p>这里需要注意的是什么放在Path上，什么放在query parameter上。一般而言，一个资源的子资源放在path上，定位资源的条件放在query paramenter上</p>
 
 <ul>
   <li>
