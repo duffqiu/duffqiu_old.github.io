@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-03-04T00:24:42+08:00</updated>
+  <updated>2014-03-04T00:27:34+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -215,7 +215,7 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
         </table>
       </li>
       <li>
-        <p>http response representations，如</p>
+        <p>http response representations(针对RPC的接口，如果是REST原则是公用一个resource的描述，只是不同的操作某些参数可以被忽略)，如</p>
 
         <p><code>
 {  
