@@ -4,7 +4,7 @@
   <title><![CDATA[Category: REST | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/rest/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-03-03T22:37:49+08:00</updated>
+  <updated>2014-03-03T22:40:53+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -83,26 +83,31 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
             </tr>
           </tbody>
         </table>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Query parameter</th>
-              <th>Value</th>
-              <th>Description</th>
-              <th>Required?</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>…</td>
-              <td> </td>
-              <td> </td>
-              <td> </td>
-            </tr>
-          </tbody>
-        </table>
       </li>
+    </ul>
+
+    <p><br /></p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Query parameter</th>
+          <th>Value</th>
+          <th>Description</th>
+          <th>Required?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>…</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ul>
       <li>
         <p>Authorization<br />
  定义是否需要授权</p>
@@ -136,7 +141,16 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
         </table>
       </li>
       <li>
-        <p>http response representations</p>
+        <p>http response representations，如</p>
+
+        <p><code>json
+{
+"id": string,
+"status": string,
+"htmlLink": string,
+"created": datetime
+}
+</code></p>
       </li>
       <li>
         <p>http reponse parameters</p>
