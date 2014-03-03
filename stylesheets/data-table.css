@@ -1,12 +1,12 @@
 * + table {
   border-style:solid;
-  border-width:3px;
+  border-width:2px;
   border-color:#e7e3e7;
 }
  
 * + table th, * + table td {
-  border-style:dashed;
-  border-width:3px;
+  border-style:solid;
+  border-width:2px;
   border-color:#e7e3e7;
   padding-left: 3px;
   padding-right: 3px;
@@ -15,6 +15,7 @@
 * + table th {
   border-style:solid;
   font-weight:bold;
+  font-color:white;
   background: url("/images/noise.png?1330434582") repeat scroll left top #0F5F96;
 }
  
