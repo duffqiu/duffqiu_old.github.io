@@ -4,7 +4,7 @@
   <title><![CDATA[Category: REST | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/rest/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-03-03T22:20:27+08:00</updated>
+  <updated>2014-03-03T22:24:13+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -43,7 +43,7 @@
 <p>如果使用REST-Based，建议可以参考<a href="https://developers.google.com/google-apps/calendar/v3/reference/">Google Canlendar的API定义</a>。主要的要点如下：</p>
 
 <ol>
-  <li>确定什么是资源，如calendar, event…</li>
+  <li>确定什么是资源(如calendar, event…)以及资源的表述</li>
   <li>列举每个资源能提供的操作简要</li>
   <li>
     <p>详细描述每个资源操作</p>
