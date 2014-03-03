@@ -4,7 +4,7 @@
   <title><![CDATA[Category: REST | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/rest/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-03-03T23:32:59+08:00</updated>
+  <updated>2014-03-04T00:19:48+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -36,6 +36,8 @@
   <li>DELETE 删除资源 </li>
 </ul>
 
+<p>对于每个操作的返回都是基于同一个资源描述，只是不同的方法，资料描述里的某些内容被省略了。</p>
+
 <p>其实对于使用JSON在RPC-Based上还是REST-Based都可以。接口定义成RPC-Based上还是REST-Based没有绝对的好坏，而是根据实际的使用场景。简单来说就是如果可以能被描述成“资源”(如：用户账户、购物车等等)，则用REST-Based更合适，如果是需要执行某些动作(如：发送邮件等)则RPC-Based更合适。</p>
 
 <h3 id="rest-based-best-practice">REST-BASED BEST PRACTICE</h3>
@@ -44,140 +46,166 @@
 
 <ol>
   <li>确定什么是资源(如calendar, event…)以及资源的表述</li>
-  <li>列举每个资源能提供的操作简要</li>
-  <li>
-    <p>详细描述每个资源操作</p>
+</ol>
 
-    <ul>
-      <li>http request形式，如</li>
-    </ul>
+<p>例如：</p>
+
+<p><code>
+{
+  "id": string,
+  "summary": string,
+  "description": string,
+  "location": string,
+  "timeZone": string,
+  "summaryOverride": string,
+  "colorId": string,
+  "backgroundColor": string,
+  "foregroundColor": string,
+  "hidden": boolean,
+  "selected": boolean,
+  "accessRole": string,
+  "defaultReminders": [
+    {
+      "method": string,
+      "minutes": integer
+    }
+  ],
+  "primary": boolean
+}
+</code></p>
+
+<p>2
+. 列举每个资源能提供的操作简要
+3. 详细描述每个资源操作</p>
+
+<ul>
+  <li>http request形式，如</li>
+</ul>
+
+<p><code>
+   POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
+  </code></p>
+
+<ul>
+  <li>
+    <p>http request parameter</p>
+
+    <p>这里需要注意的是什么放在Path上，什么放在query parameter上。一般而言，一个资源的子资源放在path上，定位资源的条件放在query paramenter上</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Path parameter</th>
+          <th>Value</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>calendarId</td>
+          <td>string</td>
+          <td>Calendar identifier</td>
+        </tr>
+        <tr>
+          <td>…</td>
+          <td> </td>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Query parameter</th>
+          <th>Value</th>
+          <th>Description</th>
+          <th>Required?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>…</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>Authorization<br />
+ 定义是否需要授权</p>
+  </li>
+  <li>
+    <p>Request Body (通常只用在Post操作上)，定义方式如下：</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Property name</th>
+          <th>Value</th>
+          <th>Description</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>email</td>
+          <td>string</td>
+          <td>user’s email address</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>…</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <p>http response representations，如</p>
 
     <p><code>
-POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
-</code></p>
-
-    <ul>
-      <li>
-        <p>http request parameter</p>
-
-        <p>这里需要注意的是什么放在Path上，什么放在query parameter上。一般而言，一个资源的子资源放在path上，定位资源的条件放在query paramenter上</p>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Path parameter</th>
-              <th>Value</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>calendarId</td>
-              <td>string</td>
-              <td>Calendar identifier</td>
-            </tr>
-            <tr>
-              <td>…</td>
-              <td> </td>
-              <td> </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Query parameter</th>
-              <th>Value</th>
-              <th>Description</th>
-              <th>Required?</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>…</td>
-              <td> </td>
-              <td> </td>
-              <td> </td>
-            </tr>
-          </tbody>
-        </table>
-      </li>
-      <li>
-        <p>Authorization<br />
- 定义是否需要授权</p>
-      </li>
-      <li>
-        <p>Request Body (通常只用在Post操作上)，定义方式如下：</p>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Property name</th>
-              <th>Value</th>
-              <th>Description</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>email</td>
-              <td>string</td>
-              <td>user’s email address</td>
-              <td> </td>
-            </tr>
-            <tr>
-              <td>…</td>
-              <td> </td>
-              <td> </td>
-              <td> </td>
-            </tr>
-          </tbody>
-        </table>
-      </li>
-      <li>
-        <p>http response representations，如</p>
-
-        <p><code>sh
 {  
-"id": string,  
-"status": string,  
-"htmlLink": string,   
-"created": datetime   
+  "id": string,  
+  "status": string,  
+  "htmlLink": string,   
+  "created": datetime   
 }  
 </code></p>
-      </li>
-      <li>
-        <p>http reponse parameters</p>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Property name</th>
-              <th>Value</th>
-              <th>Description</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>home address</td>
-              <td>string</td>
-              <td>user’s home address</td>
-              <td> </td>
-            </tr>
-            <tr>
-              <td>…</td>
-              <td> </td>
-              <td> </td>
-              <td> </td>
-            </tr>
-          </tbody>
-        </table>
-      </li>
-    </ul>
   </li>
-</ol>
+  <li>
+    <p>http reponse parameters(对于资源描述中使用到的参数的解释)</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Property name</th>
+          <th>Value</th>
+          <th>Description</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>home address</td>
+          <td>string</td>
+          <td>user’s home address</td>
+          <td> </td>
+        </tr>
+        <tr>
+          <td>…</td>
+          <td> </td>
+          <td> </td>
+          <td> </td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
 
 <h3 id="json-style-guideline">JSON Style Guideline</h3>
 
