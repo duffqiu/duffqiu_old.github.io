@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-03-03T23:02:55+08:00</updated>
+  <updated>2014-03-03T23:28:36+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -138,7 +138,7 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
       <li>
         <p>http response representations，如</p>
 
-        <p><code>
+        <p><code>java
 {  
 "id": string,  
 "status": string,  
@@ -182,6 +182,112 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 <h3 id="json-style-guideline">JSON Style Guideline</h3>
 
 <p>如何编写JSON，可以参见<a href="https://google-styleguide.googlecode.com/svn/trunk/jsoncstyleguide.xml">Google JSON STYLE</a></p>
+
+<p>主要是参考保留的定义属性名</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">object</span> <span class="o">{</span>
+</span><span class="line">  <span class="n">string</span> <span class="n">apiVersion</span><span class="o">?;</span>
+</span><span class="line">  <span class="n">string</span> <span class="n">context</span><span class="o">?;</span>
+</span><span class="line">  <span class="n">string</span> <span class="n">id</span><span class="o">?;</span>
+</span><span class="line">  <span class="n">string</span> <span class="n">method</span><span class="o">?;</span>
+</span><span class="line">  <span class="n">object</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">string</span> <span class="n">id</span><span class="o">?</span>
+</span><span class="line">  <span class="o">}*</span> <span class="n">params</span><span class="o">?;</span>
+</span><span class="line">  <span class="n">object</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">string</span> <span class="n">kind</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">string</span> <span class="n">fields</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">string</span> <span class="n">etag</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">string</span> <span class="n">id</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">string</span> <span class="n">lang</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">string</span> <span class="n">updated</span><span class="o">?;</span> <span class="err">#</span> <span class="n">date</span> <span class="n">formatted</span> <span class="n">RFC</span> <span class="mi">3339</span>
+</span><span class="line">    <span class="kt">boolean</span> <span class="n">deleted</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">integer</span> <span class="n">currentItemCount</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">integer</span> <span class="n">itemsPerPage</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">integer</span> <span class="n">startIndex</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">integer</span> <span class="n">totalItems</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">integer</span> <span class="n">pageIndex</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">integer</span> <span class="n">totalPages</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">string</span> <span class="n">pageLinkTemplate</span> <span class="o">/^</span><span class="n">https</span><span class="o">?:/</span> <span class="o">?;</span>
+</span><span class="line">    <span class="n">object</span> <span class="o">{}*</span> <span class="n">next</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">string</span> <span class="n">nextLink</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">object</span> <span class="o">{}*</span> <span class="n">previous</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">string</span> <span class="n">previousLink</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">object</span> <span class="o">{}*</span> <span class="n">self</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">string</span> <span class="n">selfLink</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">object</span> <span class="o">{}*</span> <span class="n">edit</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">string</span> <span class="n">editLink</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">array</span> <span class="o">[</span>
+</span><span class="line">      <span class="n">object</span> <span class="o">{}*;</span>
+</span><span class="line">    <span class="o">]</span> <span class="n">items</span><span class="o">?;</span>
+</span><span class="line">  <span class="o">}*</span> <span class="n">data</span><span class="o">?;</span>
+</span><span class="line">  <span class="n">object</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">integer</span> <span class="n">code</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">string</span> <span class="n">message</span><span class="o">?;</span>
+</span><span class="line">    <span class="n">array</span> <span class="o">[</span>
+</span><span class="line">      <span class="n">object</span> <span class="o">{</span>
+</span><span class="line">        <span class="n">string</span> <span class="n">domain</span><span class="o">?;</span>
+</span><span class="line">        <span class="n">string</span> <span class="n">reason</span><span class="o">?;</span>
+</span><span class="line">        <span class="n">string</span> <span class="n">message</span><span class="o">?;</span>
+</span><span class="line">        <span class="n">string</span> <span class="n">location</span><span class="o">?;</span>
+</span><span class="line">        <span class="n">string</span> <span class="n">locationType</span><span class="o">?;</span>
+</span><span class="line">        <span class="n">string</span> <span class="n">extendedHelp</span><span class="o">?;</span>
+</span><span class="line">        <span class="n">string</span> <span class="n">sendReport</span><span class="o">?;</span>
+</span><span class="line">      <span class="o">}*;</span>
+</span><span class="line">    <span class="o">]</span> <span class="n">errors</span><span class="o">?;</span>
+</span><span class="line">  <span class="o">}*</span> <span class="n">error</span><span class="o">?;</span>
+</span><span class="line"><span class="o">}*;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <h3 id="section-1">接口定义模版参考</h3>
 
