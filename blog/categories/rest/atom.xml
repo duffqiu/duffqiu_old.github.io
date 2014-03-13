@@ -4,7 +4,7 @@
   <title><![CDATA[Category: REST | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/rest/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-03-13T23:01:07+08:00</updated>
+  <updated>2014-03-13T23:05:28+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -50,6 +50,7 @@
     <p>其中，Revision Information用来描述文档的要点变化情况  </p>
 
     <p><code>
+{
 "Revision Information" : [
 {
    "Revision": "v0.1",
@@ -60,14 +61,17 @@
    ...
 }
 ]
+}
 </code></p>
 
     <p>description用来描述接口的说明</p>
 
     <p><code>
+{
 "description":{
  "method_description":"Create xxxxx",
  "method_direction":"xxx-&gt;yyy"
+}
 }
 </code></p>
 
@@ -78,6 +82,7 @@
     <p>error_list描述接口的可能的错误信息</p>
 
     <p><code>
+{
 "error_list":[
 {
    "errorCode":"91101",
@@ -87,6 +92,7 @@
    "errorCode":"91102",
    "errorMsg":"yyyyy"
 }]
+}
 </code></p>
 
     <ul>
@@ -96,6 +102,7 @@
     <p><img src="images/rest-structure2.png" alt="Request层次结构" title="REST API Request Structure" /></p>
 
     <p><code>
+{
 "request":{
   	"http_method" : "GET",
  "http_request_url":"https://www.xxxx.com/&lt;warContext&gt;/p/&lt;component&gt;/v1/&lt;resouce&gt;/{&lt;resourceId&gt;}",
@@ -111,7 +118,8 @@
  "request_body":{
  ...
  }
-  }
+}
+}
 </code>
 http_method指明http调用的方法：GET/DELETE/PUT/POST<br />
 http_request_url指明http调用的URL的格式<br />
@@ -127,6 +135,7 @@ request_body传入的JSON复杂对象</p>
     <p>就是返回一个JSON的对象。这里有个BEST PRACTISE的建议，尽量返回能索引到特定资源的标识信息无论输入是否有该信息</p>
 
     <p><code>
+{
 "response":{
  "&lt;parameter1&gt;":{
    "string":"&lt;parameter1 description&gt;",
@@ -136,6 +145,7 @@ request_body传入的JSON复杂对象</p>
    "integer":"&lt;parameter2 description&gt;",
    "required":"n"
  }        
+}
 }
 </code></p>
 
