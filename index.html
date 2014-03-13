@@ -12,14 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-4e249f6d7b18c3317f6e25dfa20ad59d.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-0279e835fd830d19c90bec94c00db0b9.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 现在基于JSON的REST接口使用的是越来越多了，但是在自己去定义JSON的REST API的时候，我们确难免遇到不少疑惑，以下我们来谈谈这些疑惑 RCP-BASED or REST-BASED 在接口定义上，我们以往一般都是去定义请求什么，然后响应是什么，这就是典型的RPC(Remote &hellip;">
+  <meta name="description" content="原由 经过一段实践的实践，特别是需求总在变化的项目（项目开始阶段总是比较痛苦的）中，如何去管理REST接口的描述文件变得非常重要。即要美观，又要开发人员随时能看，能更新。之前写过第一篇的这个“如何定义一个好的REST接口”，但是如果写到word文档中，痛苦是难以仍受的。特别是需要比较大篇幅的改动。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-d6a78c656e1111869352aededb6acee1.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-7b30dc30aa226a5e2e49995fb85d7d8f.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -98,6 +98,279 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/13/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-2/">如何定义一个好的REST接口2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-13T22:06:13+08:00" pubdate data-updated="true">Mar 13<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/03/13/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-2/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>经过一段实践的实践，特别是需求总在变化的项目（项目开始阶段总是比较痛苦的）中，如何去管理REST接口的描述文件变得非常重要。即要美观，又要开发人员随时能看，能更新。之前写过第一篇的这个<a href="/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou/">“如何定义一个好的REST接口”</a>，但是如果写到word文档中，痛苦是难以仍受的。特别是需要比较大篇幅的改动。同时开发人员也很难知道具体那些被改了，就会陷入迷茫中。</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<h4 id="section-2">前提条件</h4>
+<ol>
+  <li>前提条件1，将设计文档放在离开发最近的地方。那么当然是代码工程的地方是最进的。</li>
+  <li>前提条件2，有利于跟踪变化。对于开发人员而言，当然是像代码那样跟踪最顺手了。（目前我用的是Git）</li>
+  <li>尽可能足够简单</li>
+</ol>
+
+<h4 id="section-3">解决方式</h4>
+<ol>
+  <li>参照<a href="http://json-schema.org">JSON SCHEMA</a>的方式</li>
+  <li>简化JSON SCHEMA，但依然是用JSON的方式字描述接口</li>
+  <li>安装Eclipse的JSON editor plugin，可以在outline上很清晰的看到JSON的结构。当然如果是windows下也可以用notepad++的jason plugin看。不过如何是代码就在eclispe上，最好还是用eclipse的plugin</li>
+  <li>
+    <p>定义设计规则：</p>
+
+    <ul>
+      <li>接口文件的目录结构： <componentname>\<resourcename>\Method_&lt;create/delete/query/update&gt;.json. ComponentName：组件或模块名称，ResourceName：资源名称，最后是方法的接口文件名。举个例子：有个组件Calendar，它下面有个资源叫Event，那么操作这个资源的更新的接口文件为Method_update.json，它放在了Calendar\Event\目录下。</resourcename></componentname></li>
+      <li>接口文件的层次结构。因为是基于HTTP的方式，则整个REST接口的层次结构为： </li>
+    </ul>
+
+    <p><img src="images/rest-structure1.png" alt="REST层次结构" title="REST API First Level Structure" /></p>
+
+    <p>其中，Revision Information用来描述文档的要点变化情况  </p>
+
+    <p><code>
+"Revision Information" : [
+{
+   "Revision": "v0.1",
+   "Section":"Whole document",
+   "Change":"initialized"
+},
+{
+   ...
+}
+]
+</code></p>
+
+    <p>description用来描述接口的说明</p>
+
+    <p><code>
+"description":{
+ "method_description":"Create xxxxx",
+ "method_direction":"xxx-&gt;yyy"
+}
+</code></p>
+
+    <p>request描述接口的http的query parameter和request body</p>
+
+    <p>response描述接口的http的response body</p>
+
+    <p>error_list描述接口的可能的错误信息</p>
+
+    <p><code>
+"error_list":[
+{
+   "errorCode":"91101",
+   "errorMsg":"xxxx"
+ },
+ {
+   "errorCode":"91102",
+   "errorMsg":"yyyyy"
+}]
+</code></p>
+
+    <ul>
+      <li>request的层次结构</li>
+    </ul>
+
+    <p><img src="images/rest-structure2.png" alt="Request层次结构" title="REST API Request Structure" /></p>
+
+    <p><code>
+"request":{
+  	"http_method" : "GET",
+ "http_request_url":"https://www.xxxx.com/&lt;warContext&gt;/p/&lt;component&gt;/v1/&lt;resouce&gt;/{&lt;resourceId&gt;}",
+ "path_parameter":{
+   "&lt;resourceId&gt;":"resourceId"
+ },
+ "required_query_parameter":{
+   "&lt;parameter1&gt;" : "xxx"
+ },
+ "optional_query_parameter":{
+   "&lt;parameter2&gt;":"yyy"
+ },
+ "request_body":{
+ ...
+ }
+  }
+</code>
+http_method指明http调用的方法：GET/DELETE/PUT/POST<br />
+http_request_url指明http调用的URL的格式<br />
+path_parameter指明唯一索引到某个特定资源的标识<br />
+required_query_parameter必须传入的参数
+optional_query_parameter可选传入的参数
+request_body传入的JSON复杂对象</p>
+
+    <ul>
+      <li>response的层次结构</li>
+    </ul>
+
+    <p>就是返回一个JSON的对象。这里有个BEST PRACTISE的建议，尽量返回能索引到特定资源的标识信息无论输入是否有该信息</p>
+
+    <p><code>
+"response":{
+ "&lt;parameter1&gt;":{
+   "string":"&lt;parameter1 description&gt;",
+   "required":"y"
+ },
+ "&lt;parameter2&gt;":{
+   "integer":"&lt;parameter2 description&gt;",
+   "required":"n"
+ }        
+}
+</code></p>
+
+    <p>对于request body和response body中JSON对象的定义，不使用JSON Schema那种繁复的写法，直接参照google的方式，将parameter的类型定义为key，描述为value，然后再用”required”标识是否是必须的</p>
+  </li>
+</ol>
+
+<h4 id="section-4">完整的例子模版</h4>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">{  
+</span><span class="line">  "Revision Information" : [
+</span><span class="line">    {
+</span><span class="line">      "Revision": "v0.1",
+</span><span class="line">      "Section":"Whole document",
+</span><span class="line">      "Change":"initialized"
+</span><span class="line">    },
+</span><span class="line">    {
+</span><span class="line">      "Revision": "v0.2",
+</span><span class="line">      "Section":"xx",
+</span><span class="line">      "Change":"yyy"
+</span><span class="line">    }
+</span><span class="line">  ],
+</span><span class="line">  "description":{
+</span><span class="line">    "method_description":"query xxxxx",
+</span><span class="line">    "method_direction":"xx-&gt;yyy"
+</span><span class="line">  },
+</span><span class="line">  "request":{
+</span><span class="line">  	"http_method" : "GET",
+</span><span class="line">    "http_request_url":"https://www.xxxx.com/&lt;warContext&gt;/p/&lt;component&gt;/v1/&lt;resouce&gt;/{&lt;resourceId&gt;}",
+</span><span class="line">    "path_parameter":{
+</span><span class="line">      "&lt;resourceId&gt;":"resourceId"
+</span><span class="line">    },
+</span><span class="line">    "required_query_parameter":{
+</span><span class="line">      "&lt;parameter1&gt;" : "xxx"
+</span><span class="line">    },
+</span><span class="line">    "optional_query_parameter":{
+</span><span class="line">      "&lt;parameter2&gt;":"yyy"
+</span><span class="line">    },
+</span><span class="line">    "request_body":{
+</span><span class="line">      
+</span><span class="line">    }
+</span><span class="line">  },
+</span><span class="line">  "response":{
+</span><span class="line">    "&lt;parameter1&gt;":{
+</span><span class="line">      "string":"&lt;parameter1 description&gt;",
+</span><span class="line">      "required":"y"
+</span><span class="line">    },
+</span><span class="line">    "&lt;parameter2&gt;":{
+</span><span class="line">      "integer":"&lt;parameter2 description&gt;",
+</span><span class="line">      "required":"n"
+</span><span class="line">    }        
+</span><span class="line">  },
+</span><span class="line">  "error_list":[
+</span><span class="line">    {
+</span><span class="line">      "errorCode":"xx1",
+</span><span class="line">      "errorMsg":"yyyy"
+</span><span class="line">    },
+</span><span class="line">    {
+</span><span class="line">      "errorCode":"xx2",
+</span><span class="line">      "errorMsg":"yyyy"
+</span><span class="line">    }
+</span><span class="line">  ]
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1420,70 +1693,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/17/she-ji-mo-shi-%3Ayuan-xing-mo-shi/">设计模式：原型模式</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-17T23:23:31+08:00" pubdate data-updated="true">Feb 17<span>th</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/17/she-ji-mo-shi-%3Ayuan-xing-mo-shi/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原型模式原理</h3>
-<hr />
-<ol>
-  <li>模式名称：原型模式 (Prototype Pattern)</li>
-  <li>问题：在创建大的聚合对象的时候，如果从每个层次的自对象开始创建，则比较麻烦，同时带来中间过程的错误风险。而往往需要的新的对象只是某个现有对象的基础上改变一小部分的内容</li>
-  <li>解决方案：利用Java对象的clone的方式，根据实际情况对已有对象进行软复制或者硬复制（通过序列化的方式）</li>
-  <li>结论：以一个已有的对象做原型，通过最小的操作得到需要的新的对象</li>
-</ol>
-
-<h3 id="uml">UML图例</h3>
-<hr />
-
-<center><img src="/images/plantuml/ec53b9f24e24cb7d469c33b648a3925f.png" /></center>
-
-<h3 id="section-1">模式讲解</h3>
-
-<ol>
-  <li>Java的最顶的类Object本身就提供clone方法，但是是protected的。</li>
-  <li>如果子类需要实现clone方法，还不许继承cloneable接口，然后重载这个方法，根据需要将该方法改为public的。</li>
-  <li>Object的clone方法的实现是采用逐字节的方式从内存中复制数据。如果类中引用了别的对象，则复制的是对象的应用（即对象地址），而不是复制应用对象的内容，所以这种方式是浅复制。</li>
-  <li>要实现深复制，则可以利用序列化反序列化这个工程等到一个值copy的对象。但是前提是类以及它应用的对象都必须实现serializable接口，可被序列化。</li>
-  <li>Apache的common lang提供了SerializationUtils工具类，改类的clone方法完成通过序列化的clone</li>
-</ol>
-
-<h3 id="section-2">代码以及测试参考</h3>
-<p>参见我的github代码：<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo</a>，注意改代码是通过gitflow的管理的，请参考develop branch</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1497,6 +1706,10 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/13/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-2/">如何定义一个好的REST接口2</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou/">如何定义一个好的REST接口</a>
@@ -1514,10 +1727,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
         <a href="/blog/2014/02/23/google-guiceru-men-2/">Google Guice入门2</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/02/22/google-guiceru-men-1/">Google Guice入门1</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -1530,8 +1739,7 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
     <li class='category'><a href='/blog/categories/appscale/'>Appscale (3)</a></li>
 <li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
 <li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
-<li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (8)</a></li>
-<li class='category'><a href='/blog/categories/desing-pattern/'>Desing Pattern (1)</a></li>
+<li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (9)</a></li>
 <li class='category'><a href='/blog/categories/docker/'>Docker (1)</a></li>
 <li class='category'><a href='/blog/categories/findbugs/'>Findbugs (1)</a></li>
 <li class='category'><a href='/blog/categories/gsl/'>GSL (1)</a></li>

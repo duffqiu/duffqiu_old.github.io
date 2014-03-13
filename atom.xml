@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-03-04T00:27:34+08:00</updated>
+  <updated>2014-03-13T23:00:23+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,249 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[如何定义一个好的REST接口2]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/03/13/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-2/"/>
+    <updated>2014-03-13T22:06:13+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/03/13/ru-he-ding-yi-[?]-ge-hao-de-restjie-kou-2</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>经过一段实践的实践，特别是需求总在变化的项目（项目开始阶段总是比较痛苦的）中，如何去管理REST接口的描述文件变得非常重要。即要美观，又要开发人员随时能看，能更新。之前写过第一篇的这个<a href="http://duffqiu.github.io/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou/">“如何定义一个好的REST接口”</a>，但是如果写到word文档中，痛苦是难以仍受的。特别是需要比较大篇幅的改动。同时开发人员也很难知道具体那些被改了，就会陷入迷茫中。</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<h4 id="section-2">前提条件</h4>
+<ol>
+  <li>前提条件1，将设计文档放在离开发最近的地方。那么当然是代码工程的地方是最进的。</li>
+  <li>前提条件2，有利于跟踪变化。对于开发人员而言，当然是像代码那样跟踪最顺手了。（目前我用的是Git）</li>
+  <li>尽可能足够简单</li>
+</ol>
+
+<h4 id="section-3">解决方式</h4>
+<ol>
+  <li>参照<a href="http://json-schema.org">JSON SCHEMA</a>的方式</li>
+  <li>简化JSON SCHEMA，但依然是用JSON的方式字描述接口</li>
+  <li>安装Eclipse的JSON editor plugin，可以在outline上很清晰的看到JSON的结构。当然如果是windows下也可以用notepad++的jason plugin看。不过如何是代码就在eclispe上，最好还是用eclipse的plugin</li>
+  <li>
+    <p>定义设计规则：</p>
+
+    <ul>
+      <li>接口文件的目录结构： <componentname>\<resourcename>\Method_&lt;create/delete/query/update&gt;.json. ComponentName：组件或模块名称，ResourceName：资源名称，最后是方法的接口文件名。举个例子：有个组件Calendar，它下面有个资源叫Event，那么操作这个资源的更新的接口文件为Method_update.json，它放在了Calendar\Event\目录下。</resourcename></componentname></li>
+      <li>接口文件的层次结构。因为是基于HTTP的方式，则整个REST接口的层次结构为： </li>
+    </ul>
+
+    <p><img src="images/rest-structure1.png" alt="REST层次结构" title="REST API First Level Structure" /></p>
+
+    <p>其中，Revision Information用来描述文档的要点变化情况  </p>
+
+    <p><code>
+"Revision Information" : [
+{
+   "Revision": "v0.1",
+   "Section":"Whole document",
+   "Change":"initialized"
+},
+{
+   ...
+}
+]
+</code></p>
+
+    <p>description用来描述接口的说明</p>
+
+    <p><code>
+"description":{
+ "method_description":"Create xxxxx",
+ "method_direction":"xxx-&gt;yyy"
+}
+</code></p>
+
+    <p>request描述接口的http的query parameter和request body</p>
+
+    <p>response描述接口的http的response body</p>
+
+    <p>error_list描述接口的可能的错误信息</p>
+
+    <p><code>
+"error_list":[
+{
+   "errorCode":"91101",
+   "errorMsg":"xxxx"
+ },
+ {
+   "errorCode":"91102",
+   "errorMsg":"yyyyy"
+}]
+</code></p>
+
+    <ul>
+      <li>request的层次结构</li>
+    </ul>
+
+    <p><img src="images/rest-structure2.png" alt="Request层次结构" title="REST API Request Structure" /></p>
+
+    <p><code>
+"request":{
+  	"http_method" : "GET",
+ "http_request_url":"https://www.xxxx.com/&lt;warContext&gt;/p/&lt;component&gt;/v1/&lt;resouce&gt;/{&lt;resourceId&gt;}",
+ "path_parameter":{
+   "&lt;resourceId&gt;":"resourceId"
+ },
+ "required_query_parameter":{
+   "&lt;parameter1&gt;" : "xxx"
+ },
+ "optional_query_parameter":{
+   "&lt;parameter2&gt;":"yyy"
+ },
+ "request_body":{
+ ...
+ }
+  }
+</code>
+http_method指明http调用的方法：GET/DELETE/PUT/POST<br />
+http_request_url指明http调用的URL的格式<br />
+path_parameter指明唯一索引到某个特定资源的标识<br />
+required_query_parameter必须传入的参数
+optional_query_parameter可选传入的参数
+request_body传入的JSON复杂对象</p>
+
+    <ul>
+      <li>response的层次结构</li>
+    </ul>
+
+    <p>就是返回一个JSON的对象。这里有个BEST PRACTISE的建议，尽量返回能索引到特定资源的标识信息无论输入是否有该信息</p>
+
+    <p><code>
+"response":{
+ "&lt;parameter1&gt;":{
+   "string":"&lt;parameter1 description&gt;",
+   "required":"y"
+ },
+ "&lt;parameter2&gt;":{
+   "integer":"&lt;parameter2 description&gt;",
+   "required":"n"
+ }        
+}
+</code></p>
+
+    <p>对于request body和response body中JSON对象的定义，不使用JSON Schema那种繁复的写法，直接参照google的方式，将parameter的类型定义为key，描述为value，然后再用”required”标识是否是必须的</p>
+  </li>
+</ol>
+
+<h4 id="section-4">完整的例子模版</h4>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">{  
+</span><span class="line">  "Revision Information" : [
+</span><span class="line">    {
+</span><span class="line">      "Revision": "v0.1",
+</span><span class="line">      "Section":"Whole document",
+</span><span class="line">      "Change":"initialized"
+</span><span class="line">    },
+</span><span class="line">    {
+</span><span class="line">      "Revision": "v0.2",
+</span><span class="line">      "Section":"xx",
+</span><span class="line">      "Change":"yyy"
+</span><span class="line">    }
+</span><span class="line">  ],
+</span><span class="line">  "description":{
+</span><span class="line">    "method_description":"query xxxxx",
+</span><span class="line">    "method_direction":"xx-&gt;yyy"
+</span><span class="line">  },
+</span><span class="line">  "request":{
+</span><span class="line">  	"http_method" : "GET",
+</span><span class="line">    "http_request_url":"https://www.xxxx.com/&lt;warContext&gt;/p/&lt;component&gt;/v1/&lt;resouce&gt;/{&lt;resourceId&gt;}",
+</span><span class="line">    "path_parameter":{
+</span><span class="line">      "&lt;resourceId&gt;":"resourceId"
+</span><span class="line">    },
+</span><span class="line">    "required_query_parameter":{
+</span><span class="line">      "&lt;parameter1&gt;" : "xxx"
+</span><span class="line">    },
+</span><span class="line">    "optional_query_parameter":{
+</span><span class="line">      "&lt;parameter2&gt;":"yyy"
+</span><span class="line">    },
+</span><span class="line">    "request_body":{
+</span><span class="line">      
+</span><span class="line">    }
+</span><span class="line">  },
+</span><span class="line">  "response":{
+</span><span class="line">    "&lt;parameter1&gt;":{
+</span><span class="line">      "string":"&lt;parameter1 description&gt;",
+</span><span class="line">      "required":"y"
+</span><span class="line">    },
+</span><span class="line">    "&lt;parameter2&gt;":{
+</span><span class="line">      "integer":"&lt;parameter2 description&gt;",
+</span><span class="line">      "required":"n"
+</span><span class="line">    }        
+</span><span class="line">  },
+</span><span class="line">  "error_list":[
+</span><span class="line">    {
+</span><span class="line">      "errorCode":"xx1",
+</span><span class="line">      "errorMsg":"yyyy"
+</span><span class="line">    },
+</span><span class="line">    {
+</span><span class="line">      "errorCode":"xx2",
+</span><span class="line">      "errorMsg":"yyyy"
+</span><span class="line">    }
+</span><span class="line">  ]
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[如何定义一个好的REST接口]]></title>
@@ -1818,112 +2061,6 @@ sudo ./appscale-tools-1.13.0/osx/appscale_install.sh
 
 <pre><code>&gt;ls |wc -l
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress实时获取并展示github上其它repository的代码v2]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/07/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma-v2/"/>
-    <updated>2014-02-07T17:02:16+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/07/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma-v2</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<p>之前做了个Octopress实时获取并展示github上其它repository的代码的rake任务，参见<a href="http://duffqiu.github.io/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/">1</a>，但是每次都要打开github来获取文件的连接，还是比较烦。如果需要更改github branch的名字就需要重新更改整个链接。</p>
-
-<h3 id="section-1">解决方案</h3>
-<p>github上的代码存放实际上是有规则的。格式如下“https://raw.github.com/&lt;your github account&gt;/&lt;repository name&gt;/&lt;branch name&gt;/&lt;file folder&gt;/&lt;java package name&gt;/&lt;file name&gt;”</p>
-
-<p>根据这个规则，可以将https://raw.github.com/，&lt;your github account&gt;固定在Rakefile的变量中<br />
-将&lt;repository name&gt;，&lt;branch name&gt;，&lt;file folder&gt;，&lt;java package name&gt;，&lt;file name&gt;配置到文件中  </p>
-
-<p>这样的话后面如果需要更改分支名就不用先去查找github上的raw文件url了<br />
-注意，如果用了<a href="http://nvie.com/posts/a-successful-git-branching-model/">git flow</a>，则分支名可能是feature/&lt;branch name&gt;</p>
-
-<div style="text-decoration:underline; font-size: 24px; color: red" onclick="showdiv('gitflow')"> Git flow Picture </div>
-
-<div style="display:none" class="prev" id="gitflow" onclick="hidediv('gitflow')">
-  <img src="http://nvie.com/img/2009/12/Screen-shot-2009-12-24-at-11.32.03.png" title="点击关闭" />
-</div>
-
-<h3 id="section-2">代码实现</h3>
-
-<p>首先增加变量配置到Rakefile中</p>
-
-<pre><code># github code fetch config
-github_code_url = "https://raw.github.com/"
-github_account  = "duffqiu"
-</code></pre>
-
-<p>为了保留原由的实现，则在Rakefile上增加一个新的任务，起名为github_fetch，对应使用的配置文件为githubfetch.cf，示例如下：  </p>
-
-<pre><code>DesignPatternDemo develop src/main/java org.duffqiu.patterndemo       LazySingleton.java
-
-DesignPatternDemo develop src/test/java org.duffqiu.patterndemotest   LazySingletonTest.java
-
-DesignPatternDemo develop src/main/java org.duffqiu.patterndemo       SerialibleSingleton.java
-
-DesignPatternDemo develop src/test/java org.duffqiu.patterndemotest   SerialibleSingletonTest.java
-
-DesignPatternDemo develop src/main/java org.duffqiu.patterndemo       EnumSingleton.java
-
-DesignPatternDemo develop src/test/java org.duffqiu.patterndemotest   EnumSingletonTest.java
-</code></pre>
-
-<p>Rake中的任务代码为：</p>
-
-<pre><code>desc "fetch source code file from github"
-task :github_fetch do
-
-  begin
-    rm_rf "source/downloads"
-    mkdir_p "source/downloads/code"
-    if File.exist?("github_fetch.cf")
-      IO.foreach("github_fetch.cf") do |line|
-        if line.strip.empty? == false
-            cd "source/downloads/code" do
-            attr = line.split(' ')
-            repo = attr[0].strip
-            if repo.empty?
-              abort("repo name is empty")
-            end
-            branch = attr[1].strip
-            if branch.empty?
-              abort("branch name is empty")
-            end
-            src_fold = attr[2].strip
-            if src_fold.empty?
-              abort("src fold is empty")
-            end
-            package = attr[3].strip
-            if package.empty?
-              abort("package name is empty")
-            end
-            file_name = attr[4].strip
-            if file_name.empty?
-              abort("file name is empty")
-            end
-            package_dir = package.gsub(/\./, '/')
-            target_dir = repo + '/' + package_dir
-            mkdir_p target_dir
-            cd target_dir do
-              system ("wget  " + "#{github_code_url}/#{github_account}/#{repo}/#{branch}/#{src_fold}/#{package_dir}/#{file_name}")
-            end
-          end
-        end
-      end
-    else
-      puts 'github_fetch.cf not found'
-    end
-  end
-end    
-</code></pre>
-
-<h4 id="vi">Vi小提示</h4>
-
-<ol>
-  <li>Copy单前行到文件结尾：“yG”</li>
-  <li>Delete单前行到文件结尾：“dG”</li>
-  <li>回复上一次的操纵：“u”</li>
-</ol>
 ]]></content>
   </entry>
   

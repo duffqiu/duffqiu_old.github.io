@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design Pattern | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/design-pattern/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-03-04T00:27:34+08:00</updated>
+  <updated>2014-03-13T23:00:23+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,84 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[设计模式：动态代理]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/03/01/she-ji-mo-shi-%3Adong-tai-dai-li/"/>
+    <updated>2014-03-01T23:31:47+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/03/01/she-ji-mo-shi-:dong-tai-dai-li</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>之前我们讲了如何使用代理模式，但是代理必须实现被代理对象共同的接口，如果需要用到代理模式的类表多，则同一个扩展功能就必须实现很多个相似的代理类。从而造成代码的重复。
+有没有更简单的方法生成代理，而对于一个扩展只需要一个代理类呢 ？</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<h4 id="jdkjavalangreflect">JDK的java.lang.reflect</h4>
+<p>JDK的反射机制中动态代理类和接口就可以帮助我们简化代理类的生成。
+具体代码建议模版为：</p>
+
+<ul>
+  <li>生成一个实现<code>InvocationHandler</code>接口的类，建议命名为xxxDynamicProxy</li>
+  <li>设计一个私有变量来存储被代理的对象，并提供一个带参数的构造方法，该参数为被代理的对象。为了通用，使用Object或者范型的形式。我使用范型的方式：</li>
+</ul>
+
+<p>``` java
+public final class xxxDynamicProxy<t> implements InvocationHandler {</t></p>
+
+<pre><code>private T delegate;
+....
+
+public xxxDynamicProxy(T t) {
+this.delegate = t;
+}
+
+... }         ```
+</code></pre>
+
+<ul>
+  <li>设计一个静态工厂方法函数，帮助生成代理对象</li>
+</ul>
+
+<p>``` java
+@SuppressWarnings(“unchecked”)
+public static <t> T createProxyInstance(T t) {</t></p>
+
+<p>return (T) Proxy.newProxyInstance(t.getClass().getClassLoader(), t
+	        .getClass().getInterfaces(), new LoggingDynamicProxy<t>(t));
+}
+```</t></p>
+
+<ul>
+  <li>使用方式就是先生成被代理对象，然后用动态代理类的工厂方法来生成代理对象，接着就可以像被代理对象那样使用了。</li>
+</ul>
+
+<p>注意1：JDK这个动态代理的方式是有约束性的，被代理的对象一定要实现某个接口，不然会有运行时错误。</p>
+
+<p>注意2：代理对象也可以被另外一个代理对象所代理，从而实现功能叠加的效果。也就是装饰模式的叠加效果。从这点上看，JDK这个动态代理的方式其实也是装饰模式。</p>
+
+<h4 id="google-guava">Google Guava的动态代理</h4>
+<p>原理上Google Guava的动态代理也是使用JDK的动态代理，这是做了封装，更加简便。另外一点是能够很好的检查需要代理的对象必须拥有接口。使用<code>Class类的isInterface()</code>来做检查。从我自己的实现的例子看，当代理作为下一个代理的输入时，这个检查将实效。</p>
+
+<p>Google Guava的动态代理的使用方式</p>
+
+<ul>
+  <li>类似上面的步骤生成代理类，但是不用生成静态的工厂方法了。</li>
+  <li>
+    <p>使用方式为调用<code>Reflection.newProxy(...)</code>来生成代理类。</p>
+  </li>
+  <li>如果需要比对用相同的handler生成的prxoy是相等的(并非同一个对象)，则可以通过继承<code>AbstractInvocationHandler</code>来简化编码。因为这个抽象类已经实现了相等的相关操作。</li>
+</ul>
+
+<h4 id="cglib">CGLIB</h4>
+<p>CGLIB对于dynamic proxy的支持个人理解已经太老了，虽然可以对没有实现接口的类支持代理，但是对于final类还是不行。</p>
+
+<h3 id="section-2">总结</h3>
+
+<p>使用Guava来开发代理吧。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[设计模式：代理模式]]></title>
@@ -151,55 +229,6 @@
 
 <h3 id="section-2">代码以及测试参考</h3>
 <p>参见我的github代码：<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo</a>，注意改代码是通过gitflow的管理的，请参考develop branch</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式：工厂方法模式]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/15/she-ji-mo-shi-%3Agong-han-fang-fa-mo-shi/"/>
-    <updated>2014-02-15T22:15:00+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/15/she-ji-mo-shi-:gong-han-fang-fa-mo-shi</id>
-    <content type="html"><![CDATA[<h3 id="section">工厂方法模式原理</h3>
-<hr />
-<ol>
-  <li>模式名称：工厂方法模式 (Facotory Method)</li>
-  <li>
-    <p>问题：</p>
-
-    <ul>
-      <li>对象的创建比较复杂，需要关联其它对象／资源（如配置文件，数据库等）</li>
-      <li>需要写一堆if-else的方式来决定使用那个对象的具体类</li>
-      <li>希望隐藏创建过程的细节，降低偶和度</li>
-      <li>优化性能，在创建过程中缓存对象等 </li>
-      <li>使用者只关心接口，而不关心具体的类，因为用new的方式总是要和具体的类偶和 </li>
-    </ul>
-  </li>
-  <li>解决方案：使用一个类来帮助创建需要的对象，而该类有外部传入使用方，使用方只是对创建类的接口依赖（写到这里的时候，发现漫谈设计模式的书的UML的图我的理解不同，应该是client依赖与工厂接口，而不是关联工厂对象）</li>
-  <li>结论：提高对象的封装，减少了使用方的依赖</li>
-</ol>
-
-<h3 id="uml">UML图例</h3>
-<hr />
-
-<p><center><img src='/images/plantuml/9b1120b02eb010486c2bc09e8f14af70.png'></center></p>
-
-<h3 id="section-1">示例代码</h3>
-<hr />
-<p>这个比较简单就不用代码举例了，看看上面的UML图就能写出代码了。关键是在合适的场景下要想起来用到它</p>
-
-<h3 id="section-2">静态工厂方法</h3>
-<p>原来就是避免了过多的产生工厂类，而将自身设计为工厂，并提供静态工厂方法来创建对象。劣势是失去类面向对象的特征，无法继承、动态多态等。注意：静态方法是无法被覆盖的。</p>
-
-<p><center><img src='/images/plantuml/f51c58048fb92a04a0003701dccd2012.png'></center></p>
-
-<h3 id="section-3">书籍纠正</h3>
-<ol>
-  <li>在《漫谈设计模式》的P50页的setCurrentConnection方法没有必要提供</li>
-  <li>在《漫谈设计模式》的P51页的closeConnect方法，没有必要提供函数参数</li>
-</ol>
-
-<h3 id="threadlocal">小插曲：ThreadLocal的并发性</h3>
-<p>在工厂方法模式中，可以利用ThreadLocal来做对象的缓冲池。但是里面有个比较可爹的问题，如果在线程中被加入到ThreadLocal中，但是在线程结束前不将这个对象手动的移除出ThreadLocal，则ThreadLocal会被另外一个线程使用到。具体可以看我的Github上的<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的代码</a></p>
 ]]></content>
   </entry>
   
