@@ -52,7 +52,7 @@ Client-->Subject
 RealSubject..|>Subject
 ProxySubject..|>Subject
 
-ProxySubject＊-->RealSubject
+ProxySubject*-->RealSubject
 
 note right of ProxySubject
 doSomething() \{
