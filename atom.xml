@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-03-13T23:05:28+08:00</updated>
+  <updated>2014-03-13T23:07:46+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -48,110 +48,159 @@
     <p><img src="images/rest-structure1.png" alt="REST层次结构" title="REST API First Level Structure" /></p>
 
     <p>其中，Revision Information用来描述文档的要点变化情况  </p>
-
-    <p><code>
-{
-"Revision Information" : [
-{
-   "Revision": "v0.1",
-   "Section":"Whole document",
-   "Change":"initialized"
-},
-{
-   ...
-}
-]
-}
-</code></p>
-
-    <p>description用来描述接口的说明</p>
-
-    <p><code>
-{
-"description":{
- "method_description":"Create xxxxx",
- "method_direction":"xxx-&gt;yyy"
-}
-}
-</code></p>
-
-    <p>request描述接口的http的query parameter和request body</p>
-
-    <p>response描述接口的http的response body</p>
-
-    <p>error_list描述接口的可能的错误信息</p>
-
-    <p><code>
-{
-"error_list":[
-{
-   "errorCode":"91101",
-   "errorMsg":"xxxx"
- },
- {
-   "errorCode":"91102",
-   "errorMsg":"yyyyy"
-}]
-}
-</code></p>
-
-    <ul>
-      <li>request的层次结构</li>
-    </ul>
-
-    <p><img src="images/rest-structure2.png" alt="Request层次结构" title="REST API Request Structure" /></p>
-
-    <p><code>
-{
-"request":{
-  	"http_method" : "GET",
- "http_request_url":"https://www.xxxx.com/&lt;warContext&gt;/p/&lt;component&gt;/v1/&lt;resouce&gt;/{&lt;resourceId&gt;}",
- "path_parameter":{
-   "&lt;resourceId&gt;":"resourceId"
- },
- "required_query_parameter":{
-   "&lt;parameter1&gt;" : "xxx"
- },
- "optional_query_parameter":{
-   "&lt;parameter2&gt;":"yyy"
- },
- "request_body":{
- ...
- }
-}
-}
-</code>
-http_method指明http调用的方法：GET/DELETE/PUT/POST<br />
-http_request_url指明http调用的URL的格式<br />
-path_parameter指明唯一索引到某个特定资源的标识<br />
-required_query_parameter必须传入的参数
-optional_query_parameter可选传入的参数
-request_body传入的JSON复杂对象</p>
-
-    <ul>
-      <li>response的层次结构</li>
-    </ul>
-
-    <p>就是返回一个JSON的对象。这里有个BEST PRACTISE的建议，尽量返回能索引到特定资源的标识信息无论输入是否有该信息</p>
-
-    <p><code>
-{
-"response":{
- "&lt;parameter1&gt;":{
-   "string":"&lt;parameter1 description&gt;",
-   "required":"y"
- },
- "&lt;parameter2&gt;":{
-   "integer":"&lt;parameter2 description&gt;",
-   "required":"n"
- }        
-}
-}
-</code></p>
-
-    <p>对于request body和response body中JSON对象的定义，不使用JSON Schema那种繁复的写法，直接参照google的方式，将parameter的类型定义为key，描述为value，然后再用”required”标识是否是必须的</p>
   </li>
 </ol>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">{
+</span><span class="line">   "Revision Information" : [
+</span><span class="line">   {
+</span><span class="line">      "Revision": "v0.1",
+</span><span class="line">      "Section":"Whole document",
+</span><span class="line">      "Change":"initialized"
+</span><span class="line">   },
+</span><span class="line">   {
+</span><span class="line">      ...
+</span><span class="line">   }
+</span><span class="line">   ]
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>description用来描述接口的说明</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">{
+</span><span class="line">   "description":{
+</span><span class="line">    "method_description":"Create xxxxx",
+</span><span class="line">    "method_direction":"xxx-&gt;yyy"
+</span><span class="line">   }
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>request描述接口的http的query parameter和request body</p>
+
+<p>response描述接口的http的response body</p>
+
+<p>error_list描述接口的可能的错误信息</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">{
+</span><span class="line">   "error_list":[
+</span><span class="line">   {
+</span><span class="line">      "errorCode":"91101",
+</span><span class="line">      "errorMsg":"xxxx"
+</span><span class="line">    },
+</span><span class="line">    {
+</span><span class="line">      "errorCode":"91102",
+</span><span class="line">      "errorMsg":"yyyyy"
+</span><span class="line">   }]
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>request的层次结构</li>
+</ul>
+
+<p><img src="images/rest-structure2.png" alt="Request层次结构" title="REST API Request Structure" /></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">{
+</span><span class="line">   "request":{
+</span><span class="line">  	"http_method" : "GET",
+</span><span class="line">    "http_request_url":"https://www.xxxx.com/&lt;warContext&gt;/p/&lt;component&gt;/v1/&lt;resouce&gt;/{&lt;resourceId&gt;}",
+</span><span class="line">    "path_parameter":{
+</span><span class="line">      "&lt;resourceId&gt;":"resourceId"
+</span><span class="line">    },
+</span><span class="line">    "required_query_parameter":{
+</span><span class="line">      "&lt;parameter1&gt;" : "xxx"
+</span><span class="line">    },
+</span><span class="line">    "optional_query_parameter":{
+</span><span class="line">      "&lt;parameter2&gt;":"yyy"
+</span><span class="line">    },
+</span><span class="line">    "request_body":{
+</span><span class="line">    ...
+</span><span class="line">    }
+</span><span class="line">   }
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>http_method指明http调用的方法：GET/DELETE/PUT/POST<br />
+   http_request_url指明http调用的URL的格式<br />
+   path_parameter指明唯一索引到某个特定资源的标识<br />
+   required_query_parameter必须传入的参数
+   optional_query_parameter可选传入的参数
+   request_body传入的JSON复杂对象</p>
+
+<ul>
+  <li>response的层次结构</li>
+</ul>
+
+<p>就是返回一个JSON的对象。这里有个BEST PRACTISE的建议，尽量返回能索引到特定资源的标识信息无论输入是否有该信息</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">{
+</span><span class="line">   "response":{
+</span><span class="line">    "&lt;parameter1&gt;":{
+</span><span class="line">      "string":"&lt;parameter1 description&gt;",
+</span><span class="line">      "required":"y"
+</span><span class="line">    },
+</span><span class="line">    "&lt;parameter2&gt;":{
+</span><span class="line">      "integer":"&lt;parameter2 description&gt;",
+</span><span class="line">      "required":"n"
+</span><span class="line">    }        
+</span><span class="line">   }
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>对于request body和response body中JSON对象的定义，不使用JSON Schema那种繁复的写法，直接参照google的方式，将parameter的类型定义为key，描述为value，然后再用”required”标识是否是必须的</p>
 
 <h4 id="section-4">完整的例子模版</h4>
 
