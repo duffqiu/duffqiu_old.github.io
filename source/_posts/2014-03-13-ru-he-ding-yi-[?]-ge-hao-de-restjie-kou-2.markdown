@@ -163,7 +163,6 @@ categories: [REST]
       "<parameter2>":"yyy"
     },
     "request_body":{
-      
     }
   },
   "response":{
