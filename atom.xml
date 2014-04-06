@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-04-06T11:27:09+08:00</updated>
+  <updated>2014-04-06T11:32:26+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -25,15 +25,17 @@
 <h3 id="section-1">解决办法</h3>
 <hr />
 
-<ol>
-  <li>首先要解决的问题是在系统中如何去定位resource，然后才考虑如何设计URL。这样你必须有一个resource tree，如我在项目的设计：</li>
-</ol>
+<ul>
+  <li>首先要解决的问题是在系统中如何去定位resource，然后才考虑如何设计URL。这样你必须有一个resource tree，如我在项目的设计样式：</li>
+</ul>
 
-<p><img src="http://duffqiu.github.io/images/resource_tree.png" alt="resource tree" /></p>
+<p><img src="http://duffqiu.github.io/images/Rest_Resource_Tree.png" alt="resource tree" title="resouce tree" /></p>
 
-<ol>
-  <li>有了这个resource tree，那么URL就好定义了，如</li>
-</ol>
+<p>这里首先确定要使用的资源入口是User，然后通过userid确定唯一的资源，然后再获取该资源下的子资源Calendar和Meeting</p>
+
+<ul>
+  <li>有了这个resource tree，那么URL就好定义了，如获取用户id为300222的所有Calendar的URL为： <code>http://xxxx.com/&lt;webcontext&gt;/p/&lt;component_name&gt;/v1/user/300222/calendar</code></li>
+</ul>
 
 ]]></content>
   </entry>
