@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress实时获取并展示github上其它repository的代码v2 - Duff Qiu's Blog</title>
+  <title>如何定义一个好的REST接口3 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,9 +19,7 @@
 
 
   
-  <meta name="description" content="原由
-之前做了个Octopress实时获取并展示github上其它repository的代码的rake任务，参见1，但是每次都要打开github来获取文件的连接，还是比较烦。如果需要更改github branch的名字就需要重新更改整个链接。 解决方案
-github上的代码存放实际上是有规则的。 &hellip;">
+  <meta name="description" content="原由 解决办法 ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,7 +28,7 @@ github上的代码存放实际上是有规则的。 &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/07/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma-v2">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/04/06/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-3">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -103,7 +101,7 @@ github上的代码存放实际上是有规则的。 &hellip;">
   
   <header>
     
-      <h1 class="entry-title">Octopress实时获取并展示github上其它repository的代码v2</h1>
+      <h1 class="entry-title">如何定义一个好的REST接口3</h1>
     
     
       <p class="meta">
@@ -119,7 +117,7 @@ github上的代码存放实际上是有规则的。 &hellip;">
   
 
 
-<time datetime="2014-02-07T17:02:16+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2014</time>
+<time datetime="2014-04-06T10:49:35+08:00" pubdate data-updated="true">Apr 6<span>th</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -130,103 +128,11 @@ github上的代码存放实际上是有规则的。 &hellip;">
 
 
 <div class="entry-content"><h3 id="section">原由</h3>
-<p>之前做了个Octopress实时获取并展示github上其它repository的代码的rake任务，参见<a href="/blog/2014/02/05/octopressshi-shi-huo-qu-bing-zhan-shi-githubshang-qi-ta-repositoryde-dai-ma/">1</a>，但是每次都要打开github来获取文件的连接，还是比较烦。如果需要更改github branch的名字就需要重新更改整个链接。</p>
+<hr />
 
-<h3 id="section-1">解决方案</h3>
-<p>github上的代码存放实际上是有规则的。格式如下“https://raw.github.com/&lt;your github account&gt;/&lt;repository name&gt;/&lt;branch name&gt;/&lt;file folder&gt;/&lt;java package name&gt;/&lt;file name&gt;”</p>
+<h3 id="section-1">解决办法</h3>
+<hr />
 
-<p>根据这个规则，可以将https://raw.github.com/，&lt;your github account&gt;固定在Rakefile的变量中<br />
-将&lt;repository name&gt;，&lt;branch name&gt;，&lt;file folder&gt;，&lt;java package name&gt;，&lt;file name&gt;配置到文件中  </p>
-
-<p>这样的话后面如果需要更改分支名就不用先去查找github上的raw文件url了<br />
-注意，如果用了<a href="http://nvie.com/posts/a-successful-git-branching-model/">git flow</a>，则分支名可能是feature/&lt;branch name&gt;</p>
-
-<div style="text-decoration:underline; font-size: 24px; color: red" onclick="showdiv('gitflow')"> Git flow Picture </div>
-
-<div style="display:none" class="prev" id="gitflow" onclick="hidediv('gitflow')">
-  <img src="http://nvie.com/img/2009/12/Screen-shot-2009-12-24-at-11.32.03.png" title="点击关闭" />
-</div>
-
-<h3 id="section-2">代码实现</h3>
-
-<p>首先增加变量配置到Rakefile中</p>
-
-<pre><code># github code fetch config
-github_code_url = "https://raw.github.com/"
-github_account  = "duffqiu"
-</code></pre>
-
-<p>为了保留原由的实现，则在Rakefile上增加一个新的任务，起名为github_fetch，对应使用的配置文件为githubfetch.cf，示例如下：  </p>
-
-<pre><code>DesignPatternDemo develop src/main/java org.duffqiu.patterndemo       LazySingleton.java
-
-DesignPatternDemo develop src/test/java org.duffqiu.patterndemotest   LazySingletonTest.java
-
-DesignPatternDemo develop src/main/java org.duffqiu.patterndemo       SerialibleSingleton.java
-
-DesignPatternDemo develop src/test/java org.duffqiu.patterndemotest   SerialibleSingletonTest.java
-
-DesignPatternDemo develop src/main/java org.duffqiu.patterndemo       EnumSingleton.java
-
-DesignPatternDemo develop src/test/java org.duffqiu.patterndemotest   EnumSingletonTest.java
-</code></pre>
-
-<p>Rake中的任务代码为：</p>
-
-<pre><code>desc "fetch source code file from github"
-task :github_fetch do
-
-  begin
-    rm_rf "source/downloads"
-    mkdir_p "source/downloads/code"
-    if File.exist?("github_fetch.cf")
-      IO.foreach("github_fetch.cf") do |line|
-        if line.strip.empty? == false
-            cd "source/downloads/code" do
-            attr = line.split(' ')
-            repo = attr[0].strip
-            if repo.empty?
-              abort("repo name is empty")
-            end
-            branch = attr[1].strip
-            if branch.empty?
-              abort("branch name is empty")
-            end
-            src_fold = attr[2].strip
-            if src_fold.empty?
-              abort("src fold is empty")
-            end
-            package = attr[3].strip
-            if package.empty?
-              abort("package name is empty")
-            end
-            file_name = attr[4].strip
-            if file_name.empty?
-              abort("file name is empty")
-            end
-            package_dir = package.gsub(/\./, '/')
-            target_dir = repo + '/' + package_dir
-            mkdir_p target_dir
-            cd target_dir do
-              system ("wget  " + "#{github_code_url}/#{github_account}/#{repo}/#{branch}/#{src_fold}/#{package_dir}/#{file_name}")
-            end
-          end
-        end
-      end
-    else
-      puts 'github_fetch.cf not found'
-    end
-  end
-end    
-</code></pre>
-
-<h4 id="vi">Vi小提示</h4>
-
-<ol>
-  <li>Copy单前行到文件结尾：“yG”</li>
-  <li>Delete单前行到文件结尾：“dG”</li>
-  <li>回复上一次的操纵：“u”</li>
-</ol>
 </div>
 
 
@@ -249,12 +155,12 @@ end
   
 
 
-<time datetime="2014-02-07T17:02:16+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2014</time>
+<time datetime="2014-04-06T10:49:35+08:00" pubdate data-updated="true">Apr 6<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/rest/'>Rest</a>
   
 </span>
 
@@ -270,10 +176,8 @@ end
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi/" title="Previous Post: 用Jenkins搭建基于Github和JUnit的自动化测试">&laquo; 用Jenkins搭建基于Github和JUnit的自动化测试</a>
+        <a class="basic-alignment left" href="/blog/2014/04/06/chuang-jian-ji-yu-mavende-javahe-scalagong-cheng/" title="Previous Post: 创建基于maven的java和scala工程">&laquo; 创建基于maven的java和scala工程</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/02/07/octopressdong-tai-zhan-shi-tu-pian/" title="Next Post: Octopress动态展示图片">Octopress动态展示图片 &raquo;</a>
       
     </p>
   </footer>
@@ -355,22 +259,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/04/06/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-3/">如何定义一个好的REST接口3</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/rest/'>Rest</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/04/06/chuang-jian-ji-yu-mavende-javahe-scalagong-cheng/">创建基于maven的java和scala工程</a></h3>
         <div class="meta">
           <span class="tags">
@@ -426,6 +314,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/guava/'>Guava</a>, <a class='category' href='/blog/categories/java/'>Java</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/02/23/she-ji-mo-shi-%3Adai-li-mo-shi/">设计模式：代理模式</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a>
   
 </span>
 
