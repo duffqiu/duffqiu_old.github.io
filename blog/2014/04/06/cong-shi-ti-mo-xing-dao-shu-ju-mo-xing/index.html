@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Mac Tips: Path路径的查找顺序和设置 - Duff Qiu's Blog</title>
+  <title>从实体模型到数据模型 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,10 +19,7 @@
 
 
   
-  <meta name="description" content="OSX系统的PATH设置 系统读取path配置的顺序为
-1). /etc/paths wenjian 2). /etc/paths.d/目录下的所有设置文件
-3). /etc/profile 文件 4). 用户目录下的shell配置文件，如zsh的.zshrc文件 获取当前path的值的方式
-1 &hellip;">
+  <meta name="description" content="原由 在系统设计过程中，我们总会用到Entity Model和Data Model，但是两者之间的关系是如何演变的呢？ 解决办法 首先建立一个最详尽的Entity Model，尽可能将所有具体的entity以及他们间的关系都列举出来 将该详尽的Entity Model尽可能的浓缩抽象，变成7- &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -31,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -104,7 +101,7 @@
   
   <header>
     
-      <h1 class="entry-title">Mac Tips: Path路径的查找顺序和设置</h1>
+      <h1 class="entry-title">从实体模型到数据模型</h1>
     
     
       <p class="meta">
@@ -120,7 +117,7 @@
   
 
 
-<time datetime="2014-01-30T13:14:17+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2014-04-06T11:41:20+08:00" pubdate data-updated="true">Apr 6<span>th</span>, 2014</time>
         
         
            | <a href="#comments">Comments</a>
@@ -130,27 +127,39 @@
   </header>
 
 
-<div class="entry-content"><h3 id="osxpath">OSX系统的PATH设置</h3>
+<div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+
+<p>在系统设计过程中，我们总会用到Entity Model和Data Model，但是两者之间的关系是如何演变的呢？</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
 
 <ol>
-  <li>
-    <p>系统读取path配置的顺序为<br />
-1). /etc/paths wenjian <br />
-2). /etc/paths.d/目录下的所有设置文件<br />
-3). /etc/profile 文件 
-4). 用户目录下的shell配置文件，如zsh的.zshrc文件</p>
-  </li>
-  <li>
-    <p>获取当前path的值的方式<br />
-1). echo $PATH<br />
-2). /usr/libexec/path_helper  </p>
-  </li>
-  <li>
-    <p>用户设置path的建议<br />
-1). 只针对用户自己的设置配知道shell的配置文件中，如.zshrc
-2). 针对系统的文件，可以在/etc/paths.d/路径中生成一个对应的配置文件</p>
-  </li>
+  <li>首先建立一个最详尽的Entity Model，尽可能将所有具体的entity以及他们间的关系都列举出来</li>
+  <li>将该详尽的Entity Model尽可能的浓缩抽象，变成7-10个框的图形</li>
+  <li>根据浓缩后的Entity Model和业务操作的要求来抽取成Data Model</li>
 </ol>
+
+<p>因为设计公司机密问题，无法在这里给出具体的示例。后面有好的例子再补充</p>
+
+<p>同时对于Data Model，有几点个人设计的体验：</p>
+
+<ol>
+  <li>不要过于局限于SQL的那几个范式。</li>
+  <li>尽可能单表操作</li>
+  <li>如果业务上不是要求严格的事物处理，尽可能不做事务操作，而是通过后续的数据处理清理垃圾数据。只是数据的使用过程中要注意保护（如先query后操作create/update）</li>
+  <li>如果两个业务模块操作同一个表的不同数据，则可以考虑将表拆成两个对立的子表。</li>
+  <li>当数据库性能达到一定瓶颈的时候，可以考虑使用NOSQL的方式做cache，如用<a href="http://redis.io">Redis</a></li>
+</ol>
+
+<h4 id="section-2">小插曲</h4>
+
+<p>使用plantuml画entity model或者component 图都是出现自动排列时图形是乱的，很不好看。不过通过一个简单打设置就可以比较工整了。在plantuml文件的前面增加以下代码</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">left to right direction</span></code></pre></td></tr></table></div></figure></notextile></div>
+
 </div>
 
 
@@ -173,12 +182,12 @@
   
 
 
-<time datetime="2014-01-30T13:14:17+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2014-04-06T11:41:20+08:00" pubdate data-updated="true">Apr 6<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/mac/'>MAC</a>, <a class='category' href='/blog/categories/osx/'>OSX</a>
+    <a class='category' href='/blog/categories/data-model/'>Data Model</a>, <a class='category' href='/blog/categories/entity-model/'>Entity Model</a>
   
 </span>
 
@@ -194,10 +203,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/28/octopressguan-li-fu-jian/" title="Previous Post: octopress管理附件">&laquo; octopress管理附件</a>
+        <a class="basic-alignment left" href="/blog/2014/04/06/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-3/" title="Previous Post: 如何定义一个好的REST接口3">&laquo; 如何定义一个好的REST接口3</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu/" title="Next Post: mac tips: 管理后台自动运行的服务">mac tips: 管理后台自动运行的服务 &raquo;</a>
       
     </p>
   </footer>
@@ -280,22 +287,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing/">从实体模型到数据模型</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/data-model/'>Data Model</a>, <a class='category' href='/blog/categories/entity-model/'>Entity Model</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/04/06/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-3/">如何定义一个好的REST接口3</a></h3>
         <div class="meta">
           <span class="tags">
@@ -351,6 +342,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/rest/'>REST</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/03/01/she-ji-mo-shi-%3Adong-tai-dai-li/">设计模式：动态代理</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/guava/'>Guava</a>, <a class='category' href='/blog/categories/java/'>Java</a>
   
 </span>
 

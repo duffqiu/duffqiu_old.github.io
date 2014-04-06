@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-04-06T11:32:26+08:00</updated>
+  <updated>2014-04-06T11:57:40+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,47 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[从实体模型到数据模型]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing/"/>
+    <updated>2014-04-06T11:41:20+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+
+<p>在系统设计过程中，我们总会用到Entity Model和Data Model，但是两者之间的关系是如何演变的呢？</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ol>
+  <li>首先建立一个最详尽的Entity Model，尽可能将所有具体的entity以及他们间的关系都列举出来</li>
+  <li>将该详尽的Entity Model尽可能的浓缩抽象，变成7-10个框的图形</li>
+  <li>根据浓缩后的Entity Model和业务操作的要求来抽取成Data Model</li>
+</ol>
+
+<p>因为设计公司机密问题，无法在这里给出具体的示例。后面有好的例子再补充</p>
+
+<p>同时对于Data Model，有几点个人设计的体验：</p>
+
+<ol>
+  <li>不要过于局限于SQL的那几个范式。</li>
+  <li>尽可能单表操作</li>
+  <li>如果业务上不是要求严格的事物处理，尽可能不做事务操作，而是通过后续的数据处理清理垃圾数据。只是数据的使用过程中要注意保护（如先query后操作create/update）</li>
+  <li>如果两个业务模块操作同一个表的不同数据，则可以考虑将表拆成两个对立的子表。</li>
+  <li>当数据库性能达到一定瓶颈的时候，可以考虑使用NOSQL的方式做cache，如用<a href="http://redis.io">Redis</a></li>
+</ol>
+
+<h4 id="section-2">小插曲</h4>
+
+<p>使用plantuml画entity model或者component 图都是出现自动排列时图形是乱的，很不好看。不过通过一个简单打设置就可以比较工整了。在plantuml文件的前面增加以下代码</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">left to right direction</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[如何定义一个好的REST接口3]]></title>
@@ -2022,191 +2063,6 @@ sudo ./appscale-tools-1.13.0/osx/appscale_install.sh
   </li>
 </ol>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Maven Tips: Artifact查找顺序]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/08/maven-tips-artifactcha-zhao-shun-xu/"/>
-    <updated>2014-02-08T14:36:17+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/08/maven-tips-artifactcha-zhao-shun-xu</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-
-<p>因为要用到一个maven plugin的snapshot版本，所以需要增加一个专门的snapshot repository，但是增加了后总是不起左右</p>
-
-<h3 id="section-1">解决办法</h3>
-
-<p>尝试了多次以后，发现是maven的settings.xml的配置上问题，因为我增加了一个mirror从而造成了新增的repository不起作用。<br />
-解决的方式去掉mirror的配置，增加repository到profile中，并激活
-提示：maven下载artifactor的顺序为pom.xml上的repository配置，然后是settings.xml的mirror配置，然后才是profiles中的repository配置</p>
-
-<p><a name="rep-seq"></a></p>
-
-<div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('pic')"> Maven下载artifactor的顺序</div>
-
-<div style="display:none" class="prev" id="pic" onclick="hidediv('pic');self.location.href='#rep-seq'">
-
-<img src="http://maven.apache.org/repository/maven-repositories.png" title="点击关闭" />
-
-</div>
-
-<h3 id="repository">比较好用的repository</h3>
-
-<p><a name="rep"></a></p>
-
-<div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('rep-code')" title="点击打开">repository配置</div>
-
-<div style="display:none" class="prev" id="rep-code" onclick="hidediv('rep-code');self.location.href='#rep'" title="点击关闭">
-
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-<span class="line-number">39</span>
-<span class="line-number">40</span>
-<span class="line-number">41</span>
-<span class="line-number">42</span>
-<span class="line-number">43</span>
-<span class="line-number">44</span>
-<span class="line-number">45</span>
-<span class="line-number">46</span>
-<span class="line-number">47</span>
-<span class="line-number">48</span>
-<span class="line-number">49</span>
-<span class="line-number">50</span>
-<span class="line-number">51</span>
-<span class="line-number">52</span>
-<span class="line-number">53</span>
-<span class="line-number">54</span>
-<span class="line-number">55</span>
-<span class="line-number">56</span>
-<span class="line-number">57</span>
-<span class="line-number">58</span>
-<span class="line-number">59</span>
-<span class="line-number">60</span>
-<span class="line-number">61</span>
-<span class="line-number">62</span>
-<span class="line-number">63</span>
-<span class="line-number">64</span>
-<span class="line-number">65</span>
-<span class="line-number">66</span>
-<span class="line-number">67</span>
-<span class="line-number">68</span>
-<span class="line-number">69</span>
-<span class="line-number">70</span>
-<span class="line-number">71</span>
-<span class="line-number">72</span>
-</pre></td><td class="code"><pre><code class="xml"><span class="line">			<span class="nt">&lt;repository&gt;</span>
-</span><span class="line">			   <span class="nt">&lt;id&gt;</span>Codehaus Snapshots<span class="nt">&lt;/id&gt;</span>
-</span><span class="line">			   <span class="nt">&lt;url&gt;</span>http://nexus.codehaus.org/snapshots/<span class="nt">&lt;/url&gt;</span>
-</span><span class="line">			   <span class="nt">&lt;snapshots&gt;</span>
-</span><span class="line">			       <span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
-</span><span class="line">			   <span class="nt">&lt;/snapshots&gt;</span>
-</span><span class="line">			   <span class="nt">&lt;releases&gt;</span>
-</span><span class="line">			       <span class="nt">&lt;enabled&gt;</span>false<span class="nt">&lt;/enabled&gt;</span>
-</span><span class="line">			   <span class="nt">&lt;/releases&gt;</span>
-</span><span class="line">			<span class="nt">&lt;/repository&gt;</span>
-</span><span class="line">			
-</span><span class="line">			<span class="nt">&lt;repository&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;id&gt;</span>MavenCentral<span class="nt">&lt;/id&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;name&gt;</span>Maven repository<span class="nt">&lt;/name&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;url&gt;</span>http://repo1.maven.org/maven2<span class="nt">&lt;/url&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;releases&gt;</span>
-</span><span class="line">			        <span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;/releases&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;snapshots&gt;</span>
-</span><span class="line">			        <span class="nt">&lt;enabled&gt;</span>false<span class="nt">&lt;/enabled&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;/snapshots&gt;</span>
-</span><span class="line">			<span class="nt">&lt;/repository&gt;</span>
-</span><span class="line">			
-</span><span class="line">			<span class="nt">&lt;repository&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;id&gt;</span>objectweb<span class="nt">&lt;/id&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;name&gt;</span>Objectweb repository<span class="nt">&lt;/name&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;url&gt;</span>http://maven.objectweb.org/maven2<span class="nt">&lt;/url&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;releases&gt;</span>
-</span><span class="line">			        <span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;/releases&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;snapshots&gt;</span>
-</span><span class="line">			        <span class="nt">&lt;enabled&gt;</span>false<span class="nt">&lt;/enabled&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;/snapshots&gt;</span>
-</span><span class="line">			<span class="nt">&lt;/repository&gt;</span>
-</span><span class="line">			
-</span><span class="line">			<span class="nt">&lt;repository&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;id&gt;</span>jboss<span class="nt">&lt;/id&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;name&gt;</span>JBoss Maven2 repository<span class="nt">&lt;/name&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;url&gt;</span>http://repository.jboss.com/maven2/<span class="nt">&lt;/url&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;snapshots&gt;</span>
-</span><span class="line">			        <span class="nt">&lt;enabled&gt;</span>false<span class="nt">&lt;/enabled&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;/snapshots&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;releases&gt;</span>
-</span><span class="line">			        <span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;/releases&gt;</span>
-</span><span class="line">			<span class="nt">&lt;/repository&gt;</span>
-</span><span class="line">			
-</span><span class="line">			<span class="nt">&lt;repository&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;id&gt;</span>apache.snapshots<span class="nt">&lt;/id&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;name&gt;</span>Apache Snapshot Repository<span class="nt">&lt;/name&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;url&gt;</span>
-</span><span class="line">			        http://people.apache.org/repo/m2-snapshot-repository
-</span><span class="line">			    <span class="nt">&lt;/url&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;releases&gt;</span>
-</span><span class="line">			        <span class="nt">&lt;enabled&gt;</span>false<span class="nt">&lt;/enabled&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;/releases&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;snapshots&gt;</span>
-</span><span class="line">			        <span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;/snapshots&gt;</span>
-</span><span class="line">			<span class="nt">&lt;/repository&gt;</span>
-</span><span class="line">			
-</span><span class="line">			<span class="nt">&lt;repository&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;id&gt;</span>ops4j.repository<span class="nt">&lt;/id&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;name&gt;</span>OPS4J Repository<span class="nt">&lt;/name&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;url&gt;</span>http://repository.ops4j.org/maven2<span class="nt">&lt;/url&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;releases&gt;</span>
-</span><span class="line">			        <span class="nt">&lt;enabled&gt;</span>true<span class="nt">&lt;/enabled&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;/releases&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;snapshots&gt;</span>
-</span><span class="line">			        <span class="nt">&lt;enabled&gt;</span>false<span class="nt">&lt;/enabled&gt;</span>
-</span><span class="line">			    <span class="nt">&lt;/snapshots&gt;</span>
-</span><span class="line">			<span class="nt">&lt;/repository&gt;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-
-</div>
 ]]></content>
   </entry>
   
