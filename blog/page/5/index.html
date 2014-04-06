@@ -12,16 +12,20 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-c78a12324c257fe4ad9d22817e820038.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-3e928fa6b4a248333f78efd9ec4a7f39.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="要简单，你必须有利器
-要简单用好Octepress，首先要看看markdown语法（链接我前面有提到），基本很简单，半个小时就能看懂，剩下实操就可。 然后就是需要有个工具，下载了个Mou，完全免费，到目前为止感觉很好用 开始写第一篇blog
-首先通过命令生成第一篇文章 rake new_post &hellip;">
+  <meta name="description" content="在blog中插入Octopress代码块的问题 Octopress的说明文档中有多种插入代码块的方式，但是当初入markdown代码的时候就出现问题，尝试了多种方式后无果，最后查看别人的blog的源码发现使用 1
+2
+3
+4
+5
+{% raw %} # 必须有空行 #代码块 # 必须有空行
+{% &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -40,7 +44,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-95465b94986215cc21e7243d7756a79a.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-e3ce5bff96733ef167c17f92801fec61.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-bfa2bd21a7ca78f6882ed9f85820177d.js' type='text/javascript'></script>
@@ -100,6 +104,65 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/">Octopress插入代码块的问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-27T18:20:21+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/01/27/octopresscha-ru-dai-ma-kuai-de-wen-ti/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4 id="blogoctopress">在blog中插入Octopress代码块的问题</h4>
+
+<p>Octopress的说明文档中有多种插入代码块的方式，但是当初入markdown代码的时候就出现问题，尝试了多种方式后无果，最后查看别人的blog的源码发现使用</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="o">{</span>% raw %<span class="o">}</span>
+</span><span class="line">   <span class="c"># 必须有空行</span>
+</span><span class="line">   <span class="c">#代码块  </span>
+</span><span class="line">   <span class="c"># 必须有空行</span>
+</span><span class="line"><span class="o">{</span>% endraw %<span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>的方式将代码块再扩起来解决的。</p>
+
+<p>如果有序列(如1., 2…)，则需要缩进代码快和raw..endraw指令</p>
+
+<p>出个小题，这里是怎么写出raw…endraw的?</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -491,6 +554,10 @@ git push origin source
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/06/chuang-jian-ji-yu-mavende-javahe-scalagong-cheng/">创建基于maven的java和scala工程</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/13/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-2/">如何定义一个好的REST接口2</a>
       </li>
     
@@ -504,10 +571,6 @@ git push origin source
     
       <li class="post">
         <a href="/blog/2014/02/23/she-ji-mo-shi-%3Adai-li-mo-shi/">设计模式：代理模式</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/02/23/google-guiceru-men-2/">Google Guice入门2</a>
       </li>
     
   </ul>
@@ -529,11 +592,11 @@ git push origin source
 <li class='category'><a href='/blog/categories/guava/'>Guava (1)</a></li>
 <li class='category'><a href='/blog/categories/guice/'>Guice (2)</a></li>
 <li class='category'><a href='/blog/categories/junit/'>JUnit (1)</a></li>
-<li class='category'><a href='/blog/categories/java/'>Java (12)</a></li>
+<li class='category'><a href='/blog/categories/java/'>Java (13)</a></li>
 <li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>
 <li class='category'><a href='/blog/categories/jenkins/'>Jenkins (2)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>MAC (2)</a></li>
-<li class='category'><a href='/blog/categories/maven/'>Maven (2)</a></li>
+<li class='category'><a href='/blog/categories/maven/'>Maven (3)</a></li>
 <li class='category'><a href='/blog/categories/miscellany/'>Miscellany (1)</a></li>
 <li class='category'><a href='/blog/categories/oo/'>OO (1)</a></li>
 <li class='category'><a href='/blog/categories/osx/'>OSX (3)</a></li>
@@ -542,6 +605,7 @@ git push origin source
 <li class='category'><a href='/blog/categories/port/'>Port (1)</a></li>
 <li class='category'><a href='/blog/categories/proxy/'>Proxy (1)</a></li>
 <li class='category'><a href='/blog/categories/rest/'>REST (2)</a></li>
+<li class='category'><a href='/blog/categories/scala/'>Scala (1)</a></li>
 <li class='category'><a href='/blog/categories/uml/'>UML (1)</a></li>
 
   </ul>
