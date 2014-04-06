@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-04-06T10:58:58+08:00</updated>
+  <updated>2014-04-06T11:03:10+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -256,7 +256,7 @@
       <li>接口文件的层次结构。因为是基于HTTP的方式，则整个REST接口的层次结构为： </li>
     </ul>
 
-    <p><img src="images/rest-structure1.png" alt="REST层次结构" title="REST API First Level Structure" /></p>
+    <p><img src="images/rest_structure1.png" alt="REST层次结构" title="REST API First Level Structure" /></p>
 
     <p>其中，Revision Information用来描述文档的要点变化情况  </p>
   </li>
@@ -335,7 +335,7 @@
   <li>request的层次结构</li>
 </ul>
 
-<p><img src="images/rest-structure2.png" alt="Request层次结构" title="REST API Request Structure" /></p>
+<p><img src="images/rest_structure2.png" alt="Request层次结构" title="REST API Request Structure" /></p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
