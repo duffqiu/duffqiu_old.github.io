@@ -116,6 +116,8 @@ categories: [Java, Scala, Maven]
 			</plugin>
 ```
 
+   - 安装m2e的scala maven plugin的connector插件，不然在eclipse上直接读取pom文件会解释出错。 [update地址](http://alchim31.free.fr/m2e-scala/update-site/ )
+
 ###小插曲
 不知道什么原因，ScalaTest的官网被屏蔽了。一个纯开源的技术网站有这个必要性么？还是躺枪了？
 

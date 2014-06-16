@@ -25,10 +25,12 @@ categories: [REST]
 3. 安装Eclipse的JSON editor plugin，可以在outline上很清晰的看到JSON的结构。当然如果是windows下也可以用notepad++的jason plugin看。不过如何是代码就在eclispe上，最好还是用eclipse的plugin
 4. 定义设计规则：
 
-   - 接口文件的目录结构： <ComponentName>\<ResourceName>\Method_<create/delete/query/update>.json. ComponentName：组件或模块名称，ResourceName：资源名称，最后是方法的接口文件名。举个例子：有个组件Calendar，它下面有个资源叫Event，那么操作这个资源的更新的接口文件为Method_update.json，它放在了Calendar\Event\目录下。
+   - 接口文件的目录结构： `<ComponentName>\<ResourceName>\Method_<create/delete/query/update>.json`. ComponentName：组件或模块名称，ResourceName：资源名称，最后是方法的接口文件名。举个例子：有个组件Calendar，它下面有个资源叫Event，那么操作这个资源的更新的接口文件为Method_update.json，它放在了Calendar\Event\目录下。
    - 接口文件的层次结构。因为是基于HTTP的方式，则整个REST接口的层次结构为： 
    
-   ![REST层次结构](images/rest-structure1.png "REST API First Level Structure")
+
+![rest structure1](http://duffqiu.github.io/images/rest_structure1.png "REST API First Level Structure"")
+   
    
    其中，Revision Information用来描述文档的要点变化情况  
    
@@ -79,8 +81,8 @@ categories: [REST]
 ```
    
    - request的层次结构
-   
-   ![Request层次结构](images/rest-structure2.png "REST API Request Structure")
+
+![rest structure2](http://duffqiu.github.io/images/rest_structure2.png "REST API Request Structure")
    
 ```
 {
