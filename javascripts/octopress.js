@@ -1,16 +1,3 @@
-function showdiv(elemid){
-
-  var fd = document.getElementById(elemid);
-  fd.style.left = event.clientX;
-  fd.style.top = event.clientY;
-  fd.style.display = "inline-block";
-}
-
-function hidediv(elemid){
-  document.getElementById(elemid).style.display = "none";
-
-}
-
 function getNav() {
   var mainNav = $('ul.main-navigation, ul[role=main-navigation]').before('<fieldset class="mobile-nav">')
   var mobileNav = $('fieldset.mobile-nav').append('<select>');

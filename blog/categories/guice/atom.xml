@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Guice | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/guice/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-05-22T20:53:33+08:00</updated>
+  <updated>2015-01-12T19:24:14+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -28,15 +28,17 @@
 
 <p>顶层使用类中：</p>
 
-<p><code>java
-@Inject
-@Named("SendMsgWithAuditDesc")
-private IDescription desc;
-</code></p>
+<p>&#8220;` java</p>
+
+<p>@Inject
+@Named(“SendMsgWithAuditDesc”)
+private IDescription desc;</p>
+
+<p>&#8220;`</p>
 
 <p>Module configure方法中</p>
 
-<p>``` java</p>
+<p>&#8220;` java</p>
 
 <p>//为什么的注入
 bind(IDescription.class).to(ConnectionDescription.class);</p>
@@ -45,12 +47,13 @@ bind(IDescription.class).to(ConnectionDescription.class);</p>
 bind(IDescription.class).annotatedWith(
 	        Names.named(“SendMsgWithAuditDesc”)).toProvider(
 	        SendMessageWithAuditDescriptionProvider.class);
-```</p>
+&#8220;`</p>
 
 <p>这里用了prvoider是因为需要使用参数的构造函数。Provider类如下：</p>
 
-<p>``` java
-public class SendMessageWithAuditDescriptionProvider implements
+<p>&#8220;` java</p>
+
+<p>public class SendMessageWithAuditDescriptionProvider implements
         Provider<connectiondescription> {</connectiondescription></p>
 
 <pre><code>@Override
@@ -61,8 +64,9 @@ return new ConnectionDescription("Audit with SMPP",
 }
 </code></pre>
 
-<p>}
-```</p>
+<p>}</p>
+
+<p>&#8220;`</p>
 
 <p>代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a></p>
 ]]></content>
@@ -80,7 +84,7 @@ return new ConnectionDescription("Audit with SMPP",
 <h3 id="section-1">解决办法</h3>
 <hr />
 
-<p>在前面我们已经介绍过<a href="/blog/2014/02/19/she-ji-mo-shi-%3Aioche-yi-lai-zhu-ru/">IoC</a>。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个。主要有Spring和<a href="https://code.google.com/p/google-guice/">Google Guice</a>。这里主要讲一下如何使用Google Guice，这是一个基本的入门使用，后面如果用到高级的地方再讲。</p>
+<p>在前面我们已经介绍过<a href="/blog/2014/02/19/she-ji-mo-shi-:ioche-yi-lai-zhu-ru/">IoC</a>。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个。主要有Spring和<a href="https://code.google.com/p/google-guice/">Google Guice</a>。这里主要讲一下如何使用Google Guice，这是一个基本的入门使用，后面如果用到高级的地方再讲。</p>
 
 <h3 id="guice">Guice的使用</h3>
 
@@ -119,7 +123,7 @@ return new ConnectionDescription("Audit with SMPP",
   </li>
 </ul>
 
-<p>``` java
+<p>&#8220;` java
 public class SendMessageImpl implements ISendMessage {</p>
 
 <pre><code>@Inject
@@ -156,12 +160,13 @@ private IDescription desc;
   </li>
 </ul>
 
-<p><code>java
+<p>&#8220;` java
 Injector injector = Guice.createInjector(new SendMessageBindingModule());
 ISendMessage sender = injector.getInstance(SendMessageImpl.class);
 sender.xxx();
-...
-</code></p>
+…</p>
+
+<p>&#8220;`</p>
 
 <h3 id="section-3">小插曲</h3>
 <p>这是在写Decorator设计模式的时候分心出来写的，代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a></p>

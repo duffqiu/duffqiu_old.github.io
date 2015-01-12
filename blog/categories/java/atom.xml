@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Java | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/java/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-05-22T20:53:33+08:00</updated>
+  <updated>2015-01-12T19:24:14+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -39,7 +39,7 @@
   </li>
 </ul>
 
-<p>```
+<p>&#8220;`
 			<plugin>
 				<groupid>org.codehaus.mojo</groupid>
 				<artifactid>build-helper-maven-plugin</artifactid>
@@ -72,7 +72,7 @@
 				</executions>
 			</plugin></p>
 
-<p>```</p>
+<p>&#8220;`</p>
 
 <ul>
   <li>Scala插件，协助编译scala，同时指定scala版本</li>
@@ -150,7 +150,7 @@
   
   <entry>
     <title type="html"><![CDATA[设计模式：动态代理]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/03/01/she-ji-mo-shi-%3Adong-tai-dai-li/"/>
+    <link href="http://duffqiu.github.io/blog/2014/03/01/she-ji-mo-shi-:dong-tai-dai-li/"/>
     <updated>2014-03-01T23:31:47+08:00</updated>
     <id>http://duffqiu.github.io/blog/2014/03/01/she-ji-mo-shi-:dong-tai-dai-li</id>
     <content type="html"><![CDATA[<h3 id="section">原由</h3>
@@ -170,8 +170,9 @@
   <li>设计一个私有变量来存储被代理的对象，并提供一个带参数的构造方法，该参数为被代理的对象。为了通用，使用Object或者范型的形式。我使用范型的方式：</li>
 </ul>
 
-<p>``` java
-public final class xxxDynamicProxy<t> implements InvocationHandler {</t></p>
+<p>&#8220;` java</p>
+
+<p>public final class xxxDynamicProxy<t> implements InvocationHandler {</t></p>
 
 <pre><code>private T delegate;
 ....
@@ -180,21 +181,25 @@ public xxxDynamicProxy(T t) {
 this.delegate = t;
 }
 
-... }         ```
+... }
 </code></pre>
+
+<p>&#8220;`</p>
 
 <ul>
   <li>设计一个静态工厂方法函数，帮助生成代理对象</li>
 </ul>
 
-<p>``` java
-@SuppressWarnings(“unchecked”)
+<p>&#8220;` java</p>
+
+<p>@SuppressWarnings(“unchecked”)
 public static <t> T createProxyInstance(T t) {</t></p>
 
 <p>return (T) Proxy.newProxyInstance(t.getClass().getClassLoader(), t
 	        .getClass().getInterfaces(), new LoggingDynamicProxy<t>(t));
-}
-```</t></p>
+}</t></p>
+
+<p>&#8220;`</p>
 
 <ul>
   <li>使用方式就是先生成被代理对象，然后用动态代理类的工厂方法来生成代理对象，接着就可以像被代理对象那样使用了。</li>
@@ -228,7 +233,7 @@ public static <t> T createProxyInstance(T t) {</t></p>
   
   <entry>
     <title type="html"><![CDATA[设计模式：代理模式]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/23/she-ji-mo-shi-%3Adai-li-mo-shi/"/>
+    <link href="http://duffqiu.github.io/blog/2014/02/23/she-ji-mo-shi-:dai-li-mo-shi/"/>
     <updated>2014-02-23T17:05:45+08:00</updated>
     <id>http://duffqiu.github.io/blog/2014/02/23/she-ji-mo-shi-:dai-li-mo-shi</id>
     <content type="html"><![CDATA[<h3 id="section">原由</h3>
@@ -279,15 +284,17 @@ public static <t> T createProxyInstance(T t) {</t></p>
 
 <p>顶层使用类中：</p>
 
-<p><code>java
-@Inject
-@Named("SendMsgWithAuditDesc")
-private IDescription desc;
-</code></p>
+<p>&#8220;` java</p>
+
+<p>@Inject
+@Named(“SendMsgWithAuditDesc”)
+private IDescription desc;</p>
+
+<p>&#8220;`</p>
 
 <p>Module configure方法中</p>
 
-<p>``` java</p>
+<p>&#8220;` java</p>
 
 <p>//为什么的注入
 bind(IDescription.class).to(ConnectionDescription.class);</p>
@@ -296,12 +303,13 @@ bind(IDescription.class).to(ConnectionDescription.class);</p>
 bind(IDescription.class).annotatedWith(
 	        Names.named(“SendMsgWithAuditDesc”)).toProvider(
 	        SendMessageWithAuditDescriptionProvider.class);
-```</p>
+&#8220;`</p>
 
 <p>这里用了prvoider是因为需要使用参数的构造函数。Provider类如下：</p>
 
-<p>``` java
-public class SendMessageWithAuditDescriptionProvider implements
+<p>&#8220;` java</p>
+
+<p>public class SendMessageWithAuditDescriptionProvider implements
         Provider<connectiondescription> {</connectiondescription></p>
 
 <pre><code>@Override
@@ -312,8 +320,9 @@ return new ConnectionDescription("Audit with SMPP",
 }
 </code></pre>
 
-<p>}
-```</p>
+<p>}</p>
+
+<p>&#8220;`</p>
 
 <p>代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a></p>
 ]]></content>
@@ -331,7 +340,7 @@ return new ConnectionDescription("Audit with SMPP",
 <h3 id="section-1">解决办法</h3>
 <hr />
 
-<p>在前面我们已经介绍过<a href="/blog/2014/02/19/she-ji-mo-shi-%3Aioche-yi-lai-zhu-ru/">IoC</a>。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个。主要有Spring和<a href="https://code.google.com/p/google-guice/">Google Guice</a>。这里主要讲一下如何使用Google Guice，这是一个基本的入门使用，后面如果用到高级的地方再讲。</p>
+<p>在前面我们已经介绍过<a href="/blog/2014/02/19/she-ji-mo-shi-:ioche-yi-lai-zhu-ru/">IoC</a>。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个。主要有Spring和<a href="https://code.google.com/p/google-guice/">Google Guice</a>。这里主要讲一下如何使用Google Guice，这是一个基本的入门使用，后面如果用到高级的地方再讲。</p>
 
 <h3 id="guice">Guice的使用</h3>
 
@@ -370,7 +379,7 @@ return new ConnectionDescription("Audit with SMPP",
   </li>
 </ul>
 
-<p>``` java
+<p>&#8220;` java
 public class SendMessageImpl implements ISendMessage {</p>
 
 <pre><code>@Inject
@@ -407,12 +416,13 @@ private IDescription desc;
   </li>
 </ul>
 
-<p><code>java
+<p>&#8220;` java
 Injector injector = Guice.createInjector(new SendMessageBindingModule());
 ISendMessage sender = injector.getInstance(SendMessageImpl.class);
 sender.xxx();
-...
-</code></p>
+…</p>
+
+<p>&#8220;`</p>
 
 <h3 id="section-3">小插曲</h3>
 <p>这是在写Decorator设计模式的时候分心出来写的，代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a></p>

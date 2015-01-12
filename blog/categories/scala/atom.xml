@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Scala | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/scala/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2014-05-22T20:53:33+08:00</updated>
+  <updated>2015-01-12T19:24:14+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -39,7 +39,7 @@
   </li>
 </ul>
 
-<p>```
+<p>&#8220;`
 			<plugin>
 				<groupid>org.codehaus.mojo</groupid>
 				<artifactid>build-helper-maven-plugin</artifactid>
@@ -72,7 +72,7 @@
 				</executions>
 			</plugin></p>
 
-<p>```</p>
+<p>&#8220;`</p>
 
 <ul>
   <li>Scala插件，协助编译scala，同时指定scala版本</li>
