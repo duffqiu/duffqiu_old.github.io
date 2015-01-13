@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-01-12T19:24:14+08:00</updated>
+  <updated>2015-01-13T10:34:03+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -115,24 +115,24 @@ cmd = "java -jar " + plantuml_jar + " -pipe &gt; " + filepath + dotcmd
   <li>
     <p>定义标签</p>
 
-    <p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+    <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class='sh'><span class='line'>
 </span><span class='line'> &lt;a <span class="nv">name</span><span class="o">=</span><span class="s2">&quot;标签名&quot;</span>&gt;&lt;/a&gt;&lt;br /&gt;
 </span><span class='line'>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
   </li>
   <li>
     <p>定义跳转链接</p>
 
-    <p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+    <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;br /&gt;
 </span><span class='line'> &amp;lt;div <span class="nv">style</span><span class="o">=</span><span class="s2">&quot;text-decoration:underline; font-size: 16px; color: red&quot;</span> <span class="nv">onclick</span><span class="o">=</span><span class="s2">&quot;self.location.href=&#39;#标签名&#39;&quot;</span>&amp;gt;跳转&amp;lt;/div&amp;gt;
 </span><span class='line'>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
   </li>
 </ul>
 ]]></content>
@@ -155,7 +155,7 @@ cmd = "java -jar " + plantuml_jar + " -pipe &gt; " + filepath + dotcmd
   <li>增加两个javascript的方法，一个展示图片，一个隐藏图片，简单的方式可以直接将他们放入到source/javascripts/octopress.js文件的最开头  </li>
 </ul>
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -191,13 +191,13 @@ cmd = "java -jar " + plantuml_jar + " -pipe &gt; " + filepath + dotcmd
 </span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="p">}</span>	<span class="o">&lt;</span><span class="err">/p&gt;</span>
 </span><span class='line'>
 </span><span class='line'><span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <ul>
   <li>在blog中增加使用图片的div的代码</li>
 </ul>
 
-<p><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -219,7 +219,7 @@ cmd = "java -jar " + plantuml_jar + " -pipe &gt; " + filepath + dotcmd
 </span><span class='line'>&lt;/div&gt;
 </span><span class='line'>
 </span><span class='line'>&lt;p&gt;
-</span></code></pre></td></tr></table></div></figure></p>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>效果是点击图片文字展开图片，点击图片后隐藏。     </p>
 
@@ -357,7 +357,7 @@ end
 
 <ol>
   <li>
-    <p>在octopress目录下新增一个需要下载的文件的配置githubcode.cf，格式为<github repository="" name="">空格<java package="" name="">空格<java code="" file="" url="">。java的包名可以保留&#8217;.&#8217;的格式，这个插件会自动转成目录</java></java></github></p>
+    <p>在octopress目录下新增一个需要下载的文件的配置githubcode.cf，格式为<github repository="" name="">空格<java package="" name="">空格<java code="" file="" url="">。java的包名可以保留'.'的格式，这个插件会自动转成目录</java></java></github></p>
 
     <pre><code>DesignPatternDemo  org.duffqiu.patterndemo  https://raw.github.com/duffqiu/DesignPatternDemo/feature/LazySingletonDemo/src/org/duffqiu/patterndemo/LazySingleton.java
 </code></pre>
@@ -419,7 +419,7 @@ end
 
 </code></pre>
 
-    <p>注意：<repository name="">前面没有&#8217;/&#8217;，<pakcage name="">要将java的包名的&#8217;.&#8217;改为&#8217;/&#8217;</pakcage></repository></p>
+    <p>注意：<repository name="">前面没有'/'，<pakcage name="">要将java的包名的'.'改为'/'</pakcage></repository></p>
   </li>
   <li>
     <p>每次有新增的github代码文件引入，则需要在rake generate前先调用</p>

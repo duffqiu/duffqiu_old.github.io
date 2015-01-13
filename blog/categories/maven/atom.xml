@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Maven | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/maven/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-01-12T19:24:14+08:00</updated>
+  <updated>2015-01-13T10:34:03+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -39,7 +39,7 @@
   </li>
 </ul>
 
-<p>&#8220;`
+<p>```
 			<plugin>
 				<groupid>org.codehaus.mojo</groupid>
 				<artifactid>build-helper-maven-plugin</artifactid>
@@ -72,7 +72,7 @@
 				</executions>
 			</plugin></p>
 
-<p>&#8220;`</p>
+<p>```</p>
 
 <ul>
   <li>Scala插件，协助编译scala，同时指定scala版本</li>
@@ -171,7 +171,7 @@
   </li>
 </ol>
 
-<p>&#8220;` sh</p>
+<p>``` sh</p>
 
 <pre><code>&lt;plugin&gt;
   &lt;groupId&gt;com.github.jeluard&lt;/groupId&gt;
@@ -196,7 +196,7 @@
 &lt;/plugin&gt;
 </code></pre>
 
-<p>&#8220;`</p>
+<p>```</p>
 
 <p>因为用port安装的graphvizDot目录不在<code>/usr/bin</code>下，所以需要特定指定改目录</p>
 
@@ -240,7 +240,7 @@
 
 <div style="display:none" class="prev" id="rep-code" onclick="hidediv('rep-code');self.location.href='#rep'" title="点击关闭">
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -384,7 +384,7 @@
 </span><span class='line'>			        <span class="nt">&lt;enabled&gt;</span>false<span class="nt">&lt;/enabled&gt;</span>
 </span><span class='line'>			    <span class="nt">&lt;/snapshots&gt;</span>
 </span><span class='line'>			<span class="nt">&lt;/repository&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 </div>
 ]]></content>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Plantuml | Duff Qiu's Blog]]></title>
+  <title><![CDATA[Category: PlantUML | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/plantuml/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-01-12T19:24:14+08:00</updated>
+  <updated>2015-01-13T10:34:03+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -26,7 +26,7 @@
 <p>我个人一个比较好的practice是这样一个模式，PlantUML代码如下<br />
 同时最好的方式是在纸上先用笔画好初稿</p>
 
-<p>&#8220;`
+<p>```
 @startuml
 title “组件图Best Practice”</p>
 
@@ -88,7 +88,7 @@ package “Parent1” {
 [2-1-1]..&gt;[2-2-2]</p>
 
 <p>@enduml
-&#8220;`</p>
+```</p>
 
 <div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('componentuml')"> 最后的UML图如下： </div>
 
@@ -125,7 +125,7 @@ package “Parent1” {
   </li>
 </ol>
 
-<p>&#8220;` sh</p>
+<p>``` sh</p>
 
 <pre><code>&lt;plugin&gt;
   &lt;groupId&gt;com.github.jeluard&lt;/groupId&gt;
@@ -150,7 +150,7 @@ package “Parent1” {
 &lt;/plugin&gt;
 </code></pre>
 
-<p>&#8220;`</p>
+<p>```</p>
 
 <p>因为用port安装的graphvizDot目录不在<code>/usr/bin</code>下，所以需要特定指定改目录</p>
 

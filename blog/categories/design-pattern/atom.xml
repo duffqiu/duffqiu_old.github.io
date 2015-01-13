@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Design Pattern | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/design-pattern/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-01-12T19:24:14+08:00</updated>
+  <updated>2015-01-13T10:34:03+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -15,7 +15,7 @@
   
   <entry>
     <title type="html"><![CDATA[设计模式：动态代理]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/03/01/she-ji-mo-shi-:dong-tai-dai-li/"/>
+    <link href="http://duffqiu.github.io/blog/2014/03/01/she-ji-mo-shi-%3Adong-tai-dai-li/"/>
     <updated>2014-03-01T23:31:47+08:00</updated>
     <id>http://duffqiu.github.io/blog/2014/03/01/she-ji-mo-shi-:dong-tai-dai-li</id>
     <content type="html"><![CDATA[<h3 id="section">原由</h3>
@@ -35,9 +35,8 @@
   <li>设计一个私有变量来存储被代理的对象，并提供一个带参数的构造方法，该参数为被代理的对象。为了通用，使用Object或者范型的形式。我使用范型的方式：</li>
 </ul>
 
-<p>&#8220;` java</p>
-
-<p>public final class xxxDynamicProxy<t> implements InvocationHandler {</t></p>
+<p>``` java
+public final class xxxDynamicProxy<t> implements InvocationHandler {</t></p>
 
 <pre><code>private T delegate;
 ....
@@ -46,25 +45,21 @@ public xxxDynamicProxy(T t) {
 this.delegate = t;
 }
 
-... }
+... }         ```
 </code></pre>
-
-<p>&#8220;`</p>
 
 <ul>
   <li>设计一个静态工厂方法函数，帮助生成代理对象</li>
 </ul>
 
-<p>&#8220;` java</p>
-
-<p>@SuppressWarnings(“unchecked”)
+<p>``` java
+@SuppressWarnings(“unchecked”)
 public static <t> T createProxyInstance(T t) {</t></p>
 
 <p>return (T) Proxy.newProxyInstance(t.getClass().getClassLoader(), t
 	        .getClass().getInterfaces(), new LoggingDynamicProxy<t>(t));
-}</t></p>
-
-<p>&#8220;`</p>
+}
+```</t></p>
 
 <ul>
   <li>使用方式就是先生成被代理对象，然后用动态代理类的工厂方法来生成代理对象，接着就可以像被代理对象那样使用了。</li>
@@ -98,7 +93,7 @@ public static <t> T createProxyInstance(T t) {</t></p>
   
   <entry>
     <title type="html"><![CDATA[设计模式：代理模式]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/23/she-ji-mo-shi-:dai-li-mo-shi/"/>
+    <link href="http://duffqiu.github.io/blog/2014/02/23/she-ji-mo-shi-%3Adai-li-mo-shi/"/>
     <updated>2014-02-23T17:05:45+08:00</updated>
     <id>http://duffqiu.github.io/blog/2014/02/23/she-ji-mo-shi-:dai-li-mo-shi</id>
     <content type="html"><![CDATA[<h3 id="section">原由</h3>
@@ -136,7 +131,7 @@ public static <t> T createProxyInstance(T t) {</t></p>
   
   <entry>
     <title type="html"><![CDATA[设计模式：装饰器模式]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/22/she-ji-mo-shi-:zhuang-shi-qi-mo-shi/"/>
+    <link href="http://duffqiu.github.io/blog/2014/02/22/she-ji-mo-shi-%3Azhuang-shi-qi-mo-shi/"/>
     <updated>2014-02-22T15:09:29+08:00</updated>
     <id>http://duffqiu.github.io/blog/2014/02/22/she-ji-mo-shi-:zhuang-shi-qi-mo-shi</id>
     <content type="html"><![CDATA[<h3 id="section">装饰器模式原理</h3>
@@ -168,7 +163,7 @@ public static <t> T createProxyInstance(T t) {</t></p>
   
   <entry>
     <title type="html"><![CDATA[设计模式：IoC和依赖注入]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/19/she-ji-mo-shi-:ioche-yi-lai-zhu-ru/"/>
+    <link href="http://duffqiu.github.io/blog/2014/02/19/she-ji-mo-shi-%3Aioche-yi-lai-zhu-ru/"/>
     <updated>2014-02-19T20:40:33+08:00</updated>
     <id>http://duffqiu.github.io/blog/2014/02/19/she-ji-mo-shi-:ioche-yi-lai-zhu-ru</id>
     <content type="html"><![CDATA[<h3 id="section">原由</h3>
@@ -205,7 +200,7 @@ public static <t> T createProxyInstance(T t) {</t></p>
   
   <entry>
     <title type="html"><![CDATA[设计模式：原型模式]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/17/she-ji-mo-shi-:yuan-xing-mo-shi/"/>
+    <link href="http://duffqiu.github.io/blog/2014/02/17/she-ji-mo-shi-%3Ayuan-xing-mo-shi/"/>
     <updated>2014-02-17T23:23:31+08:00</updated>
     <id>http://duffqiu.github.io/blog/2014/02/17/she-ji-mo-shi-:yuan-xing-mo-shi</id>
     <content type="html"><![CDATA[<h3 id="section">原型模式原理</h3>

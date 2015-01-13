@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Jekyll | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/jekyll/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-01-12T19:24:14+08:00</updated>
+  <updated>2015-01-13T10:34:03+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -111,7 +111,7 @@ gem "yui-compressor
  &lt;!-- &lt;link href="{{ root_url }}/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"&gt; --&gt;
 	 
  &lt;!-- &lt;script src="{{ root_url }}/javascripts/modernizr-2.0.js"&gt;&lt;/script&gt; --&gt;
- &lt;!-- &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt; --&gt;
+ &lt;!-- &lt;script src="http://duffqiu.github.io//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt; --&gt;
  &lt;!-- &lt;script&gt;!window.jQuery &amp;&amp; document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))&lt;/script&gt; --&gt;
  &lt;!-- &lt;script src="{{ root_url }}/javascripts/octopress.js" type="text/javascript"&gt;&lt;/script&gt; --&gt;
 	  
