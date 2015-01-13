@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>加速Octopress的装载 - Duff Qiu's Blog</title>
+  <title>在其它机器上继续编写blog或者是新建编辑环境处理已有的Octopress系统 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,8 +19,9 @@
 
 
   
-  <meta name="description" content="原由
-加速网页的存取有多种方式，其中之一就是减少一个页面的http的请求数量，因为浏览器同时发送http请求的数量是有限的，而对于很多页面而言，通常定义了很多css和js文件的链接，这样就会造成浏览器需要多次请求后才能完整的展示页面，所以最好的方式将多个css和js文件合并， &hellip;">
+  <meta name="description" content="原由 当你有多台机器或者是需要重新从Github上获取最后的blog，然后继续编辑，则需要重新手动配置Octopress
+但是Octopress没有相关的教程说明如何做。 解决办法 参考网上的多个资料以及个人摸索后，具体实践如下： 重新获取源文件 1
+git clone &lt;your &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,7 +30,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/01/jia-su-octopressde-zhuang-zai">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/01/13/continue-octopress-in-other-machine">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -102,7 +103,7 @@
   
   <header>
     
-      <h1 class="entry-title">加速Octopress的装载</h1>
+      <h1 class="entry-title">在其它机器上继续编写blog或者是新建编辑环境处理已有的Octopress系统</h1>
     
     
       <p class="meta">
@@ -118,7 +119,7 @@
   
 
 
-<time datetime="2014-02-01T14:23:15+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
+<time datetime="2015-01-13T12:14:22+08:00" pubdate data-updated="true">Jan 13<span>th</span>, 2015</time>
         
         
            | <a href="#comments">Comments</a>
@@ -129,140 +130,71 @@
 
 
 <div class="entry-content"><h3 id="section">原由</h3>
-<p>加速网页的存取有多种方式，其中之一就是减少一个页面的http的请求数量，因为浏览器同时发送http请求的数量是有限的，而对于很多页面而言，通常定义了很多css和js文件的链接，这样就会造成浏览器需要多次请求后才能完整的展示页面，所以最好的方式将多个css和js文件合并，如果需要还可以将合并后的文件压缩再传输，从而达到加速的目的。</p>
+<hr />
+<p>当你有多台机器或者是需要重新从Github上获取最后的blog，然后继续编辑，则需要重新手动配置Octopress
+但是Octopress没有相关的教程说明如何做。</p>
 
-<h3 id="gem">Gem插件安装</h3>
-<p>Octopress的<a href="https://github.com/matthodan/jekyll-asset-pipeline">jekyll-asset-pipeline</a>就是一个这样机制的开源插件<br />
-简单的可以通过以下命令安装</p>
+<h3 id="section-1">解决办法</h3>
+<hr />
 
-<pre><code>&gt;sudo gem install jekyll-asset-pipeline
-</code></pre>
+<p>参考网上的多个资料以及个人摸索后，具体实践如下：</p>
 
-<p><strong>注意：</strong> 有可能安装完成后，需要更新bundle，这行命令</p>
+<ul>
+  <li>重新获取源文件</li>
+</ul>
 
-<pre><code>&gt;sudo bunlde update  
-</code></pre>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">git clone &lt;your octopress url in Github&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>切换到”source” branch</li>
+</ul>
 
-<p>压缩需要用到插件YUI Compressor，可以简单通过以下命令安装</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">git checkout <span class="nb">source</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>重建_deploy目录</li>
+</ul>
 
-<pre><code>&gt;sudo gem install yui-compressor
-</code></pre>
-
-<p>另外一个选择是使用Google的<a href="https://developers.google.com/closure/?hl=zh-cn">Closure</a>，可以通过简单通过以下命令安装</p>
-
-<pre><code>&gt;sudo gem install Closure          
-</code></pre>
-
-<h3 id="octopress">配置Octopress</h3>
-<ol>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">mkdir _deploy
+</span><span class="line"><span class="nb">cd </span>_deploy
+</span><span class="line">git init
+</span><span class="line">git remote add origin &lt;your octopress url in Github&gt;
+</span><span class="line">git pull origin master
+</span><span class="line"><span class="nb">cd</span> ..
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
   <li>
-    <p>配置octopress目录下的Gemfile文件，在:development中，增加以下两行</p>
-
-    <pre><code>gem "jekyll-asset-pipeline"
-gem "yui-compressor
-</code></pre>
+    <p>在新的机器上设置octopress需要的环境配置rbenv</p>
   </li>
   <li>
-    <p>在 Octopress的plugins目录中，创建一个名为“jekyll_asset_pipeline.rb”的文件，内容如下：可以用注释那行代替上面那行就是使用Google的closure来压缩js文件</p>
-
-    <pre><code> require 'jekyll_asset_pipeline'
-
- module JekyllAssetPipeline
-	
-   class CssCompressor &lt; JekyllAssetPipeline::Compressor
-     require 'yui/compressor'
-	
-     def self.filetype
-       '.css'
-     end
-	
-     def compress
-       return YUI::CssCompressor.new.compress(@content)
-     end
-   end
-	
-   class JavaScriptCompressor &lt; JekyllAssetPipeline::Compressor
-     require 'yui/compressor'
-     #require 'closure-compiler'
-	
-     def self.filetype
-       '.js'
-     end
-	
-     def compress
-       return YUI::JavaScriptCompressor.new(munge: true).compress(@content)
-       #return Closure::Compiler.new.compile(@content)
-     end
-   end
-	
- end
-</code></pre>
+    <p>然后就可以在根目录下继续用rake命令了。</p>
   </li>
   <li>
-    <p>修改Octopress的配置文件_config.yml，在文件最后增加以下配置</p>
-
-    <pre><code>asset_pipeline:
-   bundle: true            # Default = true
-   compress: true          # Default = true
-   #output_path: assets     # Default = assets
-   #display_path: nil       # Default = nil
-   gzip: false             # Default = false
-</code></pre>
+    <p>注意：不用去重新运行<code>rake install</code>，不然会将你客户化的东西冲掉(最好先从Github上备份一个最新的才开始在新的机器安装环境)</p>
   </li>
-  <li>
-    <p>修改相应的html文件，激活js/css文件的合并压缩。不同的Octopress的template，对应的文件或有不同，我这里用的是Octopress默认的官方template，因该适合大多数人</p>
+</ul>
 
-    <ul>
-      <li>
-        <p>修改source/_include目录下的head.html文件，注释掉带有js/css的几行</p>
+<h4 id="git">Git小提示</h4>
+<p>这次重新搭建中途换了Theme，谁知道新的theme会覆盖和删除某些改动，所以对于theme的选择最好在建立Octopress之初
+换了theme之后我又做了几次提交，为了还原到原来没有换theme的时候，需要将多次的commit去掉。
+在SCM同学的支持下，做了还原，主要操作为</p>
 
-        <pre><code> &lt;!-- &lt;link href="{{ root_url }}/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"&gt; --&gt;
-	 
- &lt;!-- &lt;script src="{{ root_url }}/javascripts/modernizr-2.0.js"&gt;&lt;/script&gt; --&gt;
- &lt;!-- &lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt; --&gt;
- &lt;!-- &lt;script&gt;!window.jQuery &amp;&amp; document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))&lt;/script&gt; --&gt;
- &lt;!-- &lt;script src="{{ root_url }}/javascripts/octopress.js" type="text/javascript"&gt;&lt;/script&gt; --&gt;
-</code></pre>
-      </li>
-      <li>
-        <p>增加以下内容</p>
+<p>先checkout到最后需要的某个commit上
+然后强制提交这个commit</p>
 
-        <pre><code>{% css_asset_tag global %}
- - /stylesheets/screen.css
-{% endcss_asset_tag %}
-	
-{% javascript_asset_tag global %}
-- /javascripts/octopress.js
-- /javascripts/modernizr-2.0.js
-- /javascripts/libs/jquery.min.js
-- /javascripts/libs/swfobject-dynamic.js
-- /javascripts/libs/jXHR.js
-{% endjavascript_asset_tag %}
-</code></pre>
-      </li>
-      <li>
-        <p>同理修改source/_includes/custom目录下的head.html文件，注释掉里面的内容，增加上面的内容就可   </p>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <p>到底有多css和js文件需要加入到需要增加的内容中呢？在octopress/source目录中搜索一下</p>
-
-    <pre><code>find . -name '*.css'
-find . -name '*.js'
-</code></pre>
-
-    <p>然后将必要的文件加入到上面的文件列表中</p>
-  </li>
-</ol>
-
-<h3 id="vi">Vi小提示</h3>
-
-<ol>
-  <li>跳到文件头用 “:0”</li>
-  <li>跳到行头在非编辑状态下直接收入”0”</li>
-  <li>跳到行尾在非编辑状态下直接收入”$”      </li>
-</ol>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">git reset --hard &lt;commit id<span class="err">&#39;</span>s firt 5 characters&gt;
+</span><span class="line">git push -f
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 </div>
 
@@ -286,12 +218,12 @@ find . -name '*.js'
   
 
 
-<time datetime="2014-02-01T14:23:15+08:00" pubdate data-updated="true">Feb 1<span>st</span>, 2014</time>
+<time datetime="2015-01-13T12:14:22+08:00" pubdate data-updated="true">Jan 13<span>th</span>, 2015</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/jekyll/'>Jekyll</a>, <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
   
 </span>
 
@@ -307,10 +239,8 @@ find . -name '*.js'
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing/" title="Previous Post: Octopress通知搜索引擎">&laquo; Octopress通知搜索引擎</a>
+        <a class="basic-alignment left" href="/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing/" title="Previous Post: 从实体模型到数据模型">&laquo; 从实体模型到数据模型</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/02/01/port-tips-ruan-jian-ban-ben-xuan-ze/" title="Next Post: Port tips: 软件版本选择">Port tips: 软件版本选择 &raquo;</a>
       
     </p>
   </footer>
@@ -393,22 +323,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2015/01/13/continue-octopress-in-other-machine/">在其它机器上继续编写blog或者是新建编辑环境处理已有的Octopress系统</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing/">从实体模型到数据模型</a></h3>
         <div class="meta">
           <span class="tags">
@@ -458,6 +372,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
     
       <article>
         <h3 class="title"><a href="/blog/2014/03/13/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-2/">如何定义一个好的REST接口2</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rest/'>REST</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou/">如何定义一个好的REST接口</a></h3>
         <div class="meta">
           <span class="tags">
 

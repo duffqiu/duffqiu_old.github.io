@@ -12,14 +12,23 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-ca31dd34381ec36978959bc0254fa471.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-dacb8fe75fd84d160eaa52c306cbae2c.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="装饰器模式原理 模式名称：装饰器模式 (Decorator Pattern)，另外一个别名是包装器模式(Wrapper) 问题：在开发过程，当一个比较大的类实现并测试后，将逐渐被稳定下来。但是这个时候有了新的需求，需要增强原由的功能，一般的做法是直接修改原由的类，但是会影响到原有类的稳定性， &hellip;">
+  <meta name="description" content="PlantUML画模块图/组件图的问题 在使用PlantUML的时候，如果模块中嵌套模块然后将关联关系定义在子模块中，则很容易造成模块的混沦。 解决办法
+我个人一个比较好的practice是这样一个模式，PlantUML代码如下
+同时最好的方式是在纸上先用笔画好初稿 1
+2
+3
+4
+5
+6
+7
+8 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +47,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-6963e3934853c1965dac1658acf58c82.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-10cb84d59cec13a468a3177ffbafc1f4.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
@@ -98,6 +107,184 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/22/plantumlxiao-ji-qiao/">PlantUML小技巧</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-22T15:10:21+08:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/22/plantumlxiao-ji-qiao/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="plantuml">PlantUML画模块图/组件图的问题</h3>
+
+<p>在使用PlantUML的时候，如果模块中嵌套模块然后将关联关系定义在子模块中，则很容易造成模块的混沦。</p>
+
+<h3 id="section">解决办法</h3>
+<p>我个人一个比较好的practice是这样一个模式，PlantUML代码如下<br />
+同时最好的方式是在纸上先用笔画好初稿</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">@startuml
+</span><span class="line">title "组件图Best Practice"
+</span><span class="line">
+</span><span class="line">'全局的component
+</span><span class="line">component [global 1]
+</span><span class="line">component [global 2]
+</span><span class="line">interface "inferface 1" as if1
+</span><span class="line">interface "inferface 2" as if2
+</span><span class="line">...
+</span><span class="line">
+</span><span class="line">'模块定义
+</span><span class="line">package "Parent1" {
+</span><span class="line">	package "Children1-1" {
+</span><span class="line">		'只定义component，不定义关心
+</span><span class="line">		component [1-1-1]
+</span><span class="line">		component [1-1-2]
+</span><span class="line">		...
+</span><span class="line">	}
+</span><span class="line">	package "Children1-2" {
+</span><span class="line">		component [1-2-1]
+</span><span class="line">		component [1-2-2]
+</span><span class="line">		...
+</span><span class="line">	}
+</span><span class="line">	
+</span><span class="line">}
+</span><span class="line">
+</span><span class="line">package "Parent2" {
+</span><span class="line">	package "Children2-1" {
+</span><span class="line">		'只定义component，不定义关心
+</span><span class="line">		component [2-1-1]
+</span><span class="line">		component [2-1-2]
+</span><span class="line">		...
+</span><span class="line">	}
+</span><span class="line">	package "Children2-2" {
+</span><span class="line">		component [2-2-1]
+</span><span class="line">		component [2-2-2]
+</span><span class="line">		...
+</span><span class="line">	}
+</span><span class="line">	
+</span><span class="line">}
+</span><span class="line">
+</span><span class="line">'完成component定义后再定义关系不要再component中定义关系，容易造成有些component还未必定义就被使用
+</span><span class="line">
+</span><span class="line">'定义全局和子模块的关系
+</span><span class="line">[global 1]..&gt;[global 2]
+</span><span class="line">[global 1] - if1
+</span><span class="line">[global 2] - if2
+</span><span class="line">[global 1] ..&gt; [1-1-1]
+</span><span class="line">
+</span><span class="line">'定义Parent1和children间的关系已经与其它Parent或children的关系
+</span><span class="line">[1-1-1]..&gt;[1-1-2]
+</span><span class="line">[1-1-1]..&gt;[1-2-1]
+</span><span class="line">[1-2-1]..&gt;[1-2-2]
+</span><span class="line">[1-1-1]..&gt;[2-1-1]
+</span><span class="line">
+</span><span class="line">'定义Parent2和children间的关系已经与其它Parent或children的关系
+</span><span class="line">[2-1-1]..&gt;[2-1-2]
+</span><span class="line">[2-1-1]..&gt;[2-2-1]
+</span><span class="line">[2-1-1]..&gt;[2-2-2]
+</span><span class="line">
+</span><span class="line">@enduml</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('componentuml')"> 最后的UML图如下： </div>
+
+<div style="display:none" class="prev" id="componentuml" onclick="hidediv('componentuml')" title="点击关闭">
+
+
+
+<center><img src="/images/plantuml/0fc7dd179febc49855cadf23e3f82408.png" /></center>
+
+</div>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -980,83 +1167,6 @@ sudo ./appscale-tools-1.13.0/osx/appscale_install.sh
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/09/ji-zhu-za-tan-1/">技术杂谈1</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-09T18:15:58+08:00" pubdate data-updated="true">Feb 9<span>th</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/09/ji-zhu-za-tan-1/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<hr />
-
-<p>这个类别主要是想记录以下跑题中看到的一些“新”技术，或者是一些有意思的技术内容，但是不会详细展开，如有时间和必要会有专门的blog来描述某个内容或话题</p>
-
-<h3 id="section-1">今天的内容有</h3>
-<hr />
-
-<ol>
-  <li>
-    <p>云上的Jenkins，由<a href="http://www.cloudbees.com">Cloudbees公司</a>提供，提供免费的有限的使用，但是需要用到的地方，其实都有免费的软件／服务，如Jenkins的程序，Github管理代码等，唯一的好处是不用自己来搭建、维护服务器。我找到它的原因是看到它的Jenkins能自动部署到Goolge App Engine上，而 Jenkins还没有提供类似的Plugin，或许直接用shell命令就能做到，后面有机会用到再展开这个。</p>
-  </li>
-  <li>
-    <p>开源的类似Google App Engine的Paas的平台<a href="https://github.com/AppScale/appscale">AppScale</a>，<a href="http://www.youtube.com/user/AppScaleSystems">youtube的AppScale介绍</a>（不过需要代理才可以看，我前面由介绍如何搭建代理服务）。建议开发Google App Engine应用的开发者都自己搭建一套，<a href="http://www.appscale.com/features">好处</a>是：</p>
-
-    <ul>
-      <li>便于直接本地测试、部署和运行</li>
-      <li>需要部署私有云（特别是大型企业）</li>
-      <li>需要使用其它Google App Engine不支持的APIs</li>
-      <li>Google App Engine全APIs兼容</li>
-      <li>可用于生产环境的平台（Google App Engine不适合生产环境？）</li>
-      <li>
-        <p>不再依赖于Google，可以部署在多个云平台如Amazon和虚拟机等</p>
-
-        <div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('app')"> AppScale架构图 </div>
-      </li>
-    </ul>
-
-    <div style="display:none" class="prev" id="app" onclick="hidediv('app')">
-	
- <img src="http://www.appscale.com/assets/img/appscale_stack.png" title="点击关闭" />
-	
- </div>
-  </li>
-  <li>
-    <p><a href="http://www.docker.io">docker</a>，轻量级的应用容器，不过还没成熟和商业化，值得关注。我还没有升入去看，只能提一下而已</p>
-  </li>
-</ol>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1074,6 +1184,10 @@ sudo ./appscale-tools-1.13.0/osx/appscale_install.sh
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/01/13/continue-octopress-in-other-machine/">在其它机器上继续编写blog或者是新建编辑环境处理已有的Octopress系统</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing/">从实体模型到数据模型</a>
       </li>
     
@@ -1087,10 +1201,6 @@ sudo ./appscale-tools-1.13.0/osx/appscale_install.sh
     
       <li class="post">
         <a href="/blog/2014/03/13/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-2/">如何定义一个好的REST接口2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou/">如何定义一个好的REST接口</a>
       </li>
     
   </ul>
@@ -1122,7 +1232,7 @@ sudo ./appscale-tools-1.13.0/osx/appscale_install.sh
 <li class='category'><a href='/blog/categories/miscellany/'>Miscellany (1)</a></li>
 <li class='category'><a href='/blog/categories/oo/'>OO (1)</a></li>
 <li class='category'><a href='/blog/categories/osx/'>OSX (3)</a></li>
-<li class='category'><a href='/blog/categories/octopress/'>Octopress (15)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>Octopress (16)</a></li>
 <li class='category'><a href='/blog/categories/plantuml/'>PlantUML (3)</a></li>
 <li class='category'><a href='/blog/categories/port/'>Port (1)</a></li>
 <li class='category'><a href='/blog/categories/proxy/'>Proxy (1)</a></li>

@@ -12,15 +12,17 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-ca31dd34381ec36978959bc0254fa471.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-dacb8fe75fd84d160eaa52c306cbae2c.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="如何在Octopress使用附件 在octopress目录中，将对应的附件放到/source/assets目录里面 然后重新生成和部署 rake gengerate
-rake deploy 然后在对应的blog中，使用http的链接方式指定文件就可如 [附件](/assets/&lt;附件名&gt &hellip;">
+  <meta name="description" content="OSX系统的PATH设置 系统读取path配置的顺序为
+1). /etc/paths wenjian 2). /etc/paths.d/目录下的所有设置文件
+3). /etc/profile 文件 4). 用户目录下的shell配置文件，如zsh的.zshrc文件 获取当前path的值的方式
+1 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -39,7 +41,7 @@ rake deploy 然后在对应的blog中，使用http的链接方式指定文件就
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-6963e3934853c1965dac1658acf58c82.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-10cb84d59cec13a468a3177ffbafc1f4.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
@@ -99,6 +101,65 @@ rake deploy 然后在对应的blog中，使用http的链接方式指定文件就
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/">Mac Tips: Path路径的查找顺序和设置</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-30T13:14:17+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="osxpath">OSX系统的PATH设置</h3>
+
+<ol>
+  <li>
+    <p>系统读取path配置的顺序为<br />
+1). /etc/paths wenjian <br />
+2). /etc/paths.d/目录下的所有设置文件<br />
+3). /etc/profile 文件 
+4). 用户目录下的shell配置文件，如zsh的.zshrc文件</p>
+  </li>
+  <li>
+    <p>获取当前path的值的方式<br />
+1). echo $PATH<br />
+2). /usr/libexec/path_helper  </p>
+  </li>
+  <li>
+    <p>用户设置path的建议<br />
+1). 只针对用户自己的设置配知道shell的配置文件中，如.zshrc
+2). 针对系统的文件，可以在/etc/paths.d/路径中生成一个对应的配置文件</p>
+  </li>
+</ol>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -685,6 +746,10 @@ git push origin source
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/01/13/continue-octopress-in-other-machine/">在其它机器上继续编写blog或者是新建编辑环境处理已有的Octopress系统</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing/">从实体模型到数据模型</a>
       </li>
     
@@ -698,10 +763,6 @@ git push origin source
     
       <li class="post">
         <a href="/blog/2014/03/13/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-2/">如何定义一个好的REST接口2</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou/">如何定义一个好的REST接口</a>
       </li>
     
   </ul>
@@ -733,7 +794,7 @@ git push origin source
 <li class='category'><a href='/blog/categories/miscellany/'>Miscellany (1)</a></li>
 <li class='category'><a href='/blog/categories/oo/'>OO (1)</a></li>
 <li class='category'><a href='/blog/categories/osx/'>OSX (3)</a></li>
-<li class='category'><a href='/blog/categories/octopress/'>Octopress (15)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>Octopress (16)</a></li>
 <li class='category'><a href='/blog/categories/plantuml/'>PlantUML (3)</a></li>
 <li class='category'><a href='/blog/categories/port/'>Port (1)</a></li>
 <li class='category'><a href='/blog/categories/proxy/'>Proxy (1)</a></li>
