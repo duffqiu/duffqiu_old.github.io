@@ -44,7 +44,7 @@ val d = (1 to 67) toStream
 val feet = for {
   d1 <- d 
   c1 = d1 * 4
-  p1 == d1 +9 if(d1 + p1 == 67)
+  p1 = d1 +9 if(d1 + p1 == 67)
 } yield {
   (c1+d1)*2 + p1*4
 }
