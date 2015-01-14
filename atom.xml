@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-01-14T12:24:37+08:00</updated>
+  <updated>2015-01-14T12:27:33+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -66,7 +66,7 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
 </span><span class="line"><span class="n">val</span> <span class="n">feet</span> <span class="o">=</span> <span class="k">for</span> <span class="o">{</span>
 </span><span class="line">  <span class="n">d1</span> <span class="o">&lt;-</span> <span class="n">d</span>
 </span><span class="line">  <span class="n">c1</span> <span class="o">=</span> <span class="n">d1</span> <span class="o">*</span> <span class="mi">4</span>
-</span><span class="line">  <span class="n">p1</span> <span class="o">==</span> <span class="n">d1</span> <span class="o">+</span><span class="mi">9</span> <span class="k">if</span><span class="o">(</span><span class="n">d1</span> <span class="o">+</span> <span class="n">p1</span> <span class="o">==</span> <span class="mi">67</span><span class="o">)</span>
+</span><span class="line">  <span class="n">p1</span> <span class="o">=</span> <span class="n">d1</span> <span class="o">+</span><span class="mi">9</span> <span class="k">if</span><span class="o">(</span><span class="n">d1</span> <span class="o">+</span> <span class="n">p1</span> <span class="o">==</span> <span class="mi">67</span><span class="o">)</span>
 </span><span class="line"><span class="o">}</span> <span class="n">yield</span> <span class="o">{</span>
 </span><span class="line">  <span class="o">(</span><span class="n">c1</span><span class="o">+</span><span class="n">d1</span><span class="o">)*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">p1</span><span class="o">*</span><span class="mi">4</span>
 </span><span class="line"><span class="o">}</span>
