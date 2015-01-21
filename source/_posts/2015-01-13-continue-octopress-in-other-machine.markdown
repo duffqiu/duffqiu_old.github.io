@@ -42,6 +42,10 @@ cd ..
 
 - 注意：不用去重新运行`rake install`，不然会将你客户化的东西冲掉(最好先从Github上备份一个最新的才开始在新的机器安装环境)
 
+###plugin问题
+
+如果遇到pygments_code的问题，则需要去看看你的系统安装的python的版本问题。如果python指向了python3.x则需要改成python2.x
+
 ####Git小提示
 这次重新搭建中途换了Theme，谁知道新的theme会覆盖和删除某些改动，所以对于theme的选择最好在建立Octopress之初
 换了theme之后我又做了几次提交，为了还原到原来没有换theme的时候，需要将多次的commit去掉。
