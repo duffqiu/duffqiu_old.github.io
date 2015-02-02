@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-02T18:08:02+08:00</updated>
+  <updated>2015-02-02T18:45:06+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,38 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[系统集成模式：规范化数据流模式]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/02/02/integration-pattern-canonical-data-model/"/>
+    <updated>2015-02-02T18:18:16+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/02/02/integration-pattern-canonical-data-model</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p><a href="http://duffqiu.github.io/blog/2015/02/02/integration-pattern-normalizer/">Normalizer模式</a>中，我们提到到如果多个系统一起集成将造成Endpoint成几何级数的增长。</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>使用Canonical Data Model(规范化数据模型)来解决这个问题
+其特点如下：
+- 每一个EndPoint一端和集成系统衔接，接收或发送特定系统的消息
+- 每一个EndPoint的另外一段则是接收或发送Common的消息给另外的EndPoint</p>
+
+<p>如图1：
+<img src="http://duffqiu.github.io/images/cdm-1.png" alt="图一" /></p>
+
+<ul>
+  <li>所有的在EndPoint间流动的消息都是基于Common的接口，这样当引入一个新的系统的时候这需要实现一个EndPoint就可以了。</li>
+</ul>
+
+<p>如图二：
+<img src="http://duffqiu.github.io/images/cdm-2.png" alt="图二" /></p>
+
+<p>当我们需要考入如何实现Endpoint的时候，则可以考虑<a href="http://camel.apache.org/">Apache Camel Framework</a></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[安装附属包失败后修复virtualbox上的centos]]></title>
@@ -1978,82 +2010,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 
 <h3 id="threadlocal">小插曲：ThreadLocal的并发性</h3>
 <p>在工厂方法模式中，可以利用ThreadLocal来做对象的缓冲池。但是里面有个比较可爹的问题，如果在线程中被加入到ThreadLocal中，但是在线程结束前不将这个对象手动的移除出ThreadLocal，则ThreadLocal会被另外一个线程使用到。具体可以看我的Github上的<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的代码</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Maven工程中加入PlantUML]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-plantuml/"/>
-    <updated>2014-02-13T23:37:47+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-plantuml</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<p>设计于编码的最好实践是设计文档与代码文档放在最近的地方，便于同时修改和更新。最好都放入到一个代码工程中</p>
-
-<h3 id="section-1">解决办法</h3>
-<p>PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目录存放PlantUML的设计文件，txt文件就可以。如：<code>src/main/plantuml</code></p>
-
-<ol>
-  <li>
-    <p>然后确保已经安装好了graphvizDot。</p>
-  </li>
-  <li>
-    <p>然后就可以写plantuml的文本</p>
-  </li>
-  <li>
-    <p>修改maven的工程的pom.xml文件，增加<a href="https://github.com/duffqiu/maven-plantuml-plugin">PlantUML的Maven Plugin</a>，注意用的版本，我用时maven plugin最新的版本为7954，plantuml版本是7991，代码如下</p>
-  </li>
-</ol>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">    &lt;plugin&gt;
-</span><span class="line">      &lt;groupId&gt;com.github.jeluard&lt;/groupId&gt;
-</span><span class="line">      &lt;artifactId&gt;plantuml-maven-plugin&lt;/artifactId&gt;
-</span><span class="line">      &lt;version&gt;7954&lt;/version&gt;
-</span><span class="line">      &lt;configuration&gt;
-</span><span class="line">        &lt;graphvizDot&gt;/opt/local/bin/dot&lt;/graphvizDot&gt;
-</span><span class="line">        &lt;sourceFiles&gt;
-</span><span class="line">          &lt;directory&gt;<span class="k">${</span><span class="nv">basedir</span><span class="k">}</span>&lt;/directory&gt;
-</span><span class="line">          &lt;includes&gt;
-</span><span class="line">            &lt;include&gt;src/main/plantuml/*.txt&lt;/include&gt;
-</span><span class="line">          &lt;/includes&gt;
-</span><span class="line">        &lt;/sourceFiles&gt;
-</span><span class="line">      &lt;/configuration&gt;
-</span><span class="line">      &lt;dependencies&gt;
-</span><span class="line">        &lt;dependency&gt;
-</span><span class="line">          &lt;groupId&gt;net.sourceforge.plantuml&lt;/groupId&gt;
-</span><span class="line">          &lt;artifactId&gt;plantuml&lt;/artifactId&gt;
-</span><span class="line">          &lt;version&gt;7991&lt;/version&gt;
-</span><span class="line">        &lt;/dependency&gt;
-</span><span class="line">      &lt;/dependencies&gt;
-</span><span class="line">    &lt;/plugin&gt;
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>因为用port安装的graphvizDot目录不在<code>/usr/bin</code>下，所以需要特定指定改目录</p>
-
-<p>然后用maven的build的target：<code>com.github.jeluard:plantuml-maven-plugin:generate</code>就可以将plantuml下的文件转成UML图形了。图形文件放在<code>target/plantuml</code>目录下</p>
-
-<p>如果用Eclipse，则可以安装对应的<a href="http://plantuml.sourceforge.net/updatesitejuno/">eclipse插件，安装地址 </a>，这样在写plantuml文本的时候就可以同时看到图形了。</p>
-
 ]]></content>
   </entry>
   
