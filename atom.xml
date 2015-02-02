@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-02T18:06:26+08:00</updated>
+  <updated>2015-02-02T18:08:02+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -115,7 +115,7 @@
 
 <p>对于Normalizer内部，通常从逻辑上可以这样分</p>
 
-<center><img src="http://duffqiu.github.io/images/plantuml/f30d6913b07aa5aa9605b11a85a70f95.png" /></center>
+<center><img src="http://duffqiu.github.io/images/plantuml/b6169e035bb671e3f1c1ca2801966ce0.png" /></center>
 
 <h3 id="section-2">特点说明</h3>
 
