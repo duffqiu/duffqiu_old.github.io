@@ -12,14 +12,15 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-2c40af3f9362b389696bf9e050abc2aa.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-1f9dac8935a0d7db5cac92e9d9f0e363.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="OSX系统后台服务简介 系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来 &gt; sudo chmod root [文件名] 用户级别的服务配置，即在用户登录后才会运行的服务 &hellip;">
+  <meta name="description" content="查看用户所在用户组 &gt;groups 查看当前有那些用户 &gt;uers 给用户增加用户组
+通过用户管理创建的用户，如果赋予管理员权限，则用户在admin组，当时有时候需要将用户增加到wheel组，但是OSX没有像相关的命令，似乎apple就不想普通用户像linux那样操作OSX。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +39,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-261b683acf9b9664a43aff6d87a2458f.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-e5f7c2c3b57678430a919017fa436f34.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
@@ -99,6 +100,91 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/">Mac Tips: 给用户增加用户组</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-01-30T18:06:43+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">查看用户所在用户组</h3>
+
+<pre><code>&gt;groups
+</code></pre>
+
+<h3 id="section-1">查看当前有那些用户</h3>
+
+<pre><code>&gt;uers
+</code></pre>
+
+<h3 id="section-2">给用户增加用户组</h3>
+<p>通过用户管理创建的用户，如果赋予管理员权限，则用户在admin组，当时有时候需要将用户增加到wheel组，但是OSX没有像相关的命令，似乎apple就不想普通用户像linux那样操作OSX。不过对于技术人员，apple提供了个dscl(Directory Service command line utility)目录服务命令工具完成的，具体操作如下</p>
+
+<ol>
+  <li>
+    <p>现进入dscl</p>
+
+    <pre><code>&gt;dscl localhost
+</code></pre>
+  </li>
+  <li>
+    <p>进入组目录，使用ls 你就可以看到Mac所有的group（同理，在/Local/Default/Users可以到所有的用户）</p>
+
+    <pre><code>&gt;cd /Local/Default/Groups
+&gt;ls
+</code></pre>
+  </li>
+  <li>
+    <p>添加用户到用户组，&lt;groupname&gt;为组名，&lt;username&gt;为用户名</p>
+
+    <pre><code>&gt;append &lt;groupname&gt; GroupMembership &lt;username&gt;
+</code></pre>
+  </li>
+  <li>
+    <p>将用户从用户组中移除</p>
+
+    <pre><code>&gt;delete &lt;groupname&gt; GroupMembership &lt;username&gt;
+</code></pre>
+  </li>
+  <li>
+    <p>查看用户组信息，同理可以查看用户信息</p>
+
+    <pre><code>&gt;read  &lt;groupname&gt;
+</code></pre>
+  </li>
+</ol>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -838,6 +924,10 @@ git push origin source
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/02/02/integration-pattern-normalizer/">Integration_pattern_normalizer</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/01/13/howtostartprogrammingwithscala/">如何开始用scala编程</a>
       </li>
     
@@ -851,10 +941,6 @@ git push origin source
     
       <li class="post">
         <a href="/blog/2014/04/06/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-3/">如何定义一个好的REST接口3</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/04/06/chuang-jian-ji-yu-mavende-javahe-scalagong-cheng/">创建基于maven的java和scala工程</a>
       </li>
     
   </ul>
@@ -877,6 +963,7 @@ git push origin source
 <li class='category'><a href='/blog/categories/gsl/'>GSL (1)</a></li>
 <li class='category'><a href='/blog/categories/guava/'>Guava (1)</a></li>
 <li class='category'><a href='/blog/categories/guice/'>Guice (2)</a></li>
+<li class='category'><a href='/blog/categories/integration/'>Integration (1)</a></li>
 <li class='category'><a href='/blog/categories/junit/'>JUnit (1)</a></li>
 <li class='category'><a href='/blog/categories/java/'>Java (13)</a></li>
 <li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>

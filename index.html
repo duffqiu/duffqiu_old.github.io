@@ -12,16 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-2c40af3f9362b389696bf9e050abc2aa.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-1f9dac8935a0d7db5cac92e9d9f0e363.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由
-在经历这么多年的OO的编程概念后，这一两年有兴起了FP(Functional Programming)的编程模式
-作为多年的Java程序员如何能更好的接受FP并应用到开发中呢？主要有两个选择 Scala Clojure 他俩最主要的区别是Clojure是比较纯粹的JVM下List语言的变种。 &hellip;">
+  <meta name="description" content="原由 在系统集成中，可以通过不同的接口（EndPoint）适配多个外围系统，然后转换成标准的消息与内部系统结成。这种模式叫Normalizer。即标准化模式 解决办法 UML图例： ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -40,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-261b683acf9b9664a43aff6d87a2458f.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-e5f7c2c3b57678430a919017fa436f34.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
@@ -107,6 +105,55 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2015/02/02/integration-pattern-normalizer/">Integration_pattern_normalizer</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-02-02T13:14:35+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2015</time>
+        
+        
+           | <a href="/blog/2015/02/02/integration-pattern-normalizer/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>在系统集成中，可以通过不同的接口（EndPoint）适配多个外围系统，然后转换成标准的消息与内部系统结成。这种模式叫Normalizer。即标准化模式</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>UML图例：</p>
+
+<center><img src="/images/plantuml/8b524a184457163660ca4c8cd732994f.png" /></center>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2015/01/13/howtostartprogrammingwithscala/">如何开始用scala编程</a></h1>
     
     
@@ -165,7 +212,7 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
 </ul>
 
 <h3 id="section-2">看一个有趣的例子</h3>
-<p>最近同学们在谈论list/FP的时候提到的一个例子:
+<p>最近同学们在谈论lisp/FP的时候提到的一个例子:
 有一个农场，鸡的数量是鸭的4倍，但是鸭比猪少9只，鸭和猪的数量是67只，求所有动物的脚加起来总共有多少只？
 这个是个推论性的问题，在scala中用for{}的方式来解答(这里的for不是做循环，scala语言的用法叫for comprehension)</p>
 
@@ -285,6 +332,10 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
     <p>注意：不用去重新运行<code>rake install</code>，不然会将你客户化的东西冲掉(最好先从Github上备份一个最新的才开始在新的机器安装环境)</p>
   </li>
 </ul>
+
+<h3 id="plugin">plugin问题</h3>
+
+<p>如果遇到pygments_code的问题，则需要去看看你的系统安装的python的版本问题。如果python指向了python3.x则需要改成python2.x</p>
 
 <h4 id="git">Git小提示</h4>
 <p>这次重新搭建中途换了Theme，谁知道新的theme会覆盖和删除某些改动，所以对于theme的选择最好在建立Octopress之初
@@ -1579,107 +1630,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/23/google-guiceru-men-2/">Google Guice入门2</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-23T14:26:45+08:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/23/google-guiceru-men-2/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<hr />
-<p>在使用Guice做依赖注入的时候，很可能会发生在一个依赖模块（Module）中有多个同类型的接口需要注入，但是又需要根据不同的使用类注入不同的具体对象。如果只是简单的申明为接口注入对象，则会使用同一个对象。如：<code>bind(IDescription.class).to(ConnectionDescription.class);</code></p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-<p>使用<code>@Named("&lt;xxxx&gt;")</code>来命名需要注入的接口，然后在注入的时候指定名称来特定注入，如： </p>
-
-<p>顶层使用类中：</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="nd">@Inject</span>
-</span><span class="line"><span class="nd">@Named</span><span class="o">(</span><span class="s">&quot;SendMsgWithAuditDesc&quot;</span><span class="o">)</span>
-</span><span class="line"><span class="kd">private</span> <span class="n">IDescription</span> <span class="n">desc</span><span class="o">;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Module configure方法中</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="c1">//为什么的注入</span>
-</span><span class="line"><span class="n">bind</span><span class="o">(</span><span class="n">IDescription</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">to</span><span class="o">(</span><span class="n">ConnectionDescription</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span><span class="line">
-</span><span class="line"><span class="c1">//指定名称的注入</span>
-</span><span class="line"><span class="n">bind</span><span class="o">(</span><span class="n">IDescription</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">annotatedWith</span><span class="o">(</span>
-</span><span class="line">	        <span class="n">Names</span><span class="o">.</span><span class="na">named</span><span class="o">(</span><span class="s">&quot;SendMsgWithAuditDesc&quot;</span><span class="o">)).</span><span class="na">toProvider</span><span class="o">(</span>
-</span><span class="line">	        <span class="n">SendMessageWithAuditDescriptionProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>这里用了prvoider是因为需要使用参数的构造函数。Provider类如下：</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SendMessageWithAuditDescriptionProvider</span> <span class="kd">implements</span>
-</span><span class="line">        <span class="n">Provider</span><span class="o">&lt;</span><span class="n">ConnectionDescription</span><span class="o">&gt;</span> <span class="o">{</span>
-</span><span class="line">
-</span><span class="line">    <span class="nd">@Override</span>
-</span><span class="line">    <span class="kd">public</span> <span class="kd">final</span> <span class="n">ConnectionDescription</span> <span class="nf">get</span><span class="o">()</span> <span class="o">{</span>
-</span><span class="line">
-</span><span class="line">	<span class="k">return</span> <span class="k">new</span> <span class="nf">ConnectionDescription</span><span class="o">(</span><span class="s">&quot;Audit with SMPP&quot;</span><span class="o">,</span>
-</span><span class="line">	        <span class="s">&quot;Send Msg with audit via SMPP&quot;</span><span class="o">);</span>
-</span><span class="line">    <span class="o">}</span>
-</span><span class="line">
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1695,6 +1645,10 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/02/02/integration-pattern-normalizer/">Integration_pattern_normalizer</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/01/13/howtostartprogrammingwithscala/">如何开始用scala编程</a>
       </li>
     
@@ -1708,10 +1662,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
     
       <li class="post">
         <a href="/blog/2014/04/06/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-3/">如何定义一个好的REST接口3</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/04/06/chuang-jian-ji-yu-mavende-javahe-scalagong-cheng/">创建基于maven的java和scala工程</a>
       </li>
     
   </ul>
@@ -1734,6 +1684,7 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 <li class='category'><a href='/blog/categories/gsl/'>GSL (1)</a></li>
 <li class='category'><a href='/blog/categories/guava/'>Guava (1)</a></li>
 <li class='category'><a href='/blog/categories/guice/'>Guice (2)</a></li>
+<li class='category'><a href='/blog/categories/integration/'>Integration (1)</a></li>
 <li class='category'><a href='/blog/categories/junit/'>JUnit (1)</a></li>
 <li class='category'><a href='/blog/categories/java/'>Java (13)</a></li>
 <li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>

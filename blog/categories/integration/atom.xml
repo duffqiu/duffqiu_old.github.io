@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Integration | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/integration/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2015-02-02T16:34:36+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Integration_pattern_normalizer]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/02/02/integration-pattern-normalizer/"/>
+    <updated>2015-02-02T13:14:35+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/02/02/integration-pattern-normalizer</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在系统集成中，可以通过不同的接口（EndPoint）适配多个外围系统，然后转换成标准的消息与内部系统结成。这种模式叫Normalizer。即标准化模式</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>UML图例：</p>
+
+<p><center><img src='/images/plantuml/0499a028fa9758aa139df89d51c25cd5.png'></center></p>
+
+]]></content>
+  </entry>
+  
+</feed>

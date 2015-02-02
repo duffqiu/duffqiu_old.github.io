@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-01-14T15:26:14+08:00</updated>
+  <updated>2015-02-02T16:34:36+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -60,6 +60,10 @@ cd ..
     <p>注意：不用去重新运行<code>rake install</code>，不然会将你客户化的东西冲掉(最好先从Github上备份一个最新的才开始在新的机器安装环境)</p>
   </li>
 </ul>
+
+<h3 id="plugin">plugin问题</h3>
+
+<p>如果遇到pygments_code的问题，则需要去看看你的系统安装的python的版本问题。如果python指向了python3.x则需要改成python2.x</p>
 
 <h4 id="git">Git小提示</h4>
 <p>这次重新搭建中途换了Theme，谁知道新的theme会覆盖和删除某些改动，所以对于theme的选择最好在建立Octopress之初
