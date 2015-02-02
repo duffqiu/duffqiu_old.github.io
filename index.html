@@ -12,7 +12,7 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-c033422b4743ce7f7b662612acd43959.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-1b91d96c52a99fafc0e81cc4147b2cfa.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
@@ -39,7 +39,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-f64e9e04c03dc000ce91605710ae9488.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-a6204d452589f525a2a9036cd9772b52.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
@@ -193,6 +193,8 @@
 
 <ul>
   <li>删除对应的编译需要的lib库： <code>sudo rm /lib/modules/3.10.0-123.el7.x86_64/misc/vbox*</code></li>
+  <li>重建modules.dep和map文件: <code>sudo depmod -a</code></li>
+  <li>重新加载module: <code>sudo modprobe module</code></li>
   <li>reboot</li>
   <li>这个时候应该cdroom和网卡都回来了</li>
   <li>重新安装virtualbox的附属包</li>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CentOS, | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/centos/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-02T17:11:03+08:00</updated>
+  <updated>2015-02-02T17:17:58+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -62,6 +62,8 @@
 
 <ul>
   <li>删除对应的编译需要的lib库： <code>sudo rm /lib/modules/3.10.0-123.el7.x86_64/misc/vbox*</code></li>
+  <li>重建modules.dep和map文件: <code>sudo depmod -a</code></li>
+  <li>重新加载module: <code>sudo modprobe module</code></li>
   <li>reboot</li>
   <li>这个时候应该cdroom和网卡都回来了</li>
   <li>重新安装virtualbox的附属包</li>
