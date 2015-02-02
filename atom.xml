@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-02T16:41:16+08:00</updated>
+  <updated>2015-02-02T17:11:03+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,88 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[安装附属包失败后修复virtualbox上的centos]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/02/02/fix-centos-virtualbox/"/>
+    <updated>2015-02-02T16:45:25+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/02/02/fix-centos-virtualbox</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在virtualbox安装好centos7后，共享windows下的目录以及在host机器作拷贝张贴都不行，总是提示virtualbox的附属包没有安装，所以重新进行了安装。
+但是重装时发现virtualboxguess module（vboxguest）没有安装成功，提示需要安装kernel-develp包，然后再重装这个附属包。
+按照提示用<code>sudo yum install kernel-develop</code>, 然后再重装这个附属包
+重新启动后竟然网卡无法使用了，同时也无法mount cdrom来卸载这个virtualbox的附属包。</p>
+
+<p>网卡提示的错误信息是：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain systemd[1]: network.service: control process exited, code=exited status=1
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain systemd[1]: Failed to start LSB: Bring up/down networking.
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain systemd[1]: Unit network.service entered failed state.</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Google了半天都没有办法，唯一能定位的地方是virtualbox修改了kernel的module造成</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>kernel的module一般都要通过原码的方式在本地编译后安装/加载，所以才需要kernel-develop的rpm包，难道问题在这里？
+通过命令<code>rpm -qa|grep kernel</code>查看安装了的包，竟然发现有两个不同的版本的kernel-develop
+那么可能的问题就出在了版本上
+那就需要将不对的kernel-develop rpm包卸载掉并将对应的module删除后重新编印virtualbox的module
+方法如下：</p>
+
+<ul>
+  <li>删除对应的编译需要的lib库： <code>sudo rm /lib/modules/3.10.0-123.el7.x86_64/misc/vbox*</code></li>
+  <li>reboot</li>
+  <li>这个时候应该cdroom和网卡都回来了</li>
+  <li>重新安装virtualbox的附属包</li>
+</ul>
+
+<h3 id="section-2">总结</h3>
+
+<p>对于需要影响到kernel的安装的时候， 最好先备份一次VM，避免因为kernel被破坏后难以恢复的问题
+对于需要编译kernel module的时候，先查一下已经安装的kernel的开发包有没有多个名称相同但是版本不同的包，如果有则需要删除重复的 
+从过程来看，修复是很快的，但是找到问题的根源是复杂的。google也不是万能的。</p>
+
+<p>特定申明：该版权是<a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#032;&#115;&#101;&#097;&#110;&#046;&#103;&#111;&#110;&#103;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">Junjun</a>的 -:)</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[集成模式：标准化模式]]></title>
@@ -1957,112 +2039,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 
 <p>如果用Eclipse，则可以安装对应的<a href="http://plantuml.sourceforge.net/updatesitejuno/">eclipse插件，安装地址 </a>，这样在写plantuml文本的时候就可以同时看到图形了。</p>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Octopress中使用plantuml]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/12/octopresszhong-shi-yong-plantuml/"/>
-    <updated>2014-02-12T22:36:09+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/12/octopresszhong-shi-yong-plantuml</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<hr />
-<p>一直想便利的在Octopress使用UML，之前没有太好的办法，只能在astah画好后存为图片文件，然后再用链接的方式使用</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-<p>现在经Leo同学推荐，使用文本的UML语言的方式可以写出UML图，他就是<a href="http://plantuml.sourceforge.net">Plant UML</a>，同时在github上有个octopress的插件可以直接支持在Markdown中使用Plant UML，它是<a href="https://github.com/yjpark/jekyll-plantuml">jekyll-plantuml</a></p>
-
-<h4 id="section-2">安装办法</h4>
-<ol>
-  <li>在octopress上建一个<code>_lib</code>的目录</li>
-  <li>下载<a href="http://plantuml.sourceforge.net/download.html">plantuml.jar</a>到上面建的<code>_lib</code>的目录</li>
-  <li>下载<a href="https://github.com/yjpark/jekyll-plantuml/raw/master/plantuml.rb">plantuml.rb</a>插件到<code>plugin</code>目录</li>
-  <li>
-    <p>修改<code>_config.yml</code>文件，增加platuml的配置如下</p>
-
-    <pre><code># PlantUML
-plantuml_jar: _lib/plantuml.jar
-plantuml_background_color: "#f8f8f8"
-</code></pre>
-  </li>
-  <li>然后用</li>
-</ol>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="o">{</span>% plantuml %<span class="o">}</span>
-</span><span class="line">...
-</span><span class="line"><span class="o">{</span>% endplantuml %<span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>括上platuml的代码就可以了，下面是一个简单的示例</p>
-
-<p>源码如下：</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="o">{</span>% plantuml %<span class="o">}</span>
-</span><span class="line">Alice -&gt; Bob: Authentication Request
-</span><span class="line">Bob --&gt; Alice: Authentication Response
-</span><span class="line">Alice -&gt; Bob: Another authentication Request
-</span><span class="line">Alice &lt;-- Bob: another authentication Response
-</span><span class="line"><span class="o">{</span>% endplantuml %<span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>图片展示如下： </p>
-
-<center><img src="http://duffqiu.github.io/images/plantuml/4c4dec90e6118bd5d1038e47f33555a2.png" /></center>
-
-<p>类的表示方式如下：</p>
-
-<center><img src="http://duffqiu.github.io/images/plantuml/63b8e6e8e68b6b0ce2ae56a4f53eb096.png" /></center>
-
-<h3 id="section-3">小插曲</h3>
-<p>默认情况下，plantuml只能支持sequence图的生成，如果要生成其它图，则需要用到Graphiz。<br />
-在Mac上用<code>port</code>命令安装Graphiz，安装完成后<code>dot</code>命令是安装到了<code>/opt/local/bin/dot</code>目录下，而plantuml默认是要用<code>/usr/bin/dot</code>，这样plantuml.rb的plugin还是无法生成其它类型的图，但是platuml.jar是支持指定dot的路径的，所以手工改造一下plantuml.rb，具体方式如下：</p>
-
-<ol>
-  <li>
-    <p>在<code>_config.yml</code>文件中增加一个plantuml的配置项并设定dot的路径：<code>lantuml_dotpath: /opt/local/bin/dot</code></p>
-  </li>
-  <li>
-    <p>在plantuml.rb文件中的<code>filename = Digest::MD5.hexdigest(code) + ".png"</code>语句上面增加dot的配置的读取</p>
-  </li>
-</ol>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-</pre></td><td class="code"><pre><code class="ruby"><span class="line">  <span class="n">dotpath</span> <span class="o">=</span> <span class="n">site</span><span class="o">.</span><span class="n">config</span><span class="o">[</span><span class="s1">&#39;plantuml_dotpath&#39;</span><span class="o">]</span>
-</span><span class="line">  <span class="nb">puts</span> <span class="s2">&quot;using dot at: &quot;</span> <span class="o">+</span> <span class="n">dotpath</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-</span><span class="line">  <span class="k">if</span> <span class="no">File</span><span class="o">.</span><span class="n">exist?</span><span class="p">(</span><span class="n">dotpath</span><span class="p">)</span>
-</span><span class="line">    <span class="nb">puts</span> <span class="s2">&quot;PlantUML set dot path:&quot;</span> <span class="o">+</span> <span class="n">dotpath</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-</span><span class="line">    <span class="n">dotcmd</span> <span class="o">=</span> <span class="s2">&quot; -graphvizdot &quot;</span> <span class="o">+</span> <span class="n">dotpath</span>
-</span><span class="line">  <span class="k">else</span>
-</span><span class="line">    <span class="n">dotcmd</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-</span><span class="line">  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>然后修改<code>cmd = "java -jar " + plantuml_jar + " -pipe &gt; " + filepath</code>在最后增加<code> + dotcmd</code>，完整如下 </p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="ruby"><span class="line"><span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;java -jar &quot;</span> <span class="o">+</span> <span class="n">plantuml_jar</span> <span class="o">+</span> <span class="s2">&quot; -pipe &gt; &quot;</span> <span class="o">+</span> <span class="n">filepath</span> <span class="o">+</span> <span class="n">dotcmd</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>因为之前发生过错误，所以需要手工清除<code>octopress/public/images/plantuml/</code>这个目录</p>
-
-<p>这个我的第一个github pull request，纪念一下</p>
 ]]></content>
   </entry>
   

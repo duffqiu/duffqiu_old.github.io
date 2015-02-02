@@ -12,14 +12,15 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-1424e7971bee89d689cd1510a801f1df.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-c033422b4743ce7f7b662612acd43959.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 在使用Guice做依赖注入的时候，很可能会发生在一个依赖模块（Module）中有多个同类型的接口需要注入，但是又需要根据不同的使用类注入不同的具体对象。如果只是简单的申明为接口注入对象，则会使用同一个对象。如：bind(IDescription.class).to( &hellip;">
+  <meta name="description" content="原由 在编程中我们往往会使用到大对象，而对这些大对象的访问总是比较耗时，但是大对象又不是每次都需要使用到。例如从数据库读取出来的对象，或者从远程服务读取的对象。 解决办法 使用一个代理对象，实现原有对象的接口，并由这个代理对象来负责大对象的创建、缓存等优化操作。
+最常用的例子是数据的储存， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +39,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-9ad0239d6833ffeccd34328a61f17f3a.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-f64e9e04c03dc000ce91605710ae9488.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
@@ -99,6 +100,74 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/23/she-ji-mo-shi-%3Adai-li-mo-shi/">设计模式：代理模式</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-23T17:05:45+08:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/23/she-ji-mo-shi-%3Adai-li-mo-shi/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+
+<p>在编程中我们往往会使用到大对象，而对这些大对象的访问总是比较耗时，但是大对象又不是每次都需要使用到。例如从数据库读取出来的对象，或者从远程服务读取的对象。</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>使用一个代理对象，实现原有对象的接口，并由这个代理对象来负责大对象的创建、缓存等优化操作。
+最常用的例子是数据的储存，我们希望将一个大对象很快的存到数据库中，但是又不希望等待以及做很多异常的处理，以为对于使用端而言并不关系存储方式和异常处理。所以可以通过Proxy对象来隔离这些特殊的处理，并通过多线程等异步手段提高性能。</p>
+
+<h3 id="uml">UML图</h3>
+
+<center><img src="/images/plantuml/98d572a73413b32c676af3704f3fa8e2.png" /></center>
+
+<h3 id="proxydecorate">Proxy与Decorate的区别</h3>
+
+<p>－ Decorate的目的是给已有的类增加业务功能，而Proxy就像名义一样目的是为了某种而外目的给已有的类增加非业务功能</p>
+
+<ul>
+  <li>
+    <p>从UML图可以看出，Proxy是图钉针对某个某个固定对象的，而Decorate是针对接口的，并且Proxy是负责对应的对象的生命周期的，让Decorate只是使用对应的对象。同时Proxy和对应的对象的数量关系并不确定，可以是1-*，也可以是1-1。而Decorate只能是1-1</p>
+  </li>
+  <li>
+    <p>Decorate可以通过递归的方式叠加使用，而Proxy不作此用途</p>
+  </li>
+  <li>
+    <p>当然既然类似，就可能可以混用。没有必要教条的说一定要明确Proxy或Decorate。</p>
+  </li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1087,142 +1156,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/12/octopresszhong-shi-yong-plantuml/">Octopress中使用plantuml</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-12T22:36:09+08:00" pubdate data-updated="true">Feb 12<span>th</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/12/octopresszhong-shi-yong-plantuml/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<hr />
-<p>一直想便利的在Octopress使用UML，之前没有太好的办法，只能在astah画好后存为图片文件，然后再用链接的方式使用</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-<p>现在经Leo同学推荐，使用文本的UML语言的方式可以写出UML图，他就是<a href="http://plantuml.sourceforge.net">Plant UML</a>，同时在github上有个octopress的插件可以直接支持在Markdown中使用Plant UML，它是<a href="https://github.com/yjpark/jekyll-plantuml">jekyll-plantuml</a></p>
-
-<h4 id="section-2">安装办法</h4>
-<ol>
-  <li>在octopress上建一个<code>_lib</code>的目录</li>
-  <li>下载<a href="http://plantuml.sourceforge.net/download.html">plantuml.jar</a>到上面建的<code>_lib</code>的目录</li>
-  <li>下载<a href="https://github.com/yjpark/jekyll-plantuml/raw/master/plantuml.rb">plantuml.rb</a>插件到<code>plugin</code>目录</li>
-  <li>
-    <p>修改<code>_config.yml</code>文件，增加platuml的配置如下</p>
-
-    <pre><code># PlantUML
-plantuml_jar: _lib/plantuml.jar
-plantuml_background_color: "#f8f8f8"
-</code></pre>
-  </li>
-  <li>然后用</li>
-</ol>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="o">{</span>% plantuml %<span class="o">}</span>
-</span><span class="line">...
-</span><span class="line"><span class="o">{</span>% endplantuml %<span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>括上platuml的代码就可以了，下面是一个简单的示例</p>
-
-<p>源码如下：</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="o">{</span>% plantuml %<span class="o">}</span>
-</span><span class="line">Alice -&gt; Bob: Authentication Request
-</span><span class="line">Bob --&gt; Alice: Authentication Response
-</span><span class="line">Alice -&gt; Bob: Another authentication Request
-</span><span class="line">Alice &lt;-- Bob: another authentication Response
-</span><span class="line"><span class="o">{</span>% endplantuml %<span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>图片展示如下： </p>
-
-<center><img src="/images/plantuml/4c4dec90e6118bd5d1038e47f33555a2.png" /></center>
-
-<p>类的表示方式如下：</p>
-
-<center><img src="/images/plantuml/63b8e6e8e68b6b0ce2ae56a4f53eb096.png" /></center>
-
-<h3 id="section-3">小插曲</h3>
-<p>默认情况下，plantuml只能支持sequence图的生成，如果要生成其它图，则需要用到Graphiz。<br />
-在Mac上用<code>port</code>命令安装Graphiz，安装完成后<code>dot</code>命令是安装到了<code>/opt/local/bin/dot</code>目录下，而plantuml默认是要用<code>/usr/bin/dot</code>，这样plantuml.rb的plugin还是无法生成其它类型的图，但是platuml.jar是支持指定dot的路径的，所以手工改造一下plantuml.rb，具体方式如下：</p>
-
-<ol>
-  <li>
-    <p>在<code>_config.yml</code>文件中增加一个plantuml的配置项并设定dot的路径：<code>lantuml_dotpath: /opt/local/bin/dot</code></p>
-  </li>
-  <li>
-    <p>在plantuml.rb文件中的<code>filename = Digest::MD5.hexdigest(code) + ".png"</code>语句上面增加dot的配置的读取</p>
-  </li>
-</ol>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-</pre></td><td class="code"><pre><code class="ruby"><span class="line">  <span class="n">dotpath</span> <span class="o">=</span> <span class="n">site</span><span class="o">.</span><span class="n">config</span><span class="o">[</span><span class="s1">&#39;plantuml_dotpath&#39;</span><span class="o">]</span>
-</span><span class="line">  <span class="nb">puts</span> <span class="s2">&quot;using dot at: &quot;</span> <span class="o">+</span> <span class="n">dotpath</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-</span><span class="line">  <span class="k">if</span> <span class="no">File</span><span class="o">.</span><span class="n">exist?</span><span class="p">(</span><span class="n">dotpath</span><span class="p">)</span>
-</span><span class="line">    <span class="nb">puts</span> <span class="s2">&quot;PlantUML set dot path:&quot;</span> <span class="o">+</span> <span class="n">dotpath</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
-</span><span class="line">    <span class="n">dotcmd</span> <span class="o">=</span> <span class="s2">&quot; -graphvizdot &quot;</span> <span class="o">+</span> <span class="n">dotpath</span>
-</span><span class="line">  <span class="k">else</span>
-</span><span class="line">    <span class="n">dotcmd</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-</span><span class="line">  <span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>然后修改<code>cmd = "java -jar " + plantuml_jar + " -pipe &gt; " + filepath</code>在最后增加<code> + dotcmd</code>，完整如下 </p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="ruby"><span class="line"><span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;java -jar &quot;</span> <span class="o">+</span> <span class="n">plantuml_jar</span> <span class="o">+</span> <span class="s2">&quot; -pipe &gt; &quot;</span> <span class="o">+</span> <span class="n">filepath</span> <span class="o">+</span> <span class="n">dotcmd</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>因为之前发生过错误，所以需要手工清除<code>octopress/public/images/plantuml/</code>这个目录</p>
-
-<p>这个我的第一个github pull request，纪念一下</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1240,6 +1173,10 @@ plantuml_background_color: "#f8f8f8"
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/02/02/fix-centos-virtualbox/">安装附属包失败后修复virtualbox上的centos</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/02/02/integration-pattern-normalizer/">集成模式：标准化模式</a>
       </li>
     
@@ -1255,10 +1192,6 @@ plantuml_background_color: "#f8f8f8"
         <a href="/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing/">从实体模型到数据模型</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/04/06/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-3/">如何定义一个好的REST接口3</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -1271,6 +1204,7 @@ plantuml_background_color: "#f8f8f8"
     <li class='category'><a href='/blog/categories/appscale/'>Appscale (3)</a></li>
 <li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
 <li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
+<li class='category'><a href='/blog/categories/centos-/'>CentOS, (1)</a></li>
 <li class='category'><a href='/blog/categories/data-model/'>Data Model (1)</a></li>
 <li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (9)</a></li>
 <li class='category'><a href='/blog/categories/docker/'>Docker (1)</a></li>
@@ -1296,6 +1230,7 @@ plantuml_background_color: "#f8f8f8"
 <li class='category'><a href='/blog/categories/rest/'>REST (3)</a></li>
 <li class='category'><a href='/blog/categories/scala/'>Scala (2)</a></li>
 <li class='category'><a href='/blog/categories/uml/'>UML (1)</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/'>VirtualBox (1)</a></li>
 
   </ul>
 </section>

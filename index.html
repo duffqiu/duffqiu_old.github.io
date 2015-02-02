@@ -12,14 +12,15 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-1424e7971bee89d689cd1510a801f1df.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-c033422b4743ce7f7b662612acd43959.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 在系统集成中，可以通过不同的接口（EndPoint）适配多个外围系统，然后转换成标准的消息与内部系统结成。这种模式叫Normalizer。即标准化模式 解决办法 UML图例： ">
+  <meta name="description" content="原由 在virtualbox安装好centos7后，共享windows下的目录以及在host机器作拷贝张贴都不行，总是提示virtualbox的附属包没有安装，所以重新进行了安装。
+但是重装时发现virtualboxguess module（vboxguest）没有安装成功， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +39,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-9ad0239d6833ffeccd34328a61f17f3a.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-f64e9e04c03dc000ce91605710ae9488.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
@@ -99,6 +100,118 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/02/02/fix-centos-virtualbox/">安装附属包失败后修复virtualbox上的centos</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-02-02T16:45:25+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2015</time>
+        
+        
+           | <a href="/blog/2015/02/02/fix-centos-virtualbox/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>在virtualbox安装好centos7后，共享windows下的目录以及在host机器作拷贝张贴都不行，总是提示virtualbox的附属包没有安装，所以重新进行了安装。
+但是重装时发现virtualboxguess module（vboxguest）没有安装成功，提示需要安装kernel-develp包，然后再重装这个附属包。
+按照提示用<code>sudo yum install kernel-develop</code>, 然后再重装这个附属包
+重新启动后竟然网卡无法使用了，同时也无法mount cdrom来卸载这个virtualbox的附属包。</p>
+
+<p>网卡提示的错误信息是：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain systemd[1]: network.service: control process exited, code=exited status=1
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain systemd[1]: Failed to start LSB: Bring up/down networking.
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain systemd[1]: Unit network.service entered failed state.</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Google了半天都没有办法，唯一能定位的地方是virtualbox修改了kernel的module造成</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>kernel的module一般都要通过原码的方式在本地编译后安装/加载，所以才需要kernel-develop的rpm包，难道问题在这里？
+通过命令<code>rpm -qa|grep kernel</code>查看安装了的包，竟然发现有两个不同的版本的kernel-develop
+那么可能的问题就出在了版本上
+那就需要将不对的kernel-develop rpm包卸载掉并将对应的module删除后重新编印virtualbox的module
+方法如下：</p>
+
+<ul>
+  <li>删除对应的编译需要的lib库： <code>sudo rm /lib/modules/3.10.0-123.el7.x86_64/misc/vbox*</code></li>
+  <li>reboot</li>
+  <li>这个时候应该cdroom和网卡都回来了</li>
+  <li>重新安装virtualbox的附属包</li>
+</ul>
+
+<h3 id="section-2">总结</h3>
+
+<p>对于需要影响到kernel的安装的时候， 最好先备份一次VM，避免因为kernel被破坏后难以恢复的问题
+对于需要编译kernel module的时候，先查一下已经安装的kernel的开发包有没有多个名称相同但是版本不同的包，如果有则需要删除重复的 
+从过程来看，修复是很快的，但是找到问题的根源是复杂的。google也不是万能的。</p>
+
+<p>特定申明：该版权是<a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#032;&#115;&#101;&#097;&#110;&#046;&#103;&#111;&#110;&#103;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">Junjun</a>的 -:)</p>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1562,74 +1675,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/23/she-ji-mo-shi-%3Adai-li-mo-shi/">设计模式：代理模式</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-23T17:05:45+08:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/23/she-ji-mo-shi-%3Adai-li-mo-shi/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<hr />
-
-<p>在编程中我们往往会使用到大对象，而对这些大对象的访问总是比较耗时，但是大对象又不是每次都需要使用到。例如从数据库读取出来的对象，或者从远程服务读取的对象。</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-<p>使用一个代理对象，实现原有对象的接口，并由这个代理对象来负责大对象的创建、缓存等优化操作。
-最常用的例子是数据的储存，我们希望将一个大对象很快的存到数据库中，但是又不希望等待以及做很多异常的处理，以为对于使用端而言并不关系存储方式和异常处理。所以可以通过Proxy对象来隔离这些特殊的处理，并通过多线程等异步手段提高性能。</p>
-
-<h3 id="uml">UML图</h3>
-
-<center><img src="/images/plantuml/98d572a73413b32c676af3704f3fa8e2.png" /></center>
-
-<h3 id="proxydecorate">Proxy与Decorate的区别</h3>
-
-<p>－ Decorate的目的是给已有的类增加业务功能，而Proxy就像名义一样目的是为了某种而外目的给已有的类增加非业务功能</p>
-
-<ul>
-  <li>
-    <p>从UML图可以看出，Proxy是图钉针对某个某个固定对象的，而Decorate是针对接口的，并且Proxy是负责对应的对象的生命周期的，让Decorate只是使用对应的对象。同时Proxy和对应的对象的数量关系并不确定，可以是1-*，也可以是1-1。而Decorate只能是1-1</p>
-  </li>
-  <li>
-    <p>Decorate可以通过递归的方式叠加使用，而Proxy不作此用途</p>
-  </li>
-  <li>
-    <p>当然既然类似，就可能可以混用。没有必要教条的说一定要明确Proxy或Decorate。</p>
-  </li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1643,6 +1688,10 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/02/02/fix-centos-virtualbox/">安装附属包失败后修复virtualbox上的centos</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/02/02/integration-pattern-normalizer/">集成模式：标准化模式</a>
@@ -1660,10 +1709,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
         <a href="/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing/">从实体模型到数据模型</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/04/06/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-3/">如何定义一个好的REST接口3</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -1676,6 +1721,7 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
     <li class='category'><a href='/blog/categories/appscale/'>Appscale (3)</a></li>
 <li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
 <li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
+<li class='category'><a href='/blog/categories/centos-/'>CentOS, (1)</a></li>
 <li class='category'><a href='/blog/categories/data-model/'>Data Model (1)</a></li>
 <li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (9)</a></li>
 <li class='category'><a href='/blog/categories/docker/'>Docker (1)</a></li>
@@ -1701,6 +1747,7 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 <li class='category'><a href='/blog/categories/rest/'>REST (3)</a></li>
 <li class='category'><a href='/blog/categories/scala/'>Scala (2)</a></li>
 <li class='category'><a href='/blog/categories/uml/'>UML (1)</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/'>VirtualBox (1)</a></li>
 
   </ul>
 </section>

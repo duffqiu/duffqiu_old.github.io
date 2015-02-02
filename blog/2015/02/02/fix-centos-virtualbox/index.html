@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress Gem插件gsl安装 - Duff Qiu's Blog</title>
+  <title>安装附属包失败后修复virtualbox上的centos - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,9 +19,8 @@
 
 
   
-  <meta name="description" content="原由
-Octopress用rake generate的时候会提示使用GSL将会加速文件的生成，速度是原来的的10+倍，但是需要安装Ruby GSL插件。 安装
-当使用命令安装Ruby GSL的时候确发现了问题 gem install gsl 原因是缺少了GSL的C的开发库 然后在GSL &hellip;">
+  <meta name="description" content="原由 在virtualbox安装好centos7后，共享windows下的目录以及在host机器作拷贝张贴都不行，总是提示virtualbox的附属包没有安装，所以重新进行了安装。
+但是重装时发现virtualboxguess module（vboxguest）没有安装成功， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,7 +29,7 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/30/octopress-gemcha-jian-gslan-zhuang">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/02/02/fix-centos-virtualbox">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -104,7 +103,7 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   
   <header>
     
-      <h1 class="entry-title">Octopress Gem插件gsl安装</h1>
+      <h1 class="entry-title">安装附属包失败后修复virtualbox上的centos</h1>
     
     
       <p class="meta">
@@ -120,7 +119,7 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   
 
 
-<time datetime="2014-01-30T20:00:10+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2015-02-02T16:45:25+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2015</time>
         
         
            | <a href="#comments">Comments</a>
@@ -131,24 +130,79 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
 
 
 <div class="entry-content"><h3 id="section">原由</h3>
-<p>Octopress用rake generate的时候会提示使用GSL将会加速文件的生成，速度是原来的的10+倍，但是需要安装<a href="http://rb-gsl.rubyforge.org/">Ruby GSL</a>插件。</p>
+<hr />
+<p>在virtualbox安装好centos7后，共享windows下的目录以及在host机器作拷贝张贴都不行，总是提示virtualbox的附属包没有安装，所以重新进行了安装。
+但是重装时发现virtualboxguess module（vboxguest）没有安装成功，提示需要安装kernel-develp包，然后再重装这个附属包。
+按照提示用<code>sudo yum install kernel-develop</code>, 然后再重装这个附属包
+重新启动后竟然网卡无法使用了，同时也无法mount cdrom来卸载这个virtualbox的附属包。</p>
 
-<h3 id="section-1">安装</h3>
-<p>当使用命令安装Ruby GSL的时候确发现了问题 </p>
+<p>网卡提示的错误信息是：</p>
 
-<pre><code>gem install gsl
-</code></pre>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain systemd[1]: network.service: control process exited, code=exited status=1
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain systemd[1]: Failed to start LSB: Bring up/down networking.
+</span><span class="line">
+</span><span class="line">11月 05 15:30:10 localhost.localdomain systemd[1]: Unit network.service entered failed state.</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>原因是缺少了<a href="http://www.gnu.org/software/gsl/" title="GSL Library官网">GSL的C的开发库</a>    </p>
+<p>Google了半天都没有办法，唯一能定位的地方是virtualbox修改了kernel的module造成</p>
 
-<p>然后在GSL Library官网下载了最新的GSL1.16，然后编译安装，然后再重新安装Ruby GSL，但是还是出现错误，后来搜索<a href="http://stackoverflow.com">stackoverflow</a>找到一个说明，说是GSL和Ruby GSL配合的版本只能用1.14的。所以再次下载GSL1.14编译、安装然后再安装Ruby GSL就可以了</p>
+<h3 id="section-1">解决办法</h3>
+<hr />
 
-<h3 id="section-2">使用</h3>
+<p>kernel的module一般都要通过原码的方式在本地编译后安装/加载，所以才需要kernel-develop的rpm包，难道问题在这里？
+通过命令<code>rpm -qa|grep kernel</code>查看安装了的包，竟然发现有两个不同的版本的kernel-develop
+那么可能的问题就出在了版本上
+那就需要将不对的kernel-develop rpm包卸载掉并将对应的module删除后重新编印virtualbox的module
+方法如下：</p>
 
-<pre><code>rake notify
-</code></pre>
+<ul>
+  <li>删除对应的编译需要的lib库： <code>sudo rm /lib/modules/3.10.0-123.el7.x86_64/misc/vbox*</code></li>
+  <li>reboot</li>
+  <li>这个时候应该cdroom和网卡都回来了</li>
+  <li>重新安装virtualbox的附属包</li>
+</ul>
 
-<p>目前看除了rake generate没有那个提示，好像速度没有看出来，或许是文章的数目不多体现不出来 </p>
+<h3 id="section-2">总结</h3>
+
+<p>对于需要影响到kernel的安装的时候， 最好先备份一次VM，避免因为kernel被破坏后难以恢复的问题
+对于需要编译kernel module的时候，先查一下已经安装的kernel的开发包有没有多个名称相同但是版本不同的包，如果有则需要删除重复的 
+从过程来看，修复是很快的，但是找到问题的根源是复杂的。google也不是万能的。</p>
+
+<p>特定申明：该版权是<a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#032;&#115;&#101;&#097;&#110;&#046;&#103;&#111;&#110;&#103;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">Junjun</a>的 -:)</p>
+
 </div>
 
 
@@ -171,12 +225,12 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   
 
 
-<time datetime="2014-01-30T20:00:10+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2015-02-02T16:45:25+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2015</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/gsl/'>GSL</a>, <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/centos/'>CentOS,</a>, <a class='category' href='/blog/categories/virtualbox/'>VirtualBox</a>
   
 </span>
 
@@ -192,10 +246,8 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/" title="Previous Post: Octopress的内部blog间关联">&laquo; Octopress的内部blog间关联</a>
+        <a class="basic-alignment left" href="/blog/2015/02/02/integration-pattern-normalizer/" title="Previous Post: 集成模式：标准化模式">&laquo; 集成模式：标准化模式</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing/" title="Next Post: Octopress通知搜索引擎">Octopress通知搜索引擎 &raquo;</a>
       
     </p>
   </footer>
@@ -281,22 +333,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2015/02/02/fix-centos-virtualbox/">安装附属包失败后修复virtualbox上的centos</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/centos/'>CentOS,</a>, <a class='category' href='/blog/categories/virtualbox/'>VirtualBox</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2015/02/02/integration-pattern-normalizer/">集成模式：标准化模式</a></h3>
         <div class="meta">
           <span class="tags">
@@ -352,6 +388,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/data-model/'>Data Model</a>, <a class='category' href='/blog/categories/entity-model/'>Entity Model</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2014/04/06/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-3/">如何定义一个好的REST接口3</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/rest/'>REST</a>
   
 </span>
 
