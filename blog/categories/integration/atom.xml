@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Integration | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/integration/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-02T17:17:58+08:00</updated>
+  <updated>2015-02-02T18:03:15+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -28,6 +28,19 @@
 <p>UML图例：</p>
 
 <p><center><img src='/images/plantuml/082cc2c75b0503eae4e5e7d35888923a.png'></center></p>
+
+<p>对于Normalizer内部，通常从逻辑上可以这样分</p>
+
+<p><center><img src='/images/plantuml/202abcfd209de788569e9796f0b9cba1.png'></center></p>
+
+<h3 id="section-2">特点说明</h3>
+
+<ul>
+  <li>对于集成简单的场景比较适用。多数用在连接多个类似的client端到一个系统</li>
+  <li>如果对于Endpoint本身没有太复杂的逻辑则可以忽略Router并且合并translator的功能</li>
+  <li>唯一的不足是如果集成的系统越来越多，则需要的Endpoint将成几何基数的增长</li>
+  <li>可以通过Canonical Data Model(规范化数据模型)的方式来解决Normalizer模式的不足</li>
+</ul>
 
 ]]></content>
   </entry>
