@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-02T18:45:06+08:00</updated>
+  <updated>2015-02-05T13:31:31+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,103 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Scala中函数式编程还是命令式编程]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/02/05/fp-or-imperative-with-scala/"/>
+    <updated>2015-02-05T11:44:46+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/02/05/fp-or-imperative-with-scala</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>Scala是即支持传统的命令式编程也支持函数式编程(FP)，我们既可以像java那样写代码，也可以像Lisp那样写。
+但是那种好呢？</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>个人的理解是，主要取决于对问题的解决方式的思路。
+如果已经习惯了命令式编程的思路，那就用命令式编程好了。
+不过既然FP已经逐渐成为潮流，那换换思路也未尝不可。
+从Scala语言本身看两者没有冲突</p>
+
+<h3 id="section-2">一个例子来对比两种思路</h3>
+<hr />
+
+<p>例子：有一个Map的数组/列表，要将不同Map中相同key的value值相加，最后得到一个Map</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Vector</span><span class="o">(</span><span class="n">Map</span><span class="o">(</span><span class="s">&quot;test&quot;</span> <span class="o">-&gt;</span> <span class="mi">1</span><span class="o">,</span> <span class="s">&quot;hello&quot;</span> <span class="o">-&gt;</span> <span class="mi">2</span><span class="o">,</span> <span class="s">&quot;wwww&quot;</span> <span class="o">-&gt;</span> <span class="mi">9</span><span class="o">),</span> <span class="n">Map</span><span class="o">(</span><span class="s">&quot;test&quot;</span> <span class="o">-&gt;</span> <span class="mi">3</span><span class="o">,</span> <span class="s">&quot;hello&quot;</span> <span class="o">-&gt;</span> <span class="mi">5</span><span class="o">,</span> <span class="s">&quot;http&quot;</span> <span class="o">-&gt;</span> <span class="mi">33</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>期望得到的结果</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Map</span><span class="o">(</span><span class="n">test</span> <span class="o">-&gt;</span> <span class="mi">4</span><span class="o">,</span> <span class="n">hello</span> <span class="o">-&gt;</span> <span class="mi">7</span><span class="o">,</span> <span class="n">wwww</span> <span class="o">-&gt;</span> <span class="mi">9</span><span class="o">,</span> <span class="n">http</span> <span class="o">-&gt;</span> <span class="mi">33</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>命令式编程方式
+思路：循环Vector中的每个Map，然后循环Map中的每个Key-Value，将相同的Key对应的Value加起来后存入到一个临时的Map，最后返回这个Map</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">def</span> <span class="nf">merge</span><span class="o">(</span><span class="nl">input:</span> <span class="n">Vector</span><span class="o">[</span><span class="n">Map</span><span class="o">[</span><span class="n">String</span><span class="o">,</span> <span class="n">Int</span><span class="o">]])</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">  <span class="n">var</span> <span class="n">mergeRes</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">head</span>
+</span><span class="line">  <span class="n">val</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">tail</span>
+</span><span class="line">
+</span><span class="line">  <span class="k">for</span><span class="o">(</span><span class="n">itr</span> <span class="o">&lt;-</span> <span class="n">temp</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">  	<span class="k">for</span><span class="o">((</span><span class="n">word</span><span class="o">,</span> <span class="n">count</span><span class="o">)</span> <span class="o">&lt;-</span> <span class="n">itr</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">  		<span class="n">mergeRes</span> <span class="o">=</span> <span class="n">mergeRes</span> <span class="o">+</span> <span class="o">(</span><span class="n">word</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">mergeRes</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">word</span><span class="o">).</span><span class="na">getOrElse</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="o">+</span> <span class="n">count</span><span class="o">))</span>
+</span><span class="line">  	<span class="o">}</span>
+</span><span class="line">  <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">  <span class="n">mergeRes</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>函数式编程方式
+思路：对于Vector作折叠操作(reduceLeft)，因为每此计算都要以上一次计算作为输入。而计算中需要做的操作由使用者控制。同时对于每个Map都需要操作每个key-value并返回新的key-value所以用到map函数</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line">  <span class="n">def</span> <span class="nf">mergeFP</span><span class="o">(</span><span class="nl">input:</span> <span class="n">Vector</span><span class="o">[</span><span class="n">Map</span><span class="o">[</span><span class="n">String</span><span class="o">,</span> <span class="n">Int</span><span class="o">]])</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">input</span><span class="o">.</span><span class="na">reduceLeft</span> <span class="o">{</span>
+</span><span class="line">      <span class="o">(</span><span class="n">el</span><span class="o">,</span> <span class="n">acc</span><span class="o">)</span> <span class="o">=&gt;</span>
+</span><span class="line">        <span class="n">el</span><span class="o">.</span><span class="na">map</span> <span class="o">{</span>
+</span><span class="line">          <span class="k">case</span> <span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="n">count</span><span class="o">)</span> <span class="o">=&gt;</span>
+</span><span class="line">            <span class="n">acc</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">word</span><span class="o">).</span><span class="na">map</span><span class="o">(</span><span class="n">accCount</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="n">word</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">accCount</span> <span class="o">+</span> <span class="n">count</span><span class="o">))).</span><span class="na">getOrElse</span><span class="o">(</span><span class="n">word</span> <span class="o">-&gt;</span> <span class="n">count</span><span class="o">)</span>
+</span><span class="line">        <span class="o">}</span> <span class="o">++</span> <span class="o">(</span><span class="n">acc</span> <span class="o">--</span> <span class="n">el</span><span class="o">.</span><span class="na">keys</span><span class="o">)</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>从两者的对比俩看，如果不是熟悉FP的思路的化，似乎FP的代码更难看些。这也是为什么有人认为FP不利于代码沟通的原因吧。
+但是从FP的实现看，中间没有任何可变变量（其实Scala对于reduceLeft用了中间可变变量，只是对于函数的使用者不需要了）</p>
+
+<p><strong>注</strong> 改FP的例子载自Akka in Action，但是它的是foldLeft不是reduceLeft</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[系统集成模式：规范化数据流模式]]></title>
@@ -1961,55 +2058,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 
 <h3 id="section-2">代码以及测试参考</h3>
 <p>参见我的github代码：<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo</a>，注意改代码是通过gitflow的管理的，请参考develop branch</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式：工厂方法模式]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/15/she-ji-mo-shi-%3Agong-han-fang-fa-mo-shi/"/>
-    <updated>2014-02-15T22:15:00+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/15/she-ji-mo-shi-:gong-han-fang-fa-mo-shi</id>
-    <content type="html"><![CDATA[<h3 id="section">工厂方法模式原理</h3>
-<hr />
-<ol>
-  <li>模式名称：工厂方法模式 (Facotory Method)</li>
-  <li>
-    <p>问题：</p>
-
-    <ul>
-      <li>对象的创建比较复杂，需要关联其它对象／资源（如配置文件，数据库等）</li>
-      <li>需要写一堆if-else的方式来决定使用那个对象的具体类</li>
-      <li>希望隐藏创建过程的细节，降低偶和度</li>
-      <li>优化性能，在创建过程中缓存对象等 </li>
-      <li>使用者只关心接口，而不关心具体的类，因为用new的方式总是要和具体的类偶和 </li>
-    </ul>
-  </li>
-  <li>解决方案：使用一个类来帮助创建需要的对象，而该类有外部传入使用方，使用方只是对创建类的接口依赖（写到这里的时候，发现漫谈设计模式的书的UML的图我的理解不同，应该是client依赖与工厂接口，而不是关联工厂对象）</li>
-  <li>结论：提高对象的封装，减少了使用方的依赖</li>
-</ol>
-
-<h3 id="uml">UML图例</h3>
-<hr />
-
-<center><img src="http://duffqiu.github.io/images/plantuml/197a8f4ca8d157f5be99c4f58d0aafb9.png" /></center>
-
-<h3 id="section-1">示例代码</h3>
-<hr />
-<p>这个比较简单就不用代码举例了，看看上面的UML图就能写出代码了。关键是在合适的场景下要想起来用到它</p>
-
-<h3 id="section-2">静态工厂方法</h3>
-<p>原来就是避免了过多的产生工厂类，而将自身设计为工厂，并提供静态工厂方法来创建对象。劣势是失去类面向对象的特征，无法继承、动态多态等。注意：静态方法是无法被覆盖的。</p>
-
-<center><img src="http://duffqiu.github.io/images/plantuml/12638a4e83f0df76baccacef5388039e.png" /></center>
-
-<h3 id="section-3">书籍纠正</h3>
-<ol>
-  <li>在《漫谈设计模式》的P50页的setCurrentConnection方法没有必要提供</li>
-  <li>在《漫谈设计模式》的P51页的closeConnect方法，没有必要提供函数参数</li>
-</ol>
-
-<h3 id="threadlocal">小插曲：ThreadLocal的并发性</h3>
-<p>在工厂方法模式中，可以利用ThreadLocal来做对象的缓冲池。但是里面有个比较可爹的问题，如果在线程中被加入到ThreadLocal中，但是在线程结束前不将这个对象手动的移除出ThreadLocal，则ThreadLocal会被另外一个线程使用到。具体可以看我的Github上的<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的代码</a></p>
 ]]></content>
   </entry>
   

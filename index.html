@@ -12,17 +12,17 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-35e10e64e4f02cb05f422e279ea2bafd.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-b07e80996abd27272fe1f3f8e6667ff1.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 Normalizer模式中，我们提到到如果多个系统一起集成将造成Endpoint成几何级数的增长。 解决办法 使用Canonical Data Model(规范化数据模型)来解决这个问题
-其特点如下：
-- 每一个EndPoint一端和集成系统衔接，接收或发送特定系统的消息
-- &hellip;">
+  <meta name="description" content="原由 Scala是即支持传统的命令式编程也支持函数式编程(FP)，我们既可以像java那样写代码，也可以像Lisp那样写。
+但是那种好呢？ 解决办法 个人的理解是，主要取决于对问题的解决方式的思路。
+如果已经习惯了命令式编程的思路，那就用命令式编程好了。
+不过既然FP已经逐渐成为潮流， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -41,7 +41,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-869dfb04f5065d7aab1fd30b4f587490.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-523b7c739da8eb35ea9f2506ff1bebae.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
@@ -102,6 +102,133 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/02/05/fp-or-imperative-with-scala/">Scala中函数式编程还是命令式编程</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-02-05T11:44:46+08:00" pubdate data-updated="true">Feb 5<span>th</span>, 2015</time>
+        
+        
+           | <a href="/blog/2015/02/05/fp-or-imperative-with-scala/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>Scala是即支持传统的命令式编程也支持函数式编程(FP)，我们既可以像java那样写代码，也可以像Lisp那样写。
+但是那种好呢？</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>个人的理解是，主要取决于对问题的解决方式的思路。
+如果已经习惯了命令式编程的思路，那就用命令式编程好了。
+不过既然FP已经逐渐成为潮流，那换换思路也未尝不可。
+从Scala语言本身看两者没有冲突</p>
+
+<h3 id="section-2">一个例子来对比两种思路</h3>
+<hr />
+
+<p>例子：有一个Map的数组/列表，要将不同Map中相同key的value值相加，最后得到一个Map</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Vector</span><span class="o">(</span><span class="n">Map</span><span class="o">(</span><span class="s">&quot;test&quot;</span> <span class="o">-&gt;</span> <span class="mi">1</span><span class="o">,</span> <span class="s">&quot;hello&quot;</span> <span class="o">-&gt;</span> <span class="mi">2</span><span class="o">,</span> <span class="s">&quot;wwww&quot;</span> <span class="o">-&gt;</span> <span class="mi">9</span><span class="o">),</span> <span class="n">Map</span><span class="o">(</span><span class="s">&quot;test&quot;</span> <span class="o">-&gt;</span> <span class="mi">3</span><span class="o">,</span> <span class="s">&quot;hello&quot;</span> <span class="o">-&gt;</span> <span class="mi">5</span><span class="o">,</span> <span class="s">&quot;http&quot;</span> <span class="o">-&gt;</span> <span class="mi">33</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>期望得到的结果</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Map</span><span class="o">(</span><span class="n">test</span> <span class="o">-&gt;</span> <span class="mi">4</span><span class="o">,</span> <span class="n">hello</span> <span class="o">-&gt;</span> <span class="mi">7</span><span class="o">,</span> <span class="n">wwww</span> <span class="o">-&gt;</span> <span class="mi">9</span><span class="o">,</span> <span class="n">http</span> <span class="o">-&gt;</span> <span class="mi">33</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>命令式编程方式
+思路：循环Vector中的每个Map，然后循环Map中的每个Key-Value，将相同的Key对应的Value加起来后存入到一个临时的Map，最后返回这个Map</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">def</span> <span class="nf">merge</span><span class="o">(</span><span class="nl">input:</span> <span class="n">Vector</span><span class="o">[</span><span class="n">Map</span><span class="o">[</span><span class="n">String</span><span class="o">,</span> <span class="n">Int</span><span class="o">]])</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">  <span class="n">var</span> <span class="n">mergeRes</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">head</span>
+</span><span class="line">  <span class="n">val</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">tail</span>
+</span><span class="line">
+</span><span class="line">  <span class="k">for</span><span class="o">(</span><span class="n">itr</span> <span class="o">&lt;-</span> <span class="n">temp</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">  	<span class="k">for</span><span class="o">((</span><span class="n">word</span><span class="o">,</span> <span class="n">count</span><span class="o">)</span> <span class="o">&lt;-</span> <span class="n">itr</span><span class="o">)</span> <span class="o">{</span>
+</span><span class="line">  		<span class="n">mergeRes</span> <span class="o">=</span> <span class="n">mergeRes</span> <span class="o">+</span> <span class="o">(</span><span class="n">word</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">mergeRes</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">word</span><span class="o">).</span><span class="na">getOrElse</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="o">+</span> <span class="n">count</span><span class="o">))</span>
+</span><span class="line">  	<span class="o">}</span>
+</span><span class="line">  <span class="o">}</span>
+</span><span class="line">
+</span><span class="line">  <span class="n">mergeRes</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>函数式编程方式
+思路：对于Vector作折叠操作(reduceLeft)，因为每此计算都要以上一次计算作为输入。而计算中需要做的操作由使用者控制。同时对于每个Map都需要操作每个key-value并返回新的key-value所以用到map函数</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line">  <span class="n">def</span> <span class="nf">mergeFP</span><span class="o">(</span><span class="nl">input:</span> <span class="n">Vector</span><span class="o">[</span><span class="n">Map</span><span class="o">[</span><span class="n">String</span><span class="o">,</span> <span class="n">Int</span><span class="o">]])</span> <span class="o">=</span> <span class="o">{</span>
+</span><span class="line">    <span class="n">input</span><span class="o">.</span><span class="na">reduceLeft</span> <span class="o">{</span>
+</span><span class="line">      <span class="o">(</span><span class="n">el</span><span class="o">,</span> <span class="n">acc</span><span class="o">)</span> <span class="o">=&gt;</span>
+</span><span class="line">        <span class="n">el</span><span class="o">.</span><span class="na">map</span> <span class="o">{</span>
+</span><span class="line">          <span class="k">case</span> <span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="n">count</span><span class="o">)</span> <span class="o">=&gt;</span>
+</span><span class="line">            <span class="n">acc</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">word</span><span class="o">).</span><span class="na">map</span><span class="o">(</span><span class="n">accCount</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="n">word</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">accCount</span> <span class="o">+</span> <span class="n">count</span><span class="o">))).</span><span class="na">getOrElse</span><span class="o">(</span><span class="n">word</span> <span class="o">-&gt;</span> <span class="n">count</span><span class="o">)</span>
+</span><span class="line">        <span class="o">}</span> <span class="o">++</span> <span class="o">(</span><span class="n">acc</span> <span class="o">--</span> <span class="n">el</span><span class="o">.</span><span class="na">keys</span><span class="o">)</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>从两者的对比俩看，如果不是熟悉FP的思路的化，似乎FP的代码更难看些。这也是为什么有人认为FP不利于代码沟通的原因吧。
+但是从FP的实现看，中间没有任何可变变量（其实Scala对于reduceLeft用了中间可变变量，只是对于函数的使用者不需要了）</p>
+
+<p><strong>注</strong> 改FP的例子载自Akka in Action，但是它的是foldLeft不是reduceLeft</p>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1239,397 +1366,6 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou/">如何定义一个好的REST接口</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-03T21:25:32+08:00" pubdate data-updated="true">Mar 3<span>rd</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<hr />
-<p>现在<a href="http://www.json.org">基于JSON的REST接口</a>使用的是越来越多了，但是在自己去定义JSON的REST API的时候，我们确难免遇到不少疑惑，以下我们来谈谈这些疑惑 </p>
-
-<h3 id="rcp-based-or-rest-based">RCP-BASED or REST-BASED</h3>
-<hr />
-
-<p>在接口定义上，我们以往一般都是去定义请求什么，然后响应是什么，这就是典型的RPC(Remote Procedure Call)接口的定义方式。一般可以使用IDL（Interface Description Language，IDL）的方式来描述，如典型的WSDL等。RPC我的理解是，更多的是描述响应端提供什么样的行为给请求端调用。响应端会提供一个服务接入端点(End Point)，依据请求来返回响应。</p>
-
-<p>对于REST-BASED的接口定义，通常针对的是响应端提供什么样的资源给客户端使用。这里有一个很重要的特点是，所有的行为都是围绕“资源”来进行的。主要有：</p>
-
-<ul>
-  <li>GET  获取资源(可以是一个或多个)</li>
-  <li>PUT  更新资源，PUT方法有个很重要的特性就是多次调用，结果是一直的。</li>
-  <li>POST 创建资源，这个方法不是幂等</li>
-  <li>DELETE 删除资源 </li>
-</ul>
-
-<p>对于每个操作的返回都是基于同一个资源描述，只是不同的方法，资料描述里的某些内容被省略了。</p>
-
-<p>其实对于使用JSON在RPC-Based上还是REST-Based都可以。接口定义成RPC-Based上还是REST-Based没有绝对的好坏，而是根据实际的使用场景。简单来说就是如果可以能被描述成“资源”(如：用户账户、购物车等等)，则用REST-Based更合适，如果是需要执行某些动作(如：发送邮件等)则RPC-Based更合适。</p>
-
-<h3 id="rest-based-best-practice">REST-BASED BEST PRACTICE</h3>
-
-<p>如果使用REST-Based，建议可以参考<a href="https://developers.google.com/google-apps/calendar/v3/reference/">Google Canlendar的API定义</a>。主要的要点如下：</p>
-
-<ol>
-  <li>确定什么是资源(如calendar, event…)以及资源的表述</li>
-</ol>
-
-<p>例如：</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">{
-</span><span class="line">  "id": string,
-</span><span class="line">  "summary": string,
-</span><span class="line">  "description": string,
-</span><span class="line">  "location": string,
-</span><span class="line">  "timeZone": string,
-</span><span class="line">  "summaryOverride": string,
-</span><span class="line">  "colorId": string,
-</span><span class="line">  "backgroundColor": string,
-</span><span class="line">  "foregroundColor": string,
-</span><span class="line">  "hidden": boolean,
-</span><span class="line">  "selected": boolean,
-</span><span class="line">  "accessRole": string,
-</span><span class="line">  "defaultReminders": [
-</span><span class="line">    {
-</span><span class="line">      "method": string,
-</span><span class="line">      "minutes": integer
-</span><span class="line">    }
-</span><span class="line">  ],
-</span><span class="line">  "primary": boolean
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ol>
-  <li>
-    <p>列举每个资源能提供的操作简要</p>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Method</th>
-          <th>HTTP request</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>delete</td>
-          <td>DELETE  /calendars/calendarId/acl/ruleId</td>
-          <td>Deletes an access control rule.</td>
-        </tr>
-        <tr>
-          <td>get</td>
-          <td>GET  /calendars/calendarId/acl/ruleId</td>
-          <td>Returns an access control rule.</td>
-        </tr>
-        <tr>
-          <td>insert</td>
-          <td>POST  /calendars/calendarId/acl</td>
-          <td>Creates an access control rule.</td>
-        </tr>
-      </tbody>
-    </table>
-  </li>
-  <li>
-    <p>详细描述每个资源操作</p>
-
-    <ul>
-      <li>http request形式，如</li>
-    </ul>
-
-    <p><code>
-POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
-</code></p>
-
-    <ul>
-      <li>
-        <p>http request parameter</p>
-
-        <p>这里需要注意的是什么放在Path上，什么放在query parameter上。一般而言，一个资源的子资源放在path上，定位资源的条件放在query paramenter上</p>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Path parameter</th>
-              <th>Value</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>calendarId</td>
-              <td>string</td>
-              <td>Calendar identifier</td>
-            </tr>
-            <tr>
-              <td>…</td>
-              <td> </td>
-              <td> </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Query parameter</th>
-              <th>Value</th>
-              <th>Description</th>
-              <th>Required?</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>…</td>
-              <td> </td>
-              <td> </td>
-              <td> </td>
-            </tr>
-          </tbody>
-        </table>
-      </li>
-      <li>
-        <p>Authorization<br />
- 定义是否需要授权</p>
-      </li>
-      <li>
-        <p>Request Body (通常只用在Post操作上)，定义方式如下：</p>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Property name</th>
-              <th>Value</th>
-              <th>Description</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>email</td>
-              <td>string</td>
-              <td>user’s email address</td>
-              <td> </td>
-            </tr>
-            <tr>
-              <td>…</td>
-              <td> </td>
-              <td> </td>
-              <td> </td>
-            </tr>
-          </tbody>
-        </table>
-      </li>
-      <li>
-        <p>http response representations(针对RPC的接口，如果是REST原则是公用一个resource的描述，只是不同的操作某些参数可以被忽略)，如</p>
-
-        <p><code>
-{  
-"id": string,  
-"status": string,  
-"htmlLink": string,   
-"created": datetime   
-}  
-</code></p>
-      </li>
-      <li>
-        <p>http reponse parameters(对于资源描述中使用到的参数的解释)</p>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Property name</th>
-              <th>Value</th>
-              <th>Description</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>home address</td>
-              <td>string</td>
-              <td>user’s home address</td>
-              <td> </td>
-            </tr>
-            <tr>
-              <td>…</td>
-              <td> </td>
-              <td> </td>
-              <td> </td>
-            </tr>
-          </tbody>
-        </table>
-      </li>
-    </ul>
-  </li>
-</ol>
-
-<h3 id="json-style-guideline">JSON Style Guideline</h3>
-
-<p>如何编写JSON，可以参见<a href="https://google-styleguide.googlecode.com/svn/trunk/jsoncstyleguide.xml">Google JSON STYLE</a></p>
-
-<p>主要是参考保留的定义属性名</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-<span class="line-number">39</span>
-<span class="line-number">40</span>
-<span class="line-number">41</span>
-<span class="line-number">42</span>
-<span class="line-number">43</span>
-<span class="line-number">44</span>
-<span class="line-number">45</span>
-<span class="line-number">46</span>
-<span class="line-number">47</span>
-<span class="line-number">48</span>
-<span class="line-number">49</span>
-<span class="line-number">50</span>
-<span class="line-number">51</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">object</span> <span class="o">{</span>
-</span><span class="line">  <span class="n">string</span> <span class="n">apiVersion</span><span class="o">?;</span>
-</span><span class="line">  <span class="n">string</span> <span class="n">context</span><span class="o">?;</span>
-</span><span class="line">  <span class="n">string</span> <span class="n">id</span><span class="o">?;</span>
-</span><span class="line">  <span class="n">string</span> <span class="n">method</span><span class="o">?;</span>
-</span><span class="line">  <span class="n">object</span> <span class="o">{</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">id</span><span class="o">?</span>
-</span><span class="line">  <span class="o">}*</span> <span class="n">params</span><span class="o">?;</span>
-</span><span class="line">  <span class="n">object</span> <span class="o">{</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">kind</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">fields</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">etag</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">id</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">lang</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">updated</span><span class="o">?;</span> <span class="err">#</span> <span class="n">date</span> <span class="n">formatted</span> <span class="n">RFC</span> <span class="mi">3339</span>
-</span><span class="line">    <span class="kt">boolean</span> <span class="n">deleted</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">integer</span> <span class="n">currentItemCount</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">integer</span> <span class="n">itemsPerPage</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">integer</span> <span class="n">startIndex</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">integer</span> <span class="n">totalItems</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">integer</span> <span class="n">pageIndex</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">integer</span> <span class="n">totalPages</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">pageLinkTemplate</span> <span class="o">/^</span><span class="n">https</span><span class="o">?:/</span> <span class="o">?;</span>
-</span><span class="line">    <span class="n">object</span> <span class="o">{}*</span> <span class="n">next</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">nextLink</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">object</span> <span class="o">{}*</span> <span class="n">previous</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">previousLink</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">object</span> <span class="o">{}*</span> <span class="n">self</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">selfLink</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">object</span> <span class="o">{}*</span> <span class="n">edit</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">editLink</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">array</span> <span class="o">[</span>
-</span><span class="line">      <span class="n">object</span> <span class="o">{}*;</span>
-</span><span class="line">    <span class="o">]</span> <span class="n">items</span><span class="o">?;</span>
-</span><span class="line">  <span class="o">}*</span> <span class="n">data</span><span class="o">?;</span>
-</span><span class="line">  <span class="n">object</span> <span class="o">{</span>
-</span><span class="line">    <span class="n">integer</span> <span class="n">code</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">message</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">array</span> <span class="o">[</span>
-</span><span class="line">      <span class="n">object</span> <span class="o">{</span>
-</span><span class="line">        <span class="n">string</span> <span class="n">domain</span><span class="o">?;</span>
-</span><span class="line">        <span class="n">string</span> <span class="n">reason</span><span class="o">?;</span>
-</span><span class="line">        <span class="n">string</span> <span class="n">message</span><span class="o">?;</span>
-</span><span class="line">        <span class="n">string</span> <span class="n">location</span><span class="o">?;</span>
-</span><span class="line">        <span class="n">string</span> <span class="n">locationType</span><span class="o">?;</span>
-</span><span class="line">        <span class="n">string</span> <span class="n">extendedHelp</span><span class="o">?;</span>
-</span><span class="line">        <span class="n">string</span> <span class="n">sendReport</span><span class="o">?;</span>
-</span><span class="line">      <span class="o">}*;</span>
-</span><span class="line">    <span class="o">]</span> <span class="n">errors</span><span class="o">?;</span>
-</span><span class="line">  <span class="o">}*</span> <span class="n">error</span><span class="o">?;</span>
-</span><span class="line"><span class="o">}*;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<h3 id="section-1">接口定义模版参考</h3>
-
-<p><a href="">REST JSON API模版</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1645,6 +1381,10 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/02/05/fp-or-imperative-with-scala/">Scala中函数式编程还是命令式编程</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/02/02/integration-pattern-canonical-data-model/">系统集成模式：规范化数据流模式</a>
       </li>
     
@@ -1658,10 +1398,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
     
       <li class="post">
         <a href="/blog/2015/01/13/howtostartprogrammingwithscala/">如何开始用scala编程</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/01/13/continue-octopress-in-other-machine/">在其它机器上继续编写blog或者是新建编辑环境处理已有的Octopress系统</a>
       </li>
     
   </ul>
@@ -1681,6 +1417,7 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 <li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (9)</a></li>
 <li class='category'><a href='/blog/categories/docker/'>Docker (1)</a></li>
 <li class='category'><a href='/blog/categories/entity-model/'>Entity Model (1)</a></li>
+<li class='category'><a href='/blog/categories/fp/'>FP (1)</a></li>
 <li class='category'><a href='/blog/categories/findbugs/'>Findbugs (1)</a></li>
 <li class='category'><a href='/blog/categories/gsl/'>GSL (1)</a></li>
 <li class='category'><a href='/blog/categories/guava/'>Guava (1)</a></li>
@@ -1701,6 +1438,7 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 <li class='category'><a href='/blog/categories/proxy/'>Proxy (1)</a></li>
 <li class='category'><a href='/blog/categories/rest/'>REST (3)</a></li>
 <li class='category'><a href='/blog/categories/scala/'>Scala (2)</a></li>
+<li class='category'><a href='/blog/categories/scala-/'>Scala, (1)</a></li>
 <li class='category'><a href='/blog/categories/uml/'>UML (1)</a></li>
 <li class='category'><a href='/blog/categories/virtualbox/'>VirtualBox (1)</a></li>
 
