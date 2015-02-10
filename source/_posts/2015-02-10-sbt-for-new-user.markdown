@@ -44,6 +44,40 @@ JAVA_OPTS="$JAVA_OPTS -Dhttp.proxyHost=<proxy host> -Dhttp.proxyPort=<proxy port
 
 具体步骤为：
 
+- 创建一个工程目录如： sbt-sample
+- 在工程目录下再创建一个子目录，必须名为project
+- 在工程目录下创建名为build.sbt的定义文件，并写入基本的信息，需要注意的是每个配置都要空一行。以后打开别人的工程先看看这个文件的基本定义，特比是scala的版本
 
+``` sh
+name := "sbt-sample"
+
+version := "1.0"
+
+scalaVersion := "2.11.4"
+
+organization := "org.duff"
+```
+- 使用[sbteclpise](https://github.com/typesafehub/sbteclipse)插件， 在project子目录下创建一个plugins.sbt文件，然后加入一下内容，然后在sbt的命令行下执行eclipse就可以生成对应的eclipse的工程了
+
+``` sh
+addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.5.0")
+```
+
+- 打开Eclipse，写个测试的App
+
+``` java
+package org.duff.sbtsample
+
+object Main extends App{
+  
+  println("this is a sbt sample")
+
+}
+
+```
+
+- 在sbt命令行下执行`compile`，然后`run`就可以看到对应的输入了
+
+- 设置包依赖
 
 
