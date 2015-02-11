@@ -12,17 +12,16 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-b07e80996abd27272fe1f3f8e6667ff1.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-318801a1222283638306656c40bfcf44.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 Scala是即支持传统的命令式编程也支持函数式编程(FP)，我们既可以像java那样写代码，也可以像Lisp那样写。
-但是那种好呢？ 解决办法 个人的理解是，主要取决于对问题的解决方式的思路。
-如果已经习惯了命令式编程的思路，那就用命令式编程好了。
-不过既然FP已经逐渐成为潮流， &hellip;">
+  <meta name="description" content="原由 初学一种语言最烦的就是搭建开发环境了，每次都要装一堆的plugin，有时候又因为不同的plugin的版本等问题冲突
+前面介绍如何使用Maven来搭建开发环境，总体而言还算比较复杂。特别是在不同的机器上竟然有些plugin不可用，也不知道问题在那里。
+所以既然是以开发Scala为主， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -41,7 +40,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-523b7c739da8eb35ea9f2506ff1bebae.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-75d21dc62043414edf1fa8052fdee852.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
@@ -102,6 +101,244 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/02/10/sbt-for-new-user/">初学sbt</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-02-10T15:22:32+08:00" pubdate data-updated="true">Feb 10<span>th</span>, 2015</time>
+        
+        
+           | <a href="/blog/2015/02/10/sbt-for-new-user/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>初学一种语言最烦的就是搭建开发环境了，每次都要装一堆的plugin，有时候又因为不同的plugin的版本等问题冲突
+前面介绍如何使用Maven来搭建开发环境，总体而言还算比较复杂。特别是在不同的机器上竟然有些plugin不可用，也不知道问题在那里。
+所以既然是以开发Scala为主，那还是用<a href="http://scala-sbt.org">SBT</a>吧</p>
+
+<h3 id="section-1">主要参考</h3>
+<hr />
+<p>直接参考<a href="http://www.scala-sbt.org/0.13/tutorial/index.html">SBT官网的Getting Started</a>并结合自己的一些实践做了下浓缩
+官网已经提供中文版本了(开来中国是用Scala增长比较快的地区，另一个是美国硅谷，有兴趣可以看看google trend上关于Scala)</p>
+
+<p>该Getting Started有几章可以暂时不用看的，到真的有需要再看
+- Scope
+- Multi-project builds
+- Custom settings and tasks
+- .scala build definition</p>
+
+<p>另外在Github上有个<a href="https://github.com/n8han/giter8">giter8，简称g8</a>的工具，可以帮助获取scala, sbt的模版，不过自从有了<a href="http://typesafe.com/get-started">typesafe的activator</a>后，提供g8模版已经不多了，原有的模版也没怎么更新了</p>
+
+<h4 id="sbt">安装SBT</h4>
+<p>可以根据SBT官网的Getting Started，对于不同的平台采用不同的安装方式
+安装完后，基本上就是一个sbt的命令脚本和sbt-launch.jar
+安装完后，通过命令行运行一次<code>sbt</code>，然后sbt会将对应的依赖包下载下来。
+sbt会在用户的home目录下创建.sbt和.ivy2的目录，依赖包都放在了ivy2的目录里。因为sbt实际是通过ivy2来管理包依赖。不过大家不用去看ivy2，这些都是sbt自己管理的。
+如果是公司有代理的环境中，则需要设置java代理的参数才可以使用，不然sbt总是在尝试下载依赖包。
+一般设置java代理的参数是在shell的文件中设置JAVA_OPTS,但是好像不其作用。所以最好的方式是直接修改sbt的命令脚本增加代理配置参数</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="nv">JAVA_OPTS</span><span class="o">=</span><span class="s2">&quot;$JAVA_OPTS -Dhttp.proxyHost=&lt;proxy host&gt; -Dhttp.proxyPort=&lt;proxy port&gt; -Dhttps.proxyHost=&lt;proxy host&gt; -Dhttps.proxyPort=&lt;proxy port&gt;&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h4 id="scalajava">建立一个scala/java工程</h4>
+<p>建议不要从参考SBT官网的Getting Started的hello world，因为它将源文件建在了工程的根目录上了
+很奇怪，到目前位置都没有个一个像maven那样可以直接在Eclipse上创建一个sbt的工程，而必须先手工创建一些文件</p>
+
+<p>具体步骤为：</p>
+
+<ul>
+  <li>创建一个工程目录如： sbt-sample</li>
+  <li>在工程目录下再创建一个子目录，必须名为project</li>
+  <li>在工程目录下创建名为build.sbt的定义文件，并写入基本的信息，需要注意的是每个配置都要空一行。以后打开别人的工程先看看这个文件的基本定义，特比是scala的版本</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">name :<span class="o">=</span> <span class="s2">&quot;sbt-sample&quot;</span>
+</span><span class="line">
+</span><span class="line">version :<span class="o">=</span> <span class="s2">&quot;1.0&quot;</span>
+</span><span class="line">
+</span><span class="line">scalaVersion :<span class="o">=</span> <span class="s2">&quot;2.11.4&quot;</span>
+</span><span class="line">
+</span><span class="line">organization :<span class="o">=</span> <span class="s2">&quot;org.duff&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>使用<a href="https://github.com/typesafehub/sbteclipse">sbteclpise</a>插件， 在project子目录下创建一个plugins.sbt文件，然后加入一下内容，然后在sbt的命令行下执行<code>eclipse</code>就可以生成对应的eclipse的工程了。如果改动了sbt的文件则最后重新执行一次<code>eclipse</code>获得最新的包依赖等</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">addSbtPlugin<span class="o">(</span><span class="s2">&quot;com.typesafe.sbteclipse&quot;</span> % <span class="s2">&quot;sbteclipse-plugin&quot;</span> % <span class="s2">&quot;2.5.0&quot;</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>打开Eclipse，写个测试的App</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duff</span><span class="o">.</span><span class="na">sbtsample</span>
+</span><span class="line">
+</span><span class="line"><span class="n">object</span> <span class="n">Main</span> <span class="kd">extends</span> <span class="n">App</span><span class="o">{</span>
+</span><span class="line">
+</span><span class="line">  <span class="n">println</span><span class="o">(</span><span class="s">&quot;this is a sbt sample&quot;</span><span class="o">)</span>
+</span><span class="line">
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>
+    <p>在sbt命令行下执行<code>compile</code>，然后<code>run</code>就可以看到对应的输入了</p>
+  </li>
+  <li>
+    <p>设置包依赖仓库（repository）。对于Maven是设置的Maven的conf文件中，但是对于SBT是每次定义在项目的build.sbt文件中</p>
+
+    <ul>
+      <li>方法一： 通过URL定义如： <code>resolvers += "&lt;rep name&gt;" at "&lt;rep url&gt;"</code></li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">resolvers +<span class="o">=</span>
+</span><span class="line">  <span class="s2">&quot;Sonatype OSS Snapshots&quot;</span> at <span class="s2">&quot;https://oss.sonatype.org/content/repositories/snapshots&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>
+    <p>方法二： 使用<a href="http://www.scala-sbt.org/0.13/docs/Resolvers.html">预定义的Rep</a>，主要有：</p>
+
+    <ul>
+      <li>DefaultMavenRepository at  https://repo1.maven.org/maven2/，这个会被默认使用，无需指定</li>
+      <li>JavaNet1Repository  at http://download.java.net/maven/1/</li>
+      <li>Resolver.sonatypeRepo(“public”) (or “snapshots”, “releases”) at https://oss.sonatype.org/content/repositories/public</li>
+      <li>Resolver.typesafeRepo(“releases”) (or “snapshots”) at https://repo.typesafe.com/typesafe/releases</li>
+      <li>Resolver.typesafeIvyRepo(“releases”) (or “snapshots”) at https://repo.typesafe.com/typesafe/ivy-releases</li>
+      <li>Resolver.sbtPluginRepo(“releases”) (or “snapshots”) at https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases</li>
+      <li>Resolver.bintrayRepo(“owner”, “repo”) at https://dl.bintray.com/[owner]/[repo]/</li>
+      <li>Resolver.jcenterRepo at https://jcenter.bintray.com/</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">resolvers +<span class="o">=</span> JavaNet1Repository
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>方法三：同时指定多个rep，使用<code>resolvers ++= Seq(&lt;rep1&gt;, &lt;rep2&gt;)</code>, rep1/rep2可以使用方法一或方法二</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">resolvers ++<span class="o">=</span> Seq<span class="o">(</span>Resolver.sonatypeRepo<span class="o">(</span><span class="s2">&quot;public&quot;</span><span class="o">)</span>,
+</span><span class="line">    Resolver.typesafeRepo<span class="o">(</span><span class="s2">&quot;releases&quot;</span><span class="o">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>指定工程依赖包，和resolver类似，可以一个一个指定(+=)，也可以同时指定(++= Seq())，另外如果需要对多个包使用同一个变量指定如scala版本等，则可以使用如下例子的方式(即Scala的闭包)</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">libraryDependencies ++<span class="o">=</span> <span class="o">{</span>
+</span><span class="line">  val <span class="nv">akkaVersion</span>       <span class="o">=</span> <span class="s2">&quot;2.3.9&quot;</span>
+</span><span class="line">  val <span class="nv">sprayVersion</span>      <span class="o">=</span> <span class="s2">&quot;1.3.2&quot;</span>
+</span><span class="line">  Seq<span class="o">(</span>
+</span><span class="line">    <span class="s2">&quot;com.typesafe.akka&quot;</span> %% <span class="s2">&quot;akka-slf4j&quot;</span>      % akkaVersion withSources<span class="o">()</span> withJavadoc<span class="o">()</span>,
+</span><span class="line">    <span class="s2">&quot;ch.qos.logback&quot;</span>    %  <span class="s2">&quot;logback-classic&quot;</span> % <span class="s2">&quot;1.1.2&quot;</span>,
+</span><span class="line">    <span class="s2">&quot;com.typesafe.akka&quot;</span> %% <span class="s2">&quot;akka-testkit&quot;</span>    % akkaVersion   % <span class="s2">&quot;test&quot;</span>,
+</span><span class="line">    <span class="s2">&quot;org.scalatest&quot;</span>     %% <span class="s2">&quot;scalatest&quot;</span>       % <span class="s2">&quot;2.2.0&quot;</span>       % <span class="s2">&quot;test&quot;</span> withSources<span class="o">()</span> withJavadoc<span class="o">()</span>
+</span><span class="line">  <span class="o">)</span>
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>每个lib的定义格式为 <code>&lt;groupID&gt; % &lt;artifactID&gt; % &lt;revision&gt; % configuration</code>。如上面的 ch.qos.logback，默认情况下都是”compile”的配置，而对于scalatest是指定在”test”的时候才使用</li>
+  <li>如果artifactID是根据scala的版本有不同的版本则可以简化的使用%%的方式省去指定xxx_2.11.4 (使用scala 2.11.4)而是直接写xxx</li>
+  <li>
+    <p>需要同时下载javadoc和source，则可以在最后用withSources() withJavadoc()</p>
+  </li>
+  <li>
+    <p>更改完后，如果还在sbt命令行下，则可以运行<code>reload</code>来更新相应的配置</p>
+  </li>
+  <li>
+    <p>打包程序，如果使用的不同的framework/toolkit，则有不同的打包方式，一般的打包方式是打成大的jar包</p>
+
+    <ul>
+      <li>配置打包plugin，在project子目录中增加一个名为assembly.sbt的文件，增加以下内容</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">addSbtPlugin<span class="o">(</span><span class="s2">&quot;com.eed3si9n&quot;</span> % <span class="s2">&quot;sbt-assembly&quot;</span> % <span class="s2">&quot;0.12.0&quot;</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>然后就可以在sbt命令行下执行<code>assembly</code>，则可以打包出jar文件了。可以在子目录target/scala-2.11/下找到这个jar</li>
+  <li>通过执行<code>java -jar &lt;xxx.jar&gt;</code>来执行程序</li>
+  <li>
+    <p>可以通过在build.sbt中增加以下配置更改打包jar</p>
+
+    <ul>
+      <li><code>ssemblyJarName in assembly := "&lt;xxxx.jar&gt;"</code> 更改打包的jar文件名</li>
+      <li><code>mainClass in assembly := Some("&lt;com.example.Main&gt;")</code> 更改main函数的入库</li>
+      <li>如果像用工程的版本号来合成打包文件，则可以这样写 <code>assemblyJarName in assembly := "&lt;name&gt;" + version.value +".jar"</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p>到此一个就本的sbt的scala开发环境就建成了。
+后续不同的项目的变化基本上就集中在增加新的依赖包，增加不同的plugin来执行不同的任务
+个人使用看来，对比maven相对而言要简单一些。只是SBT使用场景基本只局限于java和scala，同时sbt的写法是scala语法</p>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1036,336 +1273,6 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/13/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-2/">如何定义一个好的REST接口2</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-13T22:06:13+08:00" pubdate data-updated="true">Mar 13<span>th</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/03/13/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-2/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<hr />
-<p>经过一段实践的实践，特别是需求总在变化的项目（项目开始阶段总是比较痛苦的）中，如何去管理REST接口的描述文件变得非常重要。即要美观，又要开发人员随时能看，能更新。之前写过第一篇的这个<a href="/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou/">“如何定义一个好的REST接口”</a>，但是如果写到word文档中，痛苦是难以仍受的。特别是需要比较大篇幅的改动。同时开发人员也很难知道具体那些被改了，就会陷入迷茫中。</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-
-<h4 id="section-2">前提条件</h4>
-<ol>
-  <li>前提条件1，将设计文档放在离开发最近的地方。那么当然是代码工程的地方是最进的。</li>
-  <li>前提条件2，有利于跟踪变化。对于开发人员而言，当然是像代码那样跟踪最顺手了。（目前我用的是Git）</li>
-  <li>尽可能足够简单</li>
-</ol>
-
-<h4 id="section-3">解决方式</h4>
-<ol>
-  <li>参照<a href="http://json-schema.org">JSON SCHEMA</a>的方式</li>
-  <li>简化JSON SCHEMA，但依然是用JSON的方式字描述接口</li>
-  <li>安装Eclipse的JSON editor plugin，可以在outline上很清晰的看到JSON的结构。当然如果是windows下也可以用notepad++的jason plugin看。不过如何是代码就在eclispe上，最好还是用eclipse的plugin</li>
-  <li>
-    <p>定义设计规则：</p>
-
-    <ul>
-      <li>接口文件的目录结构： <code>&lt;ComponentName&gt;\&lt;ResourceName&gt;\Method_&lt;create/delete/query/update&gt;.json</code>. ComponentName：组件或模块名称，ResourceName：资源名称，最后是方法的接口文件名。举个例子：有个组件Calendar，它下面有个资源叫Event，那么操作这个资源的更新的接口文件为Method_update.json，它放在了Calendar\Event\目录下。</li>
-      <li>接口文件的层次结构。因为是基于HTTP的方式，则整个REST接口的层次结构为： </li>
-    </ul>
-  </li>
-</ol>
-
-<p><img src="http://duffqiu.github.io/images/rest_structure1.png" alt="rest structure1" title="REST API First Level Structure&quot;" /></p>
-
-<p>其中，Revision Information用来描述文档的要点变化情况  </p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">{
-</span><span class="line">   "Revision Information" : [
-</span><span class="line">   {
-</span><span class="line">      "Revision": "v0.1",
-</span><span class="line">      "Section":"Whole document",
-</span><span class="line">      "Change":"initialized"
-</span><span class="line">   },
-</span><span class="line">   {
-</span><span class="line">      ...
-</span><span class="line">   }
-</span><span class="line">   ]
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>description用来描述接口的说明</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">{
-</span><span class="line">   "description":{
-</span><span class="line">    "method_description":"Create xxxxx",
-</span><span class="line">    "method_direction":"xxx-&gt;yyy"
-</span><span class="line">   }
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>request描述接口的http的query parameter和request body</p>
-
-<p>response描述接口的http的response body</p>
-
-<p>error_list描述接口的可能的错误信息</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">{
-</span><span class="line">   "error_list":[
-</span><span class="line">   {
-</span><span class="line">      "errorCode":"91101",
-</span><span class="line">      "errorMsg":"xxxx"
-</span><span class="line">    },
-</span><span class="line">    {
-</span><span class="line">      "errorCode":"91102",
-</span><span class="line">      "errorMsg":"yyyyy"
-</span><span class="line">   }]
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>request的层次结构</li>
-</ul>
-
-<p><img src="http://duffqiu.github.io/images/rest_structure2.png" alt="rest structure2" title="REST API Request Structure" /></p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">{
-</span><span class="line">   "request":{
-</span><span class="line">  	"http_method" : "GET",
-</span><span class="line">    "http_request_url":"https://www.xxxx.com/&lt;warContext&gt;/p/&lt;component&gt;/v1/&lt;resouce&gt;/{&lt;resourceId&gt;}",
-</span><span class="line">    "path_parameter":{
-</span><span class="line">      "&lt;resourceId&gt;":"resourceId"
-</span><span class="line">    },
-</span><span class="line">    "required_query_parameter":{
-</span><span class="line">      "&lt;parameter1&gt;" : "xxx"
-</span><span class="line">    },
-</span><span class="line">    "optional_query_parameter":{
-</span><span class="line">      "&lt;parameter2&gt;":"yyy"
-</span><span class="line">    },
-</span><span class="line">    "request_body":{
-</span><span class="line">    ...
-</span><span class="line">    }
-</span><span class="line">   }
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
-<p>http_method指明http调用的方法：GET/DELETE/PUT/POST<br />
-   http_request_url指明http调用的URL的格式<br />
-   path_parameter指明唯一索引到某个特定资源的标识<br />
-   required_query_parameter必须传入的参数
-   optional_query_parameter可选传入的参数
-   request_body传入的JSON复杂对象</p>
-
-<ul>
-  <li>response的层次结构</li>
-</ul>
-
-<p>就是返回一个JSON的对象。这里有个BEST PRACTISE的建议，尽量返回能索引到特定资源的标识信息无论输入是否有该信息</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">{
-</span><span class="line">   "response":{
-</span><span class="line">    "&lt;parameter1&gt;":{
-</span><span class="line">      "string":"&lt;parameter1 description&gt;",
-</span><span class="line">      "required":"y"
-</span><span class="line">    },
-</span><span class="line">    "&lt;parameter2&gt;":{
-</span><span class="line">      "integer":"&lt;parameter2 description&gt;",
-</span><span class="line">      "required":"n"
-</span><span class="line">    }        
-</span><span class="line">   }
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>对于request body和response body中JSON对象的定义，不使用JSON Schema那种繁复的写法，直接参照google的方式，将parameter的类型定义为key，描述为value，然后再用”required”标识是否是必须的</p>
-
-<h4 id="section-4">完整的例子模版</h4>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-<span class="line-number">39</span>
-<span class="line-number">40</span>
-<span class="line-number">41</span>
-<span class="line-number">42</span>
-<span class="line-number">43</span>
-<span class="line-number">44</span>
-<span class="line-number">45</span>
-<span class="line-number">46</span>
-<span class="line-number">47</span>
-<span class="line-number">48</span>
-<span class="line-number">49</span>
-<span class="line-number">50</span>
-<span class="line-number">51</span>
-<span class="line-number">52</span>
-<span class="line-number">53</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">{  
-</span><span class="line">  "Revision Information" : [
-</span><span class="line">    {
-</span><span class="line">      "Revision": "v0.1",
-</span><span class="line">      "Section":"Whole document",
-</span><span class="line">      "Change":"initialized"
-</span><span class="line">    },
-</span><span class="line">    {
-</span><span class="line">      "Revision": "v0.2",
-</span><span class="line">      "Section":"xx",
-</span><span class="line">      "Change":"yyy"
-</span><span class="line">    }
-</span><span class="line">  ],
-</span><span class="line">  "description":{
-</span><span class="line">    "method_description":"query xxxxx",
-</span><span class="line">    "method_direction":"xx-&gt;yyy"
-</span><span class="line">  },
-</span><span class="line">  "request":{
-</span><span class="line">  	"http_method" : "GET",
-</span><span class="line">    "http_request_url":"https://www.xxxx.com/&lt;warContext&gt;/p/&lt;component&gt;/v1/&lt;resouce&gt;/{&lt;resourceId&gt;}",
-</span><span class="line">    "path_parameter":{
-</span><span class="line">      "&lt;resourceId&gt;":"resourceId"
-</span><span class="line">    },
-</span><span class="line">    "required_query_parameter":{
-</span><span class="line">      "&lt;parameter1&gt;" : "xxx"
-</span><span class="line">    },
-</span><span class="line">    "optional_query_parameter":{
-</span><span class="line">      "&lt;parameter2&gt;":"yyy"
-</span><span class="line">    },
-</span><span class="line">    "request_body":{
-</span><span class="line">    }
-</span><span class="line">  },
-</span><span class="line">  "response":{
-</span><span class="line">    "&lt;parameter1&gt;":{
-</span><span class="line">      "string":"&lt;parameter1 description&gt;",
-</span><span class="line">      "required":"y"
-</span><span class="line">    },
-</span><span class="line">    "&lt;parameter2&gt;":{
-</span><span class="line">      "integer":"&lt;parameter2 description&gt;",
-</span><span class="line">      "required":"n"
-</span><span class="line">    }        
-</span><span class="line">  },
-</span><span class="line">  "error_list":[
-</span><span class="line">    {
-</span><span class="line">      "errorCode":"xx1",
-</span><span class="line">      "errorMsg":"yyyy"
-</span><span class="line">    },
-</span><span class="line">    {
-</span><span class="line">      "errorCode":"xx2",
-</span><span class="line">      "errorMsg":"yyyy"
-</span><span class="line">    }
-</span><span class="line">  ]
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1381,6 +1288,10 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/02/10/sbt-for-new-user/">初学sbt</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/02/05/fp-or-imperative-with-scala/">Scala中函数式编程还是命令式编程</a>
       </li>
     
@@ -1394,10 +1305,6 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
     
       <li class="post">
         <a href="/blog/2015/02/02/integration-pattern-normalizer/">集成模式：标准化模式</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/01/13/howtostartprogrammingwithscala/">如何开始用scala编程</a>
       </li>
     
   </ul>
@@ -1437,8 +1344,9 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
 <li class='category'><a href='/blog/categories/port/'>Port (1)</a></li>
 <li class='category'><a href='/blog/categories/proxy/'>Proxy (1)</a></li>
 <li class='category'><a href='/blog/categories/rest/'>REST (3)</a></li>
+<li class='category'><a href='/blog/categories/sbt/'>SBT (1)</a></li>
 <li class='category'><a href='/blog/categories/scala/'>Scala (2)</a></li>
-<li class='category'><a href='/blog/categories/scala-/'>Scala, (1)</a></li>
+<li class='category'><a href='/blog/categories/scala-/'>Scala, (2)</a></li>
 <li class='category'><a href='/blog/categories/uml/'>UML (1)</a></li>
 <li class='category'><a href='/blog/categories/virtualbox/'>VirtualBox (1)</a></li>
 

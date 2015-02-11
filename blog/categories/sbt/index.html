@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress Gem插件gsl安装 - Duff Qiu's Blog</title>
+  <title>Category: SBT - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,9 +19,7 @@
 
 
   
-  <meta name="description" content="原由
-Octopress用rake generate的时候会提示使用GSL将会加速文件的生成，速度是原来的的10+倍，但是需要安装Ruby GSL插件。 安装
-当使用命令安装Ruby GSL的时候确发现了问题 gem install gsl 原因是缺少了GSL的C的开发库 然后在GSL &hellip;">
+  <meta name="description" content="Category: SBT">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,7 +28,7 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/30/octopress-gemcha-jian-gslan-zhuang">
+  <link rel="canonical" href="http://duffqiu.github.ioblog/categories/sbt">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -100,128 +98,36 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">Octopress Gem插件gsl安装</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-30T20:00:10+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
-        
-        
-           | <a href="#comments">Comments</a>
-        
-      </p>
+    <h1 class="entry-title">Category: SBT</h1>
     
   </header>
-
-
-<div class="entry-content"><h3 id="section">原由</h3>
-<p>Octopress用rake generate的时候会提示使用GSL将会加速文件的生成，速度是原来的的10+倍，但是需要安装<a href="http://rb-gsl.rubyforge.org/">Ruby GSL</a>插件。</p>
-
-<h3 id="section-1">安装</h3>
-<p>当使用命令安装Ruby GSL的时候确发现了问题 </p>
-
-<pre><code>gem install gsl
-</code></pre>
-
-<p>原因是缺少了<a href="http://www.gnu.org/software/gsl/" title="GSL Library官网">GSL的C的开发库</a>    </p>
-
-<p>然后在GSL Library官网下载了最新的GSL1.16，然后编译安装，然后再重新安装Ruby GSL，但是还是出现错误，后来搜索<a href="http://stackoverflow.com">stackoverflow</a>找到一个说明，说是GSL和Ruby GSL配合的版本只能用1.14的。所以再次下载GSL1.14编译、安装然后再安装Ruby GSL就可以了</p>
-
-<h3 id="section-2">使用</h3>
-
-<pre><code>rake notify
-</code></pre>
-
-<p>目前看除了rake generate没有那个提示，好像速度没有看出来，或许是文章的数目不多体现不出来 </p>
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Duff Qiu</span></span>
-
-      
-
-
-
-
-
+  <div id="blog-archives" class="category">
 
 
 
   
+  <h2>2015</h2>
 
-
-<time datetime="2014-01-30T20:00:10+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
-      
-
-<span class="categories">
+<article>
   
-    <a class='category' href='/blog/categories/gsl/'>GSL</a>, <a class='category' href='/blog/categories/octopress/'>Octopress</a>
-  
-</span>
+<h1><a href="/blog/2015/02/10/sbt-for-new-user/">初学sbt</a></h1>
+<time datetime="2015-02-10T15:22:32+08:00" pubdate><span class='month'>Feb</span> <span class='day'>10</span> <span class='year'>2015</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/sbt/'>SBT</a>, <a class='category' href='/blog/categories/scala/'>Scala,</a></span>
+</footer>
 
 
-    </p>
-    
-      <div class="sharing">
-  
-  
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/" title="Previous Post: Octopress的内部blog间关联">&laquo; Octopress的内部blog间关联</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing/" title="Next Post: Octopress通知搜索引擎">Octopress通知搜索引擎 &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
-
-
-   <section>
-     <h1>Comments</h1>
-     <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
-	<div class="ds-thread"></div>
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"duffqiu"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = 'http://static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		|| document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- Duoshuo Comment END -->
 </div>
-   </section>
+
   
+</article>
 
 </div>
 
@@ -275,90 +181,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
 
   
 </aside>
-
-
-
-
-<article class="archives">
-  <div class="related-posts">
-    <h2>Related Posts</h2>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/02/10/sbt-for-new-user/">初学sbt</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/sbt/'>SBT</a>, <a class='category' href='/blog/categories/scala/'>Scala,</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/02/05/fp-or-imperative-with-scala/">Scala中函数式编程还是命令式编程</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/fp/'>FP</a>, <a class='category' href='/blog/categories/scala/'>Scala,</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/02/02/integration-pattern-canonical-data-model/">系统集成模式：规范化数据流模式</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/02/02/fix-centos-virtualbox/">安装附属包失败后修复virtualbox上的centos</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/centos/'>CentOS,</a>, <a class='category' href='/blog/categories/virtualbox/'>VirtualBox</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/02/02/integration-pattern-normalizer/">集成模式：标准化模式</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/integration/'>Integration</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-  </div>
-</article>
 
 
     </div>

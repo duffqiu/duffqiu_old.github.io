@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Scala, | Duff Qiu's Blog]]></title>
-  <link href="http://duffqiu.github.io/blog/categories/scala/atom.xml" rel="self"/>
+  <title><![CDATA[Category: SBT | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/sbt/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
   <updated>2015-02-11T16:29:14+08:00</updated>
   <id>http://duffqiu.github.io/</id>
@@ -187,83 +187,6 @@ addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.12.0")
 <p>到此一个就本的sbt的scala开发环境就建成了。
 后续不同的项目的变化基本上就集中在增加新的依赖包，增加不同的plugin来执行不同的任务
 个人使用看来，对比maven相对而言要简单一些。只是SBT使用场景基本只局限于java和scala，同时sbt的写法是scala语法</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Scala中函数式编程还是命令式编程]]></title>
-    <link href="http://duffqiu.github.io/blog/2015/02/05/fp-or-imperative-with-scala/"/>
-    <updated>2015-02-05T11:44:46+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2015/02/05/fp-or-imperative-with-scala</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<hr />
-<p>Scala是即支持传统的命令式编程也支持函数式编程(FP)，我们既可以像java那样写代码，也可以像Lisp那样写。
-但是那种好呢？</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-<p>个人的理解是，主要取决于对问题的解决方式的思路。
-如果已经习惯了命令式编程的思路，那就用命令式编程好了。
-不过既然FP已经逐渐成为潮流，那换换思路也未尝不可。
-从Scala语言本身看两者没有冲突</p>
-
-<h3 id="section-2">一个例子来对比两种思路</h3>
-<hr />
-
-<p>例子：有一个Map的数组/列表，要将不同Map中相同key的value值相加，最后得到一个Map</p>
-
-<p><code>java
-Vector(Map("test" -&gt; 1, "hello" -&gt; 2, "wwww" -&gt; 9), Map("test" -&gt; 3, "hello" -&gt; 5, "http" -&gt; 33))
-</code>
-期望得到的结果</p>
-
-<p><code>java
-Map(test -&gt; 4, hello -&gt; 7, wwww -&gt; 9, http -&gt; 33)
-</code></p>
-
-<ul>
-  <li>命令式编程方式
-思路：循环Vector中的每个Map，然后循环Map中的每个Key-Value，将相同的Key对应的Value加起来后存入到一个临时的Map，最后返回这个Map</li>
-</ul>
-
-<p>``` java
-def merge(input: Vector[Map[String, Int]]) = {</p>
-
-<p>var mergeRes = input.head
-  val temp = input.tail</p>
-
-<p>for(itr &lt;- temp) {
-  	for((word, count) &lt;- itr) {
-  		mergeRes = mergeRes + (word -&gt; (mergeRes.get(word).getOrElse(0) + count))
-  	}
-  }</p>
-
-<p>mergeRes
-}
-```</p>
-
-<ul>
-  <li>函数式编程方式
-思路：对于Vector作折叠操作(reduceLeft)，因为每此计算都要以上一次计算作为输入。而计算中需要做的操作由使用者控制。同时对于每个Map都需要操作每个key-value并返回新的key-value所以用到map函数</li>
-</ul>
-
-<p><code>java
-  def mergeFP(input: Vector[Map[String, Int]]) = {
-    input.reduceLeft {
-      (el, acc) =&gt;
-        el.map {
-          case (word, count) =&gt;
-            acc.get(word).map(accCount =&gt; (word -&gt; (accCount + count))).getOrElse(word -&gt; count)
-        } ++ (acc -- el.keys)
-    }
-  }
-</code></p>
-
-<p>从两者的对比俩看，如果不是熟悉FP的思路的化，似乎FP的代码更难看些。这也是为什么有人认为FP不利于代码沟通的原因吧。
-但是从FP的实现看，中间没有任何可变变量（其实Scala对于reduceLeft用了中间可变变量，只是对于函数的使用者不需要了）</p>
-
-<p><strong>注</strong> 改FP的例子载自Akka in Action，但是它的是foldLeft不是reduceLeft</p>
 
 ]]></content>
   </entry>
