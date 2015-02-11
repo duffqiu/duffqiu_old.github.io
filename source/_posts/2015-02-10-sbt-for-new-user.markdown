@@ -147,6 +147,6 @@ addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.12.0")
 
 到此一个就本的sbt的scala开发环境就建成了。
 后续不同的项目的变化基本上就集中在增加新的依赖包，增加不同的plugin来执行不同的任务
-
+个人使用看来，对比maven相对而言要简单一些。只是SBT使用场景基本只局限于java和scala，同时sbt的写法是scala语法
 
 
