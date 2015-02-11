@@ -57,7 +57,7 @@ scalaVersion := "2.11.4"
 
 organization := "org.duff"
 ```
-- 使用[sbteclpise](https://github.com/typesafehub/sbteclipse)插件， 在project子目录下创建一个plugins.sbt文件，然后加入一下内容，然后在sbt的命令行下执行eclipse就可以生成对应的eclipse的工程了
+- 使用[sbteclpise](https://github.com/typesafehub/sbteclipse)插件， 在project子目录下创建一个plugins.sbt文件，然后加入一下内容，然后在sbt的命令行下执行`eclipse`就可以生成对应的eclipse的工程了。如果改动了sbt的文件则最后重新执行一次`eclipse`获得最新的包依赖等
 
 ``` sh
 addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.5.0")
@@ -78,6 +78,75 @@ object Main extends App{
 
 - 在sbt命令行下执行`compile`，然后`run`就可以看到对应的输入了
 
-- 设置包依赖
+- 设置包依赖仓库（repository）。对于Maven是设置的Maven的conf文件中，但是对于SBT是每次定义在项目的build.sbt文件中
+     
+   - 方法一： 通过URL定义如： `resolvers += "<rep name>" at "<rep url>"`
+
+``` sh
+resolvers += 
+  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+```
+
+   - 方法二： 使用[预定义的Rep](http://www.scala-sbt.org/0.13/docs/Resolvers.html)，主要有：
+   
+       - DefaultMavenRepository at  https://repo1.maven.org/maven2/，这个会被默认使用，无需指定
+       - JavaNet1Repository  at http://download.java.net/maven/1/
+       - Resolver.sonatypeRepo("public") (or “snapshots”, “releases”) at https://oss.sonatype.org/content/repositories/public
+       - Resolver.typesafeRepo("releases") (or “snapshots”) at https://repo.typesafe.com/typesafe/releases
+       - Resolver.typesafeIvyRepo("releases") (or “snapshots”) at https://repo.typesafe.com/typesafe/ivy-releases
+       - Resolver.sbtPluginRepo("releases") (or “snapshots”) at https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases
+       - Resolver.bintrayRepo("owner", "repo") at https://dl.bintray.com/[owner]/[repo]/
+       - Resolver.jcenterRepo at https://jcenter.bintray.com/
+
+``` sh
+resolvers += JavaNet1Repository
+```
+
+   - 方法三：同时指定多个rep，使用`resolvers ++= Seq(<rep1>, <rep2>)`, rep1/rep2可以使用方法一或方法二
+
+``` sh
+resolvers ++= Seq(Resolver.sonatypeRepo("public"),
+    Resolver.typesafeRepo("releases"))
+```
+
+- 指定工程依赖包，和resolver类似，可以一个一个指定(+=)，也可以同时指定(++= Seq())，另外如果需要对多个包使用同一个变量指定如scala版本等，则可以使用如下例子的方式(即Scala的闭包)
+
+```
+libraryDependencies ++= {
+  val akkaVersion       = "2.3.9"
+  val sprayVersion      = "1.3.2"
+  Seq(
+    "com.typesafe.akka" %% "akka-slf4j"      % akkaVersion withSources() withJavadoc(),
+    "ch.qos.logback"    %  "logback-classic" % "1.1.2",
+    "com.typesafe.akka" %% "akka-testkit"    % akkaVersion   % "test",
+    "org.scalatest"     %% "scalatest"       % "2.2.0"       % "test" withSources() withJavadoc()
+  )
+}
+```
+   - 每个lib的定义格式为 `<groupID> % <artifactID> % <revision> % configuration`。如上面的 ch.qos.logback，默认情况下都是"compile"的配置，而对于scalatest是指定在"test"的时候才使用
+   - 如果artifactID是根据scala的版本有不同的版本则可以简化的使用%%的方式省去指定xxx_2.11.4 (使用scala 2.11.4)而是直接写xxx
+   - 需要同时下载javadoc和source，则可以在最后用withSources() withJavadoc()
+
+- 更改完后，如果还在sbt命令行下，则可以运行`reload`来更新相应的配置
+
+- 打包程序，如果使用的不同的framework/toolkit，则有不同的打包方式，一般的打包方式是打成大的jar包
+
+   - 配置打包plugin，在project子目录中增加一个名为assembly.sbt的文件，增加以下内容
+
+```
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.12.0")
+```
+   - 然后就可以在sbt命令行下执行`assembly`，则可以打包出jar文件了。可以在子目录target/scala-2.11/下找到这个jar
+   - 通过执行`java -jar <xxx.jar>`来执行程序
+   - 可以通过在build.sbt中增加以下配置更改打包jar
+
+       - `ssemblyJarName in assembly := "<xxxx.jar>"` 更改打包的jar文件名
+       - `mainClass in assembly := Some("<com.example.Main>")` 更改main函数的入库
+       - 如果像用工程的版本号来合成打包文件，则可以这样写 `assemblyJarName in assembly := "<name>" + version.value +".jar"`
+
+
+到此一个就本的sbt的scala开发环境就建成了。
+后续不同的项目的变化基本上就集中在增加新的依赖包，增加不同的plugin来执行不同的任务
+
 
 
