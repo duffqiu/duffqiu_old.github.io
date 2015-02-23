@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>设计模式：动态代理 - Duff Qiu's Blog</title>
+  <title>Mac下port工具的使用 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,8 +19,7 @@
 
 
   
-  <meta name="description" content="原由 之前我们讲了如何使用代理模式，但是代理必须实现被代理对象共同的接口，如果需要用到代理模式的类表多，则同一个扩展功能就必须实现很多个相似的代理类。从而造成代码的重复。
-有没有更简单的方法生成代理，而对于一个扩展只需要一个代理类呢 ？ 解决办法 JDK的java.lang.reflect &hellip;">
+  <meta name="description" content="原由 Mac下面除了用dmg、pkg来安装软件外，比较方便的还有用MacPorts来帮助你安装其他应用程序，跟BSD中的ports道理一样。MacPorts就像apt-get、yum一样，可以快速安装些软件。 Mac下还有brew可以用来管理软件包，但是个人不喜欢这个工具，还是比较倾向于用port &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/03/01/she-ji-mo-shi-%3Adong-tai-dai-li">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/02/23/mac-port-guide">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -103,7 +102,7 @@
   
   <header>
     
-      <h1 class="entry-title">设计模式：动态代理</h1>
+      <h1 class="entry-title">Mac下port工具的使用</h1>
     
     
       <p class="meta">
@@ -119,7 +118,7 @@
   
 
 
-<time datetime="2014-03-01T23:31:47+08:00" pubdate data-updated="true">Mar 1<span>st</span>, 2014</time>
+<time datetime="2015-02-23T22:29:35+08:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2015</time>
         
         
            | <a href="#comments">Comments</a>
@@ -131,90 +130,112 @@
 
 <div class="entry-content"><h3 id="section">原由</h3>
 <hr />
-<p>之前我们讲了如何使用代理模式，但是代理必须实现被代理对象共同的接口，如果需要用到代理模式的类表多，则同一个扩展功能就必须实现很多个相似的代理类。从而造成代码的重复。
-有没有更简单的方法生成代理，而对于一个扩展只需要一个代理类呢 ？</p>
+<p>Mac下面除了用dmg、pkg来安装软件外，比较方便的还有用MacPorts来帮助你安装其他应用程序，跟BSD中的ports道理一样。MacPorts就像apt-get、yum一样，可以快速安装些软件。</p>
 
-<h3 id="section-1">解决办法</h3>
-<hr />
+<p>Mac下还有brew可以用来管理软件包，但是个人不喜欢这个工具，还是比较倾向于用port</p>
 
-<h4 id="jdkjavalangreflect">JDK的java.lang.reflect</h4>
-<p>JDK的反射机制中动态代理类和接口就可以帮助我们简化代理类的生成。
-具体代码建议模版为：</p>
+<h3 id="section-1">工具使用详解</h3>
 
 <ul>
-  <li>生成一个实现<code>InvocationHandler</code>接口的类，建议命名为xxxDynamicProxy</li>
-  <li>设计一个私有变量来存储被代理的对象，并提供一个带参数的构造方法，该参数为被代理的对象。为了通用，使用Object或者范型的形式。我使用范型的方式：</li>
+  <li>更新ports tree(即软件信息列表)和MacPorts版本，强烈推荐第一次运行的时候使用-v参数，显示详细的更新过程。</li>
 </ul>
+
+<p><code>sh
+sudo port -v selfupdate
+</code></p>
+
+<ul>
+  <li>搜索索引中的软件</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>port search <name>
+&#8220;`
+
+- 安装新软件<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="sb">```</span> sh
+</span><span class="line">sudo port install &lt;name&gt;
+</span></code></pre></td></tr></table></div>
+
+- 卸载软件
+
+&#8220;` sh
+sudo port uninstall <name>
+&#8220;`
+
+- 递归卸载要卸载的软件所依赖的软件包，但这一命令不会卸载那些又依赖其他软件包的软件。
+ 
+&#8220;` sh
+sudo port uninstall &#8211;follow-dependencies software_name 
+&#8220;`
+
+- 查看有更新的软件以及版本
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>port outdated</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="sb">```</span>
+</span><span class="line">
+</span><span class="line">- 升级可以更新的软件
+</span></code></pre></td></tr></table></div></figure></notextile></div> sh
+sudo port upgrade outdated 
+&#8220;`
+
+- 升级软件并且同时升级所依赖的软件包
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">xxxDynamicProxy</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">InvocationHandler</span> <span class="o">{</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">sudo port upgrade &lt;name&gt;
+</span><span class="line"><span class="sb">```</span>
 </span><span class="line">
-</span><span class="line">    <span class="kd">private</span> <span class="n">T</span> <span class="n">delegate</span><span class="o">;</span>
-</span><span class="line">    <span class="o">....</span>
-</span><span class="line">
-</span><span class="line">    <span class="kd">public</span> <span class="nf">xxxDynamicProxy</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
-</span><span class="line">	<span class="k">this</span><span class="o">.</span><span class="na">delegate</span> <span class="o">=</span> <span class="n">t</span><span class="o">;</span>
-</span><span class="line">    <span class="o">}</span>
-</span><span class="line">
-</span><span class="line">    <span class="o">...</span>
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+</span><span class="line">- 关闭软件
+</span></code></pre></td></tr></table></div></figure></notextile></div> sh
+sudo port deactivate <name>
+&#8220;`
 
-<ul>
-  <li>设计一个静态工厂方法函数，帮助生成代理对象</li>
-</ul>
+- 查询所需软件信息
+ 
+&#8220;` sh
+sudo port info <name> 
+&#8220;`
 
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="nd">@SuppressWarnings</span><span class="o">(</span><span class="s">&quot;unchecked&quot;</span><span class="o">)</span>
-</span><span class="line"><span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="n">T</span> <span class="n">createProxyInstance</span><span class="o">(</span><span class="n">T</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
-</span><span class="line">
-</span><span class="line"><span class="k">return</span> <span class="o">(</span><span class="n">T</span><span class="o">)</span> <span class="n">Proxy</span><span class="o">.</span><span class="na">newProxyInstance</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getClassLoader</span><span class="o">(),</span> <span class="n">t</span>
-</span><span class="line">	        <span class="o">.</span><span class="na">getClass</span><span class="o">().</span><span class="na">getInterfaces</span><span class="o">(),</span> <span class="k">new</span> <span class="n">LoggingDynamicProxy</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;(</span><span class="n">t</span><span class="o">));</span>
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+- 查看软件依赖性：
 
-<ul>
-  <li>使用方式就是先生成被代理对象，然后用动态代理类的工厂方法来生成代理对象，接着就可以像被代理对象那样使用了。</li>
-</ul>
+&#8220;` sh
+sudo port deps <name>  
+&#8220;`
 
-<p>注意1：JDK这个动态代理的方式是有约束性的，被代理的对象一定要实现某个接口，不然会有运行时错误。</p>
+- 清理安装过程中的缓存文件，在获取软件失败时也可以使用：
 
-<p>注意2：代理对象也可以被另外一个代理对象所代理，从而实现功能叠加的效果。也就是装饰模式的叠加效果。从这点上看，JDK这个动态代理的方式其实也是装饰模式。</p>
+&#8220;` sh
+sudo port clean &#8211;all <name>  
+&#8220;`
 
-<h4 id="google-guava">Google Guava的动态代理</h4>
-<p>原理上Google Guava的动态代理也是使用JDK的动态代理，这是做了封装，更加简便。另外一点是能够很好的检查需要代理的对象必须拥有接口。使用<code>Class类的isInterface()</code>来做检查。从我自己的实现的例子看，当代理作为下一个代理的输入时，这个检查将实效。</p>
+- 查看已经安装的软件的内容信息
 
-<p>Google Guava的动态代理的使用方式</p>
+&#8220;` sh 
+port contents <name>  
+&#8220;`
 
-<ul>
-  <li>类似上面的步骤生成代理类，但是不用生成静态的工厂方法了。</li>
-  <li>
-    <p>使用方式为调用<code>Reflection.newProxy(...)</code>来生成代理类。</p>
-  </li>
-  <li>如果需要比对用相同的handler生成的prxoy是相等的(并非同一个对象)，则可以通过继承<code>AbstractInvocationHandler</code>来简化编码。因为这个抽象类已经实现了相等的相关操作。</li>
-</ul>
+- 查看已安装软件的信息
+ 
+&#8220;` sh
+sudo port installed <name>  
+&#8220;`
 
-<h4 id="cglib">CGLIB</h4>
-<p>CGLIB对于dynamic proxy的支持个人理解已经太老了，虽然可以对没有实现接口的类支持代理，但是对于final类还是不行。</p>
+- 报告所查询软件的依赖包情况
+ 
+&#8220;` sh
+port dependents <name>  
+&#8220;`
 
-<h3 id="section-2">总结</h3>
 
-<p>使用Guava来开发代理吧。</p>
+
+
+
+</name></name></name></name></name></name></name></name></name></span></figcaption></figure></notextile></div>
 </div>
 
 
@@ -237,12 +258,12 @@
   
 
 
-<time datetime="2014-03-01T23:31:47+08:00" pubdate data-updated="true">Mar 1<span>st</span>, 2014</time>
+<time datetime="2015-02-23T22:29:35+08:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2015</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/guava/'>Guava</a>, <a class='category' href='/blog/categories/java/'>Java</a>
+    <a class='category' href='/blog/categories/mac/'>Mac</a>, <a class='category' href='/blog/categories/port/'>Port</a>
   
 </span>
 
@@ -258,10 +279,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/02/23/she-ji-mo-shi-%3Adai-li-mo-shi/" title="Previous Post: 设计模式：代理模式">&laquo; 设计模式：代理模式</a>
+        <a class="basic-alignment left" href="/blog/2015/02/23/integrate-sbt-project-jenkins/" title="Previous Post: 集成SBT到Jenkins中">&laquo; 集成SBT到Jenkins中</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou/" title="Next Post: 如何定义一个好的REST接口">如何定义一个好的REST接口 &raquo;</a>
       
     </p>
   </footer>
@@ -350,22 +369,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2015/02/23/mac-port-guide/">mac下port工具的使用</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/mac/'>Mac</a>, <a class='category' href='/blog/categories/port/'>Port</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2015/02/23/integrate-sbt-project-jenkins/">集成SBT到Jenkins中</a></h3>
         <div class="meta">
           <span class="tags">
@@ -417,6 +420,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
         <h3 class="title"><a href="/blog/2015/02/02/integration-pattern-canonical-data-model/">系统集成模式：规范化数据流模式</a></h3>
         <div class="meta">
           <span class="tags">
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/02/02/fix-centos-virtualbox/">安装附属包失败后修复virtualbox上的centos</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/centos/'>CentOS</a>, <a class='category' href='/blog/categories/virtualbox/'>VirtualBox</a>
+  
+</span>
 
 </span>
             
