@@ -4,7 +4,7 @@
   <title><![CDATA[Category: OSX | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/osx/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-11T16:29:14+08:00</updated>
+  <updated>2015-02-23T16:27:56+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -78,7 +78,7 @@
   <li>
     <p>系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来</p>
 
-    <pre><code>&gt; sudo chmod root [文件名]
+    <pre><code>&gt; sudo chown root [文件名]
 </code></pre>
   </li>
   <li>
@@ -129,6 +129,21 @@
 
 <h3 id="section">服务的启动和停止</h3>
 
+<ol>
+  <li>启动服务</li>
+</ol>
+
+<p><code>sh
+sudo launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
+</code></p>
+
+<ol>
+  <li>停止服务</li>
+</ol>
+
+<p><code>sh 
+sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
+</code>   </p>
 ]]></content>
   </entry>
   

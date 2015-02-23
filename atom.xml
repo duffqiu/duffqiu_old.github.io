@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-11T16:29:14+08:00</updated>
+  <updated>2015-02-23T16:27:56+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,45 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[集成SBT到Jenkins中]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/02/23/integrate-sbt-project-jenkins/"/>
+    <updated>2015-02-23T14:56:24+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/02/23/integrate-sbt-project-jenkins</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+
+<p>之前有些过关于Jenkins上搭建maven工程<a href="http://duffqiu.github.io/blog/2014/02/06/yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi/">1</a>，但是对于Scala的工程最好还是用SBT，那么如何在Jenkins用SBT呢？</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>Jenkins已经提供了SBT的插件，类似Maven的插件</p>
+
+<p>具体步骤如下：</p>
+
+<ul>
+  <li>在Jenkins上的系统管理-&gt;管理Jenkins-&gt;管理插件中选择可选插件，然后输入sbt过滤条件</li>
+  <li>选择安装sbt plugin</li>
+  <li>重启Jenkins</li>
+  <li>配置sbt：系统管理-&gt;系统设置，设置”sbt lauch jars”，注意这里是指具体的jar文件，不是配置路径。如<code>/opt/local/share/sbt/sbt-launch.jar</code>  </li>
+  <li>新建项目（因为不像Maven有特定的选项），所以选择”构建一个自由风格的软件项目”  </li>
+  <li>然后在构建步骤中选择”Build using SBT”，然后配置对应的参数。这里需要注意的是JVM Flags，如果不配置很可能PerGem不够造成OutofMemoryError。但是该配置什么呢？如果不是太清楚，则可以直接拷贝sbt的启动脚本中的JVM Flags参数，如我机器的：<code>-XX:+CMSClassUnloadingEnabled -Xms1536m -Xmx1536m -XX:MaxPermSize=384m -XX:ReservedCodeCacheSize=192m -Dfile.encoding=UTF8</code></li>
+  <li>如果Git repo下是涵盖了多个项目，则可以制定sub-directory path来运行特定个项目</li>
+</ul>
+
+<h4 id="linuxunix">Linux/Unix下跟踪或查看文件的命令</h4>
+
+<ol>
+  <li>输入文件到console: <code>cat &lt;filename&gt;</code></li>
+  <li>逐行显示文件: <code>less &lt;filename&gt;</code></li>
+  <li>显示文件最后的一屏: <code>tail &lt;filename&gt;</code></li>
+  <li>如果需要跟踪文件的变化则: <code>tail -f &lt;filename&gt;</code></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[初学sbt]]></title>
@@ -2195,43 +2234,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 <p>到此，真个Appscale的手工安装就结束了，然后就是可以部署应用。Googel App Engine的开发如何做，我还没有去看，后面有机会再写这个部分</p>
 
 <p><strong>个人感叹：Open source真个给我们带来了很多的便利和选择，但是这的有很多坑是这些创始者没有遇到过。真的是需要有个个方面的能力才能去在生产环境中到它。</strong></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式：IoC和依赖注入]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/19/she-ji-mo-shi-%3Aioche-yi-lai-zhu-ru/"/>
-    <updated>2014-02-19T20:40:33+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/19/she-ji-mo-shi-:ioche-yi-lai-zhu-ru</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<p>在生成对象的时候，我们通常会用到工厂方法模式，但是这会造成factory类过多不好维护的问题，也不好测试的问题。</p>
-
-<h3 id="section-1">解决办法</h3>
-<p>为了减少factory类，现在流行的做法是使用IoC(控制反转)。这个严格上不是个模式。IoC的实现方式通常有两种：</p>
-
-<ol>
-  <li>Service Locator，服务定位器</li>
-  <li>Dependency Injection，依赖注入</li>
-</ol>
-
-<p>因为服务定位器的做法侵入代码比较严重，同时比较难测试，一般很少用。</p>
-
-<p>依赖注入比较流行，主要是因为开源框架的支持。有两大框架，一个是Spring，一个是<a href="https://code.google.com/p/google-guice/">Google Guice</a>。因为Spring还有别的功能（如template的方式我比较喜欢，很多东西都简化很多），不能整体对比，只能对比DI的功能。网上有不少的对比，但是对与一般的开发而言没有太大的参考价值，主要习惯性问题。我个人觉得需要考虑只是整体上除了DI还有没有别的需要，如果有就用Spring，没有就用Guice，毕竟Guice小而且依赖少（就两个Jar包），据说Guice速度块。（但是由速度决定开发包的选择的需求基本很少）。后面抽时间我打算好好看一遍Guice真么使用。</p>
-
-<p>注入的方式分为一下几种：
-1. Setter
-2. Constructor
-3. Annotation
-4. Interface
-5. Parameter
-6. Propagating (传播)
-7. 其它</p>
-
-<p>对于注入个人觉得需要仔细分辨具体是否需要，不要什么都通过注入完成。一些简单的对象如log对象，完全没有必要注入。</p>
-
-<h3 id="section-2">小插曲</h3>
-<p>今天和同事谈到这个注入框架的问题，顺便提到了<a href="https://code.google.com/p/guava-libraries/wiki/GuavaExplained">google guava开发库</a>，这个值得研究研究细节。尽然Google都在用，那么日常中需要封装的一些工具、通用结构等都应该涵盖了。这个开发的年代，自己再创造工具已经没有太大必要了。</p>
-
 ]]></content>
   </entry>
   
