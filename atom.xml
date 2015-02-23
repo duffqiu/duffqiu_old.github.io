@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-23T23:03:54+08:00</updated>
+  <updated>2015-02-23T23:46:48+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -20,112 +20,118 @@
     <id>http://duffqiu.github.io/blog/2015/02/23/mac-port-guide</id>
     <content type="html"><![CDATA[<h3 id="section">原由</h3>
 <hr />
+
 <p>Mac下面除了用dmg、pkg来安装软件外，比较方便的还有用MacPorts来帮助你安装其他应用程序，跟BSD中的ports道理一样。MacPorts就像apt-get、yum一样，可以快速安装些软件。</p>
 
 <p>Mac下还有brew可以用来管理软件包，但是个人不喜欢这个工具，还是比较倾向于用port</p>
 
 <h3 id="section-1">工具使用详解</h3>
+<hr />
 
 <ul>
   <li>更新ports tree(即软件信息列表)和MacPorts版本，强烈推荐第一次运行的时候使用-v参数，显示详细的更新过程。</li>
 </ul>
 
-<p><code>sh
-sudo port -v selfupdate
-</code></p>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sudo port -v selfupdate</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <ul>
   <li>搜索索引中的软件</li>
 </ul>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>port search <name>
-&#8220;`
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">port search &lt;name&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-- 安装新软件<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="sb">```</span> sh
-</span><span class="line">sudo port install &lt;name&gt;
-</span></code></pre></td></tr></table></div>
+<ul>
+  <li>安装新软件</li>
+</ul>
 
-- 卸载软件
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sudo port install &lt;name&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-&#8220;` sh
-sudo port uninstall <name>
-&#8220;`
+<ul>
+  <li>卸载软件</li>
+</ul>
 
-- 递归卸载要卸载的软件所依赖的软件包，但这一命令不会卸载那些又依赖其他软件包的软件。
- 
-&#8220;` sh
-sudo port uninstall &#8211;follow-dependencies software_name 
-&#8220;`
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sudo port uninstall &lt;name&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-- 查看有更新的软件以及版本
+<ul>
+  <li>递归卸载要卸载的软件所依赖的软件包，但这一命令不会卸载那些又依赖其他软件包的软件。</li>
+</ul>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>port outdated</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="sb">```</span>
-</span><span class="line">
-</span><span class="line">- 升级可以更新的软件
-</span></code></pre></td></tr></table></div></figure></notextile></div> sh
-sudo port upgrade outdated 
-&#8220;`
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sudo port uninstall --follow-dependencies software_name </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-- 升级软件并且同时升级所依赖的软件包
+<ul>
+  <li>查看有更新的软件以及版本</li>
+</ul>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">sudo port upgrade &lt;name&gt;
-</span><span class="line"><span class="sb">```</span>
-</span><span class="line">
-</span><span class="line">- 关闭软件
-</span></code></pre></td></tr></table></div></figure></notextile></div> sh
-sudo port deactivate <name>
-&#8220;`
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">port outdated</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-- 查询所需软件信息
- 
-&#8220;` sh
-sudo port info <name> 
-&#8220;`
+<ul>
+  <li>升级可以更新的软件</li>
+</ul>
 
-- 查看软件依赖性：
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sudo port upgrade outdated </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-&#8220;` sh
-sudo port deps <name>  
-&#8220;`
+<ul>
+  <li>升级软件并且同时升级所依赖的软件包</li>
+</ul>
 
-- 清理安装过程中的缓存文件，在获取软件失败时也可以使用：
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sudo port upgrade &lt;name&gt; </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-&#8220;` sh
-sudo port clean &#8211;all <name>  
-&#8220;`
+<ul>
+  <li>关闭软件</li>
+</ul>
 
-- 查看已经安装的软件的内容信息
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sudo port deactivate &lt;name&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-&#8220;` sh 
-port contents <name>  
-&#8220;`
+<ul>
+  <li>查询所需软件信息</li>
+</ul>
 
-- 查看已安装软件的信息
- 
-&#8220;` sh
-sudo port installed <name>  
-&#8220;`
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sudo port info &lt;name&gt; </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-- 报告所查询软件的依赖包情况
- 
-&#8220;` sh
-port dependents <name>  
-&#8220;`
+<ul>
+  <li>查看软件依赖性：</li>
+</ul>
 
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sudo port deps &lt;name&gt;  </span></code></pre></td></tr></table></div></figure></notextile></div>
 
+<ul>
+  <li>清理安装过程中的缓存文件，在获取软件失败时也可以使用：</li>
+</ul>
 
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sudo port clean --all &lt;name&gt;  </span></code></pre></td></tr></table></div></figure></notextile></div>
 
+<ul>
+  <li>查看已经安装的软件的内容信息</li>
+</ul>
 
-</name></name></name></name></name></name></name></name></name></span></figcaption></figure></notextile></div>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">port contents &lt;name&gt;  </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>查看已安装软件的信息</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sudo port installed &lt;name&gt;  </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>报告所查询软件的依赖包情况</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">port dependents &lt;name&gt;  </span></code></pre></td></tr></table></div></figure></notextile></div>
 ]]></content>
   </entry>
   
