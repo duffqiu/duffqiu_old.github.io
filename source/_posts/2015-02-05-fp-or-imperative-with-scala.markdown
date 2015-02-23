@@ -3,7 +3,7 @@ layout: post
 title: "Scala中函数式编程还是命令式编程"
 date: 2015-02-05 11:44:46 +0800
 comments: true
-categories: Scala, FP
+categories: [Scala, FP]
 ---
 
 ###原由

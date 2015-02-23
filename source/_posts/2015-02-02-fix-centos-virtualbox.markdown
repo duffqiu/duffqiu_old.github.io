@@ -3,7 +3,7 @@ layout: post
 title: "安装附属包失败后修复virtualbox上的centos"
 date: 2015-02-02 16:45:25 +0800
 comments: true
-categories: CentOS, VirtualBox
+categories: [CentOS, VirtualBox]
 ---
 
 ###原由

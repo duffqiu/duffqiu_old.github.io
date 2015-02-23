@@ -3,7 +3,7 @@ layout: post
 title: "集成SBT到Jenkins中"
 date: 2015-02-23 14:56:24 +0800
 comments: true
-categories: SBT,Jenkins
+categories: [SBT,Jenkins]
 ---
 
 ###原由

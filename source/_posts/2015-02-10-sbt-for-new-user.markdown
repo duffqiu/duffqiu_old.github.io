@@ -3,7 +3,7 @@ layout: post
 title: "初学sbt"
 date: 2015-02-10 15:22:32 +0800
 comments: true
-categories: Scala, SBT
+categories: [Scala, SBT]
 ---
 
 ###原由
