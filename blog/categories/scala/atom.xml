@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Scala, | Duff Qiu's Blog]]></title>
+  <title><![CDATA[Category: Scala | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/scala/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-23T16:49:00+08:00</updated>
+  <updated>2015-02-23T16:52:01+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,184 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[初学sbt]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/02/10/sbt-for-new-user/"/>
+    <updated>2015-02-10T15:22:32+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/02/10/sbt-for-new-user</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>初学一种语言最烦的就是搭建开发环境了，每次都要装一堆的plugin，有时候又因为不同的plugin的版本等问题冲突
+前面介绍如何使用Maven来搭建开发环境，总体而言还算比较复杂。特别是在不同的机器上竟然有些plugin不可用，也不知道问题在那里。
+所以既然是以开发Scala为主，那还是用<a href="http://scala-sbt.org">SBT</a>吧</p>
+
+<h3 id="section-1">主要参考</h3>
+<hr />
+<p>直接参考<a href="http://www.scala-sbt.org/0.13/tutorial/index.html">SBT官网的Getting Started</a>并结合自己的一些实践做了下浓缩
+官网已经提供中文版本了(开来中国是用Scala增长比较快的地区，另一个是美国硅谷，有兴趣可以看看google trend上关于Scala)</p>
+
+<p>该Getting Started有几章可以暂时不用看的，到真的有需要再看
+- Scope
+- Multi-project builds
+- Custom settings and tasks
+- .scala build definition</p>
+
+<p>另外在Github上有个<a href="https://github.com/n8han/giter8">giter8，简称g8</a>的工具，可以帮助获取scala, sbt的模版，不过自从有了<a href="http://typesafe.com/get-started">typesafe的activator</a>后，提供g8模版已经不多了，原有的模版也没怎么更新了</p>
+
+<h4 id="sbt">安装SBT</h4>
+<p>可以根据SBT官网的Getting Started，对于不同的平台采用不同的安装方式
+安装完后，基本上就是一个sbt的命令脚本和sbt-launch.jar
+安装完后，通过命令行运行一次<code>sbt</code>，然后sbt会将对应的依赖包下载下来。
+sbt会在用户的home目录下创建.sbt和.ivy2的目录，依赖包都放在了ivy2的目录里。因为sbt实际是通过ivy2来管理包依赖。不过大家不用去看ivy2，这些都是sbt自己管理的。
+如果是公司有代理的环境中，则需要设置java代理的参数才可以使用，不然sbt总是在尝试下载依赖包。
+一般设置java代理的参数是在shell的文件中设置JAVA_OPTS,但是好像不其作用。所以最好的方式是直接修改sbt的命令脚本增加代理配置参数</p>
+
+<p><code>sh
+JAVA_OPTS="$JAVA_OPTS -Dhttp.proxyHost=&lt;proxy host&gt; -Dhttp.proxyPort=&lt;proxy port&gt; -Dhttps.proxyHost=&lt;proxy host&gt; -Dhttps.proxyPort=&lt;proxy port&gt;"
+</code></p>
+
+<h4 id="scalajava">建立一个scala/java工程</h4>
+<p>建议不要从参考SBT官网的Getting Started的hello world，因为它将源文件建在了工程的根目录上了
+很奇怪，到目前位置都没有个一个像maven那样可以直接在Eclipse上创建一个sbt的工程，而必须先手工创建一些文件</p>
+
+<p>具体步骤为：</p>
+
+<ul>
+  <li>创建一个工程目录如： sbt-sample</li>
+  <li>在工程目录下再创建一个子目录，必须名为project</li>
+  <li>在工程目录下创建名为build.sbt的定义文件，并写入基本的信息，需要注意的是每个配置都要空一行。以后打开别人的工程先看看这个文件的基本定义，特比是scala的版本</li>
+</ul>
+
+<p>``` sh
+name := “sbt-sample”</p>
+
+<p>version := “1.0”</p>
+
+<p>scalaVersion := “2.11.4”</p>
+
+<p>organization := “org.duff”
+```
+- 使用<a href="https://github.com/typesafehub/sbteclipse">sbteclpise</a>插件， 在project子目录下创建一个plugins.sbt文件，然后加入一下内容，然后在sbt的命令行下执行<code>eclipse</code>就可以生成对应的eclipse的工程了。如果改动了sbt的文件则最后重新执行一次<code>eclipse</code>获得最新的包依赖等</p>
+
+<p><code>sh
+addSbtPlugin("com.typesafe.sbteclipse" % "sbteclipse-plugin" % "2.5.0")
+</code></p>
+
+<ul>
+  <li>打开Eclipse，写个测试的App</li>
+</ul>
+
+<p>``` java
+package org.duff.sbtsample</p>
+
+<p>object Main extends App{</p>
+
+<p>println(“this is a sbt sample”)</p>
+
+<p>}</p>
+
+<p>```</p>
+
+<ul>
+  <li>
+    <p>在sbt命令行下执行<code>compile</code>，然后<code>run</code>就可以看到对应的输入了</p>
+  </li>
+  <li>
+    <p>设置包依赖仓库（repository）。对于Maven是设置的Maven的conf文件中，但是对于SBT是每次定义在项目的build.sbt文件中</p>
+
+    <ul>
+      <li>方法一： 通过URL定义如： <code>resolvers += "&lt;rep name&gt;" at "&lt;rep url&gt;"</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p><code>sh
+resolvers += 
+  "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+</code></p>
+
+<ul>
+  <li>
+    <p>方法二： 使用<a href="http://www.scala-sbt.org/0.13/docs/Resolvers.html">预定义的Rep</a>，主要有：</p>
+
+    <ul>
+      <li>DefaultMavenRepository at  https://repo1.maven.org/maven2/，这个会被默认使用，无需指定</li>
+      <li>JavaNet1Repository  at http://download.java.net/maven/1/</li>
+      <li>Resolver.sonatypeRepo(“public”) (or “snapshots”, “releases”) at https://oss.sonatype.org/content/repositories/public</li>
+      <li>Resolver.typesafeRepo(“releases”) (or “snapshots”) at https://repo.typesafe.com/typesafe/releases</li>
+      <li>Resolver.typesafeIvyRepo(“releases”) (or “snapshots”) at https://repo.typesafe.com/typesafe/ivy-releases</li>
+      <li>Resolver.sbtPluginRepo(“releases”) (or “snapshots”) at https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases</li>
+      <li>Resolver.bintrayRepo(“owner”, “repo”) at https://dl.bintray.com/[owner]/[repo]/</li>
+      <li>Resolver.jcenterRepo at https://jcenter.bintray.com/</li>
+    </ul>
+  </li>
+</ul>
+
+<p><code>sh
+resolvers += JavaNet1Repository
+</code></p>
+
+<ul>
+  <li>方法三：同时指定多个rep，使用<code>resolvers ++= Seq(&lt;rep1&gt;, &lt;rep2&gt;)</code>, rep1/rep2可以使用方法一或方法二</li>
+</ul>
+
+<p><code>sh
+resolvers ++= Seq(Resolver.sonatypeRepo("public"),
+    Resolver.typesafeRepo("releases"))
+</code></p>
+
+<ul>
+  <li>指定工程依赖包，和resolver类似，可以一个一个指定(+=)，也可以同时指定(++= Seq())，另外如果需要对多个包使用同一个变量指定如scala版本等，则可以使用如下例子的方式(即Scala的闭包)</li>
+</ul>
+
+<p><code>
+libraryDependencies ++= {
+  val akkaVersion       = "2.3.9"
+  val sprayVersion      = "1.3.2"
+  Seq(
+    "com.typesafe.akka" %% "akka-slf4j"      % akkaVersion withSources() withJavadoc(),
+    "ch.qos.logback"    %  "logback-classic" % "1.1.2",
+    "com.typesafe.akka" %% "akka-testkit"    % akkaVersion   % "test",
+    "org.scalatest"     %% "scalatest"       % "2.2.0"       % "test" withSources() withJavadoc()
+  )
+}
+</code>
+   - 每个lib的定义格式为 <code>&lt;groupID&gt; % &lt;artifactID&gt; % &lt;revision&gt; % configuration</code>。如上面的 ch.qos.logback，默认情况下都是”compile”的配置，而对于scalatest是指定在”test”的时候才使用
+   - 如果artifactID是根据scala的版本有不同的版本则可以简化的使用%%的方式省去指定xxx_2.11.4 (使用scala 2.11.4)而是直接写xxx
+   - 需要同时下载javadoc和source，则可以在最后用withSources() withJavadoc()</p>
+
+<ul>
+  <li>
+    <p>更改完后，如果还在sbt命令行下，则可以运行<code>reload</code>来更新相应的配置</p>
+  </li>
+  <li>
+    <p>打包程序，如果使用的不同的framework/toolkit，则有不同的打包方式，一般的打包方式是打成大的jar包</p>
+
+    <ul>
+      <li>配置打包plugin，在project子目录中增加一个名为assembly.sbt的文件，增加以下内容</li>
+    </ul>
+  </li>
+</ul>
+
+<p><code>
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.12.0")
+</code>
+   - 然后就可以在sbt命令行下执行<code>assembly</code>，则可以打包出jar文件了。可以在子目录target/scala-2.11/下找到这个jar
+   - 通过执行<code>java -jar &lt;xxx.jar&gt;</code>来执行程序
+   - 可以通过在build.sbt中增加以下配置更改打包jar</p>
+
+<pre><code>   - `ssemblyJarName in assembly := "&lt;xxxx.jar&gt;"` 更改打包的jar文件名
+   - `mainClass in assembly := Some("&lt;com.example.Main&gt;")` 更改main函数的入库
+   - 如果像用工程的版本号来合成打包文件，则可以这样写 `assemblyJarName in assembly := "&lt;name&gt;" + version.value +".jar"`
+</code></pre>
+
+<p>到此一个就本的sbt的scala开发环境就建成了。
+后续不同的项目的变化基本上就集中在增加新的依赖包，增加不同的plugin来执行不同的任务
+个人使用看来，对比maven相对而言要简单一些。只是SBT使用场景基本只局限于java和scala，同时sbt的写法是scala语法</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Scala中函数式编程还是命令式编程]]></title>
@@ -86,6 +264,204 @@ def merge(input: Vector[Map[String, Int]]) = {</p>
 但是从FP的实现看，中间没有任何可变变量（其实Scala对于reduceLeft用了中间可变变量，只是对于函数的使用者不需要了）</p>
 
 <p><strong>注</strong> 改FP的例子载自Akka in Action，但是它的是foldLeft不是reduceLeft</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[如何开始用scala编程]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/01/13/howtostartprogrammingwithscala/"/>
+    <updated>2015-01-13T17:19:11+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/01/13/howtostartprogrammingwithscala</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<p>在经历这么多年的OO的编程概念后，这一两年有兴起了FP(Functional Programming)的编程模式
+作为多年的Java程序员如何能更好的接受FP并应用到开发中呢？主要有两个选择</p>
+
+<ul>
+  <li><a href="http://scala-lang.org/">Scala</a></li>
+  <li><a href="http://clojure.org/">Clojure</a></li>
+</ul>
+
+<p>他俩最主要的区别是Clojure是比较纯粹的JVM下List语言的变种。没有OO的概念
+Scala比较好的融合了OO和FP，比较合适Java平滑过渡到FP的编程范式。从Java8的新特性看
+Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许是因为Java有过多的历史负担吧</p>
+
+<p>如果是想纯粹学一下List，也可以看看<a href="https://www.haskell.org">Haskell</a></p>
+
+<h3 id="coursera">Coursera的视频课程</h3>
+<p>开始一门新的语言，大家总是期望有好的视频来讲解，最出名的是这个了，但是建议大家还是看完入门的书籍对scala有一定的了解后再来看这个
+<a href="https://www.coursera.org/course/progfun">Functional Programming Principles in Scala</a></p>
+
+<h3 id="section-1">入门书籍推荐</h3>
+<p>现在关于Scala的书籍已经很多了，要达到熟悉的程度要看不下10本书。但是对于基础入门，以下这本我建议大家买个纸质版  <br />
+<img src="/images/kuaixuescala.jpg" alt="快学Scala" />    </p>
+
+<p>这本有些旧了，某些章节可以不用看，具体如下：</p>
+
+<ul>
+  <li>第19章: 解析，这个太难，也不容易应用，可以忽略</li>
+  <li>第20章: Actor，这个已经被Akka代替，不用再看，后面将写些如何应用Akka</li>
+  <li>第22章: 定界延续，这个也太难，可以暂时忽略</li>
+</ul>
+
+<h3 id="section-2">看一个有趣的例子</h3>
+<p>最近同学们在谈论lisp/FP的时候提到的一个例子:
+有一个农场，鸡的数量是鸭的4倍，但是鸭比猪少9只，鸭和猪的数量是67只，求所有动物的脚加起来总共有多少只？
+这个是个推论性的问题，在scala中用for{}的方式来解答(这里的for不是做循环，scala语言的用法叫for comprehension)</p>
+
+<p>``` java</p>
+
+<p>val d = (1 to 67) toStream</p>
+
+<p>val feet = for {
+  d1 &lt;- d 
+  c1 = d1 * 4
+  p1 = d1 +9 if(d1 + p1 == 67)
+} yield {
+  (c1+d1)<em>2 + p1</em>4
+}
+println(feet.take(1).force)</p>
+
+<p>```</p>
+
+<h4 id="section-3">小提示</h4>
+<p>Linux下查找文件中的某些字符串
+<code>grep -rnw '&lt;path&gt;' -e "&lt;string value&gt;"</code></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[创建基于maven的java和scala工程]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/04/06/chuang-jian-ji-yu-mavende-javahe-scalagong-cheng/"/>
+    <updated>2014-04-06T09:20:56+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/04/06/chuang-jian-ji-yu-mavende-javahe-scalagong-cheng</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>最近在看Scala和ScalaTest，但是要搭建一个同时运行Java和Scala的项目工程，还是遇到了些问题。因为我习惯了搭建出来的工程是Maven工程，同时即要能在Eclipse上运行，也能用Maven命令的方式运行以便后续用Jenkins。经过一段摸索终于试验出来。但是很奇怪，搜索出来的结果没有一个直接好使的。</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<h4 id="eclipse">Eclipse配置</h4>
+
+<ul>
+  <li>安装Scala的IDE，参见<a href="http://scala-ide.org">Scala-IDE官网</a>，注意选择Scala孵化器中的ScalaTest插件</li>
+  <li>安装Maven在Eclipse上的插件，通过<code>Preference -&gt;Maven-&gt;Discovery</code>安装m2e的对应插件。在后续的POM文件中使用到的插件最好都安装对应的m2e插件。(包括：build-helper，pmd, checkstyle, findbugs, compiler…)</li>
+  <li>
+    <p>创建Maven工程中，添加如下插件</p>
+
+    <ul>
+      <li>build-helper插件，添加scala的source和test source。因为<code>&lt;sourceDirectory&gt;</code>只能指定一个目录，所以需要这个插件来帮助添加scala的文件目录</li>
+    </ul>
+  </li>
+</ul>
+
+<p>```
+			<plugin>
+				<groupid>org.codehaus.mojo</groupid>
+				<artifactid>build-helper-maven-plugin</artifactid>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source />src/main/scala&lt;/source&gt;
+							</sources>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-test-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-test-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source />src/test/scala&lt;/source&gt;
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin></p>
+
+<p>```</p>
+
+<ul>
+  <li>Scala插件，协助编译scala，同时指定scala版本</li>
+</ul>
+
+<p><code>
+			&lt;plugin&gt;
+				&lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;
+				&lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;
+				&lt;version&gt;3.1.6&lt;/version&gt;
+				&lt;executions&gt;
+					&lt;execution&gt;
+						&lt;goals&gt;
+							&lt;goal&gt;compile&lt;/goal&gt;
+							&lt;goal&gt;testCompile&lt;/goal&gt;
+						&lt;/goals&gt;
+					&lt;/execution&gt;
+				&lt;/executions&gt;
+				&lt;configuration&gt;
+					&lt;scalaVersion&gt;2.10.3&lt;/scalaVersion&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+</code>   </p>
+
+<ul>
+  <li>ScalaTest插件</li>
+</ul>
+
+<p><code>
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.scalatest&lt;/groupId&gt;
+				&lt;artifactId&gt;scalatest-maven-plugin&lt;/artifactId&gt;
+				&lt;version&gt;1.0-RC2&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;reportsDirectory&gt;${project.build.directory}/surefire-reports&lt;/reportsDirectory&gt;
+					&lt;junitxml&gt;.&lt;/junitxml&gt;
+					&lt;filereports&gt;WDF TestSuite.txt&lt;/filereports&gt;
+				&lt;/configuration&gt;
+				&lt;executions&gt;
+					&lt;execution&gt;
+						&lt;id&gt;test&lt;/id&gt;
+						&lt;goals&gt;
+							&lt;goal&gt;test&lt;/goal&gt;
+						&lt;/goals&gt;
+					&lt;/execution&gt;
+				&lt;/executions&gt;
+			&lt;/plugin&gt;
+</code>   </p>
+
+<ul>
+  <li>指定Junit插件，如果需要同时使用JUnit测试java代码。注意，新版本的插件已经可以支持多线程并发，大大提高测试的速度。强烈建议使用最新的版本</li>
+</ul>
+
+<p><code>
+			&lt;plugin&gt;
+				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+				&lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+				&lt;version&gt;2.17&lt;/version&gt;
+				&lt;configuration&gt;
+					&lt;parallel&gt;methods&lt;/parallel&gt;
+					&lt;threadCount&gt;10&lt;/threadCount&gt;
+				&lt;/configuration&gt;
+			&lt;/plugin&gt;
+</code></p>
+
+<ul>
+  <li>安装m2e的scala maven plugin的connector插件，不然在eclipse上直接读取pom文件会解释出错。 <a href="http://alchim31.free.fr/m2e-scala/update-site/">update地址</a></li>
+</ul>
+
+<h3 id="section-2">小插曲</h3>
+<p>不知道什么原因，ScalaTest的官网被屏蔽了。一个纯开源的技术网站有这个必要性么？还是躺枪了？</p>
 
 ]]></content>
   </entry>
