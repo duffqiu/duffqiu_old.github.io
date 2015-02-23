@@ -36,6 +36,11 @@ git remote add origin <your octopress url in Github>
 git pull origin master
 cd ..
 ```
+
+注意：如果在多个环境编辑后，每次切换环境需要做pull操作获得最后的更新。需要在octopress的根目录做一次`git pull origin source`，然后再到_deploy目录做一次`git pull origin master`
+
+如果在`rake deploy`的时候发现了`non-fast-forward`错误，则可以通过重建_deploy目录来解决。
+
 - 在新的机器上设置octopress需要的环境配置rbenv
 
 - 然后就可以在根目录下继续用rake命令了。

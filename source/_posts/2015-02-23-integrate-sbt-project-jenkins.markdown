@@ -28,6 +28,8 @@ Jenkins已经提供了SBT的插件，类似Maven的插件
 - 如果Git repo下是涵盖了多个项目，则可以制定sub-directory path来运行特定个项目
 
 
+### 小插曲
+
 #### Linux/Unix下跟踪或查看文件的命令
 
 1. 输入文件到console: `cat <filename>`
@@ -38,7 +40,14 @@ Jenkins已经提供了SBT的插件，类似Maven的插件
 
 
 
+#### Git清理工作空间
 
+如果在某个Repo中，你不小心加入了很多没用的文件和文件目录（或者是因为没有checkout到真确的branch就做了pull操作），则你期望一次性清理掉这些文件，可以用以下命令
+不过需要注意的是这个操作不可逆的，可以通过增加`-n`参数来预览一下将会有什么变化
+
+``` sh
+git clean -fdx
+```
 
 
 
