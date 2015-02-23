@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Octopress | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-23T16:27:56+08:00</updated>
+  <updated>2015-02-23T16:41:47+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -49,10 +49,16 @@ git init
 git remote add origin &lt;your octopress url in Github&gt;
 git pull origin master
 cd ..
-</code>
-- 在新的机器上设置octopress需要的环境配置rbenv</p>
+</code></p>
+
+<p>注意：如果在多个环境编辑后，每次切换环境需要做pull操作获得最后的更新。需要在octopress的根目录做一次<code>git pull origin source</code>，然后再到_deploy目录做一次<code>git pull origin master</code></p>
+
+<p>如果在<code>rake deploy</code>的时候发现了<code>non-fast-forward</code>错误，则可以通过重建_deploy目录来解决。</p>
 
 <ul>
+  <li>
+    <p>在新的机器上设置octopress需要的环境配置rbenv</p>
+  </li>
   <li>
     <p>然后就可以在根目录下继续用rake命令了。</p>
   </li>
