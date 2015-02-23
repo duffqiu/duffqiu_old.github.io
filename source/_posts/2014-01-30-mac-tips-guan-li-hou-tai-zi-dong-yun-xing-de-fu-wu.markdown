@@ -9,7 +9,7 @@ categories: OSX
 ###OSX系统后台服务简介
 1. 系统级别的服务配置在 /Library/LaunchDaemons/ 目录里面。这里有个注意点，必须确保文件的拥有者是root用户，如果不是，则需要用chown命令改过来
        
-       > sudo chmod root [文件名]
+       > sudo chown root [文件名]
 
 2. 用户级别的服务配置，即在用户登录后才会运行的服务，配置文件在 ~/Library/LaunchAgents/ 目录里面。
 
@@ -42,5 +42,15 @@ categories: OSX
    - 编辑完了记得再改回来
      
 ###服务的启动和停止
-     
-   
+
+1. 启动服务
+
+``` sh
+sudo launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
+```
+
+2. 停止服务
+
+``` sh 
+sudo launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
+```   
