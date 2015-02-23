@@ -9,7 +9,7 @@ categories: SBT,Jenkins
 ###原由
 ---
 
-之前有些过关于Jenkins上搭建maven工程[1]({%post_url yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi%})，但是对于Scala的工程最好还是用SBT，那么如何在Jenkins用SBT呢？
+之前有些过关于Jenkins上搭建maven工程[1]({% post_url 2014-02-06-yong-jenkinsda-jian-ji-yu-githubhe-junitde-zi-dong-hua-ce-shi %})，但是对于Scala的工程最好还是用SBT，那么如何在Jenkins用SBT呢？
 
 
 ###解决办法
