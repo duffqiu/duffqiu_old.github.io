@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Mac Tips: 给用户增加用户组 - Duff Qiu's Blog</title>
+  <title>Category: Sublime - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,8 +19,7 @@
 
 
   
-  <meta name="description" content="查看用户所在用户组 &gt;groups 查看当前有那些用户 &gt;uers 给用户增加用户组
-通过用户管理创建的用户，如果赋予管理员权限，则用户在admin组，当时有时候需要将用户增加到wheel组，但是OSX没有像相关的命令，似乎apple就不想普通用户像linux那样操作OSX。 &hellip;">
+  <meta name="description" content="Category: Sublime">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu">
+  <link rel="canonical" href="http://duffqiu.github.ioblog/categories/sublime">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -99,156 +98,36 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">Mac Tips: 给用户增加用户组</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-30T18:06:43+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
-        
-        
-           | <a href="#comments">Comments</a>
-        
-      </p>
+    <h1 class="entry-title">Category: Sublime</h1>
     
   </header>
-
-
-<div class="entry-content"><h3 id="section">查看用户所在用户组</h3>
-
-<pre><code>&gt;groups
-</code></pre>
-
-<h3 id="section-1">查看当前有那些用户</h3>
-
-<pre><code>&gt;uers
-</code></pre>
-
-<h3 id="section-2">给用户增加用户组</h3>
-<p>通过用户管理创建的用户，如果赋予管理员权限，则用户在admin组，当时有时候需要将用户增加到wheel组，但是OSX没有像相关的命令，似乎apple就不想普通用户像linux那样操作OSX。不过对于技术人员，apple提供了个dscl(Directory Service command line utility)目录服务命令工具完成的，具体操作如下</p>
-
-<ol>
-  <li>
-    <p>现进入dscl</p>
-
-    <pre><code>&gt;dscl localhost
-</code></pre>
-  </li>
-  <li>
-    <p>进入组目录，使用ls 你就可以看到Mac所有的group（同理，在/Local/Default/Users可以到所有的用户）</p>
-
-    <pre><code>&gt;cd /Local/Default/Groups
-&gt;ls
-</code></pre>
-  </li>
-  <li>
-    <p>添加用户到用户组，&lt;groupname&gt;为组名，&lt;username&gt;为用户名</p>
-
-    <pre><code>&gt;append &lt;groupname&gt; GroupMembership &lt;username&gt;
-</code></pre>
-  </li>
-  <li>
-    <p>将用户从用户组中移除</p>
-
-    <pre><code>&gt;delete &lt;groupname&gt; GroupMembership &lt;username&gt;
-</code></pre>
-  </li>
-  <li>
-    <p>查看用户组信息，同理可以查看用户信息</p>
-
-    <pre><code>&gt;read  &lt;groupname&gt;
-</code></pre>
-  </li>
-</ol>
-
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Duff Qiu</span></span>
-
-      
-
-
-
-
-
+  <div id="blog-archives" class="category">
 
 
 
   
+  <h2>2015</h2>
 
-
-<time datetime="2014-01-30T18:06:43+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
-      
-
-<span class="categories">
+<article>
   
-    <a class='category' href='/blog/categories/mac/'>MAC</a>, <a class='category' href='/blog/categories/osx/'>OSX</a>
-  
-</span>
+<h1><a href="/blog/2015/02/25/sublime-startup/">Sublime入门以及搭建scala开发环境</a></h1>
+<time datetime="2015-02-25T14:49:46+08:00" pubdate><span class='month'>Feb</span> <span class='day'>25</span> <span class='year'>2015</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/scala/'>Scala</a>, <a class='category' href='/blog/categories/sublime/'>Sublime</a></span>
+</footer>
 
 
-    </p>
-    
-      <div class="sharing">
-  
-  
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2014/01/30/mac-tips-guan-li-hou-tai-zi-dong-yun-xing-de-fu-wu/" title="Previous Post: mac tips: 管理后台自动运行的服务">&laquo; mac tips: 管理后台自动运行的服务</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/" title="Next Post: Octopress的内部blog间关联">Octopress的内部blog间关联 &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
-
-
-   <section>
-     <h1>Comments</h1>
-     <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
-	<div class="ds-thread"></div>
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"duffqiu"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = 'http://static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		|| document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- Duoshuo Comment END -->
 </div>
-   </section>
+
   
+</article>
 
 </div>
 
@@ -302,96 +181,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
 
   
 </aside>
-
-
-
-
-<article class="archives">
-  <div class="related-posts">
-    <h2>Related Posts</h2>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/02/25/sublime-startup/">sublime入门以及搭建scala开发环境</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/scala/'>Scala</a>, <a class='category' href='/blog/categories/sublime/'>Sublime</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/02/23/mac-port-guide/">mac下port工具的使用</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/osx/'>OSX</a>, <a class='category' href='/blog/categories/port/'>Port</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/02/23/integrate-sbt-project-jenkins/">集成SBT到Jenkins中</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/jenkins/'>Jenkins</a>, <a class='category' href='/blog/categories/sbt/'>SBT</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/02/10/sbt-for-new-user/">初学sbt</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/sbt/'>SBT</a>, <a class='category' href='/blog/categories/scala/'>Scala</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/02/05/fp-or-imperative-with-scala/">Scala中函数式编程还是命令式编程</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/fp/'>FP</a>, <a class='category' href='/blog/categories/scala/'>Scala</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-  </div>
-</article>
 
 
     </div>
