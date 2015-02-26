@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Maven工程中加入PlantUML - Duff Qiu's Blog</title>
+  <title>Sublime入门以及搭建scala开发环境 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,9 +19,9 @@
 
 
   
-  <meta name="description" content="原由
-设计于编码的最好实践是设计文档与代码文档放在最近的地方，便于同时修改和更新。最好都放入到一个代码工程中 解决办法
-PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目录存放PlantUML的设计文件，txt文件就可以。如：src/main/plantuml &hellip;">
+  <meta name="description" content="原由 Sublime号称是神级编辑器，同时支持多种插件的扩展。并且支持多个平台。
+这里主要讲以下如何安装和配置，并说明一下如何使用scala插件来搭建开发环境，
+避免使用其他的IDE这么重的工具，节约内存和系统消耗 sublime使用入门 安装sublime &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,7 +30,7 @@ PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目�
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-plantuml">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/02/25/sublime-startup">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -104,7 +104,7 @@ PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目�
   
   <header>
     
-      <h1 class="entry-title">Maven工程中加入PlantUML</h1>
+      <h1 class="entry-title">Sublime入门以及搭建scala开发环境</h1>
     
     
       <p class="meta">
@@ -120,7 +120,7 @@ PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目�
   
 
 
-<time datetime="2014-02-13T23:37:47+08:00" pubdate data-updated="true">Feb 13<span>th</span>, 2014</time>
+<time datetime="2015-02-25T14:49:46+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2015</time>
         
         
            | <a href="#comments">Comments</a>
@@ -131,72 +131,91 @@ PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目�
 
 
 <div class="entry-content"><h3 id="section">原由</h3>
-<p>设计于编码的最好实践是设计文档与代码文档放在最近的地方，便于同时修改和更新。最好都放入到一个代码工程中</p>
+<hr />
+<p>Sublime号称是神级编辑器，同时支持多种插件的扩展。并且支持多个平台。
+这里主要讲以下如何安装和配置，并说明一下如何使用scala插件来搭建开发环境，
+避免使用其他的IDE这么重的工具，节约内存和系统消耗</p>
 
-<h3 id="section-1">解决办法</h3>
-<p>PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目录存放PlantUML的设计文件，txt文件就可以。如：<code>src/main/plantuml</code></p>
+<h3 id="sublime">sublime使用入门</h3>
+<hr />
 
-<ol>
+<ul>
   <li>
-    <p>然后确保已经安装好了graphvizDot。</p>
+    <p>安装sublime
+可以直接从<a href="http://www.sublimetext.com/">sublime官网</a>下载对应的版本安装
+这里针对不同的系统的配置的文件的路径如下：</p>
+
+    <ul>
+      <li>Mac OSX: <code>~/Library/Library/Application Support/Sublime Text 3</code></li>
+      <li>Linux CentOS7: <code>~/.config/sublime-text-3</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Mac OSX有对应的dmg安装包，一部一部安装就可以
+CentOS7没有安装包，需要下载压缩包，4然后解压到<code>/opt/sublime-text</code>目录(注意要把名字中的3去掉)，然后将目录中的sublime_text.desktop复制到<code>/usr/share/applications</code>，这样在CentOS的启动菜单上就对应的图表了</p>
+
+<ul>
+  <li>
+    <p>安装包管理插件Package Control</p>
+
+    <ul>
+      <li>最先要安装的是插件<a href="https://packagecontrol.io/installation">管理工具Package Control</a>: 下载插件包，然后放到配置路径的Installed Packages目录下就可以了。</li>
+      <li>每次通过<code>shift+Ctrl+P</code>来打开命令板选择“Package Control: Install Package”来安装插件</li>
+    </ul>
   </li>
   <li>
-    <p>然后就可以写plantuml的文本</p>
+    <p>安装scala插件SublimeREPL</p>
+
+    <ul>
+      <li><code>shift+Ctrl+P</code>来打开命令板选择“Package Control: Install Package”，然后选择SublimeREPL</li>
+      <li>安装成功后就可以在命令板中选择对应的scala/sbt来打开scala REPL和sbt REPL了</li>
+      <li>配置： 有可能你安装sbt/scala的目录不同，造成无法打开scala REPL和sbt REPL，这个时候需要手工配置一下。在配置的文件的路径下找到<code>Packages/SublimeREPL/config/Scala</code>目录下的Main.sublime-menu文件，编辑该文件，为对应的scala和sbt指定好对应的目录就可以了</li>
+      <li>使用：对于SublimeREPL:scala只是打开了scala REPL，用处不大，可以使用下面的scala worksheet插件代替。但是对于SublimeREPL:sbt则比较有用。方式是通过sublime先打开sbt的工程的目录，然后在命令板执行SublimeREPL:SBT for opened folder。不过还有更方便的插件SbblimeSBT</li>
+    </ul>
   </li>
   <li>
-    <p>修改maven的工程的pom.xml文件，增加<a href="https://github.com/duffqiu/maven-plantuml-plugin">PlantUML的Maven Plugin</a>，注意用的版本，我用时maven plugin最新的版本为7954，plantuml版本是7991，代码如下</p>
+    <p>安装scala worksheet插件</p>
+
+    <ul>
+      <li><code>shift+Ctrl+P</code>来打开命令板选择“Package Control: Install Package”，然后选择Scala Worksheet</li>
+      <li>安装成功后就可以在命令板中选择对应的show scala worksheet了。</li>
+      <li>使用方式是编写对应的scala文件并保存后，再执行show scala worksheet，这样scala REPL就自动会执行你编辑的文件了。</li>
+      <li>有可能在打开show scala worksheet出现无法找到scala的无法，简单的解决方式是在1<code>/usr/bin</code>下给scala建立一个soft link <code>sudo ln &lt;scala install path&gt; /usr/bin/scala</code></li>
+    </ul>
   </li>
-</ol>
+  <li>
+    <p>安装SublimeSBT插件</p>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">    &lt;plugin&gt;
-</span><span class="line">      &lt;groupId&gt;com.github.jeluard&lt;/groupId&gt;
-</span><span class="line">      &lt;artifactId&gt;plantuml-maven-plugin&lt;/artifactId&gt;
-</span><span class="line">      &lt;version&gt;7954&lt;/version&gt;
-</span><span class="line">      &lt;configuration&gt;
-</span><span class="line">        &lt;graphvizDot&gt;/opt/local/bin/dot&lt;/graphvizDot&gt;
-</span><span class="line">        &lt;sourceFiles&gt;
-</span><span class="line">          &lt;directory&gt;<span class="k">${</span><span class="nv">basedir</span><span class="k">}</span>&lt;/directory&gt;
-</span><span class="line">          &lt;includes&gt;
-</span><span class="line">            &lt;include&gt;src/main/plantuml/*.txt&lt;/include&gt;
-</span><span class="line">          &lt;/includes&gt;
-</span><span class="line">        &lt;/sourceFiles&gt;
-</span><span class="line">      &lt;/configuration&gt;
-</span><span class="line">      &lt;dependencies&gt;
-</span><span class="line">        &lt;dependency&gt;
-</span><span class="line">          &lt;groupId&gt;net.sourceforge.plantuml&lt;/groupId&gt;
-</span><span class="line">          &lt;artifactId&gt;plantuml&lt;/artifactId&gt;
-</span><span class="line">          &lt;version&gt;7991&lt;/version&gt;
-</span><span class="line">        &lt;/dependency&gt;
-</span><span class="line">      &lt;/dependencies&gt;
-</span><span class="line">    &lt;/plugin&gt;
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+    <ul>
+      <li><code>shift+Ctrl+P</code>来打开命令板选择“Package Control: Install Package”，然后选择SublimeSBT</li>
+      <li>使用：shift+Ctrl+P`来打开命令板选择SBT: xxx来运行对应的sbt命令</li>
+    </ul>
+  </li>
+  <li>
+    <p>给对应的scala sbt项目配置SBT插件：sbt-sublime </p>
 
-<p>因为用port安装的graphvizDot目录不在<code>/usr/bin</code>下，所以需要特定指定改目录</p>
+    <ul>
+      <li>在project/plugin.sbt中增加<code>addSbtPlugin("com.orrsella" % "sbt-sublime" % "1.0.9")</code></li>
+      <li>在sbt console中调用<code>gen-sublime</code>来获取依赖包的源文件以及生成sublime的工程文件（每次SBT Clean都会自动删除这些文件。）。这样也节约了需要在每一个依赖包的定义后面增加withSource的选项</li>
+      <li>使用步骤1： 在sublime中， project-&gt;open project来打开生成sublime的工程文件，这个时候将会将SBT的工程目录加载进来，同时多了一个External Libraries的目录（其存放了依赖包的源代码）</li>
+      <li>使用步骤2： 使用SublimeSBT插件调用SBT: Start continus compiling，这样每次更改源文件都会被自动编译。如果发现错误，则Sublime会自动提示在那一行代码上</li>
+      <li>使用步骤3： 因为引入了依赖包的源代码，则可以通过在sublime中的Goto菜单来调转到指定的类/方法的源文件处(仅Sublime Text 3支持)</li>
+      <li>使用步骤4： 使用Snippet：case class…等来协助快速编写代码（但是不知道是上面哪个插件体提供的了）</li>
+    </ul>
+  </li>
+  <li>
+    <p>使用Git插件，在“Package Control: Install Package”中选择Git就可以了，然后在命令板选择对应的Git:xxx命令就可如Git status。</p>
+  </li>
+</ul>
 
-<p>然后用maven的build的target：<code>com.github.jeluard:plantuml-maven-plugin:generate</code>就可以将plantuml下的文件转成UML图形了。图形文件放在<code>target/plantuml</code>目录下</p>
+<p>Sublime搭建Scala开发环境小结：
+    - 总体而言还是不错，运行速度又快，基本的功能都有
+    - 但是唯一的遗憾是没有办法在编写代码的时候自动提示可能的方法/类等</p>
 
-<p>如果用Eclipse，则可以安装对应的<a href="http://plantuml.sourceforge.net/updatesitejuno/">eclipse插件，安装地址 </a>，这样在写plantuml文本的时候就可以同时看到图形了。</p>
+<h4 id="section-1">小提示</h4>
+<p>对于sublime text 3的最新版本在linus下无法使用ibus的输入法，所以编写这个blog的时候我又回到了gedit
+从这个对比来看，linus和mac osx从个人用户的使用来看还是差很远的</p>
 
 </div>
 
@@ -220,14 +239,8 @@ PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目�
   
 
 
-<time datetime="2014-02-13T23:37:47+08:00" pubdate data-updated="true">Feb 13<span>th</span>, 2014</time>
+<time datetime="2015-02-25T14:49:46+08:00" pubdate data-updated="true">Feb 25<span>th</span>, 2015</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/maven/'>Maven</a>, <a class='category' href='/blog/categories/plantuml/'>PlantUML</a>
-  
-</span>
 
 
     </p>
@@ -241,10 +254,8 @@ PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目�
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/02/12/octopresszhong-shi-yong-plantuml/" title="Previous Post: Octopress中使用plantuml">&laquo; Octopress中使用plantuml</a>
+        <a class="basic-alignment left" href="/blog/2015/02/23/mac-port-guide/" title="Previous Post: mac下port工具的使用">&laquo; mac下port工具的使用</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/02/15/she-ji-mo-shi-%3Agong-han-fang-fa-mo-shi/" title="Next Post: 设计模式：工厂方法模式">设计模式：工厂方法模式 &raquo;</a>
       
     </p>
   </footer>
@@ -332,16 +343,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2015/02/25/sublime-startup/">sublime入门以及搭建scala开发环境</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2015/02/23/mac-port-guide/">mac下port工具的使用</a></h3>
         <div class="meta">
           <span class="tags">
@@ -399,6 +400,16 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <a class='category' href='/blog/categories/fp/'>FP</a>, <a class='category' href='/blog/categories/scala/'>Scala</a>
   
 </span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/02/02/integration-pattern-canonical-data-model/">系统集成模式：规范化数据流模式</a></h3>
+        <div class="meta">
+          <span class="tags">
 
 </span>
             
