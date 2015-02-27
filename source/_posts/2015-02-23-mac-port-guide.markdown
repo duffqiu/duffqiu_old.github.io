@@ -1,0 +1,109 @@
+---
+layout: post
+title: "mac下port工具的使用"
+date: 2015-02-23 22:29:35 +0800
+comments: true
+categories: [OSX, Port]
+---
+
+
+###原由
+---
+
+Mac下面除了用dmg、pkg来安装软件外，比较方便的还有用MacPorts来帮助你安装其他应用程序，跟BSD中的ports道理一样。MacPorts就像apt-get、yum一样，可以快速安装些软件。
+
+Mac下还有brew可以用来管理软件包，但是个人不喜欢这个工具，还是比较倾向于用port
+
+
+###工具使用详解
+---
+
+- 更新ports tree(即软件信息列表)和MacPorts版本，强烈推荐第一次运行的时候使用-v参数，显示详细的更新过程。
+
+```
+sudo port -v selfupdate
+```
+
+- 搜索索引中的软件
+
+```
+port search <name>
+```
+
+- 安装新软件
+
+```
+sudo port install <name>
+```
+
+- 卸载软件
+
+```
+sudo port uninstall <name>
+```
+
+- 递归卸载要卸载的软件所依赖的软件包，但这一命令不会卸载那些又依赖其他软件包的软件。
+
+```
+sudo port uninstall --follow-dependencies software_name 
+```
+
+- 查看有更新的软件以及版本
+
+```
+port outdated
+```
+
+- 升级可以更新的软件
+
+```
+sudo port upgrade outdated 
+```
+
+- 升级软件并且同时升级所依赖的软件包
+
+```
+sudo port upgrade <name> 
+```
+
+- 关闭软件
+
+```
+sudo port deactivate <name>
+```
+
+- 查询所需软件信息
+
+```
+sudo port info <name> 
+```
+
+- 查看软件依赖性：
+
+```
+sudo port deps <name>  
+```
+
+- 清理安装过程中的缓存文件，在获取软件失败时也可以使用：
+
+```
+sudo port clean --all <name>  
+```
+
+- 查看已经安装的软件的内容信息
+
+```
+port contents <name>  
+```
+
+- 查看已安装软件的信息
+ 
+```
+sudo port installed <name>  
+```
+
+- 报告所查询软件的依赖包情况
+ 
+```
+port dependents <name>  
+```

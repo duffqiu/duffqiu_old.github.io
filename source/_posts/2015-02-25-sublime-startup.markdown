@@ -3,7 +3,7 @@ layout: post
 title: "sublime入门以及搭建scala开发环境"
 date: 2015-02-25 14:49:46 +0800
 comments: true
-categories: 
+categories: [Sublime, Scala]
 ---
 
 ###原由
