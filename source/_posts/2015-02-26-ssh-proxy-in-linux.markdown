@@ -20,6 +20,7 @@ categories: [Proxy, Linux]
 
 - 安装Corkscrew（主要下载源代码，然后配置、编译、安装，典型的C程序的方式）
 - 配置ssh，在~/.ssh/目录下生成一个config=文将，然后增加一行：`ProxyCommand /usr/local/bin/corkscrew <proxy http url> <proxy port> %h %p`
+- 如果是新建的config文件，注意要更改一下它的权限为600，`chmod 600 ~/.ssh/config`
 - 根据github的说明配置ssh的public和private key,参考[git帮助](https://help.github.com/articles/generating-ssh-keys/#platform-linux)
 
 
