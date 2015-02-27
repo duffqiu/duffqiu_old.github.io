@@ -12,15 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-ea4fd89bb96ff8b3af48647cf8d9bcea.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-32ebe1a368f3d1f2b460d2b764d1d490.css' rel='stylesheet' type='text/css' />
 
 
-<script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
+<script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="参考
-从这里开始，主要是参考漫谈设计模式 要去理解设计模式，必须是有以下基础 语言基础(Java, C++, Object-C…)，这里是以Java语言做介绍，如果需要初步学Java则可以看看Udemy上面的免费入门视频 懂得OO的设计理念/原则，后面再抽个章节讲讲这个OO的设计原则 &hellip;">
+  <meta name="description" content="OO设计原则 “开-闭”原则 (Open-Closed Principle, OCP) 对扩展开放，对修改关闭 (如不要去覆盖一个父类的行为，但是可以在一个新的类的行为中使用父类／关联类的行为) 不允许更改系统的抽象层，是允许扩展系统的实现层 抽象类(Abstract Class) &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -39,10 +38,10 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-41274af258c5a262283f65f3cb7ba5fa.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-830de7fbd1352ea01d1514248ba5bfeb.css' rel='stylesheet' type='text/css' />
 
 
-<script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
+<script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
 
 
 <!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
@@ -100,6 +99,138 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/">OO的一些设计原则</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-02T16:05:09+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="oo">OO设计原则</h3>
+
+<ol>
+  <li>
+    <p>“开-闭”原则 (Open-Closed Principle, OCP)</p>
+
+    <ul>
+      <li>对扩展开放，对修改关闭 (如不要去覆盖一个父类的行为，但是可以在一个新的类的行为中使用父类／关联类的行为)</li>
+      <li>不允许更改系统的抽象层，是允许扩展系统的实现层  </li>
+    </ul>
+  </li>
+  <li>
+    <p>抽象类(Abstract Class)</p>
+
+    <ul>
+      <li>具体类不是用来继承的。继承要从抽象类开始，一般以abstract命名开头</li>
+      <li>如果遇到具体类的继承，最有可能的重构方式是构造一个抽象类，这两个类成为这个抽象类的子类</li>
+      <li>抽象类应当尽可能有多的共同代码</li>
+      <li>抽象类应当尽可能少的数据</li>
+      <li>针对抽象编程</li>
+      <li>正确使用继承，不要从工具类继承</li>
+    </ul>
+  </li>
+  <li>里氏代换原则(LSP)
+    <ul>
+      <li>如果程序调用适用于基类，则必定适用于其子类</li>
+      <li>反过来的代价不成立</li>
+    </ul>
+  </li>
+  <li>
+    <p>依赖倒转原则（DIP）</p>
+
+    <ul>
+      <li>要依赖于抽象，不要依赖于具体实现</li>
+      <li>三种耦合关系：
+  a. 零耦合(Nil Coupling)，两个类没有耦合关系<br />
+  b. 具体耦合(Concrete Coupling)，具体型耦合发生在两个具体类之间，有一个类对另一个具体类的直接引用造成（非继承）<br />
+  c. 抽象耦合(Abstract Coupling)，耦合关系发生在一个具体类和抽象类（或接口）之间  </li>
+      <li>DIP要求客户端依赖于抽象耦合</li>
+      <li>抽象不应当依赖于细节，细节应当依赖于抽象</li>
+      <li>针对接口编程，不针对实现编程。即使用接口和抽象类进行变量的类型声明、函数参数的类型声明、方法的返回值类型声明，以及数据类型的转换。</li>
+      <li>联合使用Java接口和抽象类</li>
+      <li>对于已经很稳定的类，客户端是可以依赖于这个具体类型的，而不用再发明抽象类型</li>
+    </ul>
+  </li>
+  <li>接口隔离原则(ISP)
+    <ul>
+      <li>使用多个专门的接口比使用单一接口要好 </li>
+      <li>一个类对于另外一个类的依赖应当建立在最小的接口上</li>
+      <li>定制服务：如果客户端仅需要某些方法，那么就应但只提供这些需要的方法，而不提供不需要的方法</li>
+    </ul>
+  </li>
+  <li>合成/聚合复用原则（CARP）  <br />
+    <ul>
+      <li>在一个新的对象中使用一些已有的对象，新的对象通过向这些旧的对象委派达到复用已有功能的目的</li>
+      <li>尽量使用合成/聚合，尽量不要使用继承</li>
+    </ul>
+  </li>
+  <li>迪米特法则(LoD)<br />
+又叫做最少知识原则(Least Knowledge Principle LKP)
+    <ul>
+      <li>只与你直接的朋友通信</li>
+      <li>不要和“陌生人”说话</li>
+      <li>朋友确定的原则：
+        <ul>
+          <li>当前对象本身（this）</li>
+          <li>以参数形式传入到当前对象方法的对象</li>
+          <li>当前对象的实例变量直接引用的对象</li>
+          <li>当前对象的实例变量如果是一个聚集，则聚集中的元素都是朋友</li>
+          <li>当前对象所创建的对象</li>
+        </ul>
+      </li>
+      <li>使用抽象陌生人重构来调用陌生对象，避免过多的原子调用转发</li>
+    </ul>
+  </li>
+  <li>
+    <p>广义迪米特法则在类上的设计</p>
+
+    <ul>
+      <li>优先考虑将一个类设置成不变类</li>
+      <li>尽量降低一个类的访问权限（package-private是默认权限，无需标示private关键字）</li>
+      <li>谨慎使用Serializable</li>
+      <li>尽量降低类成员(属性、方法、嵌套类、嵌套接口)的访问权限
+        <ul>
+          <li>private，只能类内部使用 </li>
+          <li>package-private,只能被当前包的类访问，默认权限，无需任何关键字标示</li>
+          <li>protected，但前包的类和它的子类可以访问</li>
+          <li>public,任何类都可以访问</li>
+        </ul>
+      </li>
+      <li>限制局域变量的有效访问</li>
+    </ul>
+  </li>
+</ol>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -930,65 +1061,6 @@ markdown: kramdown
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/">Mac Tips: Path路径的查找顺序和设置</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-01-30T13:14:17+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="osxpath">OSX系统的PATH设置</h3>
-
-<ol>
-  <li>
-    <p>系统读取path配置的顺序为<br />
-1). /etc/paths wenjian <br />
-2). /etc/paths.d/目录下的所有设置文件<br />
-3). /etc/profile 文件 
-4). 用户目录下的shell配置文件，如zsh的.zshrc文件</p>
-  </li>
-  <li>
-    <p>获取当前path的值的方式<br />
-1). echo $PATH<br />
-2). /usr/libexec/path_helper  </p>
-  </li>
-  <li>
-    <p>用户设置path的建议<br />
-1). 只针对用户自己的设置配知道shell的配置文件中，如.zshrc
-2). 针对系统的文件，可以在/etc/paths.d/路径中生成一个对应的配置文件</p>
-  </li>
-</ol>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -1006,6 +1078,10 @@ markdown: kramdown
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/02/26/ssh-proxy-in-linux/">Ssh在linux下使用http/https代理</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/02/25/sublime-startup/">Sublime入门以及搭建scala开发环境</a>
       </li>
     
@@ -1019,10 +1095,6 @@ markdown: kramdown
     
       <li class="post">
         <a href="/blog/2015/02/10/sbt-for-new-user/">初学sbt</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/02/05/fp-or-imperative-with-scala/">Scala中函数式编程还是命令式编程</a>
       </li>
     
   </ul>
@@ -1052,6 +1124,7 @@ markdown: kramdown
 <li class='category'><a href='/blog/categories/java/'>Java (13)</a></li>
 <li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>
 <li class='category'><a href='/blog/categories/jenkins/'>Jenkins (3)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>Linux (1)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>MAC (2)</a></li>
 <li class='category'><a href='/blog/categories/maven/'>Maven (3)</a></li>
 <li class='category'><a href='/blog/categories/miscellany/'>Miscellany (1)</a></li>
@@ -1060,7 +1133,7 @@ markdown: kramdown
 <li class='category'><a href='/blog/categories/octopress/'>Octopress (16)</a></li>
 <li class='category'><a href='/blog/categories/plantuml/'>PlantUML (3)</a></li>
 <li class='category'><a href='/blog/categories/port/'>Port (2)</a></li>
-<li class='category'><a href='/blog/categories/proxy/'>Proxy (1)</a></li>
+<li class='category'><a href='/blog/categories/proxy/'>Proxy (2)</a></li>
 <li class='category'><a href='/blog/categories/rest/'>REST (3)</a></li>
 <li class='category'><a href='/blog/categories/sbt/'>SBT (2)</a></li>
 <li class='category'><a href='/blog/categories/scala/'>Scala (5)</a></li>

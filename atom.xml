@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-26T22:13:24+08:00</updated>
+  <updated>2015-02-27T10:09:48+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,33 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ssh在linux下使用http/https代理]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/02/26/ssh-proxy-in-linux/"/>
+    <updated>2015-02-26T18:00:30+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/02/26/ssh-proxy-in-linux</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在公司有代理的环境下，如果在linux下使用github，则可以使用https的方式。
+但是https的方式需要每次都输入用户名和密码（用户名可以写在url上避免输入，但是密码就必须要）
+但是如果能使用ssh的rsa方式则可以避免这个麻烦，但是ssh默认是不支持使用http/https代理的。
+那么有没有办法通过某种手段让ssh支持代理呢？答案是可定的，这个工具是<a href="http://www.agroman.net/corkscrew/">Corkscrew官网</a></p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>通过Corkscrew来建立隧道的方式来为ssh提供代理，具体方法如下 </p>
+
+<ul>
+  <li>安装Corkscrew（主要下载源代码，然后配置、编译、安装，典型的C程序的方式）</li>
+  <li>配置ssh，在~/.ssh/目录下生成一个config=文将，然后增加一行：<code>ProxyCommand /usr/local/bin/corkscrew &lt;proxy http url&gt; &lt;proxy port&gt; %h %p</code></li>
+  <li>如果是新建的config文件，注意要更改一下它的权限为600，<code>chmod 600 ~/.ssh/config</code></li>
+  <li>根据github的说明配置ssh的public和private key,参考<a href="https://help.github.com/articles/generating-ssh-keys/#platform-linux">git帮助</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sublime入门以及搭建scala开发环境]]></title>
@@ -2135,154 +2162,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 <h3 id="section-3">小插曲</h3>
 <p>这是在写Decorator设计模式的时候分心出来写的，代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a></p>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[PlantUML小技巧]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/22/plantumlxiao-ji-qiao/"/>
-    <updated>2014-02-22T15:10:21+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/22/plantumlxiao-ji-qiao</id>
-    <content type="html"><![CDATA[<h3 id="plantuml">PlantUML画模块图/组件图的问题</h3>
-
-<p>在使用PlantUML的时候，如果模块中嵌套模块然后将关联关系定义在子模块中，则很容易造成模块的混沦。</p>
-
-<h3 id="section">解决办法</h3>
-<p>我个人一个比较好的practice是这样一个模式，PlantUML代码如下<br />
-同时最好的方式是在纸上先用笔画好初稿</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-<span class="line-number">39</span>
-<span class="line-number">40</span>
-<span class="line-number">41</span>
-<span class="line-number">42</span>
-<span class="line-number">43</span>
-<span class="line-number">44</span>
-<span class="line-number">45</span>
-<span class="line-number">46</span>
-<span class="line-number">47</span>
-<span class="line-number">48</span>
-<span class="line-number">49</span>
-<span class="line-number">50</span>
-<span class="line-number">51</span>
-<span class="line-number">52</span>
-<span class="line-number">53</span>
-<span class="line-number">54</span>
-<span class="line-number">55</span>
-<span class="line-number">56</span>
-<span class="line-number">57</span>
-<span class="line-number">58</span>
-<span class="line-number">59</span>
-<span class="line-number">60</span>
-<span class="line-number">61</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">@startuml
-</span><span class="line">title "组件图Best Practice"
-</span><span class="line">
-</span><span class="line">'全局的component
-</span><span class="line">component [global 1]
-</span><span class="line">component [global 2]
-</span><span class="line">interface "inferface 1" as if1
-</span><span class="line">interface "inferface 2" as if2
-</span><span class="line">...
-</span><span class="line">
-</span><span class="line">'模块定义
-</span><span class="line">package "Parent1" {
-</span><span class="line">	package "Children1-1" {
-</span><span class="line">		'只定义component，不定义关心
-</span><span class="line">		component [1-1-1]
-</span><span class="line">		component [1-1-2]
-</span><span class="line">		...
-</span><span class="line">	}
-</span><span class="line">	package "Children1-2" {
-</span><span class="line">		component [1-2-1]
-</span><span class="line">		component [1-2-2]
-</span><span class="line">		...
-</span><span class="line">	}
-</span><span class="line">	
-</span><span class="line">}
-</span><span class="line">
-</span><span class="line">package "Parent2" {
-</span><span class="line">	package "Children2-1" {
-</span><span class="line">		'只定义component，不定义关心
-</span><span class="line">		component [2-1-1]
-</span><span class="line">		component [2-1-2]
-</span><span class="line">		...
-</span><span class="line">	}
-</span><span class="line">	package "Children2-2" {
-</span><span class="line">		component [2-2-1]
-</span><span class="line">		component [2-2-2]
-</span><span class="line">		...
-</span><span class="line">	}
-</span><span class="line">	
-</span><span class="line">}
-</span><span class="line">
-</span><span class="line">'完成component定义后再定义关系不要再component中定义关系，容易造成有些component还未必定义就被使用
-</span><span class="line">
-</span><span class="line">'定义全局和子模块的关系
-</span><span class="line">[global 1]..&gt;[global 2]
-</span><span class="line">[global 1] - if1
-</span><span class="line">[global 2] - if2
-</span><span class="line">[global 1] ..&gt; [1-1-1]
-</span><span class="line">
-</span><span class="line">'定义Parent1和children间的关系已经与其它Parent或children的关系
-</span><span class="line">[1-1-1]..&gt;[1-1-2]
-</span><span class="line">[1-1-1]..&gt;[1-2-1]
-</span><span class="line">[1-2-1]..&gt;[1-2-2]
-</span><span class="line">[1-1-1]..&gt;[2-1-1]
-</span><span class="line">
-</span><span class="line">'定义Parent2和children间的关系已经与其它Parent或children的关系
-</span><span class="line">[2-1-1]..&gt;[2-1-2]
-</span><span class="line">[2-1-1]..&gt;[2-2-1]
-</span><span class="line">[2-1-1]..&gt;[2-2-2]
-</span><span class="line">
-</span><span class="line">@enduml</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('componentuml')"> 最后的UML图如下： </div>
-
-<div style="display:none" class="prev" id="componentuml" onclick="hidediv('componentuml')" title="点击关闭">
-
-
-
-<center><img src="http://duffqiu.github.io/images/plantuml/0fc7dd179febc49855cadf23e3f82408.png" /></center>
-
-</div>
 ]]></content>
   </entry>
   
