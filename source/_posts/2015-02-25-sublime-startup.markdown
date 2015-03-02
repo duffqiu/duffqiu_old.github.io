@@ -44,6 +44,14 @@ CentOS7没有安装包，需要下载压缩包，4然后解压到`/opt/sublime-t
     - 安装成功后就可以在命令板中选择对应的show scala worksheet了。
     - 使用方式是编写对应的scala文件并保存后，再执行show scala worksheet，这样scala REPL就自动会执行你编辑的文件了。
     - 有可能在打开show scala worksheet出现无法找到scala的无法，简单的解决方式是在1`/usr/bin`下给scala建立一个soft link `sudo ln <scala install path> /usr/bin/scala`
+    - 如果需要给Scala worksheet增加额外的jar包，则需要配置Sublime中的setting。`preferences->Settings - User`，然后增加一个JSON key: (注意不要用相对路径，要用绝对路径)
+
+```
+	"scala_worksheet_classpath":
+	[
+		"<jar path>/<jar name>"
+	]
+```
 
 - 安装SublimeSBT插件
 
