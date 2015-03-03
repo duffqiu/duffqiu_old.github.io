@@ -12,16 +12,15 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-32ebe1a368f3d1f2b460d2b764d1d490.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-b1b395211846173799f0711df4f54741.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 在公司有代理的环境下，如果在linux下使用github，则可以使用https的方式。
-但是https的方式需要每次都输入用户名和密码（用户名可以写在url上避免输入，但是密码就必须要）
-但是如果能使用ssh的rsa方式则可以避免这个麻烦，但是ssh默认是不支持使用http/https代理的 &hellip;">
+  <meta name="description" content="原由 通常我们设计程序的时候都会分为3个层面，MVC是最通用的分层方式。一个是展示层，一个逻辑处理层，一个存储层。但是对于逻辑处理层还可以抽象分为两个层次，一个固定逻辑层，一个动态逻辑层。
+对于动态逻辑层的实现，在Java中一般可以使用JavaScript引擎来执行JavaScript脚本。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -40,7 +39,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-830de7fbd1352ea01d1514248ba5bfeb.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-f6f2ffe885aa2c8ef058614d20be188a.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-5e34cf1ef175a3de4d7313a57002bfda.js' type='text/javascript'></script>
@@ -101,6 +100,197 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/03/scala-script/">Scala作为脚本语言动态执行</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-03T17:05:37+08:00" pubdate data-updated="true">Mar 3<span>rd</span>, 2015</time>
+        
+        
+           | <a href="/blog/2015/03/03/scala-script/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>通常我们设计程序的时候都会分为3个层面，MVC是最通用的分层方式。一个是展示层，一个逻辑处理层，一个存储层。但是对于逻辑处理层还可以抽象分为两个层次，一个固定逻辑层，一个动态逻辑层。
+对于动态逻辑层的实现，在Java中一般可以使用JavaScript引擎来执行JavaScript脚本。在Scala的程序中也可以这样做。不过Scala增加了使用Scala语言本身作为scritp语言。即Scala代替Javascript。
+在2.11的REPL中可以这样做了，参见<a href="/blog/2015/03/02/scala211-overview/">Scala2.11Overview</a>
+那么在代码中如何做呢？找了半天都没有找到官方的例子，尝试的过程中不是发现Null Point Exception的此错误就是说xxx Not Found (xxx是指Scala的类型，如Object, Int等)
+在Junjun的提醒下，可能是ClassLoader的问题，造成script的执行找不到对应的jar包（包括Scala的标准包），因为默认情况下，ScriptEngine是在bootstrap路径下找jar包。参见<a href="http://docs.oracle.com/javase/7/docs/technotes/tools/findingclasses.html">Java如何找CLASS文件</a></p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ul>
+  <li>先来看看原来在REPL中调用ScalaScript(尽管Script的代码依然是Scala，为了好区分这些是动态执行的Scala,暂且叫他ScalaScript)</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">import javax.script.ScriptEngineManager
+</span><span class="line">val e = new ScriptEngineManager().getEngineByName("scala")
+</span><span class="line">e.put("n", 10)
+</span><span class="line">e.eval("1 to n.asInstanceOf[Int] foreach println")</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>
+    <p>这些代码如果直接搬到Scala程序中，然后通过<code>java -jar</code>的方式运行是回出现我前面提到的错误的</p>
+  </li>
+  <li>
+    <p>解决方式1： 使用<code>-xXbootclasspath</code>来指定scalascript中用到的jar包，包含scala的标准包，因为bootstrao只包含了JAVA的rt.jar以及jre/lib下面的jar包。</p>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">java -Xbootclasspath/a:/usr/scala-2.11.4/lib/scala-library.jar:/usr/scala-2.11.4/lib/scala-compiler.jar:/usr/scala-2.11.4/lib/scala-reflect.jar -jar  &lt;your jar file&gt;
+</span><span class="line">//注意/a:/是固定的格式，具体可以查Jdk的文档</span></code></pre></td></tr></table></div></figure></notextile></div>
+<pre><code>- 但是这个方式在前面的&lt;&lt;Java如何找CLASS文件&gt;&gt;的文中不建议，同时使用起来也比较麻烦
+</code></pre>
+
+<ul>
+  <li>解决方式2： 在代码中指定scalascript和调用程度本身使用相同的jar包，代码如下：</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">import javax.script.ScriptEngineManager
+</span><span class="line">import javax.script.ScriptEngine
+</span><span class="line">
+</span><span class="line">val m = new ScriptEngineManager()
+</span><span class="line">val engine = m.getEngineByName("scala")
+</span><span class="line">
+</span><span class="line">//需要设计的属性
+</span><span class="line">val settings = engine.asInstanceOf[scala.tools.nsc.interpreter.IMain].settings
+</span><span class="line">settings.usejavacp.value = true  //使用程序的class path作为engine的class path
+</span><span class="line">
+</span><span class="line">engine.put("m", 10)
+</span><span class="line">engine.eval("1 to m.asInstanceOf[Int] foreach println")</span></code></pre></td></tr></table></div></figure></notextile></div>
+<pre><code>- 在sbt的工程中，将scala的标准包都变成依赖包，显示指定
+- 然后通过`sbt assembly`来打包程序为胖程序（即包含所有的依赖包），`sbt package`不会包含依赖包的
+- 直接通过`jar -jar &lt;your jar file&gt;`就可以了.
+</code></pre>
+
+<h4 id="section-2">官方讨论</h4>
+
+<p><a href="https://github.com/scala/scala/pull/2238">Scala Issue 2238</a></p>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/03/02/scala211-overview/">Scala211特性简介</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-03-02T12:02:16+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2015</time>
+        
+        
+           | <a href="/blog/2015/03/02/scala211-overview/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>Scala语言本生的变更还是比较快的，现在最通用是2.10和2.11版本
+那么是否需要用2.11版本呢？
+我们来看一看2.11的一些特性。参考于<a href="http://docs.scala-lang.org/scala/2.11/">scala2.11overview</a></p>
+
+<h3 id="scala-211">Scala 2.11特性简介</h3>
+<hr />
+
+<ul>
+  <li>
+    <p>更小</p>
+
+    <ul>
+      <li>Actor包被废弃，如果的需要直接用Akka的包，已经被包含在了Scala的版准语言包了</li>
+      <li>XML包被移除出scala-library.jar，编程了一个独立的包，如需要可以加入如下依赖 <code>libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.3"</code></li>
+    </ul>
+  </li>
+  <li>更快: 提高了性能</li>
+  <li>
+    <p>更强</p>
+
+    <ul>
+      <li>语言：支持case class的参数多于22个参数(参见：<a href="https://issues.scala-lang.org/browse/SI-7296">1</a>)</li>
+      <li>语言：增强类型推断。(不过好像这个问题又被打开了, 参见<a href="https://issues.scala-lang.org/browse/SI-1786">2</a>)</li>
+      <li>REPL: 这个增强了很多项， 不一一举例了，下面是一些我个人觉得有用的。</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">scala&gt; :settings &lt;+/-&gt; &lt;flag&gt;
+</span><span class="line">//这个主要是针对在REPL中提示有warning的时候，需要使用某些启动参数。原来的方式是需要退出REPL然后再用指定参数启动。现在可以直接通过这个名利来激活(+)/去除(-)某个特性(flag)，如显示deprecation，则用":settings + deprecation"</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>- REPL: 支持script引擎 (我个人没有用过scala下的script引擎，不知道。后面再写个如何在[代码中动态执行Scala](/blog/2015/03/03/scala-script/))
+</code></pre>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -242,8 +432,21 @@ CentOS7没有安装包，需要下载压缩包，4然后解压到<code>/opt/subl
       <li>安装成功后就可以在命令板中选择对应的show scala worksheet了。</li>
       <li>使用方式是编写对应的scala文件并保存后，再执行show scala worksheet，这样scala REPL就自动会执行你编辑的文件了。</li>
       <li>有可能在打开show scala worksheet出现无法找到scala的无法，简单的解决方式是在1<code>/usr/bin</code>下给scala建立一个soft link <code>sudo ln &lt;scala install path&gt; /usr/bin/scala</code></li>
+      <li>如果需要给Scala worksheet增加额外的jar包，则需要配置Sublime中的setting。<code>preferences-&gt;Settings - User</code>，然后增加一个JSON key: (注意不要用相对路径，要用绝对路径)</li>
     </ul>
   </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">"scala_worksheet_classpath":
+</span><span class="line">[
+</span><span class="line">	"&lt;jar path&gt;/&lt;jar name&gt;"
+</span><span class="line">]</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
   <li>
     <p>安装SublimeSBT插件</p>
 
@@ -1057,168 +1260,6 @@ sbt会在用户的home目录下创建.sbt和.ivy2的目录，依赖包都放在�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/02/02/integration-pattern-normalizer/">集成模式：标准化模式</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-02-02T13:14:35+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2015</time>
-        
-        
-           | <a href="/blog/2015/02/02/integration-pattern-normalizer/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<hr />
-<p>在系统集成中，可以通过不同的接口（EndPoint）适配多个外围系统，然后转换成标准的消息与内部系统结成。这种模式叫Normalizer。即标准化模式</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-
-<p>UML图例：</p>
-
-<center><img src="/images/plantuml/c58dc192e46e5e6be91c5ccc50fd3990.png" /></center>
-
-<p>对于Normalizer内部，通常从逻辑上可以这样分</p>
-
-<center><img src="/images/plantuml/b6169e035bb671e3f1c1ca2801966ce0.png" /></center>
-
-<h3 id="section-2">特点说明</h3>
-
-<ul>
-  <li>对于集成简单的场景比较适用。多数用在连接多个类似的client端到一个系统</li>
-  <li>如果对于Endpoint本身没有太复杂的逻辑则可以忽略Router并且合并translator的功能</li>
-  <li>唯一的不足是如果集成的系统越来越多，则需要的Endpoint将成几何基数的增长</li>
-  <li>可以通过Canonical Data Model(规范化数据模型)的方式来解决Normalizer模式的不足</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/01/13/howtostartprogrammingwithscala/">如何开始用scala编程</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-01-13T17:19:11+08:00" pubdate data-updated="true">Jan 13<span>th</span>, 2015</time>
-        
-        
-           | <a href="/blog/2015/01/13/howtostartprogrammingwithscala/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<p>在经历这么多年的OO的编程概念后，这一两年有兴起了FP(Functional Programming)的编程模式
-作为多年的Java程序员如何能更好的接受FP并应用到开发中呢？主要有两个选择</p>
-
-<ul>
-  <li><a href="http://scala-lang.org/">Scala</a></li>
-  <li><a href="http://clojure.org/">Clojure</a></li>
-</ul>
-
-<p>他俩最主要的区别是Clojure是比较纯粹的JVM下List语言的变种。没有OO的概念
-Scala比较好的融合了OO和FP，比较合适Java平滑过渡到FP的编程范式。从Java8的新特性看
-Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许是因为Java有过多的历史负担吧</p>
-
-<p>如果是想纯粹学一下List，也可以看看<a href="https://www.haskell.org">Haskell</a></p>
-
-<h3 id="coursera">Coursera的视频课程</h3>
-<p>开始一门新的语言，大家总是期望有好的视频来讲解，最出名的是这个了，但是建议大家还是看完入门的书籍对scala有一定的了解后再来看这个
-<a href="https://www.coursera.org/course/progfun">Functional Programming Principles in Scala</a></p>
-
-<h3 id="section-1">入门书籍推荐</h3>
-<p>现在关于Scala的书籍已经很多了，要达到熟悉的程度要看不下10本书。但是对于基础入门，以下这本我建议大家买个纸质版  <br />
-<img src="/images/kuaixuescala.jpg" alt="快学Scala" />    </p>
-
-<p>这本有些旧了，某些章节可以不用看，具体如下：</p>
-
-<ul>
-  <li>第19章: 解析，这个太难，也不容易应用，可以忽略</li>
-  <li>第20章: Actor，这个已经被Akka代替，不用再看，后面将写些如何应用Akka</li>
-  <li>第22章: 定界延续，这个也太难，可以暂时忽略</li>
-</ul>
-
-<h3 id="section-2">看一个有趣的例子</h3>
-<p>最近同学们在谈论lisp/FP的时候提到的一个例子:
-有一个农场，鸡的数量是鸭的4倍，但是鸭比猪少9只，鸭和猪的数量是67只，求所有动物的脚加起来总共有多少只？
-这个是个推论性的问题，在scala中用for{}的方式来解答(这里的for不是做循环，scala语言的用法叫for comprehension)</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">val</span> <span class="n">d</span> <span class="o">=</span> <span class="o">(</span><span class="mi">1</span> <span class="n">to</span> <span class="mi">67</span><span class="o">)</span> <span class="n">toStream</span>
-</span><span class="line">
-</span><span class="line"><span class="n">val</span> <span class="n">feet</span> <span class="o">=</span> <span class="k">for</span> <span class="o">{</span>
-</span><span class="line">  <span class="n">d1</span> <span class="o">&lt;-</span> <span class="n">d</span>
-</span><span class="line">  <span class="n">c1</span> <span class="o">=</span> <span class="n">d1</span> <span class="o">*</span> <span class="mi">4</span>
-</span><span class="line">  <span class="n">p1</span> <span class="o">=</span> <span class="n">d1</span> <span class="o">+</span><span class="mi">9</span> <span class="k">if</span><span class="o">(</span><span class="n">d1</span> <span class="o">+</span> <span class="n">p1</span> <span class="o">==</span> <span class="mi">67</span><span class="o">)</span>
-</span><span class="line"><span class="o">}</span> <span class="n">yield</span> <span class="o">{</span>
-</span><span class="line">  <span class="o">(</span><span class="n">c1</span><span class="o">+</span><span class="n">d1</span><span class="o">)*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">p1</span><span class="o">*</span><span class="mi">4</span>
-</span><span class="line"><span class="o">}</span>
-</span><span class="line"><span class="n">println</span><span class="o">(</span><span class="n">feet</span><span class="o">.</span><span class="na">take</span><span class="o">(</span><span class="mi">1</span><span class="o">).</span><span class="na">force</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<h4 id="section-3">小提示</h4>
-<p>Linux下查找文件中的某些字符串
-<code>grep -rnw '&lt;path&gt;' -e "&lt;string value&gt;"</code></p>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1234,6 +1275,14 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/03/03/scala-script/">Scala作为脚本语言动态执行</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/02/scala211-overview/">Scala211特性简介</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/02/26/ssh-proxy-in-linux/">Ssh在linux下使用http/https代理</a>
       </li>
     
@@ -1243,14 +1292,6 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
     
       <li class="post">
         <a href="/blog/2015/02/23/mac-port-guide/">Mac下port工具的使用</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/02/23/integrate-sbt-project-jenkins/">集成SBT到Jenkins中</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/02/10/sbt-for-new-user/">初学sbt</a>
       </li>
     
   </ul>
@@ -1292,7 +1333,8 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
 <li class='category'><a href='/blog/categories/proxy/'>Proxy (2)</a></li>
 <li class='category'><a href='/blog/categories/rest/'>REST (3)</a></li>
 <li class='category'><a href='/blog/categories/sbt/'>SBT (2)</a></li>
-<li class='category'><a href='/blog/categories/scala/'>Scala (5)</a></li>
+<li class='category'><a href='/blog/categories/scala/'>Scala (7)</a></li>
+<li class='category'><a href='/blog/categories/script/'>Script (1)</a></li>
 <li class='category'><a href='/blog/categories/sublime/'>Sublime (1)</a></li>
 <li class='category'><a href='/blog/categories/uml/'>UML (1)</a></li>
 <li class='category'><a href='/blog/categories/virtualbox/'>VirtualBox (1)</a></li>

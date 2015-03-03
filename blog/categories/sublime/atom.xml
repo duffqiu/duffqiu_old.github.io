@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Sublime | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/sublime/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-27T10:09:48+08:00</updated>
+  <updated>2015-03-03T17:54:04+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -70,8 +70,19 @@ CentOS7没有安装包，需要下载压缩包，4然后解压到<code>/opt/subl
       <li>安装成功后就可以在命令板中选择对应的show scala worksheet了。</li>
       <li>使用方式是编写对应的scala文件并保存后，再执行show scala worksheet，这样scala REPL就自动会执行你编辑的文件了。</li>
       <li>有可能在打开show scala worksheet出现无法找到scala的无法，简单的解决方式是在1<code>/usr/bin</code>下给scala建立一个soft link <code>sudo ln &lt;scala install path&gt; /usr/bin/scala</code></li>
+      <li>如果需要给Scala worksheet增加额外的jar包，则需要配置Sublime中的setting。<code>preferences-&gt;Settings - User</code>，然后增加一个JSON key: (注意不要用相对路径，要用绝对路径)</li>
     </ul>
   </li>
+</ul>
+
+<p><code>
+	"scala_worksheet_classpath":
+	[
+		"&lt;jar path&gt;/&lt;jar name&gt;"
+	]
+</code></p>
+
+<ul>
   <li>
     <p>安装SublimeSBT插件</p>
 

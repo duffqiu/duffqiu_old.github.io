@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-27T10:09:48+08:00</updated>
+  <updated>2015-03-03T17:54:04+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,137 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Scala作为脚本语言动态执行]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/03/03/scala-script/"/>
+    <updated>2015-03-03T17:05:37+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/03/03/scala-script</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>通常我们设计程序的时候都会分为3个层面，MVC是最通用的分层方式。一个是展示层，一个逻辑处理层，一个存储层。但是对于逻辑处理层还可以抽象分为两个层次，一个固定逻辑层，一个动态逻辑层。
+对于动态逻辑层的实现，在Java中一般可以使用JavaScript引擎来执行JavaScript脚本。在Scala的程序中也可以这样做。不过Scala增加了使用Scala语言本身作为scritp语言。即Scala代替Javascript。
+在2.11的REPL中可以这样做了，参见<a href="http://duffqiu.github.io/blog/2015/03/02/scala211-overview/">Scala2.11Overview</a>
+那么在代码中如何做呢？找了半天都没有找到官方的例子，尝试的过程中不是发现Null Point Exception的此错误就是说xxx Not Found (xxx是指Scala的类型，如Object, Int等)
+在Junjun的提醒下，可能是ClassLoader的问题，造成script的执行找不到对应的jar包（包括Scala的标准包），因为默认情况下，ScriptEngine是在bootstrap路径下找jar包。参见<a href="http://docs.oracle.com/javase/7/docs/technotes/tools/findingclasses.html">Java如何找CLASS文件</a></p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ul>
+  <li>先来看看原来在REPL中调用ScalaScript(尽管Script的代码依然是Scala，为了好区分这些是动态执行的Scala,暂且叫他ScalaScript)</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">import javax.script.ScriptEngineManager
+</span><span class="line">val e = new ScriptEngineManager().getEngineByName("scala")
+</span><span class="line">e.put("n", 10)
+</span><span class="line">e.eval("1 to n.asInstanceOf[Int] foreach println")</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>
+    <p>这些代码如果直接搬到Scala程序中，然后通过<code>java -jar</code>的方式运行是回出现我前面提到的错误的</p>
+  </li>
+  <li>
+    <p>解决方式1： 使用<code>-xXbootclasspath</code>来指定scalascript中用到的jar包，包含scala的标准包，因为bootstrao只包含了JAVA的rt.jar以及jre/lib下面的jar包。</p>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">java -Xbootclasspath/a:/usr/scala-2.11.4/lib/scala-library.jar:/usr/scala-2.11.4/lib/scala-compiler.jar:/usr/scala-2.11.4/lib/scala-reflect.jar -jar  &lt;your jar file&gt;
+</span><span class="line">//注意/a:/是固定的格式，具体可以查Jdk的文档</span></code></pre></td></tr></table></div></figure></notextile></div>
+<pre><code>- 但是这个方式在前面的&lt;&lt;Java如何找CLASS文件&gt;&gt;的文中不建议，同时使用起来也比较麻烦
+</code></pre>
+
+<ul>
+  <li>解决方式2： 在代码中指定scalascript和调用程度本身使用相同的jar包，代码如下：</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">import javax.script.ScriptEngineManager
+</span><span class="line">import javax.script.ScriptEngine
+</span><span class="line">
+</span><span class="line">val m = new ScriptEngineManager()
+</span><span class="line">val engine = m.getEngineByName("scala")
+</span><span class="line">
+</span><span class="line">//需要设计的属性
+</span><span class="line">val settings = engine.asInstanceOf[scala.tools.nsc.interpreter.IMain].settings
+</span><span class="line">settings.usejavacp.value = true  //使用程序的class path作为engine的class path
+</span><span class="line">
+</span><span class="line">engine.put("m", 10)
+</span><span class="line">engine.eval("1 to m.asInstanceOf[Int] foreach println")</span></code></pre></td></tr></table></div></figure></notextile></div>
+<pre><code>- 在sbt的工程中，将scala的标准包都变成依赖包，显示指定
+- 然后通过`sbt assembly`来打包程序为胖程序（即包含所有的依赖包），`sbt package`不会包含依赖包的
+- 直接通过`jar -jar &lt;your jar file&gt;`就可以了.
+</code></pre>
+
+<h4 id="section-2">官方讨论</h4>
+
+<p><a href="https://github.com/scala/scala/pull/2238">Scala Issue 2238</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Scala211特性简介]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/03/02/scala211-overview/"/>
+    <updated>2015-03-02T12:02:16+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/03/02/scala211-overview</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>Scala语言本生的变更还是比较快的，现在最通用是2.10和2.11版本
+那么是否需要用2.11版本呢？
+我们来看一看2.11的一些特性。参考于<a href="http://docs.scala-lang.org/scala/2.11/">scala2.11overview</a></p>
+
+<h3 id="scala-211">Scala 2.11特性简介</h3>
+<hr />
+
+<ul>
+  <li>
+    <p>更小</p>
+
+    <ul>
+      <li>Actor包被废弃，如果的需要直接用Akka的包，已经被包含在了Scala的版准语言包了</li>
+      <li>XML包被移除出scala-library.jar，编程了一个独立的包，如需要可以加入如下依赖 <code>libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.3"</code></li>
+    </ul>
+  </li>
+  <li>更快: 提高了性能</li>
+  <li>
+    <p>更强</p>
+
+    <ul>
+      <li>语言：支持case class的参数多于22个参数(参见：<a href="https://issues.scala-lang.org/browse/SI-7296">1</a>)</li>
+      <li>语言：增强类型推断。(不过好像这个问题又被打开了, 参见<a href="https://issues.scala-lang.org/browse/SI-1786">2</a>)</li>
+      <li>REPL: 这个增强了很多项， 不一一举例了，下面是一些我个人觉得有用的。</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">scala&gt; :settings &lt;+/-&gt; &lt;flag&gt;
+</span><span class="line">//这个主要是针对在REPL中提示有warning的时候，需要使用某些启动参数。原来的方式是需要退出REPL然后再用指定参数启动。现在可以直接通过这个名利来激活(+)/去除(-)某个特性(flag)，如显示deprecation，则用":settings + deprecation"</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>- REPL: 支持script引擎 (我个人没有用过scala下的script引擎，不知道。后面再写个如何在[代码中动态执行Scala](/blog/2015/03/03/scala-script/))
+</code></pre>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ssh在linux下使用http/https代理]]></title>
@@ -97,8 +228,21 @@ CentOS7没有安装包，需要下载压缩包，4然后解压到<code>/opt/subl
       <li>安装成功后就可以在命令板中选择对应的show scala worksheet了。</li>
       <li>使用方式是编写对应的scala文件并保存后，再执行show scala worksheet，这样scala REPL就自动会执行你编辑的文件了。</li>
       <li>有可能在打开show scala worksheet出现无法找到scala的无法，简单的解决方式是在1<code>/usr/bin</code>下给scala建立一个soft link <code>sudo ln &lt;scala install path&gt; /usr/bin/scala</code></li>
+      <li>如果需要给Scala worksheet增加额外的jar包，则需要配置Sublime中的setting。<code>preferences-&gt;Settings - User</code>，然后增加一个JSON key: (注意不要用相对路径，要用绝对路径)</li>
     </ul>
   </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">"scala_worksheet_classpath":
+</span><span class="line">[
+</span><span class="line">	"&lt;jar path&gt;/&lt;jar name&gt;"
+</span><span class="line">]</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
   <li>
     <p>安装SublimeSBT插件</p>
 
@@ -1972,195 +2116,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
     <p>当然既然类似，就可能可以混用。没有必要教条的说一定要明确Proxy或Decorate。</p>
   </li>
 </ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Google Guice入门2]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/23/google-guiceru-men-2/"/>
-    <updated>2014-02-23T14:26:45+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/23/google-guiceru-men-2</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<hr />
-<p>在使用Guice做依赖注入的时候，很可能会发生在一个依赖模块（Module）中有多个同类型的接口需要注入，但是又需要根据不同的使用类注入不同的具体对象。如果只是简单的申明为接口注入对象，则会使用同一个对象。如：<code>bind(IDescription.class).to(ConnectionDescription.class);</code></p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-<p>使用<code>@Named("&lt;xxxx&gt;")</code>来命名需要注入的接口，然后在注入的时候指定名称来特定注入，如： </p>
-
-<p>顶层使用类中：</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="nd">@Inject</span>
-</span><span class="line"><span class="nd">@Named</span><span class="o">(</span><span class="s">&quot;SendMsgWithAuditDesc&quot;</span><span class="o">)</span>
-</span><span class="line"><span class="kd">private</span> <span class="n">IDescription</span> <span class="n">desc</span><span class="o">;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Module configure方法中</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="c1">//为什么的注入</span>
-</span><span class="line"><span class="n">bind</span><span class="o">(</span><span class="n">IDescription</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">to</span><span class="o">(</span><span class="n">ConnectionDescription</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span><span class="line">
-</span><span class="line"><span class="c1">//指定名称的注入</span>
-</span><span class="line"><span class="n">bind</span><span class="o">(</span><span class="n">IDescription</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">annotatedWith</span><span class="o">(</span>
-</span><span class="line">	        <span class="n">Names</span><span class="o">.</span><span class="na">named</span><span class="o">(</span><span class="s">&quot;SendMsgWithAuditDesc&quot;</span><span class="o">)).</span><span class="na">toProvider</span><span class="o">(</span>
-</span><span class="line">	        <span class="n">SendMessageWithAuditDescriptionProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>这里用了prvoider是因为需要使用参数的构造函数。Provider类如下：</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SendMessageWithAuditDescriptionProvider</span> <span class="kd">implements</span>
-</span><span class="line">        <span class="n">Provider</span><span class="o">&lt;</span><span class="n">ConnectionDescription</span><span class="o">&gt;</span> <span class="o">{</span>
-</span><span class="line">
-</span><span class="line">    <span class="nd">@Override</span>
-</span><span class="line">    <span class="kd">public</span> <span class="kd">final</span> <span class="n">ConnectionDescription</span> <span class="nf">get</span><span class="o">()</span> <span class="o">{</span>
-</span><span class="line">
-</span><span class="line">	<span class="k">return</span> <span class="k">new</span> <span class="nf">ConnectionDescription</span><span class="o">(</span><span class="s">&quot;Audit with SMPP&quot;</span><span class="o">,</span>
-</span><span class="line">	        <span class="s">&quot;Send Msg with audit via SMPP&quot;</span><span class="o">);</span>
-</span><span class="line">    <span class="o">}</span>
-</span><span class="line">
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Google Guice入门1]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/22/google-guiceru-men-1/"/>
-    <updated>2014-02-22T20:26:34+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/22/google-guiceru-men-1</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<hr />
-<p>在一个系统中，多个模块总是通过各种关系关联在一起的。但是一般的编程方式总是讲如何组装各种模块与处理业务逻辑混合在一块，造成代码的维护比较困看，也容易造成代码的行数很大。</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-
-<p>在前面我们已经介绍过<a href="http://duffqiu.github.io/blog/2014/02/19/she-ji-mo-shi-%3Aioche-yi-lai-zhu-ru/">IoC</a>。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个。主要有Spring和<a href="https://code.google.com/p/google-guice/">Google Guice</a>。这里主要讲一下如何使用Google Guice，这是一个基本的入门使用，后面如果用到高级的地方再讲。</p>
-
-<h3 id="guice">Guice的使用</h3>
-
-<h4 id="section-2">简介</h4>
-
-<p>Google Guice是通过代码的方式来简单维护类间的依赖关系，不象Spring通过XML或annotation然后通过autoscan的方式来维护依赖。个人感觉好的地方是，对于程序员而言，代码方式更加贴近，也更容易理解。</p>
-
-<h4 id="maven">使用方式(基于maven)</h4>
-<ul>
-  <li>在maven项目中增加Guice的jar包。注意，这里我们没有用AOP，所以特地讲AOP去掉，从而减少了对AOP的依赖</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">&lt;dependency&gt;
-</span><span class="line">	&lt;groupId&gt;com.google.inject&lt;/groupId&gt;
-</span><span class="line">	&lt;artifactId&gt;guice&lt;/artifactId&gt;
-</span><span class="line">	&lt;version&gt;3.0&lt;/version&gt;
-</span><span class="line">	&lt;classifier&gt;no_aop&lt;/classifier&gt;
-</span><span class="line">&lt;/dependency&gt;
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>
-    <p>在依赖的顶层被使用的类上指明要注入的类</p>
-
-    <p>注入方式有：  </p>
-
-    <ul>
-      <li>
-        <p>属性注入：在对应的属性上使用<code>@inject</code>的annotation，前提是要有默认的public的无參构造函数，建议这种方式</p>
-      </li>
-      <li>
-        <p>构造函数注入：在对应的构造函数上使用<code>@inject</code>的annotation，前提是该构造函数带有需要被注入的参数。</p>
-      </li>
-    </ul>
-  </li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SendMessageImpl</span> <span class="kd">implements</span> <span class="n">ISendMessage</span> <span class="o">{</span>
-</span><span class="line">
-</span><span class="line">    <span class="nd">@Inject</span>
-</span><span class="line">    <span class="kd">private</span> <span class="n">SmppSendMsg</span> <span class="n">smpp</span><span class="o">;</span>
-</span><span class="line">
-</span><span class="line">    <span class="nd">@Inject</span>
-</span><span class="line">    <span class="kd">private</span> <span class="n">IDescription</span> <span class="n">desc</span><span class="o">;</span>
-</span><span class="line">    <span class="o">...</span>
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>
-    <p>生成绑定关系的类，该类必须是继承于AbstractModule，然后在重载<code>configure</code>方法，在该方法中指定绑定关系。Best Practice：该类的命名后缀建议为BindingModule。如果注入的为具体的类，则无需在<code>configure</code>方法中指定绑定关系，如果为接口，则需要绑定到具体的类如：<code>bind(&lt;Interface&gt;.class).to(&lt;ConcreteClass&gt;.class)</code>。注意就算<code>configure</code>方法为空，都要生成一个Module类。Best Practise：尽量使用接口而不是具体的类，以便于以后更改类的实现而不用更改业务类的代码，因为注入都是在这个Module类完成。</p>
-  </li>
-  <li>
-    <p>如果注入的类必须使用带参数的构造函数，则必须手工完成类的实例的生成。但是都必须在module类中指定。</p>
-
-    <p>主要有两种方式手工完成类的实例的生成：</p>
-
-    <ul>
-      <li>
-        <p>使用<code>@provider</code> annotation指定类的生成方法，该方法必须是返回一个该类的实例，但是这种方式无法让Guice自动完成Singleton。</p>
-      </li>
-      <li>
-        <p>给需要手工生成实例的类创建一个provider类，该类实现 <code>Provider&lt;T&gt;</code>接口，然后在<code>configure</code>方法中使用<code>bind(xxx.class).toProvider(yyy.class)</code>指定手工生成实例的类。如果需要Singleton则在后面增加指定如<code>bind(xxx.class).toProvider(yyy.class).in(
-        Singleton.class)</code>。Best Practice：该类的命名后缀建议为Provider。</p>
-      </li>
-    </ul>
-  </li>
-  <li>
-    <p>客户端的使用方式 </p>
-
-    <p>使用生成的BindingModule获取一个Inject实例，然后使用该实例创建需要的对象。如： </p>
-  </li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Injector</span> <span class="n">injector</span> <span class="o">=</span> <span class="n">Guice</span><span class="o">.</span><span class="na">createInjector</span><span class="o">(</span><span class="k">new</span> <span class="n">SendMessageBindingModule</span><span class="o">());</span>
-</span><span class="line"><span class="n">ISendMessage</span> <span class="n">sender</span> <span class="o">=</span> <span class="n">injector</span><span class="o">.</span><span class="na">getInstance</span><span class="o">(</span><span class="n">SendMessageImpl</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
-</span><span class="line"><span class="n">sender</span><span class="o">.</span><span class="na">xxx</span><span class="o">();</span>
-</span><span class="line"><span class="o">...</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<h3 id="section-3">小插曲</h3>
-<p>这是在写Decorator设计模式的时候分心出来写的，代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a></p>
 
 ]]></content>
   </entry>

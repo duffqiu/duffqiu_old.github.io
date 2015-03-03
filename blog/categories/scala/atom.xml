@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Scala | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/scala/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-02-27T10:09:48+08:00</updated>
+  <updated>2015-03-03T17:54:04+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,123 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Scala作为脚本语言动态执行]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/03/03/scala-script/"/>
+    <updated>2015-03-03T17:05:37+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/03/03/scala-script</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>通常我们设计程序的时候都会分为3个层面，MVC是最通用的分层方式。一个是展示层，一个逻辑处理层，一个存储层。但是对于逻辑处理层还可以抽象分为两个层次，一个固定逻辑层，一个动态逻辑层。
+对于动态逻辑层的实现，在Java中一般可以使用JavaScript引擎来执行JavaScript脚本。在Scala的程序中也可以这样做。不过Scala增加了使用Scala语言本身作为scritp语言。即Scala代替Javascript。
+在2.11的REPL中可以这样做了，参见<a href="/blog/2015/03/02/scala211-overview/">Scala2.11Overview</a>
+那么在代码中如何做呢？找了半天都没有找到官方的例子，尝试的过程中不是发现Null Point Exception的此错误就是说xxx Not Found (xxx是指Scala的类型，如Object, Int等)
+在Junjun的提醒下，可能是ClassLoader的问题，造成script的执行找不到对应的jar包（包括Scala的标准包），因为默认情况下，ScriptEngine是在bootstrap路径下找jar包。参见<a href="http://docs.oracle.com/javase/7/docs/technotes/tools/findingclasses.html">Java如何找CLASS文件</a></p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ul>
+  <li>先来看看原来在REPL中调用ScalaScript(尽管Script的代码依然是Scala，为了好区分这些是动态执行的Scala,暂且叫他ScalaScript)</li>
+</ul>
+
+<p><code>
+import javax.script.ScriptEngineManager
+val e = new ScriptEngineManager().getEngineByName("scala")
+e.put("n", 10)
+e.eval("1 to n.asInstanceOf[Int] foreach println")
+</code></p>
+
+<ul>
+  <li>
+    <p>这些代码如果直接搬到Scala程序中，然后通过<code>java -jar</code>的方式运行是回出现我前面提到的错误的</p>
+  </li>
+  <li>
+    <p>解决方式1： 使用<code>-xXbootclasspath</code>来指定scalascript中用到的jar包，包含scala的标准包，因为bootstrao只包含了JAVA的rt.jar以及jre/lib下面的jar包。</p>
+  </li>
+</ul>
+
+<p><code>
+java -Xbootclasspath/a:/usr/scala-2.11.4/lib/scala-library.jar:/usr/scala-2.11.4/lib/scala-compiler.jar:/usr/scala-2.11.4/lib/scala-reflect.jar -jar  &lt;your jar file&gt;
+//注意/a:/是固定的格式，具体可以查Jdk的文档
+</code>
+    - 但是这个方式在前面的«Java如何找CLASS文件»的文中不建议，同时使用起来也比较麻烦</p>
+
+<ul>
+  <li>解决方式2： 在代码中指定scalascript和调用程度本身使用相同的jar包，代码如下：</li>
+</ul>
+
+<p>```
+import javax.script.ScriptEngineManager
+import javax.script.ScriptEngine</p>
+
+<p>val m = new ScriptEngineManager()
+val engine = m.getEngineByName(“scala”)</p>
+
+<p>//需要设计的属性
+val settings = engine.asInstanceOf[scala.tools.nsc.interpreter.IMain].settings
+settings.usejavacp.value = true  //使用程序的class path作为engine的class path</p>
+
+<p>engine.put(“m”, 10)
+engine.eval(“1 to m.asInstanceOf[Int] foreach println”)
+```
+    - 在sbt的工程中，将scala的标准包都变成依赖包，显示指定
+    - 然后通过<code>sbt assembly</code>来打包程序为胖程序（即包含所有的依赖包），<code>sbt package</code>不会包含依赖包的
+    - 直接通过<code>jar -jar &lt;your jar file&gt;</code>就可以了.</p>
+
+<h4 id="section-2">官方讨论</h4>
+
+<p><a href="https://github.com/scala/scala/pull/2238">Scala Issue 2238</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Scala211特性简介]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/03/02/scala211-overview/"/>
+    <updated>2015-03-02T12:02:16+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/03/02/scala211-overview</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>Scala语言本生的变更还是比较快的，现在最通用是2.10和2.11版本
+那么是否需要用2.11版本呢？
+我们来看一看2.11的一些特性。参考于<a href="http://docs.scala-lang.org/scala/2.11/">scala2.11overview</a></p>
+
+<h3 id="scala-211">Scala 2.11特性简介</h3>
+<hr />
+
+<ul>
+  <li>
+    <p>更小</p>
+
+    <ul>
+      <li>Actor包被废弃，如果的需要直接用Akka的包，已经被包含在了Scala的版准语言包了</li>
+      <li>XML包被移除出scala-library.jar，编程了一个独立的包，如需要可以加入如下依赖 <code>libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.3"</code></li>
+    </ul>
+  </li>
+  <li>更快: 提高了性能</li>
+  <li>
+    <p>更强</p>
+
+    <ul>
+      <li>语言：支持case class的参数多于22个参数(参见：<a href="https://issues.scala-lang.org/browse/SI-7296">1</a>)</li>
+      <li>语言：增强类型推断。(不过好像这个问题又被打开了, 参见<a href="https://issues.scala-lang.org/browse/SI-1786">2</a>)</li>
+      <li>REPL: 这个增强了很多项， 不一一举例了，下面是一些我个人觉得有用的。</li>
+    </ul>
+  </li>
+</ul>
+
+<p><code>
+scala&gt; :settings &lt;+/-&gt; &lt;flag&gt;
+//这个主要是针对在REPL中提示有warning的时候，需要使用某些启动参数。原来的方式是需要退出REPL然后再用指定参数启动。现在可以直接通过这个名利来激活(+)/去除(-)某个特性(flag)，如显示deprecation，则用":settings + deprecation"
+</code></p>
+
+<pre><code>- REPL: 支持script引擎 (我个人没有用过scala下的script引擎，不知道。后面再写个如何在[代码中动态执行Scala](/blog/2015/03/03/scala-script/))
+</code></pre>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Sublime入门以及搭建scala开发环境]]></title>
@@ -70,8 +187,19 @@ CentOS7没有安装包，需要下载压缩包，4然后解压到<code>/opt/subl
       <li>安装成功后就可以在命令板中选择对应的show scala worksheet了。</li>
       <li>使用方式是编写对应的scala文件并保存后，再执行show scala worksheet，这样scala REPL就自动会执行你编辑的文件了。</li>
       <li>有可能在打开show scala worksheet出现无法找到scala的无法，简单的解决方式是在1<code>/usr/bin</code>下给scala建立一个soft link <code>sudo ln &lt;scala install path&gt; /usr/bin/scala</code></li>
+      <li>如果需要给Scala worksheet增加额外的jar包，则需要配置Sublime中的setting。<code>preferences-&gt;Settings - User</code>，然后增加一个JSON key: (注意不要用相对路径，要用绝对路径)</li>
     </ul>
   </li>
+</ul>
+
+<p><code>
+	"scala_worksheet_classpath":
+	[
+		"&lt;jar path&gt;/&lt;jar name&gt;"
+	]
+</code></p>
+
+<ul>
   <li>
     <p>安装SublimeSBT插件</p>
 
@@ -359,204 +487,6 @@ def merge(input: Vector[Map[String, Int]]) = {</p>
 但是从FP的实现看，中间没有任何可变变量（其实Scala对于reduceLeft用了中间可变变量，只是对于函数的使用者不需要了）</p>
 
 <p><strong>注</strong> 改FP的例子载自Akka in Action，但是它的是foldLeft不是reduceLeft</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[如何开始用scala编程]]></title>
-    <link href="http://duffqiu.github.io/blog/2015/01/13/howtostartprogrammingwithscala/"/>
-    <updated>2015-01-13T17:19:11+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2015/01/13/howtostartprogrammingwithscala</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<p>在经历这么多年的OO的编程概念后，这一两年有兴起了FP(Functional Programming)的编程模式
-作为多年的Java程序员如何能更好的接受FP并应用到开发中呢？主要有两个选择</p>
-
-<ul>
-  <li><a href="http://scala-lang.org/">Scala</a></li>
-  <li><a href="http://clojure.org/">Clojure</a></li>
-</ul>
-
-<p>他俩最主要的区别是Clojure是比较纯粹的JVM下List语言的变种。没有OO的概念
-Scala比较好的融合了OO和FP，比较合适Java平滑过渡到FP的编程范式。从Java8的新特性看
-Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许是因为Java有过多的历史负担吧</p>
-
-<p>如果是想纯粹学一下List，也可以看看<a href="https://www.haskell.org">Haskell</a></p>
-
-<h3 id="coursera">Coursera的视频课程</h3>
-<p>开始一门新的语言，大家总是期望有好的视频来讲解，最出名的是这个了，但是建议大家还是看完入门的书籍对scala有一定的了解后再来看这个
-<a href="https://www.coursera.org/course/progfun">Functional Programming Principles in Scala</a></p>
-
-<h3 id="section-1">入门书籍推荐</h3>
-<p>现在关于Scala的书籍已经很多了，要达到熟悉的程度要看不下10本书。但是对于基础入门，以下这本我建议大家买个纸质版  <br />
-<img src="/images/kuaixuescala.jpg" alt="快学Scala" />    </p>
-
-<p>这本有些旧了，某些章节可以不用看，具体如下：</p>
-
-<ul>
-  <li>第19章: 解析，这个太难，也不容易应用，可以忽略</li>
-  <li>第20章: Actor，这个已经被Akka代替，不用再看，后面将写些如何应用Akka</li>
-  <li>第22章: 定界延续，这个也太难，可以暂时忽略</li>
-</ul>
-
-<h3 id="section-2">看一个有趣的例子</h3>
-<p>最近同学们在谈论lisp/FP的时候提到的一个例子:
-有一个农场，鸡的数量是鸭的4倍，但是鸭比猪少9只，鸭和猪的数量是67只，求所有动物的脚加起来总共有多少只？
-这个是个推论性的问题，在scala中用for{}的方式来解答(这里的for不是做循环，scala语言的用法叫for comprehension)</p>
-
-<p>``` java</p>
-
-<p>val d = (1 to 67) toStream</p>
-
-<p>val feet = for {
-  d1 &lt;- d 
-  c1 = d1 * 4
-  p1 = d1 +9 if(d1 + p1 == 67)
-} yield {
-  (c1+d1)<em>2 + p1</em>4
-}
-println(feet.take(1).force)</p>
-
-<p>```</p>
-
-<h4 id="section-3">小提示</h4>
-<p>Linux下查找文件中的某些字符串
-<code>grep -rnw '&lt;path&gt;' -e "&lt;string value&gt;"</code></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[创建基于maven的java和scala工程]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/04/06/chuang-jian-ji-yu-mavende-javahe-scalagong-cheng/"/>
-    <updated>2014-04-06T09:20:56+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/04/06/chuang-jian-ji-yu-mavende-javahe-scalagong-cheng</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<hr />
-<p>最近在看Scala和ScalaTest，但是要搭建一个同时运行Java和Scala的项目工程，还是遇到了些问题。因为我习惯了搭建出来的工程是Maven工程，同时即要能在Eclipse上运行，也能用Maven命令的方式运行以便后续用Jenkins。经过一段摸索终于试验出来。但是很奇怪，搜索出来的结果没有一个直接好使的。</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-
-<h4 id="eclipse">Eclipse配置</h4>
-
-<ul>
-  <li>安装Scala的IDE，参见<a href="http://scala-ide.org">Scala-IDE官网</a>，注意选择Scala孵化器中的ScalaTest插件</li>
-  <li>安装Maven在Eclipse上的插件，通过<code>Preference -&gt;Maven-&gt;Discovery</code>安装m2e的对应插件。在后续的POM文件中使用到的插件最好都安装对应的m2e插件。(包括：build-helper，pmd, checkstyle, findbugs, compiler…)</li>
-  <li>
-    <p>创建Maven工程中，添加如下插件</p>
-
-    <ul>
-      <li>build-helper插件，添加scala的source和test source。因为<code>&lt;sourceDirectory&gt;</code>只能指定一个目录，所以需要这个插件来帮助添加scala的文件目录</li>
-    </ul>
-  </li>
-</ul>
-
-<p>```
-			<plugin>
-				<groupid>org.codehaus.mojo</groupid>
-				<artifactid>build-helper-maven-plugin</artifactid>
-				<version>1.8</version>
-				<executions>
-					<execution>
-						<id>add-source</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source />src/main/scala&lt;/source&gt;
-							</sources>
-						</configuration>
-					</execution>
-					<execution>
-						<id>add-test-source</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-test-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source />src/test/scala&lt;/source&gt;
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin></p>
-
-<p>```</p>
-
-<ul>
-  <li>Scala插件，协助编译scala，同时指定scala版本</li>
-</ul>
-
-<p><code>
-			&lt;plugin&gt;
-				&lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;
-				&lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;
-				&lt;version&gt;3.1.6&lt;/version&gt;
-				&lt;executions&gt;
-					&lt;execution&gt;
-						&lt;goals&gt;
-							&lt;goal&gt;compile&lt;/goal&gt;
-							&lt;goal&gt;testCompile&lt;/goal&gt;
-						&lt;/goals&gt;
-					&lt;/execution&gt;
-				&lt;/executions&gt;
-				&lt;configuration&gt;
-					&lt;scalaVersion&gt;2.10.3&lt;/scalaVersion&gt;
-				&lt;/configuration&gt;
-			&lt;/plugin&gt;
-</code>   </p>
-
-<ul>
-  <li>ScalaTest插件</li>
-</ul>
-
-<p><code>
-			&lt;plugin&gt;
-				&lt;groupId&gt;org.scalatest&lt;/groupId&gt;
-				&lt;artifactId&gt;scalatest-maven-plugin&lt;/artifactId&gt;
-				&lt;version&gt;1.0-RC2&lt;/version&gt;
-				&lt;configuration&gt;
-					&lt;reportsDirectory&gt;${project.build.directory}/surefire-reports&lt;/reportsDirectory&gt;
-					&lt;junitxml&gt;.&lt;/junitxml&gt;
-					&lt;filereports&gt;WDF TestSuite.txt&lt;/filereports&gt;
-				&lt;/configuration&gt;
-				&lt;executions&gt;
-					&lt;execution&gt;
-						&lt;id&gt;test&lt;/id&gt;
-						&lt;goals&gt;
-							&lt;goal&gt;test&lt;/goal&gt;
-						&lt;/goals&gt;
-					&lt;/execution&gt;
-				&lt;/executions&gt;
-			&lt;/plugin&gt;
-</code>   </p>
-
-<ul>
-  <li>指定Junit插件，如果需要同时使用JUnit测试java代码。注意，新版本的插件已经可以支持多线程并发，大大提高测试的速度。强烈建议使用最新的版本</li>
-</ul>
-
-<p><code>
-			&lt;plugin&gt;
-				&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-				&lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
-				&lt;version&gt;2.17&lt;/version&gt;
-				&lt;configuration&gt;
-					&lt;parallel&gt;methods&lt;/parallel&gt;
-					&lt;threadCount&gt;10&lt;/threadCount&gt;
-				&lt;/configuration&gt;
-			&lt;/plugin&gt;
-</code></p>
-
-<ul>
-  <li>安装m2e的scala maven plugin的connector插件，不然在eclipse上直接读取pom文件会解释出错。 <a href="http://alchim31.free.fr/m2e-scala/update-site/">update地址</a></li>
-</ul>
-
-<h3 id="section-2">小插曲</h3>
-<p>不知道什么原因，ScalaTest的官网被屏蔽了。一个纯开源的技术网站有这个必要性么？还是躺枪了？</p>
 
 ]]></content>
   </entry>
