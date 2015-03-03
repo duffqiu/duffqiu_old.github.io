@@ -1,0 +1,64 @@
+---
+layout: post
+title: "scala作为脚本语言动态执行"
+date: 2015-03-03 17:05:37 +0800
+comments: true
+categories: [Scala, Script]
+---
+
+###原由
+---
+通常我们设计程序的时候都会分为3个层面，MVC是最通用的分层方式。一个是展示层，一个逻辑处理层，一个存储层。但是对于逻辑处理层还可以抽象分为两个层次，一个固定逻辑层，一个动态逻辑层。
+对于动态逻辑层的实现，在Java中一般可以使用JavaScript引擎来执行JavaScript脚本。在Scala的程序中也可以这样做。不过Scala增加了使用Scala语言本身作为scritp语言。即Scala代替Javascript。
+在2.11的REPL中可以这样做了，参见[Scala2.11Overview]({% post_url 2015-03-02-scala211-overview %})
+那么在代码中如何做呢？找了半天都没有找到官方的例子，尝试的过程中不是发现Null Point Exception的此错误就是说xxx Not Found (xxx是指Scala的类型，如Object, Int等)
+在Junjun的提醒下，可能是ClassLoader的问题，造成script的执行找不到对应的jar包（包括Scala的标准包），因为默认情况下，ScriptEngine是在bootstrap路径下找jar包。参见[Java如何找CLASS文件](http://docs.oracle.com/javase/7/docs/technotes/tools/findingclasses.html)
+
+
+###解决办法
+---
+
+- 先来看看原来在REPL中调用ScalaScript(尽管Script的代码依然是Scala，为了好区分这些是动态执行的Scala,暂且叫他ScalaScript)
+
+```
+import javax.script.ScriptEngineManager
+val e = new ScriptEngineManager().getEngineByName("scala")
+e.put("n", 10)
+e.eval("1 to n.asInstanceOf[Int] foreach println")
+```
+
+- 这些代码如果直接搬到Scala程序中，然后通过`java -jar`的方式运行是回出现我前面提到的错误的
+
+- 解决方式1： 使用`-xXbootclasspath`来指定scalascript中用到的jar包，包含scala的标准包，因为bootstrao只包含了JAVA的rt.jar以及jre/lib下面的jar包。
+
+```
+java -Xbootclasspath/a:/usr/scala-2.11.4/lib/scala-library.jar:/usr/scala-2.11.4/lib/scala-compiler.jar:/usr/scala-2.11.4/lib/scala-reflect.jar -jar  <your jar file>
+//注意/a:/是固定的格式，具体可以查Jdk的文档
+```
+    - 但是这个方式在前面的<<Java如何找CLASS文件>>的文中不建议，同时使用起来也比较麻烦
+
+- 解决方式2： 在代码中指定scalascript和调用程度本身使用相同的jar包，代码如下：
+
+```
+import javax.script.ScriptEngineManager
+import javax.script.ScriptEngine
+
+val m = new ScriptEngineManager()
+val engine = m.getEngineByName("scala")
+
+//需要设计的属性
+val settings = engine.asInstanceOf[scala.tools.nsc.interpreter.IMain].settings
+settings.usejavacp.value = true  //使用程序的class path作为engine的class path
+
+engine.put("m", 10)
+engine.eval("1 to m.asInstanceOf[Int] foreach println")
+```
+    - 在sbt的工程中，将scala的标准包都变成依赖包，显示指定
+    - 然后通过`sbt assembly`来打包程序为胖程序（即包含所有的依赖包），`sbt package`不会包含依赖包的
+    - 直接通过`jar -jar <your jar file>`就可以了.
+
+
+#### 官方讨论
+
+[Scala Issue 2238](https://github.com/scala/scala/pull/2238)
+

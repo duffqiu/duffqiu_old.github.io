@@ -33,46 +33,7 @@ scala> :settings <+/-> <flag>
 //这个主要是针对在REPL中提示有warning的时候，需要使用某些启动参数。原来的方式是需要退出REPL然后再用指定参数启动。现在可以直接通过这个名利来激活(+)/去除(-)某个特性(flag)，如显示deprecation，则用":settings + deprecation"
 ```
 
-    - REPL: 支持script引擎 (我个人没有用过scala下的script引擎，不知道)
-
-
-
-  import javax.script.ScriptEngineManager
-  import javax.script.ScriptEngine
-  
-  //import scala.tools.nsc.interpreter.IMain;
-  //import java.io.File
-
-  
-  
-  val m = new ScriptEngineManager()
-  val engine = m.getEngineByName("scala")
-  
-  val settings = engine.asInstanceOf[scala.tools.nsc.interpreter.IMain].settings
-
-  //settings.bootclasspath.value +=scala.tools.util.PathResolver.Environment.javaBootClassPath + File.pathSeparator + "/usr/scala-2.11.4/lib/scala-library.jar"
-  
-  //val bindings = engine.createBindings()
-  
-  settings.usejavacp.value = true  //使用程序的class path作为engine的class path
-  
-  //bindings.put("n", 10)
-  
-  engine.put("m", 10)
-
-  //val v = bindings.get("n")
-  
-  engine.eval("1 to m.asInstanceOf[Int] foreach println")
-
-
-
-java -Xbootclasspath/a:/usr/scala-2.11.4/lib/scala-library.jar:/usr/scala-2.11.4/lib/scala-compiler.jar:/usr/scala-2.11.4/lib/scala-reflect.jar -jar  ./target/scala-2.11/sbtsample1.0.jar
-
-assembly
-
-package
-
-java -jar  ./target/scala-2.11/sbtsample1.0.jar
+    - REPL: 支持script引擎 (我个人没有用过scala下的script引擎，不知道。后面再写个如何在[代码中动态执行Scala]({% post_url 2015-03-03-scala-script %}))
 
 
 
