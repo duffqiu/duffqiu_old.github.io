@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-03-03T17:54:04+08:00</updated>
+  <updated>2015-03-31T14:23:39+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,95 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CoreOS的安装]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/03/29/install-coreos/"/>
+    <updated>2015-03-29T11:10:44+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/03/29/install-coreos</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>想玩Docker的人肯定应该听说过<a href="https://coreos.com">CoreOS</a>。它是一个紧密结合Docker为大集群服务器而设计的Linux系统。它本身不允许安装软件包。所有提供的功能和扩展都是通过Docker容器来提供。安装CoreOS可以有多种方式，网管上都有介绍。这里主要说一下两种方式，一种是单机版，一种是服务器集群。这两种方式都是基于VirtualBox的安装.</p>
+
+<h3 id="coreos">单机安装CoreOS</h3>
+<hr />
+
+<ul>
+  <li>配置Virtualbox，创建一个linux的虚拟主机出来，内存512就够了</li>
+  <li>下载CoreOS的ISO文件。（注意：国内对于CoreOS的下载服务器做了屏蔽，也不知道是为什么）</li>
+  <li>设置CoreOS的ISO的文件作为虚拟光驱，然后启动CoreOS的虚拟机</li>
+  <li>CoreOS的安装程序没有图形界面，光驱载入后只是给了个命令行的console</li>
+  <li>在命令行中输入<code>sudo coreos-install -d /dev/sda</code>，然后这个脚本将下载CoreOS的安装包并开始安装 (注意：同样国内服务器屏蔽了下载服务器)</li>
+  <li>安装成功后关闭CoreOS的虚拟机，<code>sudo systemctrl poweroff</code></li>
+  <li>然后调整CoreOS的虚拟机，将启动顺序改为硬盘为先</li>
+  <li>启动CoreOS的虚拟机，但是需要先进入GUN GRUB设置启动脚本，因为默认情况CoreOS是用证书连接的。没有用户名和密码。所以直接启动是无法登录系统的。</li>
+  <li>启动CoreOS的虚拟机后用上下键选择启动default项，在最后一行的末尾加上<code>console=tty0 console=ttyS0 coreos.autologin=tty1 coreos.autologin=ttyS0</code>，然后F10保存后启动，这个时候将不需要密码进入系统了(这个改动只会一次有效，以后需要还要重新更改)</li>
+  <li>注意：有可能不同的虚拟机启动的时候的cosole不是tty0或者ttyS0,则可以试一下tty1</li>
+  <li>CoreOS默认安装后有用户core，这个时候可以用<code>sudo passwd core</code>来修改密码</li>
+  <li>修改密码成功后，以后登录就可以用core用户和新设置的密码了</li>
+  <li>CoreOS的虚拟机启动后默认已经启动了Docker，可以用<code>docker info</code>来查看docker的状态</li>
+  <li>单机版的CoreOS只是拿来练习docker用的，或者是做开发环境，不可用作生产环境</li>
+  <li>在Virutalbox上的虚拟主机上的网络配置端口映射（如SSH的22端口映射到主机的2222端口，这样就可以通过连接本机的2222端口到虚拟机了）</li>
+</ul>
+
+<h3 id="vagrantcoreos">Vagrant安装单一虚拟机的CoreoS集群</h3>
+<hr />
+
+<ul>
+  <li>主要参照官网的文档说明<a href="https://coreos.com/docs/running-coreos/platforms/vagrant/">Running CoreOS on Vagrant</a></li>
+  <li><a href="https://coreos.com/docs/running-coreos/platforms/vagrant/">Vagrant</a>主要是作为开发环境配置管理工具，需要1.6.3及以上版本</li>
+  <li>根据Virtualbox以及Vagrant的说明安装好这些工具</li>
+  <li>用Git克隆对应的vagrant安装CoreOS的工程</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">git clone https://github.com/coreos/coreos-vagrant.git
+</span><span class="line"><span class="nb">cd </span>coreos-vagrant
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>从这个项目中的example文件copy得到一份<code>user-data</code>和<code>config.rb</code>。<code>user-data</code>是CoreOS的云配置文件，是<a href="https://github.com/coreos/fleet">fleet</a>需要用到的配置内容。<code>config.rb</code>是Vagrant用到的配置选项。</li>
+  <li>
+    <p>修改<code>user-data</code>文件，配置<a href="https://github.com/coreos/fleet">etcd</a>用到的这个CoreOS cluster服务发现所要的etcd的服务。是不是有些绕？etcd需要ectd?后面再写个如何建etcd群的文章给CoreOS cluster用。</p>
+
+    <ul>
+      <li>使用免费的公开的etcd的服务获得一个群的token: 调用<code>https://discovery.etcd.io/new</code>得到一个token值</li>
+      <li>将这个token替换discovery配置项中的<token>就可。</token></li>
+      <li>需要注意的是，每次<code>vagrant destroy</code>后要重新更新这个token值</li>
+      <li>每次更新这个文件后，需要用<code>vagrant reload --provision</code>的来更新VM</li>
+    </ul>
+  </li>
+  <li>
+    <p>修改<code>config.rb</code>配置文件</p>
+
+    <ul>
+      <li>设置群中服务器个的个数 <code>$num_instances=3</code></li>
+      <li>设置VM的版本，如使用最新的稳定版 <code>$update_channel='stable'</code>。如果需要指定版本，则可以修改<code>Vagrantfile</code>中的config.vm.box_version配置</li>
+    </ul>
+  </li>
+  <li>
+    <p>用启动CoreOS cluster</p>
+
+    <ul>
+      <li><code>vagrant up</code> 启动，如果之前没有box，则会自动下载对应的box。注意如果有代理，则需要在环境变量中设置http_proxy以及https_proxy(windows下也要) </li>
+      <li>如果只想启动一台server则可以：<code>vagrant up &lt;name&gt;</code>，默认<name>可以是core-01, core-02, core-03&#8230;</name></li>
+      <li>检查启动状态：<code>vagrant status</code></li>
+      <li>连接进server: <code>vagrant ssh &lt;name&gt;</code>，这样将通过证书来认证默认用户core。如果使用Putty这样的ssh client则可以参考<a href="https://github.com/Varying-Vagrant-Vagrants/VVV/wiki/Connect-to-Your-Vagrant-Virtual-Machine-with-PuTTY">用ssh登录vagrant创建的vm</a></li>
+      <li>如果想共享主机目录到CoreOS则可以去掉<code>Vagrantfile</code>中关于<code>config.vm.synced_folder</code>的注释符</li>
+    </ul>
+  </li>
+  <li>
+    <p>验证CoreOS是否成功建立集群</p>
+
+    <ul>
+      <li>登录其中一台CoreOS</li>
+      <li>使用命令：<code>fleetctl list-machines</code>看是否成功列出集群中所有的CoreOS服务器，如果有错误，一般是配置<code>user-data</code>文件的discovery不正确</li>
+    </ul>
+  </li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Scala作为脚本语言动态执行]]></title>
@@ -2079,44 +2168,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 <h3 id="section-2">总结</h3>
 
 <p>使用Guava来开发代理吧。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式：代理模式]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/02/23/she-ji-mo-shi-%3Adai-li-mo-shi/"/>
-    <updated>2014-02-23T17:05:45+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/02/23/she-ji-mo-shi-:dai-li-mo-shi</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<hr />
-
-<p>在编程中我们往往会使用到大对象，而对这些大对象的访问总是比较耗时，但是大对象又不是每次都需要使用到。例如从数据库读取出来的对象，或者从远程服务读取的对象。</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-<p>使用一个代理对象，实现原有对象的接口，并由这个代理对象来负责大对象的创建、缓存等优化操作。
-最常用的例子是数据的储存，我们希望将一个大对象很快的存到数据库中，但是又不希望等待以及做很多异常的处理，以为对于使用端而言并不关系存储方式和异常处理。所以可以通过Proxy对象来隔离这些特殊的处理，并通过多线程等异步手段提高性能。</p>
-
-<h3 id="uml">UML图</h3>
-
-<center><img src="http://duffqiu.github.io/images/plantuml/98d572a73413b32c676af3704f3fa8e2.png" /></center>
-
-<h3 id="proxydecorate">Proxy与Decorate的区别</h3>
-
-<p>－ Decorate的目的是给已有的类增加业务功能，而Proxy就像名义一样目的是为了某种而外目的给已有的类增加非业务功能</p>
-
-<ul>
-  <li>
-    <p>从UML图可以看出，Proxy是图钉针对某个某个固定对象的，而Decorate是针对接口的，并且Proxy是负责对应的对象的生命周期的，让Decorate只是使用对应的对象。同时Proxy和对应的对象的数量关系并不确定，可以是1-*，也可以是1-1。而Decorate只能是1-1</p>
-  </li>
-  <li>
-    <p>Decorate可以通过递归的方式叠加使用，而Proxy不作此用途</p>
-  </li>
-  <li>
-    <p>当然既然类似，就可能可以混用。没有必要教条的说一定要明确Proxy或Decorate。</p>
-  </li>
-</ul>
-
 ]]></content>
   </entry>
   
