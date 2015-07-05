@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-05T16:07:44+08:00</updated>
+  <updated>2015-07-05T16:38:19+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CoreOS Etcd2]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/05/coreos-etcd2/"/>
+    <updated>2015-07-05T16:13:19+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/05/coreos-etcd2</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>从CoreOS 682.1开始，ETCD2已经被默认安装了，通过Clould Init的方式在Openstack上启动CoreOS时发生了一些错误，总结如下</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ul>
+  <li>ETCD2总是启动不成功，通过<code>journalctl _EXE=/usr/bin/coreos-cloudinit</code>查看发现其提示没有发现本地的文件有相关的member信息。究其原因是我在cloudinit中设置了etcd2的文件路径，而改文件目录默认是root的权限，但是etcd2运行的时候是以etcd用户运行的，所以造成无法访问改文件目录而启动失败</li>
+  <li>解决的办法是通过在cloudinit中写一个oneshot的systemd的服务，该服务将这个目录的权限和所有权更改为etcd，可参照我github上的<a href="https://raw.githubusercontent.com/duffqiu/coreos-openstack/master/etcd2/cloud-config-front1.yaml">cloudinit的例子</a></li>
+  <li>另外需要注意的是，etcd2通过discovery指定的cluster的大小。如果没有满足这个cluster的大小的节点联入则etcd2的集群是无法启动的</li>
+  <li>etcd2的cluster，在接入节点满足cluster指定的大小后，后续的接入节点将自动降格为proxy模式</li>
+  <li>etcdctl可以用<code>--debug</code>开查看发出的CURL命令是什么</li>
+</ul>
+
+<h4 id="docker-tips">Docker tips</h4>
+
+<ul>
+  <li>从Docker 1.6开始，docker可以支持查看container的运行时的CPU和Memery的消耗，以下命令为列出本机所有containter的运行状况</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">docker stats $(docker inspect --format='' $(docker ps -q))</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>从Docker 1.6开始，docker支持直接使用命令进入到container中进行交互，而不用向以前那么麻烦的使用nsenter的方式了，具体用法是</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">docker exec -it &lt;containter name&gt; &lt;command in container&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[CoreOS安装和使用Keepalived]]></title>
@@ -1468,306 +1506,6 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
 <h3 id="section-2">小插曲</h3>
 <p>不知道什么原因，ScalaTest的官网被屏蔽了。一个纯开源的技术网站有这个必要性么？还是躺枪了？</p>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[如何定义一个好的REST接口2]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/03/13/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-2/"/>
-    <updated>2014-03-13T22:06:13+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/03/13/ru-he-ding-yi-[?]-ge-hao-de-restjie-kou-2</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<hr />
-<p>经过一段实践的实践，特别是需求总在变化的项目（项目开始阶段总是比较痛苦的）中，如何去管理REST接口的描述文件变得非常重要。即要美观，又要开发人员随时能看，能更新。之前写过第一篇的这个<a href="http://duffqiu.github.io/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou/">“如何定义一个好的REST接口”</a>，但是如果写到word文档中，痛苦是难以仍受的。特别是需要比较大篇幅的改动。同时开发人员也很难知道具体那些被改了，就会陷入迷茫中。</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-
-<h4 id="section-2">前提条件</h4>
-<ol>
-  <li>前提条件1，将设计文档放在离开发最近的地方。那么当然是代码工程的地方是最进的。</li>
-  <li>前提条件2，有利于跟踪变化。对于开发人员而言，当然是像代码那样跟踪最顺手了。（目前我用的是Git）</li>
-  <li>尽可能足够简单</li>
-</ol>
-
-<h4 id="section-3">解决方式</h4>
-<ol>
-  <li>参照<a href="http://json-schema.org">JSON SCHEMA</a>的方式</li>
-  <li>简化JSON SCHEMA，但依然是用JSON的方式字描述接口</li>
-  <li>安装Eclipse的JSON editor plugin，可以在outline上很清晰的看到JSON的结构。当然如果是windows下也可以用notepad++的jason plugin看。不过如何是代码就在eclispe上，最好还是用eclipse的plugin</li>
-  <li>
-    <p>定义设计规则：</p>
-
-    <ul>
-      <li>接口文件的目录结构： <code>&lt;ComponentName&gt;\&lt;ResourceName&gt;\Method_&lt;create/delete/query/update&gt;.json</code>. ComponentName：组件或模块名称，ResourceName：资源名称，最后是方法的接口文件名。举个例子：有个组件Calendar，它下面有个资源叫Event，那么操作这个资源的更新的接口文件为Method_update.json，它放在了Calendar\Event\目录下。</li>
-      <li>接口文件的层次结构。因为是基于HTTP的方式，则整个REST接口的层次结构为： </li>
-    </ul>
-  </li>
-</ol>
-
-<p><img src="http://duffqiu.github.io/images/rest_structure1.png" alt="rest structure1" title="REST API First Level Structure&quot;" /></p>
-
-<p>其中，Revision Information用来描述文档的要点变化情况  </p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">{
-</span><span class="line">   "Revision Information" : [
-</span><span class="line">   {
-</span><span class="line">      "Revision": "v0.1",
-</span><span class="line">      "Section":"Whole document",
-</span><span class="line">      "Change":"initialized"
-</span><span class="line">   },
-</span><span class="line">   {
-</span><span class="line">      ...
-</span><span class="line">   }
-</span><span class="line">   ]
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>description用来描述接口的说明</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">{
-</span><span class="line">   "description":{
-</span><span class="line">    "method_description":"Create xxxxx",
-</span><span class="line">    "method_direction":"xxx-&gt;yyy"
-</span><span class="line">   }
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>request描述接口的http的query parameter和request body</p>
-
-<p>response描述接口的http的response body</p>
-
-<p>error_list描述接口的可能的错误信息</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">{
-</span><span class="line">   "error_list":[
-</span><span class="line">   {
-</span><span class="line">      "errorCode":"91101",
-</span><span class="line">      "errorMsg":"xxxx"
-</span><span class="line">    },
-</span><span class="line">    {
-</span><span class="line">      "errorCode":"91102",
-</span><span class="line">      "errorMsg":"yyyyy"
-</span><span class="line">   }]
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>request的层次结构</li>
-</ul>
-
-<p><img src="http://duffqiu.github.io/images/rest_structure2.png" alt="rest structure2" title="REST API Request Structure" /></p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">{
-</span><span class="line">   "request":{
-</span><span class="line">  	"http_method" : "GET",
-</span><span class="line">    "http_request_url":"https://www.xxxx.com/&lt;warContext&gt;/p/&lt;component&gt;/v1/&lt;resouce&gt;/{&lt;resourceId&gt;}",
-</span><span class="line">    "path_parameter":{
-</span><span class="line">      "&lt;resourceId&gt;":"resourceId"
-</span><span class="line">    },
-</span><span class="line">    "required_query_parameter":{
-</span><span class="line">      "&lt;parameter1&gt;" : "xxx"
-</span><span class="line">    },
-</span><span class="line">    "optional_query_parameter":{
-</span><span class="line">      "&lt;parameter2&gt;":"yyy"
-</span><span class="line">    },
-</span><span class="line">    "request_body":{
-</span><span class="line">    ...
-</span><span class="line">    }
-</span><span class="line">   }
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
-<p>http_method指明http调用的方法：GET/DELETE/PUT/POST<br />
-   http_request_url指明http调用的URL的格式<br />
-   path_parameter指明唯一索引到某个特定资源的标识<br />
-   required_query_parameter必须传入的参数
-   optional_query_parameter可选传入的参数
-   request_body传入的JSON复杂对象</p>
-
-<ul>
-  <li>response的层次结构</li>
-</ul>
-
-<p>就是返回一个JSON的对象。这里有个BEST PRACTISE的建议，尽量返回能索引到特定资源的标识信息无论输入是否有该信息</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">{
-</span><span class="line">   "response":{
-</span><span class="line">    "&lt;parameter1&gt;":{
-</span><span class="line">      "string":"&lt;parameter1 description&gt;",
-</span><span class="line">      "required":"y"
-</span><span class="line">    },
-</span><span class="line">    "&lt;parameter2&gt;":{
-</span><span class="line">      "integer":"&lt;parameter2 description&gt;",
-</span><span class="line">      "required":"n"
-</span><span class="line">    }        
-</span><span class="line">   }
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>对于request body和response body中JSON对象的定义，不使用JSON Schema那种繁复的写法，直接参照google的方式，将parameter的类型定义为key，描述为value，然后再用”required”标识是否是必须的</p>
-
-<h4 id="section-4">完整的例子模版</h4>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-<span class="line-number">39</span>
-<span class="line-number">40</span>
-<span class="line-number">41</span>
-<span class="line-number">42</span>
-<span class="line-number">43</span>
-<span class="line-number">44</span>
-<span class="line-number">45</span>
-<span class="line-number">46</span>
-<span class="line-number">47</span>
-<span class="line-number">48</span>
-<span class="line-number">49</span>
-<span class="line-number">50</span>
-<span class="line-number">51</span>
-<span class="line-number">52</span>
-<span class="line-number">53</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">{  
-</span><span class="line">  "Revision Information" : [
-</span><span class="line">    {
-</span><span class="line">      "Revision": "v0.1",
-</span><span class="line">      "Section":"Whole document",
-</span><span class="line">      "Change":"initialized"
-</span><span class="line">    },
-</span><span class="line">    {
-</span><span class="line">      "Revision": "v0.2",
-</span><span class="line">      "Section":"xx",
-</span><span class="line">      "Change":"yyy"
-</span><span class="line">    }
-</span><span class="line">  ],
-</span><span class="line">  "description":{
-</span><span class="line">    "method_description":"query xxxxx",
-</span><span class="line">    "method_direction":"xx-&gt;yyy"
-</span><span class="line">  },
-</span><span class="line">  "request":{
-</span><span class="line">  	"http_method" : "GET",
-</span><span class="line">    "http_request_url":"https://www.xxxx.com/&lt;warContext&gt;/p/&lt;component&gt;/v1/&lt;resouce&gt;/{&lt;resourceId&gt;}",
-</span><span class="line">    "path_parameter":{
-</span><span class="line">      "&lt;resourceId&gt;":"resourceId"
-</span><span class="line">    },
-</span><span class="line">    "required_query_parameter":{
-</span><span class="line">      "&lt;parameter1&gt;" : "xxx"
-</span><span class="line">    },
-</span><span class="line">    "optional_query_parameter":{
-</span><span class="line">      "&lt;parameter2&gt;":"yyy"
-</span><span class="line">    },
-</span><span class="line">    "request_body":{
-</span><span class="line">    }
-</span><span class="line">  },
-</span><span class="line">  "response":{
-</span><span class="line">    "&lt;parameter1&gt;":{
-</span><span class="line">      "string":"&lt;parameter1 description&gt;",
-</span><span class="line">      "required":"y"
-</span><span class="line">    },
-</span><span class="line">    "&lt;parameter2&gt;":{
-</span><span class="line">      "integer":"&lt;parameter2 description&gt;",
-</span><span class="line">      "required":"n"
-</span><span class="line">    }        
-</span><span class="line">  },
-</span><span class="line">  "error_list":[
-</span><span class="line">    {
-</span><span class="line">      "errorCode":"xx1",
-</span><span class="line">      "errorMsg":"yyyy"
-</span><span class="line">    },
-</span><span class="line">    {
-</span><span class="line">      "errorCode":"xx2",
-</span><span class="line">      "errorMsg":"yyyy"
-</span><span class="line">    }
-</span><span class="line">  ]
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
 ]]></content>
   </entry>
   

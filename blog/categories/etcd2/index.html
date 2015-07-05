@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>系统集成模式：规范化数据流模式 - Duff Qiu's Blog</title>
+  <title>Category: ETCD2 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,10 +19,7 @@
 
 
   
-  <meta name="description" content="原由 Normalizer模式中，我们提到到如果多个系统一起集成将造成Endpoint成几何级数的增长。 解决办法 使用Canonical Data Model(规范化数据模型)来解决这个问题
-其特点如下：
-- 每一个EndPoint一端和集成系统衔接，接收或发送特定系统的消息
-- &hellip;">
+  <meta name="description" content="Category: ETCD2">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -31,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/02/02/integration-pattern-canonical-data-model">
+  <link rel="canonical" href="http://duffqiu.github.ioblog/categories/etcd2">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -101,127 +98,36 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">系统集成模式：规范化数据流模式</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-02-02T18:18:16+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2015</time>
-        
-        
-           | <a href="#comments">Comments</a>
-        
-      </p>
+    <h1 class="entry-title">Category: ETCD2</h1>
     
   </header>
-
-
-<div class="entry-content"><h3 id="section">原由</h3>
-<hr />
-<p><a href="/blog/2015/02/02/integration-pattern-normalizer/">Normalizer模式</a>中，我们提到到如果多个系统一起集成将造成Endpoint成几何级数的增长。</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-
-<p>使用Canonical Data Model(规范化数据模型)来解决这个问题
-其特点如下：
-- 每一个EndPoint一端和集成系统衔接，接收或发送特定系统的消息
-- 每一个EndPoint的另外一段则是接收或发送Common的消息给另外的EndPoint</p>
-
-<p>如图1：
-<img src="/images/cdm-1.png" alt="图一" /></p>
-
-<ul>
-  <li>所有的在EndPoint间流动的消息都是基于Common的接口，这样当引入一个新的系统的时候这需要实现一个EndPoint就可以了。</li>
-</ul>
-
-<p>如图二：
-<img src="/images/cdm-2.png" alt="图二" /></p>
-
-<p>当我们需要考入如何实现Endpoint的时候，则可以考虑<a href="http://camel.apache.org/">Apache Camel Framework</a></p>
-
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Duff Qiu</span></span>
-
-      
-
-
-
-
-
+  <div id="blog-archives" class="category">
 
 
 
   
+  <h2>2015</h2>
 
-
-<time datetime="2015-02-02T18:18:16+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2015</time>
-      
-
-
-    </p>
-    
-      <div class="sharing">
+<article>
   
-  
-  
-</div>
+<h1><a href="/blog/2015/07/05/coreos-etcd2/">CoreOS Etcd2</a></h1>
+<time datetime="2015-07-05T16:13:19+08:00" pubdate><span class='month'>Jul</span> <span class='day'>05</span> <span class='year'>2015</span></time>
 
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2015/02/02/fix-centos-virtualbox/" title="Previous Post: 安装附属包失败后修复virtualbox上的centos">&laquo; 安装附属包失败后修复virtualbox上的centos</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2015/02/05/fp-or-imperative-with-scala/" title="Next Post: Scala中函数式编程还是命令式编程">Scala中函数式编程还是命令式编程 &raquo;</a>
-      
-    </p>
-  </footer>
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/etcd2/'>ETCD2</a></span>
+</footer>
+
+
 </article>
 
-
-
-   <section>
-     <h1>Comments</h1>
-     <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
-	<div class="ds-thread"></div>
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"duffqiu"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = 'http://static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		|| document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- Duoshuo Comment END -->
 </div>
-   </section>
+
   
+</article>
 
 </div>
 
@@ -282,96 +188,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
 
   
 </aside>
-
-
-
-
-<article class="archives">
-  <div class="related-posts">
-    <h2>Related Posts</h2>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/07/05/coreos-etcd2/">CoreOS Etcd2</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/etcd2/'>ETCD2</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/07/05/coreos-keepalived/">CoreOS安装和使用Keepalived</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/keepalived/'>Keepalived</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/07/05/openstack-vip/">Openstack用Keealived来实现VIP</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/keepalvied/'>Keepalvied</a>, <a class='category' href='/blog/categories/openstack/'>Openstack</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/03/29/install-coreos/">CoreOS的安装</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/03/03/scala-script/">scala作为脚本语言动态执行</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/scala/'>Scala</a>, <a class='category' href='/blog/categories/script/'>Script</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-  </div>
-</article>
 
 
     </div>

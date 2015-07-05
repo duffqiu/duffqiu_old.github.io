@@ -12,14 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-957e0dfbd09f6f0fc28df76566c011b7.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-1a2cb64d371b423b33eff1bd000a7c03.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 在之前的文章Openstack用Keealived来实现VIP介绍了如何使用Keepalived来实现VIP，但是如果使用的vm是CoreOS，所有的程序又必须运行在Docker中的话，又该如何办呢？ 解决办法 将Keepalived做成一个Docker的image， &hellip;">
+  <meta name="description" content="原由 从CoreOS 682.1开始，ETCD2已经被默认安装了，通过Clould Init的方式在Openstack上启动CoreOS时发生了一些错误，总结如下 解决办法 ETCD2总是启动不成功，通过journalctl _EXE=/usr/bin/coreos- &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-fb41d8a34f09fb290d445ee646da6844.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-55fa15b468ab0a55a58960b6e85092f0.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
@@ -99,6 +99,74 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/05/coreos-etcd2/">CoreOS Etcd2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-05T16:13:19+08:00" pubdate data-updated="true">Jul 5<span>th</span>, 2015</time>
+        
+        
+           | <a href="/blog/2015/07/05/coreos-etcd2/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>从CoreOS 682.1开始，ETCD2已经被默认安装了，通过Clould Init的方式在Openstack上启动CoreOS时发生了一些错误，总结如下</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ul>
+  <li>ETCD2总是启动不成功，通过<code>journalctl _EXE=/usr/bin/coreos-cloudinit</code>查看发现其提示没有发现本地的文件有相关的member信息。究其原因是我在cloudinit中设置了etcd2的文件路径，而改文件目录默认是root的权限，但是etcd2运行的时候是以etcd用户运行的，所以造成无法访问改文件目录而启动失败</li>
+  <li>解决的办法是通过在cloudinit中写一个oneshot的systemd的服务，该服务将这个目录的权限和所有权更改为etcd，可参照我github上的<a href="https://raw.githubusercontent.com/duffqiu/coreos-openstack/master/etcd2/cloud-config-front1.yaml">cloudinit的例子</a></li>
+  <li>另外需要注意的是，etcd2通过discovery指定的cluster的大小。如果没有满足这个cluster的大小的节点联入则etcd2的集群是无法启动的</li>
+  <li>etcd2的cluster，在接入节点满足cluster指定的大小后，后续的接入节点将自动降格为proxy模式</li>
+  <li>etcdctl可以用<code>--debug</code>开查看发出的CURL命令是什么</li>
+</ul>
+
+<h4 id="docker-tips">Docker tips</h4>
+
+<ul>
+  <li>从Docker 1.6开始，docker可以支持查看container的运行时的CPU和Memery的消耗，以下命令为列出本机所有containter的运行状况</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">docker stats $(docker inspect --format='' $(docker ps -q))</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>从Docker 1.6开始，docker支持直接使用命令进入到container中进行交互，而不用向以前那么麻烦的使用nsenter的方式了，具体用法是</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">docker exec -it &lt;containter name&gt; &lt;command in container&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -952,244 +1020,6 @@ CentOS7没有安装包，需要下载压缩包，4然后解压到<code>/opt/subl
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/02/10/sbt-for-new-user/">初学sbt</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-02-10T15:22:32+08:00" pubdate data-updated="true">Feb 10<span>th</span>, 2015</time>
-        
-        
-           | <a href="/blog/2015/02/10/sbt-for-new-user/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<hr />
-<p>初学一种语言最烦的就是搭建开发环境了，每次都要装一堆的plugin，有时候又因为不同的plugin的版本等问题冲突
-前面介绍如何使用Maven来搭建开发环境，总体而言还算比较复杂。特别是在不同的机器上竟然有些plugin不可用，也不知道问题在那里。
-所以既然是以开发Scala为主，那还是用<a href="http://scala-sbt.org">SBT</a>吧</p>
-
-<h3 id="section-1">主要参考</h3>
-<hr />
-<p>直接参考<a href="http://www.scala-sbt.org/0.13/tutorial/index.html">SBT官网的Getting Started</a>并结合自己的一些实践做了下浓缩
-官网已经提供中文版本了(开来中国是用Scala增长比较快的地区，另一个是美国硅谷，有兴趣可以看看google trend上关于Scala)</p>
-
-<p>该Getting Started有几章可以暂时不用看的，到真的有需要再看
-- Scope
-- Multi-project builds
-- Custom settings and tasks
-- .scala build definition</p>
-
-<p>另外在Github上有个<a href="https://github.com/n8han/giter8">giter8，简称g8</a>的工具，可以帮助获取scala, sbt的模版，不过自从有了<a href="http://typesafe.com/get-started">typesafe的activator</a>后，提供g8模版已经不多了，原有的模版也没怎么更新了</p>
-
-<h4 id="sbt">安装SBT</h4>
-<p>可以根据SBT官网的Getting Started，对于不同的平台采用不同的安装方式
-安装完后，基本上就是一个sbt的命令脚本和sbt-launch.jar
-安装完后，通过命令行运行一次<code>sbt</code>，然后sbt会将对应的依赖包下载下来。
-sbt会在用户的home目录下创建.sbt和.ivy2的目录，依赖包都放在了ivy2的目录里。因为sbt实际是通过ivy2来管理包依赖。不过大家不用去看ivy2，这些都是sbt自己管理的。
-如果是公司有代理的环境中，则需要设置java代理的参数才可以使用，不然sbt总是在尝试下载依赖包。
-一般设置java代理的参数是在shell的文件中设置JAVA_OPTS,但是好像不其作用。所以最好的方式是直接修改sbt的命令脚本增加代理配置参数</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="nv">JAVA_OPTS</span><span class="o">=</span><span class="s2">&quot;$JAVA_OPTS -Dhttp.proxyHost=&lt;proxy host&gt; -Dhttp.proxyPort=&lt;proxy port&gt; -Dhttps.proxyHost=&lt;proxy host&gt; -Dhttps.proxyPort=&lt;proxy port&gt;&quot;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<h4 id="scalajava">建立一个scala/java工程</h4>
-<p>建议不要从参考SBT官网的Getting Started的hello world，因为它将源文件建在了工程的根目录上了
-很奇怪，到目前位置都没有个一个像maven那样可以直接在Eclipse上创建一个sbt的工程，而必须先手工创建一些文件</p>
-
-<p>具体步骤为：</p>
-
-<ul>
-  <li>创建一个工程目录如： sbt-sample</li>
-  <li>在工程目录下再创建一个子目录，必须名为project</li>
-  <li>在工程目录下创建名为build.sbt的定义文件，并写入基本的信息，需要注意的是每个配置都要空一行。以后打开别人的工程先看看这个文件的基本定义，特比是scala的版本</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">name :<span class="o">=</span> <span class="s2">&quot;sbt-sample&quot;</span>
-</span><span class="line">
-</span><span class="line">version :<span class="o">=</span> <span class="s2">&quot;1.0&quot;</span>
-</span><span class="line">
-</span><span class="line">scalaVersion :<span class="o">=</span> <span class="s2">&quot;2.11.4&quot;</span>
-</span><span class="line">
-</span><span class="line">organization :<span class="o">=</span> <span class="s2">&quot;org.duff&quot;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-<ul>
-  <li>使用<a href="https://github.com/typesafehub/sbteclipse">sbteclpise</a>插件， 在project子目录下创建一个plugins.sbt文件，然后加入一下内容，然后在sbt的命令行下执行<code>eclipse</code>就可以生成对应的eclipse的工程了。如果改动了sbt的文件则最后重新执行一次<code>eclipse</code>获得最新的包依赖等</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">addSbtPlugin<span class="o">(</span><span class="s2">&quot;com.typesafe.sbteclipse&quot;</span> % <span class="s2">&quot;sbteclipse-plugin&quot;</span> % <span class="s2">&quot;2.5.0&quot;</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>打开Eclipse，写个测试的App</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kn">package</span> <span class="n">org</span><span class="o">.</span><span class="na">duff</span><span class="o">.</span><span class="na">sbtsample</span>
-</span><span class="line">
-</span><span class="line"><span class="n">object</span> <span class="n">Main</span> <span class="kd">extends</span> <span class="n">App</span><span class="o">{</span>
-</span><span class="line">
-</span><span class="line">  <span class="n">println</span><span class="o">(</span><span class="s">&quot;this is a sbt sample&quot;</span><span class="o">)</span>
-</span><span class="line">
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>
-    <p>在sbt命令行下执行<code>compile</code>，然后<code>run</code>就可以看到对应的输入了</p>
-  </li>
-  <li>
-    <p>设置包依赖仓库（repository）。对于Maven是设置的Maven的conf文件中，但是对于SBT是每次定义在项目的build.sbt文件中</p>
-
-    <ul>
-      <li>方法一： 通过URL定义如： <code>resolvers += "&lt;rep name&gt;" at "&lt;rep url&gt;"</code></li>
-    </ul>
-  </li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">resolvers +<span class="o">=</span>
-</span><span class="line">  <span class="s2">&quot;Sonatype OSS Snapshots&quot;</span> at <span class="s2">&quot;https://oss.sonatype.org/content/repositories/snapshots&quot;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>
-    <p>方法二： 使用<a href="http://www.scala-sbt.org/0.13/docs/Resolvers.html">预定义的Rep</a>，主要有：</p>
-
-    <ul>
-      <li>DefaultMavenRepository at  https://repo1.maven.org/maven2/，这个会被默认使用，无需指定</li>
-      <li>JavaNet1Repository  at http://download.java.net/maven/1/</li>
-      <li>Resolver.sonatypeRepo(“public”) (or “snapshots”, “releases”) at https://oss.sonatype.org/content/repositories/public</li>
-      <li>Resolver.typesafeRepo(“releases”) (or “snapshots”) at https://repo.typesafe.com/typesafe/releases</li>
-      <li>Resolver.typesafeIvyRepo(“releases”) (or “snapshots”) at https://repo.typesafe.com/typesafe/ivy-releases</li>
-      <li>Resolver.sbtPluginRepo(“releases”) (or “snapshots”) at https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases</li>
-      <li>Resolver.bintrayRepo(“owner”, “repo”) at https://dl.bintray.com/[owner]/[repo]/</li>
-      <li>Resolver.jcenterRepo at https://jcenter.bintray.com/</li>
-    </ul>
-  </li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">resolvers +<span class="o">=</span> JavaNet1Repository
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>方法三：同时指定多个rep，使用<code>resolvers ++= Seq(&lt;rep1&gt;, &lt;rep2&gt;)</code>, rep1/rep2可以使用方法一或方法二</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">resolvers ++<span class="o">=</span> Seq<span class="o">(</span>Resolver.sonatypeRepo<span class="o">(</span><span class="s2">&quot;public&quot;</span><span class="o">)</span>,
-</span><span class="line">    Resolver.typesafeRepo<span class="o">(</span><span class="s2">&quot;releases&quot;</span><span class="o">))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>指定工程依赖包，和resolver类似，可以一个一个指定(+=)，也可以同时指定(++= Seq())，另外如果需要对多个包使用同一个变量指定如scala版本等，则可以使用如下例子的方式(即Scala的闭包)</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">libraryDependencies ++<span class="o">=</span> <span class="o">{</span>
-</span><span class="line">  val <span class="nv">akkaVersion</span>       <span class="o">=</span> <span class="s2">&quot;2.3.9&quot;</span>
-</span><span class="line">  val <span class="nv">sprayVersion</span>      <span class="o">=</span> <span class="s2">&quot;1.3.2&quot;</span>
-</span><span class="line">  Seq<span class="o">(</span>
-</span><span class="line">    <span class="s2">&quot;com.typesafe.akka&quot;</span> %% <span class="s2">&quot;akka-slf4j&quot;</span>      % akkaVersion withSources<span class="o">()</span> withJavadoc<span class="o">()</span>,
-</span><span class="line">    <span class="s2">&quot;ch.qos.logback&quot;</span>    %  <span class="s2">&quot;logback-classic&quot;</span> % <span class="s2">&quot;1.1.2&quot;</span>,
-</span><span class="line">    <span class="s2">&quot;com.typesafe.akka&quot;</span> %% <span class="s2">&quot;akka-testkit&quot;</span>    % akkaVersion   % <span class="s2">&quot;test&quot;</span>,
-</span><span class="line">    <span class="s2">&quot;org.scalatest&quot;</span>     %% <span class="s2">&quot;scalatest&quot;</span>       % <span class="s2">&quot;2.2.0&quot;</span>       % <span class="s2">&quot;test&quot;</span> withSources<span class="o">()</span> withJavadoc<span class="o">()</span>
-</span><span class="line">  <span class="o">)</span>
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-<ul>
-  <li>每个lib的定义格式为 <code>&lt;groupID&gt; % &lt;artifactID&gt; % &lt;revision&gt; % configuration</code>。如上面的 ch.qos.logback，默认情况下都是”compile”的配置，而对于scalatest是指定在”test”的时候才使用</li>
-  <li>如果artifactID是根据scala的版本有不同的版本则可以简化的使用%%的方式省去指定xxx_2.11.4 (使用scala 2.11.4)而是直接写xxx</li>
-  <li>
-    <p>需要同时下载javadoc和source，则可以在最后用withSources() withJavadoc()</p>
-  </li>
-  <li>
-    <p>更改完后，如果还在sbt命令行下，则可以运行<code>reload</code>来更新相应的配置</p>
-  </li>
-  <li>
-    <p>打包程序，如果使用的不同的framework/toolkit，则有不同的打包方式，一般的打包方式是打成大的jar包</p>
-
-    <ul>
-      <li>配置打包plugin，在project子目录中增加一个名为assembly.sbt的文件，增加以下内容</li>
-    </ul>
-  </li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">addSbtPlugin<span class="o">(</span><span class="s2">&quot;com.eed3si9n&quot;</span> % <span class="s2">&quot;sbt-assembly&quot;</span> % <span class="s2">&quot;0.12.0&quot;</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-<ul>
-  <li>然后就可以在sbt命令行下执行<code>assembly</code>，则可以打包出jar文件了。可以在子目录target/scala-2.11/下找到这个jar</li>
-  <li>通过执行<code>java -jar &lt;xxx.jar&gt;</code>来执行程序</li>
-  <li>
-    <p>可以通过在build.sbt中增加以下配置更改打包jar</p>
-
-    <ul>
-      <li><code>ssemblyJarName in assembly := "&lt;xxxx.jar&gt;"</code> 更改打包的jar文件名</li>
-      <li><code>mainClass in assembly := Some("&lt;com.example.Main&gt;")</code> 更改main函数的入库</li>
-      <li>如果像用工程的版本号来合成打包文件，则可以这样写 <code>assemblyJarName in assembly := "&lt;name&gt;" + version.value +".jar"</code></li>
-    </ul>
-  </li>
-</ul>
-
-<p>到此一个就本的sbt的scala开发环境就建成了。
-后续不同的项目的变化基本上就集中在增加新的依赖包，增加不同的plugin来执行不同的任务
-个人使用看来，对比maven相对而言要简单一些。只是SBT使用场景基本只局限于java和scala，同时sbt的写法是scala语法</p>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1203,6 +1033,10 @@ sbt会在用户的home目录下创建.sbt和.ivy2的目录，依赖包都放在�
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/07/05/coreos-etcd2/">CoreOS Etcd2</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/07/05/coreos-keepalived/">CoreOS安装和使用Keepalived</a>
@@ -1220,10 +1054,6 @@ sbt会在用户的home目录下创建.sbt和.ivy2的目录，依赖包都放在�
         <a href="/blog/2015/03/03/scala-script/">Scala作为脚本语言动态执行</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/03/02/scala211-overview/">Scala211特性简介</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -1237,10 +1067,11 @@ sbt会在用户的home目录下创建.sbt和.ivy2的目录，依赖包都放在�
 <li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
 <li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
 <li class='category'><a href='/blog/categories/centos/'>CentOS (1)</a></li>
-<li class='category'><a href='/blog/categories/coreos/'>CoreOS (2)</a></li>
+<li class='category'><a href='/blog/categories/coreos/'>CoreOS (3)</a></li>
 <li class='category'><a href='/blog/categories/data-model/'>Data Model (1)</a></li>
 <li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (9)</a></li>
 <li class='category'><a href='/blog/categories/docker/'>Docker (1)</a></li>
+<li class='category'><a href='/blog/categories/etcd2/'>ETCD2 (1)</a></li>
 <li class='category'><a href='/blog/categories/entity-model/'>Entity Model (1)</a></li>
 <li class='category'><a href='/blog/categories/fp/'>FP (1)</a></li>
 <li class='category'><a href='/blog/categories/findbugs/'>Findbugs (1)</a></li>
