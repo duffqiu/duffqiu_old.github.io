@@ -12,14 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-1a2cb64d371b423b33eff1bd000a7c03.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-0c55329761fe0d4c0c9c8504575b733d.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 经过一段实践的实践，特别是需求总在变化的项目（项目开始阶段总是比较痛苦的）中，如何去管理REST接口的描述文件变得非常重要。即要美观，又要开发人员随时能看，能更新。之前写过第一篇的这个“如何定义一个好的REST接口”，但是如果写到word文档中，痛苦是难以仍受的。特别是需要比较大篇幅的改动。 &hellip;">
+  <meta name="description" content="原由 最近在看Scala和ScalaTest，但是要搭建一个同时运行Java和Scala的项目工程，还是遇到了些问题。因为我习惯了搭建出来的工程是Maven工程，同时即要能在Eclipse上运行，也能用Maven命令的方式运行以便后续用Jenkins。经过一段摸索终于试验出来。但是很奇怪， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-55fa15b468ab0a55a58960b6e85092f0.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-04ff5f6186b39be35afe5cf6c3ee33d0.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
@@ -99,6 +99,237 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/06/chuang-jian-ji-yu-mavende-javahe-scalagong-cheng/">创建基于maven的java和scala工程</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-06T09:20:56+08:00" pubdate data-updated="true">Apr 6<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/04/06/chuang-jian-ji-yu-mavende-javahe-scalagong-cheng/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>最近在看Scala和ScalaTest，但是要搭建一个同时运行Java和Scala的项目工程，还是遇到了些问题。因为我习惯了搭建出来的工程是Maven工程，同时即要能在Eclipse上运行，也能用Maven命令的方式运行以便后续用Jenkins。经过一段摸索终于试验出来。但是很奇怪，搜索出来的结果没有一个直接好使的。</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<h4 id="eclipse">Eclipse配置</h4>
+
+<ul>
+  <li>安装Scala的IDE，参见<a href="http://scala-ide.org">Scala-IDE官网</a>，注意选择Scala孵化器中的ScalaTest插件</li>
+  <li>安装Maven在Eclipse上的插件，通过<code>Preference -&gt;Maven-&gt;Discovery</code>安装m2e的对应插件。在后续的POM文件中使用到的插件最好都安装对应的m2e插件。(包括：build-helper，pmd, checkstyle, findbugs, compiler…)</li>
+  <li>
+    <p>创建Maven工程中，添加如下插件</p>
+
+    <ul>
+      <li>build-helper插件，添加scala的source和test source。因为<code>&lt;sourceDirectory&gt;</code>只能指定一个目录，所以需要这个插件来帮助添加scala的文件目录</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">		&lt;plugin&gt;
+</span><span class="line">			&lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+</span><span class="line">			&lt;artifactId&gt;build-helper-maven-plugin&lt;/artifactId&gt;
+</span><span class="line">			&lt;version&gt;1.8&lt;/version&gt;
+</span><span class="line">			&lt;executions&gt;
+</span><span class="line">				&lt;execution&gt;
+</span><span class="line">					&lt;id&gt;add-source&lt;/id&gt;
+</span><span class="line">					&lt;phase&gt;generate-sources&lt;/phase&gt;
+</span><span class="line">					&lt;goals&gt;
+</span><span class="line">						&lt;goal&gt;add-source&lt;/goal&gt;
+</span><span class="line">					&lt;/goals&gt;
+</span><span class="line">					&lt;configuration&gt;
+</span><span class="line">						&lt;sources&gt;
+</span><span class="line">							&lt;source&gt;src/main/scala&lt;/source&gt;
+</span><span class="line">						&lt;/sources&gt;
+</span><span class="line">					&lt;/configuration&gt;
+</span><span class="line">				&lt;/execution&gt;
+</span><span class="line">				&lt;execution&gt;
+</span><span class="line">					&lt;id&gt;add-test-source&lt;/id&gt;
+</span><span class="line">					&lt;phase&gt;generate-sources&lt;/phase&gt;
+</span><span class="line">					&lt;goals&gt;
+</span><span class="line">						&lt;goal&gt;add-test-source&lt;/goal&gt;
+</span><span class="line">					&lt;/goals&gt;
+</span><span class="line">					&lt;configuration&gt;
+</span><span class="line">						&lt;sources&gt;
+</span><span class="line">							&lt;source&gt;src/test/scala&lt;/source&gt;
+</span><span class="line">						&lt;/sources&gt;
+</span><span class="line">					&lt;/configuration&gt;
+</span><span class="line">				&lt;/execution&gt;
+</span><span class="line">			&lt;/executions&gt;
+</span><span class="line">		&lt;/plugin&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>Scala插件，协助编译scala，同时指定scala版本</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">		&lt;plugin&gt;
+</span><span class="line">			&lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;
+</span><span class="line">			&lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;
+</span><span class="line">			&lt;version&gt;3.1.6&lt;/version&gt;
+</span><span class="line">			&lt;executions&gt;
+</span><span class="line">				&lt;execution&gt;
+</span><span class="line">					&lt;goals&gt;
+</span><span class="line">						&lt;goal&gt;compile&lt;/goal&gt;
+</span><span class="line">						&lt;goal&gt;testCompile&lt;/goal&gt;
+</span><span class="line">					&lt;/goals&gt;
+</span><span class="line">				&lt;/execution&gt;
+</span><span class="line">			&lt;/executions&gt;
+</span><span class="line">			&lt;configuration&gt;
+</span><span class="line">				&lt;scalaVersion&gt;2.10.3&lt;/scalaVersion&gt;
+</span><span class="line">			&lt;/configuration&gt;
+</span><span class="line">		&lt;/plugin&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>ScalaTest插件</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">		&lt;plugin&gt;
+</span><span class="line">			&lt;groupId&gt;org.scalatest&lt;/groupId&gt;
+</span><span class="line">			&lt;artifactId&gt;scalatest-maven-plugin&lt;/artifactId&gt;
+</span><span class="line">			&lt;version&gt;1.0-RC2&lt;/version&gt;
+</span><span class="line">			&lt;configuration&gt;
+</span><span class="line">				&lt;reportsDirectory&gt;${project.build.directory}/surefire-reports&lt;/reportsDirectory&gt;
+</span><span class="line">				&lt;junitxml&gt;.&lt;/junitxml&gt;
+</span><span class="line">				&lt;filereports&gt;WDF TestSuite.txt&lt;/filereports&gt;
+</span><span class="line">			&lt;/configuration&gt;
+</span><span class="line">			&lt;executions&gt;
+</span><span class="line">				&lt;execution&gt;
+</span><span class="line">					&lt;id&gt;test&lt;/id&gt;
+</span><span class="line">					&lt;goals&gt;
+</span><span class="line">						&lt;goal&gt;test&lt;/goal&gt;
+</span><span class="line">					&lt;/goals&gt;
+</span><span class="line">				&lt;/execution&gt;
+</span><span class="line">			&lt;/executions&gt;
+</span><span class="line">		&lt;/plugin&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>指定Junit插件，如果需要同时使用JUnit测试java代码。注意，新版本的插件已经可以支持多线程并发，大大提高测试的速度。强烈建议使用最新的版本</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">		&lt;plugin&gt;
+</span><span class="line">			&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+</span><span class="line">			&lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+</span><span class="line">			&lt;version&gt;2.17&lt;/version&gt;
+</span><span class="line">			&lt;configuration&gt;
+</span><span class="line">				&lt;parallel&gt;methods&lt;/parallel&gt;
+</span><span class="line">				&lt;threadCount&gt;10&lt;/threadCount&gt;
+</span><span class="line">			&lt;/configuration&gt;
+</span><span class="line">		&lt;/plugin&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>安装m2e的scala maven plugin的connector插件，不然在eclipse上直接读取pom文件会解释出错。 <a href="http://alchim31.free.fr/m2e-scala/update-site/">update地址</a></li>
+</ul>
+
+<h3 id="section-2">小插曲</h3>
+<p>不知道什么原因，ScalaTest的官网被屏蔽了。一个纯开源的技术网站有这个必要性么？还是躺枪了？</p>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1684,73 +1915,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/19/she-ji-mo-shi-%3Aioche-yi-lai-zhu-ru/">设计模式：IoC和依赖注入</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-19T20:40:33+08:00" pubdate data-updated="true">Feb 19<span>th</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/19/she-ji-mo-shi-%3Aioche-yi-lai-zhu-ru/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<p>在生成对象的时候，我们通常会用到工厂方法模式，但是这会造成factory类过多不好维护的问题，也不好测试的问题。</p>
-
-<h3 id="section-1">解决办法</h3>
-<p>为了减少factory类，现在流行的做法是使用IoC(控制反转)。这个严格上不是个模式。IoC的实现方式通常有两种：</p>
-
-<ol>
-  <li>Service Locator，服务定位器</li>
-  <li>Dependency Injection，依赖注入</li>
-</ol>
-
-<p>因为服务定位器的做法侵入代码比较严重，同时比较难测试，一般很少用。</p>
-
-<p>依赖注入比较流行，主要是因为开源框架的支持。有两大框架，一个是Spring，一个是<a href="https://code.google.com/p/google-guice/">Google Guice</a>。因为Spring还有别的功能（如template的方式我比较喜欢，很多东西都简化很多），不能整体对比，只能对比DI的功能。网上有不少的对比，但是对与一般的开发而言没有太大的参考价值，主要习惯性问题。我个人觉得需要考虑只是整体上除了DI还有没有别的需要，如果有就用Spring，没有就用Guice，毕竟Guice小而且依赖少（就两个Jar包），据说Guice速度块。（但是由速度决定开发包的选择的需求基本很少）。后面抽时间我打算好好看一遍Guice真么使用。</p>
-
-<p>注入的方式分为一下几种：
-1. Setter
-2. Constructor
-3. Annotation
-4. Interface
-5. Parameter
-6. Propagating (传播)
-7. 其它</p>
-
-<p>对于注入个人觉得需要仔细分辨具体是否需要，不要什么都通过注入完成。一些简单的对象如log对象，完全没有必要注入。</p>
-
-<h3 id="section-2">小插曲</h3>
-<p>今天和同事谈到这个注入框架的问题，顺便提到了<a href="https://code.google.com/p/guava-libraries/wiki/GuavaExplained">google guava开发库</a>，这个值得研究研究细节。尽然Google都在用，那么日常中需要封装的一些工具、通用结构等都应该涵盖了。这个开发的年代，自己再创造工具已经没有太大必要了。</p>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -1768,6 +1932,10 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/07/05/openstack-blockservice/">Openstack如何更好的使用block Service最为磁盘使用</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/07/05/coreos-etcd2/">CoreOS Etcd2</a>
       </li>
     
@@ -1783,10 +1951,6 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
         <a href="/blog/2015/03/29/install-coreos/">CoreOS的安装</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2015/03/03/scala-script/">Scala作为脚本语言动态执行</a>
-      </li>
-    
   </ul>
 </section>
 
@@ -1799,6 +1963,7 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
     <li class='category'><a href='/blog/categories/appscale/'>Appscale (3)</a></li>
 <li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
 <li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
+<li class='category'><a href='/blog/categories/block-storage/'>Block Storage (1)</a></li>
 <li class='category'><a href='/blog/categories/centos/'>CentOS (1)</a></li>
 <li class='category'><a href='/blog/categories/coreos/'>CoreOS (3)</a></li>
 <li class='category'><a href='/blog/categories/data-model/'>Data Model (1)</a></li>
@@ -1825,7 +1990,7 @@ POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
 <li class='category'><a href='/blog/categories/oo/'>OO (1)</a></li>
 <li class='category'><a href='/blog/categories/osx/'>OSX (4)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>Octopress (16)</a></li>
-<li class='category'><a href='/blog/categories/openstack/'>Openstack (1)</a></li>
+<li class='category'><a href='/blog/categories/openstack/'>Openstack (2)</a></li>
 <li class='category'><a href='/blog/categories/plantuml/'>PlantUML (3)</a></li>
 <li class='category'><a href='/blog/categories/port/'>Port (2)</a></li>
 <li class='category'><a href='/blog/categories/proxy/'>Proxy (2)</a></li>

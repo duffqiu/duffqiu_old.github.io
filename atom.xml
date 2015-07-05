@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-05T16:38:19+08:00</updated>
+  <updated>2015-07-05T17:44:12+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,61 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Openstack如何更好的使用block Service最为磁盘使用]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/05/openstack-blockservice/"/>
+    <updated>2015-07-05T17:15:59+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/05/openstack-blockservice</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在使用Openstack过程中，VM总是要运行某些程序，而这些程序的数据是记录在磁盘中的。如何保证在VM被删除或者重建后这些数据依然能够存在呢？这就要用到Openstack的Block Service了。但是这里面有几个问题：</p>
+
+<ul>
+  <li>block service创建出来的卷是是个无文件格式的盘，无法被直接读写</li>
+  <li>通常我们希望在给一个VM初始化时挂在一个盘时，这个盘已经包含了某些必须的文件内容 </li>
+</ul>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>思路是做出一个带有文件格式已经需要的文件内容／数据的block service的image，这样就不用去格式化这个卷，同时也包含所需的内容，具体方法如下：</p>
+
+<ul>
+  <li>创建一个本地image，指定大小。 <code>dd if=/dev/null of=example.img bs=1M seek=1024</code>。这里创建了一个1G大小的镜像文件example.img，对于不同的使用目的，这里的bs需要调优</li>
+  <li>格式化成ext4。 <code>mkfs.ext4 -F example.img</code></li>
+  <li>创建本地的挂载目录 <code>mkdir &lt;path&gt;</code></li>
+  <li>挂载这个image到指定的目录 <code>mount -t ext4 -o loop example.img &lt;path&gt;</code></li>
+  <li>将需要的资料放入到这个目录中</li>
+  <li>卸载该image <code>umount &lt;path&gt;</code></li>
+  <li>将image转成qcow2格式 <code>qemu-img convert -f raw -O qcow2 example.img example.qcow2</code></li>
+  <li>上传到openstack</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">glance image-create --name &lt;image name&gt; \
+</span><span class="line">--container-format bare \
+</span><span class="line">--disk-format qcow2 \
+</span><span class="line">--file exmaple.qcow2 \
+</span><span class="line">--is-public True</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>创建block storage的卷</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">cinder create --image-id &lt;image uuid&gt; --display-name &lt;disk name&gt; &lt;size x G&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>创建完成就可以将其挂载到VM中使用了</li>
+  <li>可以在创建VM时在nova命令中生成这个卷</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[CoreOS Etcd2]]></title>
@@ -1304,207 +1359,6 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
 <ul>
   <li>有了这个resource tree，那么URL就好定义了，如获取用户id为300222的所有Calendar的URL为： <code>http://xxxx.com/&lt;webcontext&gt;/p/&lt;component_name&gt;/v1/user/300222/calendar</code></li>
 </ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[创建基于maven的java和scala工程]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/04/06/chuang-jian-ji-yu-mavende-javahe-scalagong-cheng/"/>
-    <updated>2014-04-06T09:20:56+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/04/06/chuang-jian-ji-yu-mavende-javahe-scalagong-cheng</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<hr />
-<p>最近在看Scala和ScalaTest，但是要搭建一个同时运行Java和Scala的项目工程，还是遇到了些问题。因为我习惯了搭建出来的工程是Maven工程，同时即要能在Eclipse上运行，也能用Maven命令的方式运行以便后续用Jenkins。经过一段摸索终于试验出来。但是很奇怪，搜索出来的结果没有一个直接好使的。</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-
-<h4 id="eclipse">Eclipse配置</h4>
-
-<ul>
-  <li>安装Scala的IDE，参见<a href="http://scala-ide.org">Scala-IDE官网</a>，注意选择Scala孵化器中的ScalaTest插件</li>
-  <li>安装Maven在Eclipse上的插件，通过<code>Preference -&gt;Maven-&gt;Discovery</code>安装m2e的对应插件。在后续的POM文件中使用到的插件最好都安装对应的m2e插件。(包括：build-helper，pmd, checkstyle, findbugs, compiler…)</li>
-  <li>
-    <p>创建Maven工程中，添加如下插件</p>
-
-    <ul>
-      <li>build-helper插件，添加scala的source和test source。因为<code>&lt;sourceDirectory&gt;</code>只能指定一个目录，所以需要这个插件来帮助添加scala的文件目录</li>
-    </ul>
-  </li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">		&lt;plugin&gt;
-</span><span class="line">			&lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
-</span><span class="line">			&lt;artifactId&gt;build-helper-maven-plugin&lt;/artifactId&gt;
-</span><span class="line">			&lt;version&gt;1.8&lt;/version&gt;
-</span><span class="line">			&lt;executions&gt;
-</span><span class="line">				&lt;execution&gt;
-</span><span class="line">					&lt;id&gt;add-source&lt;/id&gt;
-</span><span class="line">					&lt;phase&gt;generate-sources&lt;/phase&gt;
-</span><span class="line">					&lt;goals&gt;
-</span><span class="line">						&lt;goal&gt;add-source&lt;/goal&gt;
-</span><span class="line">					&lt;/goals&gt;
-</span><span class="line">					&lt;configuration&gt;
-</span><span class="line">						&lt;sources&gt;
-</span><span class="line">							&lt;source&gt;src/main/scala&lt;/source&gt;
-</span><span class="line">						&lt;/sources&gt;
-</span><span class="line">					&lt;/configuration&gt;
-</span><span class="line">				&lt;/execution&gt;
-</span><span class="line">				&lt;execution&gt;
-</span><span class="line">					&lt;id&gt;add-test-source&lt;/id&gt;
-</span><span class="line">					&lt;phase&gt;generate-sources&lt;/phase&gt;
-</span><span class="line">					&lt;goals&gt;
-</span><span class="line">						&lt;goal&gt;add-test-source&lt;/goal&gt;
-</span><span class="line">					&lt;/goals&gt;
-</span><span class="line">					&lt;configuration&gt;
-</span><span class="line">						&lt;sources&gt;
-</span><span class="line">							&lt;source&gt;src/test/scala&lt;/source&gt;
-</span><span class="line">						&lt;/sources&gt;
-</span><span class="line">					&lt;/configuration&gt;
-</span><span class="line">				&lt;/execution&gt;
-</span><span class="line">			&lt;/executions&gt;
-</span><span class="line">		&lt;/plugin&gt;
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>Scala插件，协助编译scala，同时指定scala版本</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">		&lt;plugin&gt;
-</span><span class="line">			&lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;
-</span><span class="line">			&lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;
-</span><span class="line">			&lt;version&gt;3.1.6&lt;/version&gt;
-</span><span class="line">			&lt;executions&gt;
-</span><span class="line">				&lt;execution&gt;
-</span><span class="line">					&lt;goals&gt;
-</span><span class="line">						&lt;goal&gt;compile&lt;/goal&gt;
-</span><span class="line">						&lt;goal&gt;testCompile&lt;/goal&gt;
-</span><span class="line">					&lt;/goals&gt;
-</span><span class="line">				&lt;/execution&gt;
-</span><span class="line">			&lt;/executions&gt;
-</span><span class="line">			&lt;configuration&gt;
-</span><span class="line">				&lt;scalaVersion&gt;2.10.3&lt;/scalaVersion&gt;
-</span><span class="line">			&lt;/configuration&gt;
-</span><span class="line">		&lt;/plugin&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>ScalaTest插件</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">		&lt;plugin&gt;
-</span><span class="line">			&lt;groupId&gt;org.scalatest&lt;/groupId&gt;
-</span><span class="line">			&lt;artifactId&gt;scalatest-maven-plugin&lt;/artifactId&gt;
-</span><span class="line">			&lt;version&gt;1.0-RC2&lt;/version&gt;
-</span><span class="line">			&lt;configuration&gt;
-</span><span class="line">				&lt;reportsDirectory&gt;${project.build.directory}/surefire-reports&lt;/reportsDirectory&gt;
-</span><span class="line">				&lt;junitxml&gt;.&lt;/junitxml&gt;
-</span><span class="line">				&lt;filereports&gt;WDF TestSuite.txt&lt;/filereports&gt;
-</span><span class="line">			&lt;/configuration&gt;
-</span><span class="line">			&lt;executions&gt;
-</span><span class="line">				&lt;execution&gt;
-</span><span class="line">					&lt;id&gt;test&lt;/id&gt;
-</span><span class="line">					&lt;goals&gt;
-</span><span class="line">						&lt;goal&gt;test&lt;/goal&gt;
-</span><span class="line">					&lt;/goals&gt;
-</span><span class="line">				&lt;/execution&gt;
-</span><span class="line">			&lt;/executions&gt;
-</span><span class="line">		&lt;/plugin&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>指定Junit插件，如果需要同时使用JUnit测试java代码。注意，新版本的插件已经可以支持多线程并发，大大提高测试的速度。强烈建议使用最新的版本</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">		&lt;plugin&gt;
-</span><span class="line">			&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-</span><span class="line">			&lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
-</span><span class="line">			&lt;version&gt;2.17&lt;/version&gt;
-</span><span class="line">			&lt;configuration&gt;
-</span><span class="line">				&lt;parallel&gt;methods&lt;/parallel&gt;
-</span><span class="line">				&lt;threadCount&gt;10&lt;/threadCount&gt;
-</span><span class="line">			&lt;/configuration&gt;
-</span><span class="line">		&lt;/plugin&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>安装m2e的scala maven plugin的connector插件，不然在eclipse上直接读取pom文件会解释出错。 <a href="http://alchim31.free.fr/m2e-scala/update-site/">update地址</a></li>
-</ul>
-
-<h3 id="section-2">小插曲</h3>
-<p>不知道什么原因，ScalaTest的官网被屏蔽了。一个纯开源的技术网站有这个必要性么？还是躺枪了？</p>
 
 ]]></content>
   </entry>

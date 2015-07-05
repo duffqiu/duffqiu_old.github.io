@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>系统集成模式：规范化数据流模式 - Duff Qiu's Blog</title>
+  <title>Openstack如何更好的使用block Service最为磁盘使用 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,10 +19,7 @@
 
 
   
-  <meta name="description" content="原由 Normalizer模式中，我们提到到如果多个系统一起集成将造成Endpoint成几何级数的增长。 解决办法 使用Canonical Data Model(规范化数据模型)来解决这个问题
-其特点如下：
-- 每一个EndPoint一端和集成系统衔接，接收或发送特定系统的消息
-- &hellip;">
+  <meta name="description" content="原由 在使用Openstack过程中，VM总是要运行某些程序，而这些程序的数据是记录在磁盘中的。如何保证在VM被删除或者重建后这些数据依然能够存在呢？这就要用到Openstack的Block Service了。但是这里面有几个问题： block service创建出来的卷是是个无文件格式的盘， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -31,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/02/02/integration-pattern-canonical-data-model">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/07/05/openstack-blockservice">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -105,7 +102,7 @@
   
   <header>
     
-      <h1 class="entry-title">系统集成模式：规范化数据流模式</h1>
+      <h1 class="entry-title">Openstack如何更好的使用block Service最为磁盘使用</h1>
     
     
       <p class="meta">
@@ -121,7 +118,7 @@
   
 
 
-<time datetime="2015-02-02T18:18:16+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2015</time>
+<time datetime="2015-07-05T17:15:59+08:00" pubdate data-updated="true">Jul 5<span>th</span>, 2015</time>
         
         
            | <a href="#comments">Comments</a>
@@ -133,27 +130,50 @@
 
 <div class="entry-content"><h3 id="section">原由</h3>
 <hr />
-<p><a href="/blog/2015/02/02/integration-pattern-normalizer/">Normalizer模式</a>中，我们提到到如果多个系统一起集成将造成Endpoint成几何级数的增长。</p>
+<p>在使用Openstack过程中，VM总是要运行某些程序，而这些程序的数据是记录在磁盘中的。如何保证在VM被删除或者重建后这些数据依然能够存在呢？这就要用到Openstack的Block Service了。但是这里面有几个问题：</p>
+
+<ul>
+  <li>block service创建出来的卷是是个无文件格式的盘，无法被直接读写</li>
+  <li>通常我们希望在给一个VM初始化时挂在一个盘时，这个盘已经包含了某些必须的文件内容 </li>
+</ul>
 
 <h3 id="section-1">解决办法</h3>
 <hr />
 
-<p>使用Canonical Data Model(规范化数据模型)来解决这个问题
-其特点如下：
-- 每一个EndPoint一端和集成系统衔接，接收或发送特定系统的消息
-- 每一个EndPoint的另外一段则是接收或发送Common的消息给另外的EndPoint</p>
-
-<p>如图1：
-<img src="/images/cdm-1.png" alt="图一" /></p>
+<p>思路是做出一个带有文件格式已经需要的文件内容／数据的block service的image，这样就不用去格式化这个卷，同时也包含所需的内容，具体方法如下：</p>
 
 <ul>
-  <li>所有的在EndPoint间流动的消息都是基于Common的接口，这样当引入一个新的系统的时候这需要实现一个EndPoint就可以了。</li>
+  <li>创建一个本地image，指定大小。 <code>dd if=/dev/null of=example.img bs=1M seek=1024</code>。这里创建了一个1G大小的镜像文件example.img，对于不同的使用目的，这里的bs需要调优</li>
+  <li>格式化成ext4。 <code>mkfs.ext4 -F example.img</code></li>
+  <li>创建本地的挂载目录 <code>mkdir &lt;path&gt;</code></li>
+  <li>挂载这个image到指定的目录 <code>mount -t ext4 -o loop example.img &lt;path&gt;</code></li>
+  <li>将需要的资料放入到这个目录中</li>
+  <li>卸载该image <code>umount &lt;path&gt;</code></li>
+  <li>将image转成qcow2格式 <code>qemu-img convert -f raw -O qcow2 example.img example.qcow2</code></li>
+  <li>上传到openstack</li>
 </ul>
 
-<p>如图二：
-<img src="/images/cdm-2.png" alt="图二" /></p>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">glance image-create --name &lt;image name&gt; \
+</span><span class="line">--container-format bare \
+</span><span class="line">--disk-format qcow2 \
+</span><span class="line">--file exmaple.qcow2 \
+</span><span class="line">--is-public True</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>当我们需要考入如何实现Endpoint的时候，则可以考虑<a href="http://camel.apache.org/">Apache Camel Framework</a></p>
+<ul>
+  <li>创建block storage的卷</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">cinder create --image-id &lt;image uuid&gt; --display-name &lt;disk name&gt; &lt;size x G&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>创建完成就可以将其挂载到VM中使用了</li>
+  <li>可以在创建VM时在nova命令中生成这个卷</li>
+</ul>
 
 </div>
 
@@ -177,8 +197,14 @@
   
 
 
-<time datetime="2015-02-02T18:18:16+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2015</time>
+<time datetime="2015-07-05T17:15:59+08:00" pubdate data-updated="true">Jul 5<span>th</span>, 2015</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/block-storage/'>Block Storage</a>, <a class='category' href='/blog/categories/openstack/'>Openstack</a>
+  
+</span>
 
 
     </p>
@@ -192,10 +218,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/02/02/fix-centos-virtualbox/" title="Previous Post: 安装附属包失败后修复virtualbox上的centos">&laquo; 安装附属包失败后修复virtualbox上的centos</a>
+        <a class="basic-alignment left" href="/blog/2015/07/05/coreos-etcd2/" title="Previous Post: CoreOS Etcd2">&laquo; CoreOS Etcd2</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/02/05/fp-or-imperative-with-scala/" title="Next Post: Scala中函数式编程还是命令式编程">Scala中函数式编程还是命令式编程 &raquo;</a>
       
     </p>
   </footer>
@@ -292,22 +316,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2015/07/05/openstack-blockservice/">Openstack如何更好的使用block service最为磁盘使用</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/block-storage/'>Block Storage</a>, <a class='category' href='/blog/categories/openstack/'>Openstack</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2015/07/05/coreos-etcd2/">CoreOS Etcd2</a></h3>
         <div class="meta">
           <span class="tags">
@@ -363,6 +371,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/coreos/'>CoreOS</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/03/03/scala-script/">scala作为脚本语言动态执行</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/scala/'>Scala</a>, <a class='category' href='/blog/categories/script/'>Script</a>
   
 </span>
 
