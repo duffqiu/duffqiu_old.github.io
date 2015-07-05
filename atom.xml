@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-05T15:41:27+08:00</updated>
+  <updated>2015-07-05T16:07:44+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,29 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CoreOS安装和使用Keepalived]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/05/coreos-keepalived/"/>
+    <updated>2015-07-05T15:43:47+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/05/coreos-keepalived</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在之前的文章<a href="http://duffqiu.github.io/blog/2015/07/05/openstack-vip/">Openstack用Keealived来实现VIP</a>介绍了如何使用Keepalived来实现VIP，但是如果使用的vm是CoreOS，所有的程序又必须运行在Docker中的话，又该如何办呢？</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ul>
+  <li>将Keepalived做成一个Docker的image，如果需要可以自己下载keepalived的源码编译出可执行文件。因为只是用到VIP特性，可以在编译的时候将IPVS去掉（该功能可以使用haproxy代替）。一个比较偷懒的办法是先用yum的方式安装keepalived(基于CentOS)<code>yum install keepalived</code>，然后用<code>rpm -e --nodeps keepalived</code>去掉安装的可执行文件而是用自己编译的可执行文件。不然的话就需要一个一个指定的方式来安装keepalived需要的依赖包了</li>
+  <li>查看CoreOS的内核是否已经启动ip_vs模块<code>lsmod</code>。似乎从681.2开始，默认都已经启动了，之前的版本没有默认启动</li>
+  <li>如果没有启动ip_vs，则可以通过<code>sudo modprobe -a ip_vs</code>来加载</li>
+  <li>使用<code>--priviliedged</code>和<code>--net=host</code>的方式来启动keepalived</li>
+  <li>具体的docker file可以参考我的github上的<a href="https://github.com/duffqiu/keepalived">repo</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Openstack用Keealived来实现VIP]]></title>
@@ -1745,367 +1768,6 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
 </span><span class="line">    }
 </span><span class="line">  ]
 </span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[如何定义一个好的REST接口]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/03/03/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou/"/>
-    <updated>2014-03-03T21:25:32+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/03/03/ru-he-ding-yi-[?]-ge-hao-de-restjie-kou</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<hr />
-<p>现在<a href="http://www.json.org">基于JSON的REST接口</a>使用的是越来越多了，但是在自己去定义JSON的REST API的时候，我们确难免遇到不少疑惑，以下我们来谈谈这些疑惑 </p>
-
-<h3 id="rcp-based-or-rest-based">RCP-BASED or REST-BASED</h3>
-<hr />
-
-<p>在接口定义上，我们以往一般都是去定义请求什么，然后响应是什么，这就是典型的RPC(Remote Procedure Call)接口的定义方式。一般可以使用IDL（Interface Description Language，IDL）的方式来描述，如典型的WSDL等。RPC我的理解是，更多的是描述响应端提供什么样的行为给请求端调用。响应端会提供一个服务接入端点(End Point)，依据请求来返回响应。</p>
-
-<p>对于REST-BASED的接口定义，通常针对的是响应端提供什么样的资源给客户端使用。这里有一个很重要的特点是，所有的行为都是围绕“资源”来进行的。主要有：</p>
-
-<ul>
-  <li>GET  获取资源(可以是一个或多个)</li>
-  <li>PUT  更新资源，PUT方法有个很重要的特性就是多次调用，结果是一直的。</li>
-  <li>POST 创建资源，这个方法不是幂等</li>
-  <li>DELETE 删除资源 </li>
-</ul>
-
-<p>对于每个操作的返回都是基于同一个资源描述，只是不同的方法，资料描述里的某些内容被省略了。</p>
-
-<p>其实对于使用JSON在RPC-Based上还是REST-Based都可以。接口定义成RPC-Based上还是REST-Based没有绝对的好坏，而是根据实际的使用场景。简单来说就是如果可以能被描述成“资源”(如：用户账户、购物车等等)，则用REST-Based更合适，如果是需要执行某些动作(如：发送邮件等)则RPC-Based更合适。</p>
-
-<h3 id="rest-based-best-practice">REST-BASED BEST PRACTICE</h3>
-
-<p>如果使用REST-Based，建议可以参考<a href="https://developers.google.com/google-apps/calendar/v3/reference/">Google Canlendar的API定义</a>。主要的要点如下：</p>
-
-<ol>
-  <li>确定什么是资源(如calendar, event…)以及资源的表述</li>
-</ol>
-
-<p>例如：</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">{
-</span><span class="line">  "id": string,
-</span><span class="line">  "summary": string,
-</span><span class="line">  "description": string,
-</span><span class="line">  "location": string,
-</span><span class="line">  "timeZone": string,
-</span><span class="line">  "summaryOverride": string,
-</span><span class="line">  "colorId": string,
-</span><span class="line">  "backgroundColor": string,
-</span><span class="line">  "foregroundColor": string,
-</span><span class="line">  "hidden": boolean,
-</span><span class="line">  "selected": boolean,
-</span><span class="line">  "accessRole": string,
-</span><span class="line">  "defaultReminders": [
-</span><span class="line">    {
-</span><span class="line">      "method": string,
-</span><span class="line">      "minutes": integer
-</span><span class="line">    }
-</span><span class="line">  ],
-</span><span class="line">  "primary": boolean
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ol>
-  <li>
-    <p>列举每个资源能提供的操作简要</p>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Method</th>
-          <th>HTTP request</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>delete</td>
-          <td>DELETE  /calendars/calendarId/acl/ruleId</td>
-          <td>Deletes an access control rule.</td>
-        </tr>
-        <tr>
-          <td>get</td>
-          <td>GET  /calendars/calendarId/acl/ruleId</td>
-          <td>Returns an access control rule.</td>
-        </tr>
-        <tr>
-          <td>insert</td>
-          <td>POST  /calendars/calendarId/acl</td>
-          <td>Creates an access control rule.</td>
-        </tr>
-      </tbody>
-    </table>
-  </li>
-  <li>
-    <p>详细描述每个资源操作</p>
-
-    <ul>
-      <li>http request形式，如</li>
-    </ul>
-
-    <p><code>
-POST https://www.googleapis.com/calendar/v3/calendars/{calendarId}/clear
-</code></p>
-
-    <ul>
-      <li>
-        <p>http request parameter</p>
-
-        <p>这里需要注意的是什么放在Path上，什么放在query parameter上。一般而言，一个资源的子资源放在path上，定位资源的条件放在query paramenter上</p>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Path parameter</th>
-              <th>Value</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>calendarId</td>
-              <td>string</td>
-              <td>Calendar identifier</td>
-            </tr>
-            <tr>
-              <td>…</td>
-              <td> </td>
-              <td> </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Query parameter</th>
-              <th>Value</th>
-              <th>Description</th>
-              <th>Required?</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>…</td>
-              <td> </td>
-              <td> </td>
-              <td> </td>
-            </tr>
-          </tbody>
-        </table>
-      </li>
-      <li>
-        <p>Authorization<br />
- 定义是否需要授权</p>
-      </li>
-      <li>
-        <p>Request Body (通常只用在Post操作上)，定义方式如下：</p>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Property name</th>
-              <th>Value</th>
-              <th>Description</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>email</td>
-              <td>string</td>
-              <td>user’s email address</td>
-              <td> </td>
-            </tr>
-            <tr>
-              <td>…</td>
-              <td> </td>
-              <td> </td>
-              <td> </td>
-            </tr>
-          </tbody>
-        </table>
-      </li>
-      <li>
-        <p>http response representations(针对RPC的接口，如果是REST原则是公用一个resource的描述，只是不同的操作某些参数可以被忽略)，如</p>
-
-        <p><code>
-{  
-"id": string,  
-"status": string,  
-"htmlLink": string,   
-"created": datetime   
-}  
-</code></p>
-      </li>
-      <li>
-        <p>http reponse parameters(对于资源描述中使用到的参数的解释)</p>
-
-        <table>
-          <thead>
-            <tr>
-              <th>Property name</th>
-              <th>Value</th>
-              <th>Description</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>home address</td>
-              <td>string</td>
-              <td>user’s home address</td>
-              <td> </td>
-            </tr>
-            <tr>
-              <td>…</td>
-              <td> </td>
-              <td> </td>
-              <td> </td>
-            </tr>
-          </tbody>
-        </table>
-      </li>
-    </ul>
-  </li>
-</ol>
-
-<h3 id="json-style-guideline">JSON Style Guideline</h3>
-
-<p>如何编写JSON，可以参见<a href="https://google-styleguide.googlecode.com/svn/trunk/jsoncstyleguide.xml">Google JSON STYLE</a></p>
-
-<p>主要是参考保留的定义属性名</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-<span class="line-number">20</span>
-<span class="line-number">21</span>
-<span class="line-number">22</span>
-<span class="line-number">23</span>
-<span class="line-number">24</span>
-<span class="line-number">25</span>
-<span class="line-number">26</span>
-<span class="line-number">27</span>
-<span class="line-number">28</span>
-<span class="line-number">29</span>
-<span class="line-number">30</span>
-<span class="line-number">31</span>
-<span class="line-number">32</span>
-<span class="line-number">33</span>
-<span class="line-number">34</span>
-<span class="line-number">35</span>
-<span class="line-number">36</span>
-<span class="line-number">37</span>
-<span class="line-number">38</span>
-<span class="line-number">39</span>
-<span class="line-number">40</span>
-<span class="line-number">41</span>
-<span class="line-number">42</span>
-<span class="line-number">43</span>
-<span class="line-number">44</span>
-<span class="line-number">45</span>
-<span class="line-number">46</span>
-<span class="line-number">47</span>
-<span class="line-number">48</span>
-<span class="line-number">49</span>
-<span class="line-number">50</span>
-<span class="line-number">51</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">object</span> <span class="o">{</span>
-</span><span class="line">  <span class="n">string</span> <span class="n">apiVersion</span><span class="o">?;</span>
-</span><span class="line">  <span class="n">string</span> <span class="n">context</span><span class="o">?;</span>
-</span><span class="line">  <span class="n">string</span> <span class="n">id</span><span class="o">?;</span>
-</span><span class="line">  <span class="n">string</span> <span class="n">method</span><span class="o">?;</span>
-</span><span class="line">  <span class="n">object</span> <span class="o">{</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">id</span><span class="o">?</span>
-</span><span class="line">  <span class="o">}*</span> <span class="n">params</span><span class="o">?;</span>
-</span><span class="line">  <span class="n">object</span> <span class="o">{</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">kind</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">fields</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">etag</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">id</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">lang</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">updated</span><span class="o">?;</span> <span class="err">#</span> <span class="n">date</span> <span class="n">formatted</span> <span class="n">RFC</span> <span class="mi">3339</span>
-</span><span class="line">    <span class="kt">boolean</span> <span class="n">deleted</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">integer</span> <span class="n">currentItemCount</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">integer</span> <span class="n">itemsPerPage</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">integer</span> <span class="n">startIndex</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">integer</span> <span class="n">totalItems</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">integer</span> <span class="n">pageIndex</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">integer</span> <span class="n">totalPages</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">pageLinkTemplate</span> <span class="o">/^</span><span class="n">https</span><span class="o">?:/</span> <span class="o">?;</span>
-</span><span class="line">    <span class="n">object</span> <span class="o">{}*</span> <span class="n">next</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">nextLink</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">object</span> <span class="o">{}*</span> <span class="n">previous</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">previousLink</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">object</span> <span class="o">{}*</span> <span class="n">self</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">selfLink</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">object</span> <span class="o">{}*</span> <span class="n">edit</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">editLink</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">array</span> <span class="o">[</span>
-</span><span class="line">      <span class="n">object</span> <span class="o">{}*;</span>
-</span><span class="line">    <span class="o">]</span> <span class="n">items</span><span class="o">?;</span>
-</span><span class="line">  <span class="o">}*</span> <span class="n">data</span><span class="o">?;</span>
-</span><span class="line">  <span class="n">object</span> <span class="o">{</span>
-</span><span class="line">    <span class="n">integer</span> <span class="n">code</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">string</span> <span class="n">message</span><span class="o">?;</span>
-</span><span class="line">    <span class="n">array</span> <span class="o">[</span>
-</span><span class="line">      <span class="n">object</span> <span class="o">{</span>
-</span><span class="line">        <span class="n">string</span> <span class="n">domain</span><span class="o">?;</span>
-</span><span class="line">        <span class="n">string</span> <span class="n">reason</span><span class="o">?;</span>
-</span><span class="line">        <span class="n">string</span> <span class="n">message</span><span class="o">?;</span>
-</span><span class="line">        <span class="n">string</span> <span class="n">location</span><span class="o">?;</span>
-</span><span class="line">        <span class="n">string</span> <span class="n">locationType</span><span class="o">?;</span>
-</span><span class="line">        <span class="n">string</span> <span class="n">extendedHelp</span><span class="o">?;</span>
-</span><span class="line">        <span class="n">string</span> <span class="n">sendReport</span><span class="o">?;</span>
-</span><span class="line">      <span class="o">}*;</span>
-</span><span class="line">    <span class="o">]</span> <span class="n">errors</span><span class="o">?;</span>
-</span><span class="line">  <span class="o">}*</span> <span class="n">error</span><span class="o">?;</span>
-</span><span class="line"><span class="o">}*;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<h3 id="section-1">接口定义模版参考</h3>
-
-<p><a href="">REST JSON API模版</a></p>
 ]]></content>
   </entry>
   

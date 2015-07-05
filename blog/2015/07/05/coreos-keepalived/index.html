@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>在其它机器上继续编写blog或者是新建编辑环境处理已有的Octopress系统 - Duff Qiu's Blog</title>
+  <title>CoreOS安装和使用Keepalived - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,9 +19,7 @@
 
 
   
-  <meta name="description" content="原由 当你有多台机器或者是需要重新从Github上获取最后的blog，然后继续编辑，则需要重新手动配置Octopress
-但是Octopress没有相关的教程说明如何做。 解决办法 参考网上的多个资料以及个人摸索后，具体实践如下： 重新获取源文件 1
-git clone &lt;your &hellip;">
+  <meta name="description" content="原由 在之前的文章Openstack用Keealived来实现VIP介绍了如何使用Keepalived来实现VIP，但是如果使用的vm是CoreOS，所有的程序又必须运行在Docker中的话，又该如何办呢？ 解决办法 将Keepalived做成一个Docker的image， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,7 +28,7 @@ git clone &lt;your &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/01/13/continue-octopress-in-other-machine">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/07/05/coreos-keepalived">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -104,7 +102,7 @@ git clone &lt;your &hellip;">
   
   <header>
     
-      <h1 class="entry-title">在其它机器上继续编写blog或者是新建编辑环境处理已有的Octopress系统</h1>
+      <h1 class="entry-title">CoreOS安装和使用Keepalived</h1>
     
     
       <p class="meta">
@@ -120,7 +118,7 @@ git clone &lt;your &hellip;">
   
 
 
-<time datetime="2015-01-13T12:14:22+08:00" pubdate data-updated="true">Jan 13<span>th</span>, 2015</time>
+<time datetime="2015-07-05T15:43:47+08:00" pubdate data-updated="true">Jul 5<span>th</span>, 2015</time>
         
         
            | <a href="#comments">Comments</a>
@@ -132,79 +130,18 @@ git clone &lt;your &hellip;">
 
 <div class="entry-content"><h3 id="section">原由</h3>
 <hr />
-<p>当你有多台机器或者是需要重新从Github上获取最后的blog，然后继续编辑，则需要重新手动配置Octopress
-但是Octopress没有相关的教程说明如何做。</p>
+<p>在之前的文章<a href="/blog/2015/07/05/openstack-vip/">Openstack用Keealived来实现VIP</a>介绍了如何使用Keepalived来实现VIP，但是如果使用的vm是CoreOS，所有的程序又必须运行在Docker中的话，又该如何办呢？</p>
 
 <h3 id="section-1">解决办法</h3>
 <hr />
 
-<p>参考网上的多个资料以及个人摸索后，具体实践如下：</p>
-
 <ul>
-  <li>重新获取源文件</li>
+  <li>将Keepalived做成一个Docker的image，如果需要可以自己下载keepalived的源码编译出可执行文件。因为只是用到VIP特性，可以在编译的时候将IPVS去掉（该功能可以使用haproxy代替）。一个比较偷懒的办法是先用yum的方式安装keepalived(基于CentOS)<code>yum install keepalived</code>，然后用<code>rpm -e --nodeps keepalived</code>去掉安装的可执行文件而是用自己编译的可执行文件。不然的话就需要一个一个指定的方式来安装keepalived需要的依赖包了</li>
+  <li>查看CoreOS的内核是否已经启动ip_vs模块<code>lsmod</code>。似乎从681.2开始，默认都已经启动了，之前的版本没有默认启动</li>
+  <li>如果没有启动ip_vs，则可以通过<code>sudo modprobe -a ip_vs</code>来加载</li>
+  <li>使用<code>--priviliedged</code>和<code>--net=host</code>的方式来启动keepalived</li>
+  <li>具体的docker file可以参考我的github上的<a href="https://github.com/duffqiu/keepalived">repo</a></li>
 </ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">git clone &lt;your octopress url in Github&gt;
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-<ul>
-  <li>切换到”source” branch</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">git checkout <span class="nb">source</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-<ul>
-  <li>重建_deploy目录</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">mkdir _deploy
-</span><span class="line"><span class="nb">cd </span>_deploy
-</span><span class="line">git init
-</span><span class="line">git remote add origin &lt;your octopress url in Github&gt;
-</span><span class="line">git pull origin master
-</span><span class="line"><span class="nb">cd</span> ..
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>注意：如果在多个环境编辑后，每次切换环境需要做pull操作获得最后的更新。需要在octopress的根目录做一次<code>git pull origin source</code>，然后再到_deploy目录做一次<code>git pull origin master</code></p>
-
-<p>如果在<code>rake deploy</code>的时候发现了<code>non-fast-forward</code>错误，则可以通过重建_deploy目录来解决。</p>
-
-<ul>
-  <li>
-    <p>在新的机器上设置octopress需要的环境配置rbenv</p>
-  </li>
-  <li>
-    <p>然后就可以在根目录下继续用rake命令了。</p>
-  </li>
-  <li>
-    <p>注意：不用去重新运行<code>rake install</code>，不然会将你客户化的东西冲掉(最好先从Github上备份一个最新的才开始在新的机器安装环境)</p>
-  </li>
-</ul>
-
-<h3 id="plugin">plugin问题</h3>
-
-<p>如果遇到pygments_code的问题，则需要去看看你的系统安装的python的版本问题。如果python指向了python3.x则需要改成python2.x</p>
-
-<h4 id="git">Git小提示</h4>
-<p>这次重新搭建中途换了Theme，谁知道新的theme会覆盖和删除某些改动，所以对于theme的选择最好在建立Octopress之初
-换了theme之后我又做了几次提交，为了还原到原来没有换theme的时候，需要将多次的commit去掉。
-在SCM同学的支持下，做了还原，主要操作为</p>
-
-<p>先checkout到最后需要的某个commit上
-然后强制提交这个commit</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">git reset --hard &lt;commit id<span class="err">&#39;</span>s firt 5 characters&gt;
-</span><span class="line">git push -f
-</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 </div>
 
@@ -228,12 +165,12 @@ git clone &lt;your &hellip;">
   
 
 
-<time datetime="2015-01-13T12:14:22+08:00" pubdate data-updated="true">Jan 13<span>th</span>, 2015</time>
+<time datetime="2015-07-05T15:43:47+08:00" pubdate data-updated="true">Jul 5<span>th</span>, 2015</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/keepalived/'>Keepalived</a>
   
 </span>
 
@@ -249,10 +186,8 @@ git clone &lt;your &hellip;">
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing/" title="Previous Post: 从实体模型到数据模型">&laquo; 从实体模型到数据模型</a>
+        <a class="basic-alignment left" href="/blog/2015/07/05/openstack-vip/" title="Previous Post: Openstack用Keealived来实现VIP">&laquo; Openstack用Keealived来实现VIP</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/01/13/howtostartprogrammingwithscala/" title="Next Post: 如何开始用scala编程">如何开始用scala编程 &raquo;</a>
       
     </p>
   </footer>
@@ -347,22 +282,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2015/07/05/coreos-keepalived/">CoreOS安装和使用Keepalived</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/keepalived/'>Keepalived</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2015/07/05/openstack-vip/">Openstack用Keealived来实现VIP</a></h3>
         <div class="meta">
           <span class="tags">
@@ -418,6 +337,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/scala/'>Scala</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/02/26/ssh-proxy-in-linux/">ssh在linux下使用http/https代理</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>Linux</a>, <a class='category' href='/blog/categories/proxy/'>Proxy</a>
   
 </span>
 
