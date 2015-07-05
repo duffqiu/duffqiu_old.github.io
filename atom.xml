@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-05T17:48:22+08:00</updated>
+  <updated>2015-07-05T18:02:18+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,39 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Systemd的启动顺序和自动启动配置]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/05/systemd-boot/"/>
+    <updated>2015-07-05T17:56:27+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/05/systemd-boot</id>
+    <content type="html"><![CDATA[<h3 id="systemd">Systemd的启动顺序</h3>
+<hr />
+
+<ul>
+  <li>/etc/systemd/system/</li>
+  <li>/run/systemd/system/</li>
+  <li>/usr/lib/systemd/system/</li>
+</ul>
+
+<p>在CoreOS中，自带的服务都是放在了/usr/lib/systemd/system/目录下，但是该目录是只读的，如需更改，可以将对应的service unit文件copy到/etc/systemd/system目录下，然后更改后重新启动</p>
+
+<p>每次更改service unit文件需要执行 <code>sudo systemctl daemon-reload</code></p>
+
+<h3 id="systemdboot">Systemd的服务需要在系统boot时启动</h3>
+<hr />
+
+<p>需要在Service Unit文件中加入：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[Installl]
+</span><span class="line">WantedBy=multi-user.target</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>然后执行<code>sudo systemctl daemon-reload</code>和<code>sudo systemctl enable &lt;xxxx.service&gt;</code></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Openstack如何更好的使用block Service作为磁盘使用]]></title>
@@ -1344,33 +1377,6 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class=""><span class="line">left to right direction</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[如何定义一个好的REST接口3]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/04/06/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-3/"/>
-    <updated>2014-04-06T10:49:35+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/04/06/ru-he-ding-yi-[?]-ge-hao-de-restjie-kou-3</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<hr />
-<p>在定义REST接口的时候，如果采用resource的接口形式，则如何去定义接口的URL呢？</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-
-<ul>
-  <li>首先要解决的问题是在系统中如何去定位resource，然后才考虑如何设计URL。这样你必须有一个resource tree，如我在项目的设计样式：</li>
-</ul>
-
-<p><img src="http://duffqiu.github.io/images/Rest_Resource_Tree.png" alt="resource tree" title="resouce tree" /></p>
-
-<p>这里首先确定要使用的资源入口是User，然后通过userid确定唯一的资源，然后再获取该资源下的子资源Calendar和Meeting</p>
-
-<ul>
-  <li>有了这个resource tree，那么URL就好定义了，如获取用户id为300222的所有Calendar的URL为： <code>http://xxxx.com/&lt;webcontext&gt;/p/&lt;component_name&gt;/v1/user/300222/calendar</code></li>
-</ul>
 
 ]]></content>
   </entry>

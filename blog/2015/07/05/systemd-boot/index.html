@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Design Pattern - Duff Qiu's Blog</title>
+  <title>Systemd的启动顺序和自动启动配置 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,7 +19,7 @@
 
 
   
-  <meta name="description" content="Category: Design Pattern">
+  <meta name="description" content="Systemd的启动顺序 /etc/systemd/system/ /run/systemd/system/ /usr/lib/systemd/system/ 在CoreOS中，自带的服务都是放在了/usr/lib/systemd/system/目录下，但是该目录是只读的，如需更改， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -28,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.ioblog/categories/design-pattern">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/07/05/systemd-boot">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -98,148 +98,132 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Design Pattern</h1>
+    
+      <h1 class="entry-title">Systemd的启动顺序和自动启动配置</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-05T17:56:27+08:00" pubdate data-updated="true">Jul 5<span>th</span>, 2015</time>
+        
+        
+           | <a href="#comments">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><h3 id="systemd">Systemd的启动顺序</h3>
+<hr />
 
-  
-  <h2>2014</h2>
+<ul>
+  <li>/etc/systemd/system/</li>
+  <li>/run/systemd/system/</li>
+  <li>/usr/lib/systemd/system/</li>
+</ul>
 
-<article>
-  
-<h1><a href="/blog/2014/03/01/she-ji-mo-shi-%3Adong-tai-dai-li/">设计模式：动态代理</a></h1>
-<time datetime="2014-03-01T23:31:47+08:00" pubdate><span class='month'>Mar</span> <span class='day'>01</span> <span class='year'>2014</span></time>
+<p>在CoreOS中，自带的服务都是放在了/usr/lib/systemd/system/目录下，但是该目录是只读的，如需更改，可以将对应的service unit文件copy到/etc/systemd/system目录下，然后更改后重新启动</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/guava/'>Guava</a>, <a class='category' href='/blog/categories/java/'>Java</a></span>
-</footer>
+<p>每次更改service unit文件需要执行 <code>sudo systemctl daemon-reload</code></p>
 
+<h3 id="systemdboot">Systemd的服务需要在系统boot时启动</h3>
+<hr />
 
-</article>
+<p>需要在Service Unit文件中加入：</p>
 
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[Installl]
+</span><span class="line">WantedBy=multi-user.target</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-
-<article>
-  
-<h1><a href="/blog/2014/02/23/she-ji-mo-shi-%3Adai-li-mo-shi/">设计模式：代理模式</a></h1>
-<time datetime="2014-02-23T17:05:45+08:00" pubdate><span class='month'>Feb</span> <span class='day'>23</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/02/22/she-ji-mo-shi-%3Azhuang-shi-qi-mo-shi/">设计模式：装饰器模式</a></h1>
-<time datetime="2014-02-22T15:09:29+08:00" pubdate><span class='month'>Feb</span> <span class='day'>22</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/02/19/she-ji-mo-shi-%3Aioche-yi-lai-zhu-ru/">设计模式：IoC和依赖注入</a></h1>
-<time datetime="2014-02-19T20:40:33+08:00" pubdate><span class='month'>Feb</span> <span class='day'>19</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/02/17/she-ji-mo-shi-%3Ayuan-xing-mo-shi/">设计模式：原型模式</a></h1>
-<time datetime="2014-02-17T23:23:31+08:00" pubdate><span class='month'>Feb</span> <span class='day'>17</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/02/15/she-ji-mo-shi-%3Agong-han-fang-fa-mo-shi/">设计模式：工厂方法模式</a></h1>
-<time datetime="2014-02-15T22:15:00+08:00" pubdate><span class='month'>Feb</span> <span class='day'>15</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/02/03/she-ji-mo-shi-dan-li-mo-shi/">设计模式: 单例模式</a></h1>
-<time datetime="2014-02-03T17:47:12+08:00" pubdate><span class='month'>Feb</span> <span class='day'>03</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/02/03/she-ji-mo-shi-%3Amo-ban-fang-fa/">设计模式：模版方法</a></h1>
-<time datetime="2014-02-03T14:53:40+08:00" pubdate><span class='month'>Feb</span> <span class='day'>03</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2014/02/02/she-ji-mo-shi-kai-pian/">设计模式开篇</a></h1>
-<time datetime="2014-02-02T15:31:04+08:00" pubdate><span class='month'>Feb</span> <span class='day'>02</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a></span>
-</footer>
-
-
-</article>
+<p>然后执行<code>sudo systemctl daemon-reload</code>和<code>sudo systemctl enable &lt;xxxx.service&gt;</code></p>
 
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Duff Qiu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-05T17:56:27+08:00" pubdate data-updated="true">Jul 5<span>th</span>, 2015</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/systemd/'>Systemd</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/07/05/openstack-blockservice/" title="Previous Post: Openstack如何更好的使用block service作为磁盘使用">&laquo; Openstack如何更好的使用block service作为磁盘使用</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+
+
+   <section>
+     <h1>Comments</h1>
+     <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"duffqiu"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+</div>
+   </section>
+  
 
 </div>
 
@@ -302,6 +286,96 @@
 
   
 </aside>
+
+
+
+
+<article class="archives">
+  <div class="related-posts">
+    <h2>Related Posts</h2>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/05/openstack-blockservice/">Openstack如何更好的使用block service作为磁盘使用</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/block-storage/'>Block Storage</a>, <a class='category' href='/blog/categories/openstack/'>Openstack</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/05/coreos-etcd2/">CoreOS Etcd2</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/etcd2/'>ETCD2</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/05/coreos-keepalived/">CoreOS安装和使用Keepalived</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/keepalived/'>Keepalived</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/05/openstack-vip/">Openstack用Keealived来实现VIP</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/keepalvied/'>Keepalvied</a>, <a class='category' href='/blog/categories/openstack/'>Openstack</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/03/29/install-coreos/">CoreOS的安装</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+  </div>
+</article>
 
 
     </div>
