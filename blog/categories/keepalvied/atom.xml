@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Keepalvied | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/keepalvied/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-05T15:36:50+08:00</updated>
+  <updated>2015-07-05T15:41:27+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -37,7 +37,10 @@
 
 <h3 id="section-2">如何调试</h3>
 
-<p>如果一切都配置好了，但是就是无法通，则可以在VM或者是Openstack对应的Computer Node上用<code>tcpdump -i &lt;net card name&gt; icmp</code>的方式开跟踪是否消息包是通的</p>
+<ul>
+  <li>如果一切都配置好了，但是就是无法通，则可以在VM或者是Openstack对应的Computer Node上用<code>tcpdump -i &lt;net card name&gt; icmp</code>的方式开跟踪是否消息包是通的</li>
+  <li><code>ip neigh |grep &lt;vip&gt;</code> 来查看<vip>对应的mac地址。然后在作为master的keepalived的机器上看看是否是这个mac地址</vip></li>
+</ul>
 
 ]]></content>
   </entry>
