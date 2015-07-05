@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Block Storage | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/block-storage/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-05T17:44:12+08:00</updated>
+  <updated>2015-07-05T17:48:22+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Openstack如何更好的使用block Service最为磁盘使用]]></title>
+    <title type="html"><![CDATA[Openstack如何更好的使用block Service作为磁盘使用]]></title>
     <link href="http://duffqiu.github.io/blog/2015/07/05/openstack-blockservice/"/>
     <updated>2015-07-05T17:15:59+08:00</updated>
     <id>http://duffqiu.github.io/blog/2015/07/05/openstack-blockservice</id>
@@ -60,6 +60,18 @@ cinder create --image-id &lt;image uuid&gt; --display-name &lt;disk name&gt; &lt
 </code>
 - 创建完成就可以将其挂载到VM中使用了
 - 可以在创建VM时在nova命令中生成这个卷</p>
+
+<h4 id="openstack-tips">Openstack tips</h4>
+
+<ul>
+  <li><code>vgdisplay</code>获取openstack的磁盘空间信息</li>
+</ul>
+
+<h4 id="bash-tips">Bash tips</h4>
+
+<ul>
+  <li><code>echo $?</code> 获取最近命令的status code</li>
+</ul>
 
 ]]></content>
   </entry>
