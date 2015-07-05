@@ -12,14 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-fcce9cac8d9fad221e92c75dbe2196fd.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-542718e31a200219b848f10af98ce3a0.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 想玩Docker的人肯定应该听说过CoreOS。它是一个紧密结合Docker为大集群服务器而设计的Linux系统。它本身不允许安装软件包。所有提供的功能和扩展都是通过Docker容器来提供。安装CoreOS可以有多种方式，网管上都有介绍。这里主要说一下两种方式，一种是单机版，一种是服务器集群 &hellip;">
+  <meta name="description" content="原由 在Openstack创建VM的时候一般都是使用DHCP的方式来分配虚拟机的IP地址。这样就会出现一个问题，每次重建VM的时候，IP地址都会被改变，从而影响外部的访问。同时如果期望有两个虚拟机同时服务一个IP接入的话，则需要用到VIP的方式来实现。 解决办法 VIP的实现方式通常使用VRRP（ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-c07b4970ba8a3194c98e3deeb99770f9.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-873d329d7f63067f84c1922afe10341b.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
@@ -99,6 +99,65 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/05/openstack-vip/">Openstack用Keealived来实现VIP</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-05T15:34:52+08:00" pubdate data-updated="true">Jul 5<span>th</span>, 2015</time>
+        
+        
+           | <a href="/blog/2015/07/05/openstack-vip/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>在Openstack创建VM的时候一般都是使用DHCP的方式来分配虚拟机的IP地址。这样就会出现一个问题，每次重建VM的时候，IP地址都会被改变，从而影响外部的访问。同时如果期望有两个虚拟机同时服务一个IP接入的话，则需要用到VIP的方式来实现。</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>VIP的实现方式通常使用VRRP（Virtual Router Redundancy Protocol）协议的方式。目前开源比较通用的软件是<a href="http://keepalived.org/">Keepalived</a>，但是在Openstack的环境中，并不是在两台虚拟机安装了Keepalived就可以的。而是需要做某些配置，下面具体讲讲</p>
+
+<ul>
+  <li>在OpenStack的一个内部网络上创建一个Port，这个Port将得到一个内网的IP <code>neutron port-create --name &lt;port name&gt; &lt;internal network name&gt;</code> 。如果不知道openstack上有哪些网络可用，则可以用<code>neutron net-list</code>来查看</li>
+  <li>创建一个外网可访问的floating ip。<code>neutron floatingip-create &lt;external network name&gt;</code></li>
+  <li>将这个floating ip关联到这个新建的port上。 <code>neutron floatingip-associate &lt;floating ip uuid&gt; &lt;port uuid&gt;</code>。这样就可以通过外部网络访问到这个port口了。</li>
+  <li>启动两台VM，然后各自配置keepalived，并且用这个内网的ip作为VIP给keepalvied使用。配置好后，似乎都没有问题了。但是始终无法访问，原因是openstack对于使用VIP有安全限制，必须认为的将这个VIP与VM关联才可以访问</li>
+  <li>配置VM的allowed-address-pair。首先通过<code>nova list |grep &lt;vm identity&gt;</code>来找到自己创建的VM，然后通过<code>neutron port-list|grep &lt;vm ip&gt;</code>来找到VM port对应的uuid。通过<code>neutron port-show &lt;vm port uuid&gt;</code>来查看是否配置了allowed-address-pair。如果没有则需要更新port来支持allowed-address-pair。命令是<code>neutron port-update &lt;vm port uuid&gt; --allowed-address-pairs type=dict list=true ip_address=&lt;VIP&gt;</code></li>
+</ul>
+
+<h3 id="section-2">如何调试</h3>
+
+<p>如果一切都配置好了，但是就是无法通，则可以在VM或者是Openstack对应的Computer Node上用<code>tcpdump -i &lt;net card name&gt; icmp</code>的方式开跟踪是否消息包是通的</p>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1202,68 +1261,6 @@ sbt会在用户的home目录下创建.sbt和.ivy2的目录，依赖包都放在�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/02/02/integration-pattern-canonical-data-model/">系统集成模式：规范化数据流模式</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-02-02T18:18:16+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2015</time>
-        
-        
-           | <a href="/blog/2015/02/02/integration-pattern-canonical-data-model/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<hr />
-<p><a href="/blog/2015/02/02/integration-pattern-normalizer/">Normalizer模式</a>中，我们提到到如果多个系统一起集成将造成Endpoint成几何级数的增长。</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-
-<p>使用Canonical Data Model(规范化数据模型)来解决这个问题
-其特点如下：
-- 每一个EndPoint一端和集成系统衔接，接收或发送特定系统的消息
-- 每一个EndPoint的另外一段则是接收或发送Common的消息给另外的EndPoint</p>
-
-<p>如图1：
-<img src="/images/cdm-1.png" alt="图一" /></p>
-
-<ul>
-  <li>所有的在EndPoint间流动的消息都是基于Common的接口，这样当引入一个新的系统的时候这需要实现一个EndPoint就可以了。</li>
-</ul>
-
-<p>如图二：
-<img src="/images/cdm-2.png" alt="图二" /></p>
-
-<p>当我们需要考入如何实现Endpoint的时候，则可以考虑<a href="http://camel.apache.org/">Apache Camel Framework</a></p>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1279,6 +1276,10 @@ sbt会在用户的home目录下创建.sbt和.ivy2的目录，依赖包都放在�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/07/05/openstack-vip/">Openstack用Keealived来实现VIP</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/03/29/install-coreos/">CoreOS的安装</a>
       </li>
     
@@ -1292,10 +1293,6 @@ sbt会在用户的home目录下创建.sbt和.ivy2的目录，依赖包都放在�
     
       <li class="post">
         <a href="/blog/2015/02/26/ssh-proxy-in-linux/">Ssh在linux下使用http/https代理</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/02/25/sublime-startup/">Sublime入门以及搭建scala开发环境</a>
       </li>
     
   </ul>
@@ -1326,6 +1323,7 @@ sbt会在用户的home目录下创建.sbt和.ivy2的目录，依赖包都放在�
 <li class='category'><a href='/blog/categories/java/'>Java (13)</a></li>
 <li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>
 <li class='category'><a href='/blog/categories/jenkins/'>Jenkins (3)</a></li>
+<li class='category'><a href='/blog/categories/keepalvied/'>Keepalvied (1)</a></li>
 <li class='category'><a href='/blog/categories/linux/'>Linux (1)</a></li>
 <li class='category'><a href='/blog/categories/mac/'>MAC (2)</a></li>
 <li class='category'><a href='/blog/categories/maven/'>Maven (3)</a></li>
@@ -1333,6 +1331,7 @@ sbt会在用户的home目录下创建.sbt和.ivy2的目录，依赖包都放在�
 <li class='category'><a href='/blog/categories/oo/'>OO (1)</a></li>
 <li class='category'><a href='/blog/categories/osx/'>OSX (4)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>Octopress (16)</a></li>
+<li class='category'><a href='/blog/categories/openstack/'>Openstack (1)</a></li>
 <li class='category'><a href='/blog/categories/plantuml/'>PlantUML (3)</a></li>
 <li class='category'><a href='/blog/categories/port/'>Port (2)</a></li>
 <li class='category'><a href='/blog/categories/proxy/'>Proxy (2)</a></li>
