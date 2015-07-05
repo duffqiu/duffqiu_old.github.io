@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-05T15:22:51+08:00</updated>
+  <updated>2015-07-05T15:25:20+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Openstack_Haproxy_Vip]]></title>
-    <link href="http://duffqiu.github.io/blog/2015/07/05/openstack-haproxy-vip/"/>
+    <title type="html"><![CDATA[Openstack用Keealived来实现VIP]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/05/openstack-keepalived-vip/"/>
     <updated>2015-07-05T14:36:31+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2015/07/05/openstack-haproxy-vip</id>
+    <id>http://duffqiu.github.io/blog/2015/07/05/openstack-keepalived-vip</id>
     <content type="html"><![CDATA[<h3 id="section">原由</h3>
 <hr />
 <p>在Openstack创建VM的时候一般都是使用DHCP的方式来分配虚拟机的IP地址。这样就会出现一个问题，每次重建VM的时候，IP地址都会被改变，从而影响外部的访问。同时如果期望有两个虚拟机同时服务一个IP接入的话，则需要用到VIP的方式来实现。</p>
