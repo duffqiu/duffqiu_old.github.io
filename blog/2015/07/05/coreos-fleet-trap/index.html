@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress Gem插件gsl安装 - Duff Qiu's Blog</title>
+  <title>Coreos Fleet使用陷阱几例 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,9 +19,7 @@
 
 
   
-  <meta name="description" content="原由
-Octopress用rake generate的时候会提示使用GSL将会加速文件的生成，速度是原来的的10+倍，但是需要安装Ruby GSL插件。 安装
-当使用命令安装Ruby GSL的时候确发现了问题 gem install gsl 原因是缺少了GSL的C的开发库 然后在GSL &hellip;">
+  <meta name="description" content="原由 CoreOS带了一个基于Systemd的集群服务管理工具，可以便于管理在多个CoreOS实例中部署和管理服务，虽然它的力度比较粗一点，无法针对资源的情况来管理，不像Mesos，但是因为其基于Systemd，其服务依赖等做的比较好，比较适用于基础服务的部署。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -30,7 +28,7 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/30/octopress-gemcha-jian-gslan-zhuang">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/07/05/coreos-fleet-trap">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -104,7 +102,7 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   
   <header>
     
-      <h1 class="entry-title">Octopress Gem插件gsl安装</h1>
+      <h1 class="entry-title">Coreos Fleet使用陷阱几例</h1>
     
     
       <p class="meta">
@@ -120,7 +118,7 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   
 
 
-<time datetime="2014-01-30T20:00:10+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2015-07-05T18:57:28+08:00" pubdate data-updated="true">Jul 5<span>th</span>, 2015</time>
         
         
            | <a href="#comments">Comments</a>
@@ -131,24 +129,24 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
 
 
 <div class="entry-content"><h3 id="section">原由</h3>
-<p>Octopress用rake generate的时候会提示使用GSL将会加速文件的生成，速度是原来的的10+倍，但是需要安装<a href="http://rb-gsl.rubyforge.org/">Ruby GSL</a>插件。</p>
+<hr />
+<p>CoreOS带了一个基于Systemd的集群服务管理工具，可以便于管理在多个CoreOS实例中部署和管理服务，虽然它的力度比较粗一点，无法针对资源的情况来管理，不像Mesos，但是因为其基于Systemd，其服务依赖等做的比较好，比较适用于基础服务的部署。
+但是在使用过程中还是遇到了不少坑和麻烦，现在一一列举出来</p>
 
-<h3 id="section-1">安装</h3>
-<p>当使用命令安装Ruby GSL的时候确发现了问题 </p>
+<h3 id="fleet">Fleet的坑</h3>
+<hr />
 
-<pre><code>gem install gsl
-</code></pre>
+<ul>
+  <li>Fleet的Service Unit的文件的写法。在Unit文件中使用环境变量只能用在<code>[Service]</code>域中，其它域是无法使用的。参见<a href="https://github.com/coreos/fleet/issues/1246">issue 1246</a></li>
+  <li>Fleet的Service Unit的文件的[X-Fleet]域的Conflicts不要像systemd那样一行写多个服务的名字。如果有多个冲突项，则需要写多行的Conflicts。参见<a href="https://github.com/coreos/fleet/issues/1245">issue 1245</a></li>
+  <li>Fleetctl要能够连接集群中的其它机器，则需要使用ssh-agent</li>
+</ul>
 
-<p>原因是缺少了<a href="http://www.gnu.org/software/gsl/" title="GSL Library官网">GSL的C的开发库</a>    </p>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">eval `ssh-agent`
+</span><span class="line">ssh-add &lt;ssh的私钥，如果是用openstack，则是用openstack生成的私钥&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>然后在GSL Library官网下载了最新的GSL1.16，然后编译安装，然后再重新安装Ruby GSL，但是还是出现错误，后来搜索<a href="http://stackoverflow.com">stackoverflow</a>找到一个说明，说是GSL和Ruby GSL配合的版本只能用1.14的。所以再次下载GSL1.14编译、安装然后再安装Ruby GSL就可以了</p>
-
-<h3 id="section-2">使用</h3>
-
-<pre><code>rake notify
-</code></pre>
-
-<p>目前看除了rake generate没有那个提示，好像速度没有看出来，或许是文章的数目不多体现不出来 </p>
 </div>
 
 
@@ -171,12 +169,12 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
   
 
 
-<time datetime="2014-01-30T20:00:10+08:00" pubdate data-updated="true">Jan 30<span>th</span>, 2014</time>
+<time datetime="2015-07-05T18:57:28+08:00" pubdate data-updated="true">Jul 5<span>th</span>, 2015</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/gsl/'>GSL</a>, <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/coreos-fleet/'>CoreOS Fleet</a>
   
 </span>
 
@@ -192,10 +190,8 @@ Octopress用rake generate的时候会提示使用GSL将会加速文件的生成�
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/30/octopressde-nei-bu-blogjian-guan-lian/" title="Previous Post: Octopress的内部blog间关联">&laquo; Octopress的内部blog间关联</a>
+        <a class="basic-alignment left" href="/blog/2015/07/05/systemd-boot/" title="Previous Post: Systemd的启动顺序和自动启动配置">&laquo; Systemd的启动顺序和自动启动配置</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/02/01/octopresstong-zhi-sou-suo-yin-qing/" title="Next Post: Octopress通知搜索引擎">Octopress通知搜索引擎 &raquo;</a>
       
     </p>
   </footer>
@@ -294,22 +290,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2015/07/05/coreos-fleet-trap/">Coreos fleet使用陷阱几例</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/coreos-fleet/'>CoreOS Fleet</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2015/07/05/systemd-boot/">Systemd的启动顺序和自动启动配置</a></h3>
         <div class="meta">
           <span class="tags">
@@ -365,6 +345,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/keepalived/'>Keepalived</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/05/openstack-vip/">Openstack用Keealived来实现VIP</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/keepalvied/'>Keepalvied</a>, <a class='category' href='/blog/categories/openstack/'>Openstack</a>
   
 </span>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-05T18:02:18+08:00</updated>
+  <updated>2015-07-06T15:04:14+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,33 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Coreos Fleet使用陷阱几例]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/05/coreos-fleet-trap/"/>
+    <updated>2015-07-05T18:57:28+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/05/coreos-fleet-trap</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>CoreOS带了一个基于Systemd的集群服务管理工具，可以便于管理在多个CoreOS实例中部署和管理服务，虽然它的力度比较粗一点，无法针对资源的情况来管理，不像Mesos，但是因为其基于Systemd，其服务依赖等做的比较好，比较适用于基础服务的部署。
+但是在使用过程中还是遇到了不少坑和麻烦，现在一一列举出来</p>
+
+<h3 id="fleet">Fleet的坑</h3>
+<hr />
+
+<ul>
+  <li>Fleet的Service Unit的文件的写法。在Unit文件中使用环境变量只能用在<code>[Service]</code>域中，其它域是无法使用的。参见<a href="https://github.com/coreos/fleet/issues/1246">issue 1246</a></li>
+  <li>Fleet的Service Unit的文件的[X-Fleet]域的Conflicts不要像systemd那样一行写多个服务的名字。如果有多个冲突项，则需要写多行的Conflicts。参见<a href="https://github.com/coreos/fleet/issues/1245">issue 1245</a></li>
+  <li>Fleetctl要能够连接集群中的其它机器，则需要使用ssh-agent</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">eval `ssh-agent`
+</span><span class="line">ssh-add &lt;ssh的私钥，如果是用openstack，则是用openstack生成的私钥&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Systemd的启动顺序和自动启动配置]]></title>
@@ -1336,47 +1363,6 @@ Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许
 </pre></td><td class="code"><pre><code class="sh"><span class="line">git reset --hard &lt;commit id<span class="err">&#39;</span>s firt 5 characters&gt;
 </span><span class="line">git push -f
 </span></code></pre></td></tr></table></div></figure></notextile></div>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[从实体模型到数据模型]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing/"/>
-    <updated>2014-04-06T11:41:20+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<hr />
-
-<p>在系统设计过程中，我们总会用到Entity Model和Data Model，但是两者之间的关系是如何演变的呢？</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-
-<ol>
-  <li>首先建立一个最详尽的Entity Model，尽可能将所有具体的entity以及他们间的关系都列举出来</li>
-  <li>将该详尽的Entity Model尽可能的浓缩抽象，变成7-10个框的图形</li>
-  <li>根据浓缩后的Entity Model和业务操作的要求来抽取成Data Model</li>
-</ol>
-
-<p>因为设计公司机密问题，无法在这里给出具体的示例。后面有好的例子再补充</p>
-
-<p>同时对于Data Model，有几点个人设计的体验：</p>
-
-<ol>
-  <li>不要过于局限于SQL的那几个范式。</li>
-  <li>尽可能单表操作</li>
-  <li>如果业务上不是要求严格的事物处理，尽可能不做事务操作，而是通过后续的数据处理清理垃圾数据。只是数据的使用过程中要注意保护（如先query后操作create/update）</li>
-  <li>如果两个业务模块操作同一个表的不同数据，则可以考虑将表拆成两个对立的子表。</li>
-  <li>当数据库性能达到一定瓶颈的时候，可以考虑使用NOSQL的方式做cache，如用<a href="http://redis.io">Redis</a></li>
-</ol>
-
-<h4 id="section-2">小插曲</h4>
-
-<p>使用plantuml画entity model或者component 图都是出现自动排列时图形是乱的，很不好看。不过通过一个简单打设置就可以比较工整了。在plantuml文件的前面增加以下代码</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">left to right direction</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 ]]></content>
   </entry>
