@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>设计模式：装饰器模式 - Duff Qiu's Blog</title>
+  <title>Docker清除none Images - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,7 +19,8 @@
 
 
   
-  <meta name="description" content="装饰器模式原理 模式名称：装饰器模式 (Decorator Pattern)，另外一个别名是包装器模式(Wrapper) 问题：在开发过程，当一个比较大的类实现并测试后，将逐渐被稳定下来。但是这个时候有了新的需求，需要增强原由的功能，一般的做法是直接修改原由的类，但是会影响到原有类的稳定性， &hellip;">
+  <meta name="description" content="原由 如果是本地去build image，则中间过程会产生不少的image，特别是如果build的过程使用了ctrl+c取消进程的执行。如何有效的清除这些
+的image而节约空间呢？ 解决办法 Docker在查询image的命令中增加了--filer/-f参数， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -28,7 +29,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/22/she-ji-mo-shi-%3Azhuang-shi-qi-mo-shi">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/07/06/docker-cleanup-none-images">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -102,7 +103,7 @@
   
   <header>
     
-      <h1 class="entry-title">设计模式：装饰器模式</h1>
+      <h1 class="entry-title">Docker清除none Images</h1>
     
     
       <p class="meta">
@@ -118,7 +119,7 @@
   
 
 
-<time datetime="2014-02-22T15:09:29+08:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time>
+<time datetime="2015-07-06T15:32:40+08:00" pubdate data-updated="true">Jul 6<span>th</span>, 2015</time>
         
         
            | <a href="#comments">Comments</a>
@@ -128,30 +129,19 @@
   </header>
 
 
-<div class="entry-content"><h3 id="section">装饰器模式原理</h3>
+<div class="entry-content"><h3 id="section">原由</h3>
 <hr />
-<ol>
-  <li>模式名称：装饰器模式 (Decorator Pattern)，另外一个别名是包装器模式(Wrapper)</li>
-  <li>问题：在开发过程，当一个比较大的类实现并测试后，将逐渐被稳定下来。但是这个时候有了新的需求，需要增强原由的功能，一般的做法是直接修改原由的类，但是会影响到原有类的稳定性，所有的测试都要回归，并且新增代码会对已有功能的稳定性带来影响，而且违背OO的开放－封闭原则。另外一个做法是继承原有的类然后扩展功，但是会造成代码重复，而且扩展性不高，同时如果类已经是final的则无法通过这种方式达到目的。</li>
-  <li>解决方案：提供一个与原来相同接口的类，但是原来的实现累作为新累的一个部分。这样对于客户端而言并没有改变，但是实际行为变成了除原有的功能外，新增了功能。同时可以由多个新增功能的类叠加来处理。简单讲就是<code>Interface i = new A();</code>变成了<code>Interface i = new B(new A)</code></li>
-  <li>结论：无需静态继承，可以灵活扩展。可以作为AOP的简单实现。缺点是产生很多类似的类，容易引起歧异。</li>
-</ol>
+<p>如果是本地去build image，则中间过程会产生不少<none>的image，特别是如果build的过程使用了ctrl+c取消进程的执行。如何有效的清除这些<none>
+的image而节约空间呢？</none></none></p>
 
-<h3 id="section-1">案例说明</h3>
+<h3 id="section-1">解决办法</h3>
 <hr />
-<p>这里提供一个简单的业务需求来完成这个例子。
-需求的简单说明如下 ：系统一个模块给系统的其它部分用以发送用户通知。原本已经实现好了SMPP发送的功能，但是现在为了统计方便，需要在每次发送时记录到内存中/文件中，以便审计，但是这个对于客户端使用必须是透明的</p>
 
-<h4 id="uml">UML图</h4>
+<p>Docker在查询image的命令中增加了<code>--filer/-f</code>参数，利用该选项查询哪些none的image然后再逐一删除</p>
 
-<center><img src="/images/plantuml/b80dc54557db601615cc3bb69ca1ba28.png" /></center>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">docker rmi $(docker images -f "dangling=true" -q)</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<h3 id="section-2">模式要点</h3>
-
-<p>一个类A实现接口I，同时拥有一个同样实现接口I的对象。客户端调用的时候，可以实例化多个实现接口I的对象，然后叠加在一起后给客户端使用。客户端只是看到I提供的功能描述，并不知道具体的实现叠加了多少。
-这个模式的最大目的就是能够动态的给类增加功能。</p>
-
-<p>使用中可以通过I i = new A(new B(new C))的方式使用，可以通过Guice等通过Inject的方式组装。在<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a>例子中同时提供了这两种方式的代码。</p>
 </div>
 
 
@@ -174,14 +164,8 @@
   
 
 
-<time datetime="2014-02-22T15:09:29+08:00" pubdate data-updated="true">Feb 22<span>nd</span>, 2014</time>
+<time datetime="2015-07-06T15:32:40+08:00" pubdate data-updated="true">Jul 6<span>th</span>, 2015</time>
       
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>, <a class='category' href='/blog/categories/java/'>Java</a>
-  
-</span>
 
 
     </p>
@@ -195,10 +179,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/02/19/openstackshang-an-zhuang-appscale/" title="Previous Post: Openstack上安装AppScale">&laquo; Openstack上安装AppScale</a>
+        <a class="basic-alignment left" href="/blog/2015/07/05/coreos-fleet-trap/" title="Previous Post: Coreos fleet使用陷阱几例">&laquo; Coreos fleet使用陷阱几例</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/02/22/plantumlxiao-ji-qiao/" title="Next Post: PlantUML小技巧">PlantUML小技巧 &raquo;</a>
       
     </p>
   </footer>
@@ -297,16 +279,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2015/07/06/docker-cleanup-none-images/">Docker清除none images</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2015/07/05/coreos-fleet-trap/">Coreos fleet使用陷阱几例</a></h3>
         <div class="meta">
           <span class="tags">
@@ -362,6 +334,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/etcd2/'>ETCD2</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/05/coreos-keepalived/">CoreOS安装和使用Keepalived</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/keepalived/'>Keepalived</a>
   
 </span>
 
