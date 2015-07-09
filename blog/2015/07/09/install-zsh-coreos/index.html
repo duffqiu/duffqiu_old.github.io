@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Octopress管理附件 - Duff Qiu's Blog</title>
+  <title>Install ZSH and Oh_my_zsh in CoreOS - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,8 +19,7 @@
 
 
   
-  <meta name="description" content="如何在Octopress使用附件 在octopress目录中，将对应的附件放到/source/assets目录里面 然后重新生成和部署 rake gengerate
-rake deploy 然后在对应的blog中，使用http的链接方式指定文件就可如 [附件](/assets/&lt;附件名&gt &hellip;">
+  <meta name="description" content="Why Since some guys from other country asks me how to install zsh and oh-my-zsh in CoreOS, I have to write it in English. ZSH with oh_my_zsh is very &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,7 +28,7 @@ rake deploy 然后在对应的blog中，使用http的链接方式指定文件就
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/01/28/octopressguan-li-fu-jian">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/07/09/install-zsh-coreos">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -103,7 +102,7 @@ rake deploy 然后在对应的blog中，使用http的链接方式指定文件就
   
   <header>
     
-      <h1 class="entry-title">Octopress管理附件</h1>
+      <h1 class="entry-title">Install ZSH and Oh_my_zsh in CoreOS</h1>
     
     
       <p class="meta">
@@ -119,7 +118,7 @@ rake deploy 然后在对应的blog中，使用http的链接方式指定文件就
   
 
 
-<time datetime="2014-01-28T12:10:51+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
+<time datetime="2015-07-09T21:13:24+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2015</time>
         
         
            | <a href="#comments">Comments</a>
@@ -129,24 +128,80 @@ rake deploy 然后在对应的blog中，使用http的链接方式指定文件就
   </header>
 
 
-<div class="entry-content"><h4 id="octopress">如何在Octopress使用附件</h4>
+<div class="entry-content"><h3 id="why">Why</h3>
+<hr />
 
-<ol>
-  <li>在octopress目录中，将对应的附件放到/source/assets目录里面</li>
+<p>Since some guys from other country asks me how to install zsh and oh-my-zsh in CoreOS, I have to write it in English.</p>
+
+<p>ZSH with <a href="https://github.com/robbyrussell/oh-my-zsh">oh_my_zsh</a> is very convinient shell instead of bash or other shells. </p>
+
+<p>But if you are using CoreOS (most people use it because of Docker, fleet and etcd), you will meet a challenge. Because CoreOS doesn’t include zsh with it.</p>
+
+<p>Since there is no installation tool like yum or apt-get in CoreOS, we have to do some workaround mannually to have zsh on it.</p>
+
+<h3 id="how">How</h3>
+<hr />
+
+<ul>
   <li>
-    <p>然后重新生成和部署</p>
+    <p>Get the zsh related files. (Of course you can build a zsh from source code, but the process is too heavy)</p>
 
-    <pre><code>rake gengerate
-rake deploy
-</code></pre>
+    <ul>
+      <li>Create a local folder in CoreOS. For example: <code>/home/core/zsh</code>. I will refer it as <code>zsh_home</code>. And also create subfolders: <code>lib64</code>, <code>share</code>, <code>bin</code></li>
+      <li>Run a docker container with centos7 image: <code>docker run -it --rm -v &lt;zsh_home&gt;:/root/zsh centos /bin/bash</code></li>
+      <li>In the container, run <code>yum update</code> and <code>yum install zsh</code></li>
+      <li>In the container, query what is installed for zsh: <code>rpm -aql zsh</code></li>
+      <li>Copy the zsh files to the folder you mount for the container in the docker run command. <code>cp /bin/zsh root/zsh/bin</code>, <code>cp -r /usrlib64/zsh /root/zsh/lib64</code>, <code>cp -r /usr/share/zsh /root/zsh/share</code></li>
+      <li>Copy the dynamic library file for zsh: <code>copy /usr/lib64/libtinfo.so.5 /root/zsh/lib64/</code></li>
+    </ul>
+  </li>
+  <li>Install oh-my-zsh. Follow the instruction of installation of oh-my-zsh is OK.</li>
+  <li>
+    <p>Update .bashrc file (under home path)</p>
+
+    <ul>
+      <li>Break the link of .bashrc: <code>rm .bashrc</code> because it is a link default</li>
+      <li>Get the default version: <code>cp ../../usr/share/skel/.bashrc .bashrc</code></li>
+      <li>Update .bashrc: add below lines in the bottom of the file <code>export PATH=$PATH:/home/core/zsh/bin/</code> and <code>export LD_LIBRARY_PATH=/home/core/zsh/lib64/</code></li>
+      <li>add the <code>zsh</code> command in the last line of .bashrc file becuase we can’t use <code>chsh -s &lt;zsh_home&gt;/zsh</code>
+. The file <code>/etc/shells</code> is read only</li>
+    </ul>
   </li>
   <li>
-    <p>然后在对应的blog中，使用http的链接方式指定文件就可如</p>
+    <p>Update oh-my-zsh</p>
 
-    <pre><code>[附件](/assets/&lt;附件名&gt;)
-</code></pre>
+    <ul>
+      <li>add the below lines on the top of the file: .zshrc</li>
+    </ul>
   </li>
-</ol>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">module_path=(&lt;zsh_home&gt;/lib64/zsh/5.0.2/)
+</span><span class="line">
+</span><span class="line">fpath=(&lt;zsh_home&gt;/share/zsh/5.0.2/functions/ &lt;zsh_home&gt;/share/zsh/site-functions/ $fpath)
+</span><span class="line">
+</span><span class="line">export PATH=$PATH:&lt;zsh_home&gt;/bin</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>add <code>PATH=$PATH:/home/core/zsh/bin</code> on the top of file .oh-my-zsh/oh-my-zsh.sh</li>
+  <li>add below lines on the top of the file .oh-my-zsh/tools/check_for_upgrade.sh</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">module_path=(&lt;zsh_home&gt;/lib64/zsh/5.0.2/)
+</span><span class="line">
+</span><span class="line">fpath=(&lt;zsh_home&gt;/share/zsh/5.0.2/functions/ &lt;zsh_home&gt;/share/zsh/site-functions/ $fpath)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>relogin CoreOS shall be ok to use zsh</li>
+</ul>
 </div>
 
 
@@ -169,12 +224,12 @@ rake deploy
   
 
 
-<time datetime="2014-01-28T12:10:51+08:00" pubdate data-updated="true">Jan 28<span>th</span>, 2014</time>
+<time datetime="2015-07-09T21:13:24+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2015</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/coreos-zsh/'>CoreOS ZSH</a>
   
 </span>
 
@@ -190,10 +245,8 @@ rake deploy
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/28/macshang-yong-google-app-engineda-jian-proxy/" title="Previous Post: Mac上用google-app-engine搭建proxy">&laquo; Mac上用google-app-engine搭建proxy</a>
+        <a class="basic-alignment left" href="/blog/2015/07/06/docker-cleanup-none-images/" title="Previous Post: Docker清除none images">&laquo; Docker清除none images</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/" title="Next Post: mac tips: path路径的查找顺序和设置">mac tips: path路径的查找顺序和设置 &raquo;</a>
       
     </p>
   </footer>
@@ -293,22 +346,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2015/07/09/install-zsh-coreos/">Install ZSH and oh_my_zsh in CoreOS</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/coreos-zsh/'>CoreOS ZSH</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2015/07/06/docker-cleanup-none-images/">Docker清除none images</a></h3>
         <div class="meta">
           <span class="tags">
@@ -358,6 +395,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
 <span class="categories">
   
     <a class='category' href='/blog/categories/block-storage/'>Block Storage</a>, <a class='category' href='/blog/categories/openstack/'>Openstack</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/05/coreos-etcd2/">CoreOS Etcd2</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/etcd2/'>ETCD2</a>
   
 </span>
 

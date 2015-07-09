@@ -12,14 +12,16 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-c4fa6988503166c352f39aba8c354684.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-33bd6c3161648cb5dfe433e028dd31eb.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 这个类别主要是想记录以下跑题中看到的一些“新”技术，或者是一些有意思的技术内容，但是不会详细展开，如有时间和必要会有专门的blog来描述某个内容或话题 今天的内容有 云上的Jenkins，由Cloudbees公司提供，提供免费的有限的使用，但是需要用到的地方，其实都有免费的软件／服务， &hellip;">
+  <meta name="description" content="原由 当一篇blog太长的时候，总是希望有个按钮能回到某个章节上，或者是文件的开头 解决办法 因为Markdown语法没有提供这个支持，只用用Div的方式来支持了，具体方式如下 定义标签 1
+2
+3 &lt;a name=&quot;标签名&quot;&gt;&lt;/a&gt; 定义跳转链接 1 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +40,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-e84d34fa4e18caa57c29cf5b54106e2f.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-b19eb293d68fcd8917ba218af53d9034.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
@@ -99,6 +101,76 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/09/octopressshi-yong-ye-mian-biao-qian/">Octopress使用页面标签</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-09T21:57:59+08:00" pubdate data-updated="true">Feb 9<span>th</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/09/octopressshi-yong-ye-mian-biao-qian/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>当一篇blog太长的时候，总是希望有个按钮能回到某个章节上，或者是文件的开头</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>因为Markdown语法没有提供这个支持，只用用Div的方式来支持了，具体方式如下</p>
+
+<ul>
+  <li>定义标签</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">
+</span><span class="line">   &lt;a <span class="nv">name</span><span class="o">=</span><span class="s2">&quot;标签名&quot;</span>&gt;&lt;/a&gt;
+</span><span class="line">
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>定义跳转链接</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">
+</span><span class="line">   &lt;div <span class="nv">style</span><span class="o">=</span><span class="s2">&quot;text-decoration:underline; font-size: 16px; color: red&quot;</span> <span class="nv">onclick</span><span class="o">=</span><span class="s2">&quot;self.location.href=&#39;#标签名&#39;&quot;</span>&gt;跳转&lt;/div&gt;
+</span><span class="line">
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1952,124 +2024,6 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/02/umllei-tu/">UML类图</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-02T20:44:44+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/02/umllei-tu/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="uml">UML工具</h3>
-<p>推荐大家用<a href="http://members.change-vision.com/files/astah_community" title="官网">astah</a>，Community版本就够了</p>
-
-<h3 id="section">类图的描述</h3>
-
-<ol>
-  <li>类名：正体字为实例化类， 斜体字是抽象类，接口类有interface标识(也可以是个圆形，不过建议在类图中还是使用长方形的图形标识)</li>
-  <li>属性：<strong><em>+</em></strong>表示puiblic， <strong><em>-</em></strong>表示private， <strong><em>#</em></strong>表示protected</li>
-  <li>方法：<strong><em>+</em></strong>表示puiblic， <strong><em>-</em></strong>表示private， <strong><em>#</em></strong>表示protected, 有下划线表示      <font style="border-bottom:1px solid #000;">静态方法</font></li>
-</ol>
-
-<p><img src="/images/ClassDiagram.png" alt="类图和继承与实现" /></p>
-
-<h3 id="section-1">类图中类与类的关系</h3>
-
-<h4 id="section-2">继承与实现</h4>
-
-<ol>
-  <li>
-    <p>继承关系，用带实线的闭合空心箭头</p>
-
-    <div style="font-size: 36px"> ⇾ </div>
-
-    <p>表示，Java语言中<strong>extends</strong>体现</p>
-  </li>
-  <li>
-    <p>接口实现关系，用虚线带的闭合空心箭头</p>
-
-    <div style="font-size: 36px"> ­­­­⁃⁃⇾ </div>
-
-    <p>表示，Java语言中<strong>implements</strong>体现</p>
-  </li>
-</ol>
-
-<h4 id="section-3">关联关系(体现类与类的实例变量的关系)</h4>
-
-<p>提示： 实践中，要将所有的关联关系都要画清楚</p>
-
-<ol>
-  <li>
-    <p>类与类的关联关系：(association)，体现类与类的实例变量的关系，可以是单向关联（单箭头），也可以是双向关联（双箭头/无箭头，不鼓励有这种关系）。关联关系还可以有个基数，表明这一端的类有几个该类型的实例（0..1, 0..*, 1, 1..*），使用实线开放式箭头表示</p>
-
-    <div style="font-size: 36px"> ➔ </div>
-  </li>
-  <li>
-    <p>聚合关系（aggregation），关联关系的一种，是强的关联关系，是整体和个体间的关系(个体可以单独存在)，也是通过实例变量体现。Java语法是无法区分聚合和关联关系的。如果不是太确定，可以设置为关联关系。同样具有基数。实例类用空的菱形表示  </p>
-
-    <div style="font-size: 36px"> ◇⟶ </div>
-  </li>
-  <li>
-    <p>合成关系(Composition)，关联关系的一种，是比聚合关系<strong>强</strong>的关联关系。该关系和聚合关系的区别是，代表整体的部分负责代表部分的对象的生命周期，即部分对象不会独立于整体存在，且不能共享。实例类用实心的菱形表示，也是通过实例变量体现。如果不是太确定则用聚合/关联关系表示</p>
-
-    <div style="font-size: 36px"> ◆⟶ </div>
-  </li>
-</ol>
-
-<h4 id="section-4">依赖关系(体现为局部变量、方法参数，以及对静态方法的调用)</h4>
-
-<p>提示： 这些表示在astah中都可以容易使用，要做到的事情时清楚其具体含义 </p>
-
-<ol>
-  <li>
-    <p>依赖关系(dependency)，依赖总是单向。Java中体现为局部变量、方法参数，以及对静态方法的调用，图形通过虚线开放箭头表示</p>
-
-    <div style="font-size: 36px"> ⤑ </div>
-
-    <p>实践中没有必要将所有的依赖都画出来，只画出重要部分</p>
-  </li>
-</ol>
-
-<h5 id="astah">类的关联关系和依赖关系在astah中的表示如下：</h5>
-
-<p><img src="/images/ClassRelationship.png" alt="类的关联关系和依赖关系" />   </p>
-
-<p>尽管前面讲了使用UML不要太教条，试用就好，但是图的表示含义还是要准确的好
-本章节的astah的文件：<a href="/assets/ClassDiagram.asta">类的UML说明</a></p>
-
-<h3 id="section-5">小插曲</h3>
-
-<p>今天在家下载astah很慢，就用baidu的离线下载（普通下载方式），先交由baidu下载到网盘上，然后再到网盘上下载下来，速度很快，比直接下载好多了</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -2087,6 +2041,10 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/07/09/install-zsh-coreos/">Install ZSH and Oh_my_zsh in CoreOS</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/07/06/docker-cleanup-none-images/">Docker清除none Images</a>
       </li>
     
@@ -2100,10 +2058,6 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
     
       <li class="post">
         <a href="/blog/2015/07/05/openstack-blockservice/">Openstack如何更好的使用block Service作为磁盘使用</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/05/coreos-etcd2/">CoreOS Etcd2</a>
       </li>
     
   </ul>
@@ -2122,6 +2076,7 @@ Jenkins启动完成后，通过浏览器打开，默认是不用认证的。俺�
 <li class='category'><a href='/blog/categories/centos/'>CentOS (1)</a></li>
 <li class='category'><a href='/blog/categories/coreos/'>CoreOS (3)</a></li>
 <li class='category'><a href='/blog/categories/coreos-fleet/'>CoreOS Fleet (1)</a></li>
+<li class='category'><a href='/blog/categories/coreos-zsh/'>CoreOS ZSH (1)</a></li>
 <li class='category'><a href='/blog/categories/data-model/'>Data Model (1)</a></li>
 <li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (9)</a></li>
 <li class='category'><a href='/blog/categories/docker/'>Docker (1)</a></li>
