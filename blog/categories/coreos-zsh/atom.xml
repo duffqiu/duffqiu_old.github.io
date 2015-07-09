@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CoreOS ZSH | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/coreos-zsh/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-09T21:52:33+08:00</updated>
+  <updated>2015-07-09T21:55:02+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -72,9 +72,10 @@ module_path=(<zsh_home>/lib64/zsh/5.0.2/)</zsh_home></p>
 <p>fpath=(<zsh_home>/share/zsh/5.0.2/functions/ <zsh_home>/share/zsh/site-functions/ $fpath)</zsh_home></zsh_home></p>
 
 <p>export PATH=$PATH:<zsh_home>/bin
-```   </zsh_home></p>
+```</zsh_home></p>
 
 <ul>
+  <li></li>
   <li>add <code>PATH=$PATH:/home/core/zsh/bin</code> on the top of file .oh-my-zsh/oh-my-zsh.sh</li>
   <li>add below lines on the top of the file .oh-my-zsh/tools/check_for_upgrade.sh</li>
 </ul>
