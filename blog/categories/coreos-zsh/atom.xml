@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CoreOS ZSH | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/coreos-zsh/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-09T21:49:45+08:00</updated>
+  <updated>2015-07-09T21:52:33+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -21,11 +21,11 @@
     <content type="html"><![CDATA[<h3 id="why">Why</h3>
 <hr />
 
-<p>Since some guys from other country asks me how to install zsh and oh-my-zsh in CoreOS, I have to write it in English.</p>
+<p>Since some guys from other country ask me how to install zsh and oh-my-zsh in CoreOS, I have to write it in English.</p>
 
 <p>ZSH with <a href="https://github.com/robbyrussell/oh-my-zsh">oh_my_zsh</a> is very convinient shell instead of bash or other shells. </p>
 
-<p>But if you are using CoreOS (most people use it because of Docker, fleet and etcd), you will meet a challenge. Because CoreOS doesn’t include zsh with it.</p>
+<p>But if you are using CoreOS (most people use it because of using Docker, fleet and etcd), you will meet a challenge because CoreOS doesn’t include zsh with it.</p>
 
 <p>Since there is no installation tool like yum or apt-get in CoreOS, we have to do some workaround mannually to have zsh on it.</p>
 
