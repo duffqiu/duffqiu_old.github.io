@@ -12,14 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-64f952eda46f882cd2d7f1044eea03e4.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-3c2f32a750d7889582a84d060b8e61ca.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 在一个系统中，多个模块总是通过各种关系关联在一起的。但是一般的编程方式总是讲如何组装各种模块与处理业务逻辑混合在一块，造成代码的维护比较困看，也容易造成代码的行数很大。 解决办法 在前面我们已经介绍过IoC。可以通过自己创建单独的模块来维护类间的依赖。但是现在已经有成熟的框架帮助我们完成这个 &hellip;">
+  <meta name="description" content="原由 在使用Guice做依赖注入的时候，很可能会发生在一个依赖模块（Module）中有多个同类型的接口需要注入，但是又需要根据不同的使用类注入不同的具体对象。如果只是简单的申明为接口注入对象，则会使用同一个对象。如：bind(IDescription.class).to( &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-b184ab969adf899600d65965012cbefb.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-1e39c95b9de8dcb8fc9c9a72667b94e3.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
@@ -99,6 +99,107 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/02/23/google-guiceru-men-2/">Google Guice入门2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-23T14:26:45+08:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2014</time>
+        
+        
+           | <a href="/blog/2014/02/23/google-guiceru-men-2/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>在使用Guice做依赖注入的时候，很可能会发生在一个依赖模块（Module）中有多个同类型的接口需要注入，但是又需要根据不同的使用类注入不同的具体对象。如果只是简单的申明为接口注入对象，则会使用同一个对象。如：<code>bind(IDescription.class).to(ConnectionDescription.class);</code></p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>使用<code>@Named("&lt;xxxx&gt;")</code>来命名需要注入的接口，然后在注入的时候指定名称来特定注入，如： </p>
+
+<p>顶层使用类中：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="nd">@Inject</span>
+</span><span class="line"><span class="nd">@Named</span><span class="o">(</span><span class="s">&quot;SendMsgWithAuditDesc&quot;</span><span class="o">)</span>
+</span><span class="line"><span class="kd">private</span> <span class="n">IDescription</span> <span class="n">desc</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Module configure方法中</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="c1">//为什么的注入</span>
+</span><span class="line"><span class="n">bind</span><span class="o">(</span><span class="n">IDescription</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">to</span><span class="o">(</span><span class="n">ConnectionDescription</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">//指定名称的注入</span>
+</span><span class="line"><span class="n">bind</span><span class="o">(</span><span class="n">IDescription</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">annotatedWith</span><span class="o">(</span>
+</span><span class="line">	        <span class="n">Names</span><span class="o">.</span><span class="na">named</span><span class="o">(</span><span class="s">&quot;SendMsgWithAuditDesc&quot;</span><span class="o">)).</span><span class="na">toProvider</span><span class="o">(</span>
+</span><span class="line">	        <span class="n">SendMessageWithAuditDescriptionProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这里用了prvoider是因为需要使用参数的构造函数。Provider类如下：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SendMessageWithAuditDescriptionProvider</span> <span class="kd">implements</span>
+</span><span class="line">        <span class="n">Provider</span><span class="o">&lt;</span><span class="n">ConnectionDescription</span><span class="o">&gt;</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">final</span> <span class="n">ConnectionDescription</span> <span class="nf">get</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">	<span class="k">return</span> <span class="k">new</span> <span class="nf">ConnectionDescription</span><span class="o">(</span><span class="s">&quot;Audit with SMPP&quot;</span><span class="o">,</span>
+</span><span class="line">	        <span class="s">&quot;Send Msg with audit via SMPP&quot;</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1122,121 +1223,6 @@ plantuml_background_color: "#f8f8f8"
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/02/11/appscalean-zhuang/">Appscale安装</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-11T21:49:00+08:00" pubdate data-updated="true">Feb 11<span>th</span>, 2014</time>
-        
-        
-           | <a href="/blog/2014/02/11/appscalean-zhuang/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<hr />
-<p>之前看了下Appscale的介绍，觉得还是不错的，这两天自己装一个玩玩。</p>
-
-<h3 id="section-1">安装过程</h3>
-<hr />
-
-<h4 id="section-2">准备工作</h4>
-<ol>
-  <li>下载并安装<a href="https://www.virtualbox.org">virtual box</a></li>
-  <li>
-    <p>下载并安装<a href="https://github.com/mitchellh/vagrant">vagrant</a>，不过好像中国下载有问题，这里有个baidu pan的copy，版本<a href="http://pan.baidu.com/s/1dDtaIul">vagrant 1.4.3</a></p>
-  </li>
-  <li>下载并安装<a href="https://github.com/AppScale/appscale-tools">appscale-tools</a>，帮助安装配置appscale的，可以参照<a href="https://github.com/AppScale/appscale-tools/wiki/Installing-the-AppScale-Tools-on-Mac-OS-X">官方的安装说明</a>使用<code>brew</code>安装，</li>
-  <li>下载<a href="http://download.appscale.com/apps/AppScale%201.13.0%20VirtualBox%20Image">Appscale for mac的virtual box的image</a>，因为很大，直接下载会有问题，这里分享一个已经下好的在百度云盘的copy，版本为<a href="http://pan.baidu.com/s/1i3p4NsT">AppScale 1.13.0</a> </li>
-</ol>
-
-<h4 id="vm">安装VM过程</h4>
-<ol>
-  <li>创建一个appscale的目录</li>
-  <li>获取一个<a href="https://s3.amazonaws.com/appscale_CDN/files/Vagrantfile">Vagrant的配置文件</a>，也可以通过命令<code>vagrant init</code>获得  </li>
-  <li>打开Vagrantfile，将<code>config.vm.box_url</code>配置为你下载好的Appscale for mac的virtual box的image  </li>
-  <li>将<code>config.vm.network</code>配置成你的网络地址，但是不要用host机器的IP</li>
-  <li>
-    <p>启动vm</p>
-
-    <pre><code>vagrant up
-vagrant ssh     # now you're in the VM as the "vagrant" user
-sudo -s passwd  # change the root password
-</code></pre>
-  </li>
-</ol>
-
-<h4 id="appscale">部署AppScale</h4>
-
-<ol>
-  <li>初始化一个配置文件AppScalefile，需要执行<code>appscale init cluster</code></li>
-  <li>
-    <p>修改AppScalefile中的<code>ips_layout</code>，将IP都设置为你刚才配置的VM IP，然后启动Appscale，命令：<code>appscale up</code>      </p>
-
-    <pre><code>ips_layout:
-  master : 192.168.33.10
-  appengine: 192.168.33.10
-  database: 192.168.33.10
-  zookeeper: 192.168.33.10
-</code></pre>
-  </li>
-</ol>
-
-<h4 id="section-3">部署应用</h4>
-
-<p>用命令：<code>appscale deploy &lt;app path&gt;</code>         </p>
-
-<h4 id="section-4">关闭</h4>
-<ol>
-  <li>关闭appscale，用命令<code>appscale down</code></li>
-  <li>关闭VM，用命令<code>vagrant halt</code></li>
-</ol>
-
-<h4 id="appscale-tools">Appscale tools安装过程(官方介绍复制)</h4>
-
-<p>安装命令：</p>
-
-<pre><code>brew install wget
-brew install ssh-copy-id
-brew install swig
-wget https://github.com/AppScale/appscale-tools/archive/1.13.0.tar.gz -O appscale-tools-1.13.0.tar.gz
-tar xvf appscale-tools-1.13.0.tar.gz
-
-sudo ./appscale-tools-1.13.0/osx/appscale_install.sh
-</code></pre>
-
-<p>将<code>/usr/local/share/python:/usr/local/appscale-tools/bin</code>放入到path中就可以了</p>
-
-<p>小提示：
-1. 官网说用euca-version检查安装是否成功，但是根本就没有这个命令。这个好像是给EC2和S3用的python工具，可以用<code>port search 'euca'</code>查到
-2. Vagrant有对应的oh-my-zsh的plugins，配置进.zshrc文件中就可以了</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -1254,6 +1240,10 @@ sudo ./appscale-tools-1.13.0/osx/appscale_install.sh
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/07/13/zookeeper-cloud-deploy/">Zookeeper云部署方案设计</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/07/09/install-zsh-coreos/">Install ZSH and Oh_my_zsh in CoreOS</a>
       </li>
     
@@ -1267,10 +1257,6 @@ sudo ./appscale-tools-1.13.0/osx/appscale_install.sh
     
       <li class="post">
         <a href="/blog/2015/07/05/systemd-boot/">Systemd的启动顺序和自动启动配置</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/05/openstack-blockservice/">Openstack如何更好的使用block Service作为磁盘使用</a>
       </li>
     
   </ul>
@@ -1326,6 +1312,7 @@ sudo ./appscale-tools-1.13.0/osx/appscale_install.sh
 <li class='category'><a href='/blog/categories/systemd/'>Systemd (1)</a></li>
 <li class='category'><a href='/blog/categories/uml/'>UML (1)</a></li>
 <li class='category'><a href='/blog/categories/virtualbox/'>VirtualBox (1)</a></li>
+<li class='category'><a href='/blog/categories/zookeeper-cloud/'>Zookeeper Cloud (1)</a></li>
 
   </ul>
 </section>
