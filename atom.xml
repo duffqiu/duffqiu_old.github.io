@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-18T18:58:09+08:00</updated>
+  <updated>2015-07-18T19:02:27+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -130,8 +130,8 @@
       <li>Run a docker container with centos7 image: <code>docker run -it --rm -v &lt;zsh_home&gt;:/root/zsh centos /bin/bash</code></li>
       <li>In the container, run <code>yum update</code> and <code>yum install zsh</code></li>
       <li>In the container, query what is installed for zsh: <code>rpm -aql zsh</code></li>
-      <li>Copy the zsh files to the folder you mount for the container in the docker run command. <code>cp /bin/zsh root/zsh/bin</code>, <code>cp -r /usrlib64/zsh /root/zsh/lib64</code>, <code>cp -r /usr/share/zsh /root/zsh/share</code></li>
-      <li>Copy the dynamic library file for zsh: <code>copy /usr/lib64/libtinfo.so.5 /root/zsh/lib64/</code></li>
+      <li>Copy the zsh files to the folder you mount for the container in the docker run command. <code>cp /bin/zsh root/zsh/bin</code>, <code>cp -r /usr/lib64/zsh /root/zsh/lib64</code>, <code>cp -r /usr/share/zsh /root/zsh/share</code></li>
+      <li>Copy the dynamic library file for zsh: <code>cp /usr/lib64/libtinfo.so.5 /root/zsh/lib64/</code></li>
     </ul>
   </li>
   <li>Install oh-my-zsh. Follow the instruction of installation of oh-my-zsh is OK.</li>
