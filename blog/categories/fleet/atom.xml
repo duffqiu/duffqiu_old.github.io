@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: CoreOS Fleet | Duff Qiu's Blog]]></title>
-  <link href="http://duffqiu.github.io/blog/categories/coreos-fleet/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Fleet | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/fleet/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-18T19:02:27+08:00</updated>
+  <updated>2015-07-18T19:09:11+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>

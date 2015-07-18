@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>集成模式：标准化模式 - Duff Qiu's Blog</title>
+  <title>Category: Cloud - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,7 +19,7 @@
 
 
   
-  <meta name="description" content="原由 在系统集成中，可以通过不同的接口（EndPoint）适配多个外围系统，然后转换成标准的消息与内部系统结成。这种模式叫Normalizer。即标准化模式 解决办法 UML图例： 对于Normalizer内部，通常从逻辑上可以这样分 特点说明 对于集成简单的场景比较适用。 &hellip;">
+  <meta name="description" content="Category: Cloud">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -28,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/02/02/integration-pattern-normalizer">
+  <link rel="canonical" href="http://duffqiu.github.ioblog/categories/cloud">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -98,133 +98,36 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">集成模式：标准化模式</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-02-02T13:14:35+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2015</time>
-        
-        
-           | <a href="#comments">Comments</a>
-        
-      </p>
+    <h1 class="entry-title">Category: Cloud</h1>
     
   </header>
-
-
-<div class="entry-content"><h3 id="section">原由</h3>
-<hr />
-<p>在系统集成中，可以通过不同的接口（EndPoint）适配多个外围系统，然后转换成标准的消息与内部系统结成。这种模式叫Normalizer。即标准化模式</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-
-<p>UML图例：</p>
-
-<center><img src="/images/plantuml/c58dc192e46e5e6be91c5ccc50fd3990.png" /></center>
-
-<p>对于Normalizer内部，通常从逻辑上可以这样分</p>
-
-<center><img src="/images/plantuml/b6169e035bb671e3f1c1ca2801966ce0.png" /></center>
-
-<h3 id="section-2">特点说明</h3>
-
-<ul>
-  <li>对于集成简单的场景比较适用。多数用在连接多个类似的client端到一个系统</li>
-  <li>如果对于Endpoint本身没有太复杂的逻辑则可以忽略Router并且合并translator的功能</li>
-  <li>唯一的不足是如果集成的系统越来越多，则需要的Endpoint将成几何基数的增长</li>
-  <li>可以通过Canonical Data Model(规范化数据模型)的方式来解决Normalizer模式的不足</li>
-</ul>
-
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Duff Qiu</span></span>
-
-      
-
-
-
-
-
+  <div id="blog-archives" class="category">
 
 
 
   
+  <h2>2015</h2>
 
-
-<time datetime="2015-02-02T13:14:35+08:00" pubdate data-updated="true">Feb 2<span>nd</span>, 2015</time>
-      
-
-<span class="categories">
+<article>
   
-    <a class='category' href='/blog/categories/integration/'>Integration</a>
-  
-</span>
+<h1><a href="/blog/2015/07/13/zookeeper-cloud-deploy/">Zookeeper云部署方案设计</a></h1>
+<time datetime="2015-07-13T16:50:40+08:00" pubdate><span class='month'>Jul</span> <span class='day'>13</span> <span class='year'>2015</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/cloud/'>Cloud</a>, <a class='category' href='/blog/categories/zookeeper/'>Zookeeper</a></span>
+</footer>
 
 
-    </p>
-    
-      <div class="sharing">
-  
-  
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2015/01/13/howtostartprogrammingwithscala/" title="Previous Post: 如何开始用scala编程">&laquo; 如何开始用scala编程</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2015/02/02/fix-centos-virtualbox/" title="Next Post: 安装附属包失败后修复virtualbox上的centos">安装附属包失败后修复virtualbox上的centos &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
-
-
-   <section>
-     <h1>Comments</h1>
-     <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
-	<div class="ds-thread"></div>
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"duffqiu"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = 'http://static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		|| document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- Duoshuo Comment END -->
 </div>
-   </section>
+
   
+</article>
 
 </div>
 
@@ -290,90 +193,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
 
   
 </aside>
-
-
-
-
-<article class="archives">
-  <div class="related-posts">
-    <h2>Related Posts</h2>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/07/18/user-docker-mac/">在Mac下使用docker</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/docker/'>Docker</a>, <a class='category' href='/blog/categories/mac/'>MAC</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/07/13/zookeeper-cloud-deploy/">zookeeper云部署方案设计</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/cloud/'>Cloud</a>, <a class='category' href='/blog/categories/zookeeper/'>Zookeeper</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/07/09/install-zsh-coreos/">Install ZSH and oh_my_zsh in CoreOS</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/zsh/'>ZSH</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/07/06/docker-cleanup-none-images/">Docker清除none images</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
-        <h3 class="title"><a href="/blog/2015/07/05/coreos-fleet-trap/">Coreos fleet使用陷阱几例</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/fleet/'>Fleet</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-  </div>
-</article>
 
 
     </div>
