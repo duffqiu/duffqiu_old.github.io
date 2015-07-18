@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: MAC | Duff Qiu's Blog]]></title>
+  <title><![CDATA[Category: Mac | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/mac/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-13T19:17:27+08:00</updated>
+  <updated>2015-07-18T18:51:52+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -14,86 +14,23 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Mac Tips: 给用户增加用户组]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu/"/>
-    <updated>2014-01-30T18:06:43+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/01/30/mac-tips-gei-yong-hu-zeng-jia-yong-hu-zu</id>
-    <content type="html"><![CDATA[<h3 id="section">查看用户所在用户组</h3>
+    <title type="html"><![CDATA[在Mac下使用docker]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/18/user-docker-mac/"/>
+    <updated>2015-07-18T18:29:43+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/18/user-docker-mac</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>Docker是基于Linux Kernel的容器管理器，但是如果想在Mac上使用就必须安装Linux的虚拟机。当然如果是自己安装一个Linux到virtualbox或者vmare也是没有问题的。我自己就是这样用CoreOS的。但是如果只是想试用或学习docker，这样的方式有些重了，因为每次都要启动虚拟机，登录虚拟机再使用。为了解决这个docker有了<a href="http://docs.docker.com/installation/mac/">boot2docker</a>。但是boot2docker还是需要比较繁琐的安装。所以最好的方式是直接使用<a href="https://kitematic.com">kitematic</a>，kitematic还同时支持windows。但是切记不要将kitematic用在生产环境。</p>
 
-<pre><code>&gt;groups
-</code></pre>
+<h3 id="section-1">解决办法</h3>
+<hr />
 
-<h3 id="section-1">查看当前有那些用户</h3>
+<ul>
+  <li>直接下载kitematic，然后得到一个kitematic.app</li>
+  <li>将它放到application中，直接运行就好</li>
+  <li>在菜单中将docker命令行安装到系统，需要管理员权限，这样就可以通过命令行使用docker了(不过命令行启动需要在kitematic点击<code>DOCKER CLI</code>)</li>
+</ul>
 
-<pre><code>&gt;uers
-</code></pre>
-
-<h3 id="section-2">给用户增加用户组</h3>
-<p>通过用户管理创建的用户，如果赋予管理员权限，则用户在admin组，当时有时候需要将用户增加到wheel组，但是OSX没有像相关的命令，似乎apple就不想普通用户像linux那样操作OSX。不过对于技术人员，apple提供了个dscl(Directory Service command line utility)目录服务命令工具完成的，具体操作如下</p>
-
-<ol>
-  <li>
-    <p>现进入dscl</p>
-
-    <pre><code>&gt;dscl localhost
-</code></pre>
-  </li>
-  <li>
-    <p>进入组目录，使用ls 你就可以看到Mac所有的group（同理，在/Local/Default/Users可以到所有的用户）</p>
-
-    <pre><code>&gt;cd /Local/Default/Groups
-&gt;ls
-</code></pre>
-  </li>
-  <li>
-    <p>添加用户到用户组，&lt;groupname&gt;为组名，&lt;username&gt;为用户名</p>
-
-    <pre><code>&gt;append &lt;groupname&gt; GroupMembership &lt;username&gt;
-</code></pre>
-  </li>
-  <li>
-    <p>将用户从用户组中移除</p>
-
-    <pre><code>&gt;delete &lt;groupname&gt; GroupMembership &lt;username&gt;
-</code></pre>
-  </li>
-  <li>
-    <p>查看用户组信息，同理可以查看用户信息</p>
-
-    <pre><code>&gt;read  &lt;groupname&gt;
-</code></pre>
-  </li>
-</ol>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mac Tips: Path路径的查找顺序和设置]]></title>
-    <link href="http://duffqiu.github.io/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi/"/>
-    <updated>2014-01-30T13:14:17+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2014/01/30/mac-tips-pathlu-jing-de-cha-zhao-shun-xu-he-she-zhi</id>
-    <content type="html"><![CDATA[<h3 id="osxpath">OSX系统的PATH设置</h3>
-
-<ol>
-  <li>
-    <p>系统读取path配置的顺序为<br />
-1). /etc/paths wenjian <br />
-2). /etc/paths.d/目录下的所有设置文件<br />
-3). /etc/profile 文件 
-4). 用户目录下的shell配置文件，如zsh的.zshrc文件</p>
-  </li>
-  <li>
-    <p>获取当前path的值的方式<br />
-1). echo $PATH<br />
-2). /usr/libexec/path_helper  </p>
-  </li>
-  <li>
-    <p>用户设置path的建议<br />
-1). 只针对用户自己的设置配知道shell的配置文件中，如.zshrc
-2). 针对系统的文件，可以在/etc/paths.d/路径中生成一个对应的配置文件</p>
-  </li>
-</ol>
 ]]></content>
   </entry>
   

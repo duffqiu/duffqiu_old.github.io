@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-13T19:17:27+08:00</updated>
+  <updated>2015-07-18T18:51:52+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[在Mac下使用docker]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/18/user-docker-mac/"/>
+    <updated>2015-07-18T18:29:43+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/18/user-docker-mac</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>Docker是基于Linux Kernel的容器管理器，但是如果想在Mac上使用就必须安装Linux的虚拟机。当然如果是自己安装一个Linux到virtualbox或者vmare也是没有问题的。我自己就是这样用CoreOS的。但是如果只是想试用或学习docker，这样的方式有些重了，因为每次都要启动虚拟机，登录虚拟机再使用。为了解决这个docker有了<a href="http://docs.docker.com/installation/mac/">boot2docker</a>。但是boot2docker还是需要比较繁琐的安装。所以最好的方式是直接使用<a href="https://kitematic.com">kitematic</a>，kitematic还同时支持windows。但是切记不要将kitematic用在生产环境。</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ul>
+  <li>直接下载kitematic，然后得到一个kitematic.app</li>
+  <li>将它放到application中，直接运行就好</li>
+  <li>在菜单中将docker命令行安装到系统，需要管理员权限，这样就可以通过命令行使用docker了(不过命令行启动需要在kitematic点击<code>DOCKER CLI</code>)</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Zookeeper云部署方案设计]]></title>
@@ -1268,90 +1289,6 @@ sbt会在用户的home目录下创建.sbt和.ivy2的目录，依赖包都放在�
 <img src="http://duffqiu.github.io/images/cdm-2.png" alt="图二" /></p>
 
 <p>当我们需要考入如何实现Endpoint的时候，则可以考虑<a href="http://camel.apache.org/">Apache Camel Framework</a></p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[安装附属包失败后修复virtualbox上的centos]]></title>
-    <link href="http://duffqiu.github.io/blog/2015/02/02/fix-centos-virtualbox/"/>
-    <updated>2015-02-02T16:45:25+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2015/02/02/fix-centos-virtualbox</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<hr />
-<p>在virtualbox安装好centos7后，共享windows下的目录以及在host机器作拷贝张贴都不行，总是提示virtualbox的附属包没有安装，所以重新进行了安装。
-但是重装时发现virtualboxguess module（vboxguest）没有安装成功，提示需要安装kernel-develp包，然后再重装这个附属包。
-按照提示用<code>sudo yum install kernel-develop</code>, 然后再重装这个附属包
-重新启动后竟然网卡无法使用了，同时也无法mount cdrom来卸载这个virtualbox的附属包。</p>
-
-<p>网卡提示的错误信息是：</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-<span class="line-number">14</span>
-<span class="line-number">15</span>
-<span class="line-number">16</span>
-<span class="line-number">17</span>
-<span class="line-number">18</span>
-<span class="line-number">19</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
-</span><span class="line">
-</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
-</span><span class="line">
-</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
-</span><span class="line">
-</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
-</span><span class="line">
-</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
-</span><span class="line">
-</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
-</span><span class="line">
-</span><span class="line">11月 05 15:30:10 localhost.localdomain network[2920]: RTNETLINK answers: File exists
-</span><span class="line">
-</span><span class="line">11月 05 15:30:10 localhost.localdomain systemd[1]: network.service: control process exited, code=exited status=1
-</span><span class="line">
-</span><span class="line">11月 05 15:30:10 localhost.localdomain systemd[1]: Failed to start LSB: Bring up/down networking.
-</span><span class="line">
-</span><span class="line">11月 05 15:30:10 localhost.localdomain systemd[1]: Unit network.service entered failed state.</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>Google了半天都没有办法，唯一能定位的地方是virtualbox修改了kernel的module造成</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-
-<p>kernel的module一般都要通过原码的方式在本地编译后安装/加载，所以才需要kernel-develop的rpm包，难道问题在这里？
-通过命令<code>rpm -qa|grep kernel</code>查看安装了的包，竟然发现有两个不同的版本的kernel-develop
-那么可能的问题就出在了版本上
-那就需要将不对的kernel-develop rpm包卸载掉并将对应的module删除后重新编印virtualbox的module
-方法如下：</p>
-
-<ul>
-  <li>删除对应的编译需要的lib库： <code>sudo rm /lib/modules/3.10.0-123.el7.x86_64/misc/vbox*</code></li>
-  <li>重建modules.dep和map文件: <code>sudo depmod -a</code></li>
-  <li>重新加载module: <code>sudo modprobe module</code></li>
-  <li>reboot</li>
-  <li>这个时候应该cdroom和网卡都回来了</li>
-  <li>重新安装virtualbox的附属包</li>
-</ul>
-
-<h3 id="section-2">总结</h3>
-
-<p>对于需要影响到kernel的安装的时候， 最好先备份一次VM，避免因为kernel被破坏后难以恢复的问题
-对于需要编译kernel module的时候，先查一下已经安装的kernel的开发包有没有多个名称相同但是版本不同的包，如果有则需要删除重复的 
-从过程来看，修复是很快的，但是找到问题的根源是复杂的。google也不是万能的。</p>
-
-<p>特定申明：该版权是<a href="&#109;&#097;&#105;&#108;&#116;&#111;:&#032;&#115;&#101;&#097;&#110;&#046;&#103;&#111;&#110;&#103;&#064;&#103;&#109;&#097;&#105;&#108;&#046;&#099;&#111;&#109;">Junjun</a>的 -:)</p>
 
 ]]></content>
   </entry>

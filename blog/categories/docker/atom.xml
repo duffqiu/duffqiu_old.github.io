@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Docker | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/docker/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-13T19:17:27+08:00</updated>
+  <updated>2015-07-18T18:51:52+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[在Mac下使用docker]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/18/user-docker-mac/"/>
+    <updated>2015-07-18T18:29:43+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/18/user-docker-mac</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>Docker是基于Linux Kernel的容器管理器，但是如果想在Mac上使用就必须安装Linux的虚拟机。当然如果是自己安装一个Linux到virtualbox或者vmare也是没有问题的。我自己就是这样用CoreOS的。但是如果只是想试用或学习docker，这样的方式有些重了，因为每次都要启动虚拟机，登录虚拟机再使用。为了解决这个docker有了<a href="http://docs.docker.com/installation/mac/">boot2docker</a>。但是boot2docker还是需要比较繁琐的安装。所以最好的方式是直接使用<a href="https://kitematic.com">kitematic</a>，kitematic还同时支持windows。但是切记不要将kitematic用在生产环境。</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ul>
+  <li>直接下载kitematic，然后得到一个kitematic.app</li>
+  <li>将它放到application中，直接运行就好</li>
+  <li>在菜单中将docker命令行安装到系统，需要管理员权限，这样就可以通过命令行使用docker了(不过命令行启动需要在kitematic点击<code>DOCKER CLI</code>)</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[技术杂谈1]]></title>

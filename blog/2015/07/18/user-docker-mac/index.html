@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: OO - Duff Qiu's Blog</title>
+  <title>在Mac下使用docker - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,7 +19,7 @@
 
 
   
-  <meta name="description" content="Category: OO">
+  <meta name="description" content="原由 Docker是基于Linux Kernel的容器管理器，但是如果想在Mac上使用就必须安装Linux的虚拟机。当然如果是自己安装一个Linux到virtualbox或者vmare也是没有问题的。我自己就是这样用CoreOS的。但是如果只是想试用或学习docker，这样的方式有些重了， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -28,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.ioblog/categories/oo">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/07/18/user-docker-mac">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -98,36 +98,120 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: OO</h1>
+    
+      <h1 class="entry-title">在Mac下使用docker</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-18T18:29:43+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2015</time>
+        
+        
+           | <a href="#comments">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>Docker是基于Linux Kernel的容器管理器，但是如果想在Mac上使用就必须安装Linux的虚拟机。当然如果是自己安装一个Linux到virtualbox或者vmare也是没有问题的。我自己就是这样用CoreOS的。但是如果只是想试用或学习docker，这样的方式有些重了，因为每次都要启动虚拟机，登录虚拟机再使用。为了解决这个docker有了<a href="http://docs.docker.com/installation/mac/">boot2docker</a>。但是boot2docker还是需要比较繁琐的安装。所以最好的方式是直接使用<a href="https://kitematic.com">kitematic</a>，kitematic还同时支持windows。但是切记不要将kitematic用在生产环境。</p>
 
-  
-  <h2>2014</h2>
+<h3 id="section-1">解决办法</h3>
+<hr />
 
-<article>
-  
-<h1><a href="/blog/2014/02/02/oode-%5B%3F%5D-xie-she-ji-yuan-ze/">OO的一些设计原则</a></h1>
-<time datetime="2014-02-02T16:05:09+08:00" pubdate><span class='month'>Feb</span> <span class='day'>02</span> <span class='year'>2014</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/java/'>Java</a>, <a class='category' href='/blog/categories/oo/'>OO</a></span>
-</footer>
-
-
-</article>
+<ul>
+  <li>直接下载kitematic，然后得到一个kitematic.app</li>
+  <li>将它放到application中，直接运行就好</li>
+  <li>在菜单中将docker命令行安装到系统，需要管理员权限，这样就可以通过命令行使用docker了(不过命令行启动需要在kitematic点击<code>DOCKER CLI</code>)</li>
+</ul>
 
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Duff Qiu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-18T18:29:43+08:00" pubdate data-updated="true">Jul 18<span>th</span>, 2015</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/docker/'>Docker</a>, <a class='category' href='/blog/categories/mac/'>Mac</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/07/13/zookeeper-cloud-deploy/" title="Previous Post: zookeeper云部署方案设计">&laquo; zookeeper云部署方案设计</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+
+
+   <section>
+     <h1>Comments</h1>
+     <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"duffqiu"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+</div>
+   </section>
+  
 
 </div>
 
@@ -194,6 +278,90 @@
 
   
 </aside>
+
+
+
+
+<article class="archives">
+  <div class="related-posts">
+    <h2>Related Posts</h2>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/13/zookeeper-cloud-deploy/">zookeeper云部署方案设计</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/zookeeper-cloud/'>Zookeeper Cloud</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/09/install-zsh-coreos/">Install ZSH and oh_my_zsh in CoreOS</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos-zsh/'>CoreOS ZSH</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/06/docker-cleanup-none-images/">Docker清除none images</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/05/coreos-fleet-trap/">Coreos fleet使用陷阱几例</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos-fleet/'>CoreOS Fleet</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/05/systemd-boot/">Systemd的启动顺序和自动启动配置</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/systemd/'>Systemd</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+  </div>
+</article>
 
 
     </div>
