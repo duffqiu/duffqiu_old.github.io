@@ -3,7 +3,7 @@ layout: post
 title: "zookeeper云部署方案设计"
 date: 2015-07-13 16:50:40 +0800
 comments: true
-categories: [Zookeeper Cloud]
+categories: [Zookeeper,Cloud]
 ---
 
 ###原由

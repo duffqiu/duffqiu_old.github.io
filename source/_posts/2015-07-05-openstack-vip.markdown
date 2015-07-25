@@ -3,7 +3,7 @@ layout: post
 title: "Openstack用Keealived来实现VIP"
 date: 2015-07-05 15:34:52 +0800
 comments: true
-categories: [Openstack, Keepalvied]
+categories: [Openstack, Keepalived]
 ---
 
 ###原由

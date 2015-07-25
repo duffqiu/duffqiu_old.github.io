@@ -3,7 +3,7 @@ layout: post
 title: "Install ZSH and oh_my_zsh in CoreOS"
 date: 2015-07-09 21:13:24 +0800
 comments: true
-categories: [CoreOS ZSH]
+categories: [CoreOS,ZSH]
 ---
 
 ###Why
@@ -27,8 +27,8 @@ Since there is no installation tool like yum or apt-get in CoreOS, we have to do
    - Run a docker container with centos7 image: `docker run -it --rm -v <zsh_home>:/root/zsh centos /bin/bash`
    - In the container, run `yum update` and `yum install zsh`
    - In the container, query what is installed for zsh: `rpm -aql zsh`
-   - Copy the zsh files to the folder you mount for the container in the docker run command. `cp /bin/zsh root/zsh/bin`, `cp -r /usrlib64/zsh /root/zsh/lib64`, `cp -r /usr/share/zsh /root/zsh/share`
-   - Copy the dynamic library file for zsh: `copy /usr/lib64/libtinfo.so.5 /root/zsh/lib64/`
+   - Copy the zsh files to the folder you mount for the container in the docker run command. `cp /bin/zsh root/zsh/bin`, `cp -r /usr/lib64/zsh /root/zsh/lib64`, `cp -r /usr/share/zsh /root/zsh/share`
+   - Copy the dynamic library file for zsh: `cp /usr/lib64/libtinfo.so.5 /root/zsh/lib64/`
 
 - Install oh-my-zsh. Follow the instruction of installation of oh-my-zsh is OK.
 - Update .bashrc file (under home path)

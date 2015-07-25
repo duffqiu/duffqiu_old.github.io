@@ -3,7 +3,7 @@ layout: post
 title: "Coreos fleet使用陷阱几例"
 date: 2015-07-05 18:57:28 +0800
 comments: true
-categories: [CoreOS Fleet]
+categories: [CoreOS,Fleet]
 ---
 
 ###原由

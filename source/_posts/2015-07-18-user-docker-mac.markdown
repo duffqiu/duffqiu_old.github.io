@@ -3,7 +3,7 @@ layout: post
 title: "在Mac下使用docker"
 date: 2015-07-18 18:29:43 +0800
 comments: true
-categories: [Mac, Docker]
+categories: [MAC,Docker]
 ---
 
 ###原由
