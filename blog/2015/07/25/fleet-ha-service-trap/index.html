@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>CoreOS Etcd2 - Duff Qiu's Blog</title>
+  <title>Fleet部署高可用性服务的坑 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,7 +19,7 @@
 
 
   
-  <meta name="description" content="原由 从CoreOS 682.1开始，ETCD2已经被默认安装了，通过Clould Init的方式在Openstack上启动CoreOS时发生了一些错误，总结如下 解决办法 ETCD2总是启动不成功，通过journalctl _EXE=/usr/bin/coreos- &hellip;">
+  <meta name="description" content="原由 在一个云集群环境中，如何部署服务使其达到高可用性是运维中重要的事情。如果选用CoreOS和Docker作为基础，那么Fleet将是一个很好的服务调度工具。不过改调度工具是比较适用于低层的服务，如果想要灵活的更小粒度的调度应用服务，则需要参考Apache &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -28,7 +28,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/07/05/coreos-etcd2">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/07/25/fleet-ha-service-trap">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -102,7 +102,7 @@
   
   <header>
     
-      <h1 class="entry-title">CoreOS Etcd2</h1>
+      <h1 class="entry-title">Fleet部署高可用性服务的坑</h1>
     
     
       <p class="meta">
@@ -118,7 +118,7 @@
   
 
 
-<time datetime="2015-07-05T16:13:19+08:00" pubdate data-updated="true">Jul 5<span>th</span>, 2015</time>
+<time datetime="2015-07-25T17:39:16+08:00" pubdate data-updated="true">Jul 25<span>th</span>, 2015</time>
         
         
            | <a href="#comments">Comments</a>
@@ -130,34 +130,54 @@
 
 <div class="entry-content"><h3 id="section">原由</h3>
 <hr />
-<p>从CoreOS 682.1开始，ETCD2已经被默认安装了，通过Clould Init的方式在Openstack上启动CoreOS时发生了一些错误，总结如下</p>
+<p>在一个云集群环境中，如何部署服务使其达到高可用性是运维中重要的事情。如果选用CoreOS和Docker作为基础，那么Fleet将是一个很好的服务调度工具。不过改调度工具是比较适用于低层的服务，如果想要灵活的更小粒度的调度应用服务，则需要参考Apache Mesos或者是Google的Kubernetes。至于用Mesos或者是Kubernetes，我后面试完后再分享。回到Fleet，我使用它主要是因为需要集群中重要部署某些特定的服务给应用服务使用，如zookeeper。所以参见fleet的文档“<a href="https://coreos.com/fleet/docs/latest/launching-containers-fleet.html">如使用fleet何部署容器</a>”，但是对于高可用性章节，有些注意点文档倒是没有提，给使用过程造成了一定的麻烦。这个问题也在issue列表中<a href="https://github.com/coreos/fleet/issues/969">#969</a>，在本文时改问题依然没有修复。不过如何恢复错误倒是有办法的</p>
 
 <h3 id="section-1">解决办法</h3>
 <hr />
 
-<ul>
-  <li>ETCD2总是启动不成功，通过<code>journalctl _EXE=/usr/bin/coreos-cloudinit</code>查看发现其提示没有发现本地的文件有相关的member信息。究其原因是我在cloudinit中设置了etcd2的文件路径，而改文件目录默认是root的权限，但是etcd2运行的时候是以etcd用户运行的，所以造成无法访问改文件目录而启动失败</li>
-  <li>解决的办法是通过在cloudinit中写一个oneshot的systemd的服务，该服务将这个目录的权限和所有权更改为etcd，可参照我github上的<a href="https://raw.githubusercontent.com/duffqiu/coreos-openstack/master/etcd2/cloud-config-front1.yaml">cloudinit的例子</a></li>
-  <li>另外需要注意的是，etcd2通过discovery指定的cluster的大小。如果没有满足这个cluster的大小的节点联入则etcd2的集群是无法启动的</li>
-  <li>etcd2的cluster，在接入节点满足cluster指定的大小后，后续的接入节点将自动降格为proxy模式</li>
-  <li>etcdctl可以用<code>--debug</code>开查看发出的CURL命令是什么</li>
-</ul>
-
-<h4 id="docker-tips">Docker tips</h4>
-
-<ul>
-  <li>从Docker 1.6开始，docker可以支持查看container的运行时的CPU和Memery的消耗，以下命令为列出本机所有containter的运行状况</li>
-</ul>
+<p>问题的来源是这样的，如果需要部署高可用性服务，那么systemd服务的命名方式是xxxx@.service。注意，文件一定要以<code>.service</code>最为后缀命名。然后通过fleet命令来部署它，本例子是部署3个服务实例</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">docker stats $(docker inspect --format='' $(docker ps -q))</span></code></pre></td></tr></table></div></figure></notextile></div>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">fleetctl submit xxxx@.service
+</span><span class="line">fleetctl load xxxx@{1..3}.service
+</span><span class="line">fleetctl start xxxx@{1..3}.service</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<ul>
-  <li>从Docker 1.6开始，docker支持直接使用命令进入到container中进行交互，而不用向以前那么麻烦的使用nsenter的方式了，具体用法是</li>
-</ul>
+<p>但是在敲键盘的时候，输入<code>load</code>指令时讲要运行的服务的实例的个数给漏了，写成和 submit相同的形式，因为我是调出历史命令改的</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">docker exec -it &lt;containter name&gt; &lt;command in container&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+</pre></td><td class="code"><pre><code class=""><span class="line">fleetctl load xxxx@.service</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这个时候fleet将出问题了，fleetctl会一直挂在哪里不动了。通过<code>ctl+c</code>取消后，使用正确的命令也不会去部署服务了（某台错误的机器）</p>
+
+<p>通过查看fleet的服务日志<code>journalctl -u fleet</code>可以看到其一直在输出错误：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">ul 25 09:21:59 core-02 fleetd[550]: ERROR reconcile.go:79: Unable to determine agent's current state: failed fetching unit states from UnitManager: Unit name xxxxr@.service is not valid.
+</span><span class="line">Jul 25 09:21:59 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name xxxx@.service is not valid.
+</span><span class="line">Jul 25 09:22:00 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name xxxx@.service is not valid.
+</span><span class="line">Jul 25 09:22:01 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name xxxx@.service is not valid.
+</span><span class="line">Jul 25 09:22:02 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name zookeeper@.service is not valid.
+</span><span class="line">Jul 25 09:22:03 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name xxxx@.service is not valid.
+</span><span class="line">Jul 25 09:22:04 core-02 fleetd[550]: ERROR reconcile.go:79: Unable to determine agent's current state: failed fetching unit states from UnitManager: Unit name xxxx@.service is not valid</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>解决步骤如下</p>
+
+<ul>
+  <li>找到出问题的机器。因为fleet是随机部署服务的，所以需要确定是哪台机才可以定位问题。通过<code>fleetctl list-unit-files</code>看看<code>xxxx@.service</code>被load到哪台机上</li>
+  <li>通过ssh登陆到错误的机器，查找xxxx@.service文件所在的地方，然后将其删除。文件主要放在两个地方：<code>/run/fleet/units/</code>和<code>/run/systemd/system</code>。需要sudo权限</li>
+  <li>运行<code>systemctl daemon-reload</code>刷新systemd的服务</li>
+  <li>重新启动fleet: <code>systemctl restart fleet</code></li>
+  <li>需要注意的是如果重启fleet将会造成所以依赖fleet管理的服务都会被重新启动。如果服务是通过docker容器运行的，而服务描述文件中有写了<code>docker pull</code>将有可能造成服务恢复需要很长时间</li>
+</ul>
+
 </div>
 
 
@@ -180,12 +200,12 @@
   
 
 
-<time datetime="2015-07-05T16:13:19+08:00" pubdate data-updated="true">Jul 5<span>th</span>, 2015</time>
+<time datetime="2015-07-25T17:39:16+08:00" pubdate data-updated="true">Jul 25<span>th</span>, 2015</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/etcd2/'>ETCD2</a>
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/fleet/'>Fleet</a>
   
 </span>
 
@@ -201,10 +221,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/07/05/coreos-keepalived/" title="Previous Post: CoreOS安装和使用Keepalived">&laquo; CoreOS安装和使用Keepalived</a>
+        <a class="basic-alignment left" href="/blog/2015/07/18/user-docker-mac/" title="Previous Post: 在Mac下使用docker">&laquo; 在Mac下使用docker</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/07/05/openstack-blockservice/" title="Next Post: Openstack如何更好的使用block service作为磁盘使用">Openstack如何更好的使用block service作为磁盘使用 &raquo;</a>
       
     </p>
   </footer>
@@ -305,22 +323,6 @@ var duoshuoQuery = {short_name:"duffqiu"};
     <h2>Related Posts</h2>
     
       <article>
-        <h3 class="title"><a href="/blog/2015/07/25/fleet-ha-service-trap/">fleet部署高可用性服务的坑</a></h3>
-        <div class="meta">
-          <span class="tags">
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/fleet/'>Fleet</a>
-  
-</span>
-
-</span>
-            
-        </div>
-      </article>
-    
-      <article>
         <h3 class="title"><a href="/blog/2015/07/18/user-docker-mac/">在Mac下使用docker</a></h3>
         <div class="meta">
           <span class="tags">
@@ -372,6 +374,22 @@ var duoshuoQuery = {short_name:"duffqiu"};
         <h3 class="title"><a href="/blog/2015/07/06/docker-cleanup-none-images/">Docker清除none images</a></h3>
         <div class="meta">
           <span class="tags">
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/05/coreos-fleet-trap/">Coreos fleet使用陷阱几例</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/fleet/'>Fleet</a>
+  
+</span>
 
 </span>
             

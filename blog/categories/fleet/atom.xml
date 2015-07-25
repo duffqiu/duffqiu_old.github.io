@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Fleet | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/fleet/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-18T19:09:11+08:00</updated>
+  <updated>2015-07-25T18:09:26+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,59 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Fleet部署高可用性服务的坑]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/25/fleet-ha-service-trap/"/>
+    <updated>2015-07-25T17:39:16+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/25/fleet-ha-service-trap</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在一个云集群环境中，如何部署服务使其达到高可用性是运维中重要的事情。如果选用CoreOS和Docker作为基础，那么Fleet将是一个很好的服务调度工具。不过改调度工具是比较适用于低层的服务，如果想要灵活的更小粒度的调度应用服务，则需要参考Apache Mesos或者是Google的Kubernetes。至于用Mesos或者是Kubernetes，我后面试完后再分享。回到Fleet，我使用它主要是因为需要集群中重要部署某些特定的服务给应用服务使用，如zookeeper。所以参见fleet的文档“<a href="https://coreos.com/fleet/docs/latest/launching-containers-fleet.html">如使用fleet何部署容器</a>”，但是对于高可用性章节，有些注意点文档倒是没有提，给使用过程造成了一定的麻烦。这个问题也在issue列表中<a href="https://github.com/coreos/fleet/issues/969">#969</a>，在本文时改问题依然没有修复。不过如何恢复错误倒是有办法的</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>问题的来源是这样的，如果需要部署高可用性服务，那么systemd服务的命名方式是xxxx@.service。注意，文件一定要以<code>.service</code>最为后缀命名。然后通过fleet命令来部署它，本例子是部署3个服务实例</p>
+
+<p><code>
+fleetctl submit xxxx@.service
+fleetctl load xxxx@{1..3}.service
+fleetctl start xxxx@{1..3}.service
+</code></p>
+
+<p>但是在敲键盘的时候，输入<code>load</code>指令时讲要运行的服务的实例的个数给漏了，写成和 submit相同的形式，因为我是调出历史命令改的</p>
+
+<p><code>
+fleetctl load xxxx@.service
+</code></p>
+
+<p>这个时候fleet将出问题了，fleetctl会一直挂在哪里不动了。通过<code>ctl+c</code>取消后，使用正确的命令也不会去部署服务了（某台错误的机器）</p>
+
+<p>通过查看fleet的服务日志<code>journalctl -u fleet</code>可以看到其一直在输出错误：</p>
+
+<p><code>
+ul 25 09:21:59 core-02 fleetd[550]: ERROR reconcile.go:79: Unable to determine agent's current state: failed fetching unit states from UnitManager: Unit name xxxxr@.service is not valid.
+Jul 25 09:21:59 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name xxxx@.service is not valid.
+Jul 25 09:22:00 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name xxxx@.service is not valid.
+Jul 25 09:22:01 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name xxxx@.service is not valid.
+Jul 25 09:22:02 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name zookeeper@.service is not valid.
+Jul 25 09:22:03 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name xxxx@.service is not valid.
+Jul 25 09:22:04 core-02 fleetd[550]: ERROR reconcile.go:79: Unable to determine agent's current state: failed fetching unit states from UnitManager: Unit name xxxx@.service is not valid
+</code></p>
+
+<p>解决步骤如下</p>
+
+<ul>
+  <li>找到出问题的机器。因为fleet是随机部署服务的，所以需要确定是哪台机才可以定位问题。通过<code>fleetctl list-unit-files</code>看看<code>xxxx@.service</code>被load到哪台机上</li>
+  <li>通过ssh登陆到错误的机器，查找xxxx@.service文件所在的地方，然后将其删除。文件主要放在两个地方：<code>/run/fleet/units/</code>和<code>/run/systemd/system</code>。需要sudo权限</li>
+  <li>运行<code>systemctl daemon-reload</code>刷新systemd的服务</li>
+  <li>重新启动fleet: <code>systemctl restart fleet</code></li>
+  <li>需要注意的是如果重启fleet将会造成所以依赖fleet管理的服务都会被重新启动。如果服务是通过docker容器运行的，而服务描述文件中有写了<code>docker pull</code>将有可能造成服务恢复需要很长时间</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Coreos Fleet使用陷阱几例]]></title>
