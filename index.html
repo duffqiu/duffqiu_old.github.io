@@ -12,7 +12,7 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-9db20c10c86fb4705f6245140fa4bef1.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-6690b226d693d0dcae1c080ba74b7899.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-9e9bd6226be387bc5d900aebb645129c.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-f853f583f48a4b2456dd0c85319205c5.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
@@ -773,17 +773,14 @@
   <li>从Docker 1.6开始，docker可以支持查看container的运行时的CPU和Memery的消耗，以下命令为列出本机所有containter的运行状况</li>
 </ul>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">docker stats <span class="k">$(</span>docker inspect --format<span class="o">=</span><span class="s1">&#39;&#39;</span> <span class="k">$(</span>docker ps -q<span class="k">))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p><code>docker stats $(docker inspect --format='' $(docker ps -q))</code></p>
 
 <ul>
   <li>从Docker 1.6开始，docker支持直接使用命令进入到container中进行交互，而不用向以前那么麻烦的使用nsenter的方式了，具体用法是</li>
 </ul>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">docker <span class="nb">exec</span> -it &lt;containter name&gt; &lt;<span class="nb">command </span>in container&gt;
-</span></code></pre></td></tr></table></div></figure></notextile></div>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">docker exec -it &lt;containter name&gt; &lt;command in container&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
 </div>
   
   

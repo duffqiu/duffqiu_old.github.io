@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CoreOS | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/coreos/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-25T21:49:18+08:00</updated>
+  <updated>2015-07-25T21:54:42+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -201,9 +201,7 @@ ssh-add &lt;ssh的私钥，如果是用openstack，则是用openstack生成的�
   <li>从Docker 1.6开始，docker可以支持查看container的运行时的CPU和Memery的消耗，以下命令为列出本机所有containter的运行状况</li>
 </ul>
 
-<p><code>sh
-docker stats $(docker inspect --format='' $(docker ps -q))
-</code></p>
+<p><code>docker stats $(docker inspect --format='' $(docker ps -q))</code></p>
 
 <ul>
   <li>从Docker 1.6开始，docker支持直接使用命令进入到container中进行交互，而不用向以前那么麻烦的使用nsenter的方式了，具体用法是</li>
