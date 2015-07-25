@@ -25,12 +25,12 @@ categories: [CoreOS, ETCD2]
 
 - 从Docker 1.6开始，docker可以支持查看container的运行时的CPU和Memery的消耗，以下命令为列出本机所有containter的运行状况
 
-```
-docker stats $(docker inspect --format='{{.Name}}' $(docker ps -q))
-```
+{% raw  %}
+docker stats $(docker inspect --format="{{ .Name }}" $(docker ps -q))
+{% endraw %}
 
 - 从Docker 1.6开始，docker支持直接使用命令进入到container中进行交互，而不用向以前那么麻烦的使用nsenter的方式了，具体用法是
 
-```
+``` sh
 docker exec -it <containter name> <command in container>
 ```
