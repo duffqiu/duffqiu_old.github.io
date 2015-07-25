@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-25T21:54:42+08:00</updated>
+  <updated>2015-07-25T22:12:46+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -420,14 +420,15 @@
   <li>从Docker 1.6开始，docker可以支持查看container的运行时的CPU和Memery的消耗，以下命令为列出本机所有containter的运行状况</li>
 </ul>
 
-<p><code>docker stats $(docker inspect --format='' $(docker ps -q))</code></p>
+<p>docker stats $(docker inspect –format=”{{ .Name }}” $(docker ps -q))</p>
 
 <ul>
   <li>从Docker 1.6开始，docker支持直接使用命令进入到container中进行交互，而不用向以前那么麻烦的使用nsenter的方式了，具体用法是</li>
 </ul>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">docker exec -it &lt;containter name&gt; &lt;command in container&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">docker <span class="nb">exec</span> -it &lt;containter name&gt; &lt;<span class="nb">command </span>in container&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 ]]></content>
   </entry>
   
