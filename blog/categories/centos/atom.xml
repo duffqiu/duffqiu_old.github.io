@@ -4,7 +4,7 @@
   <title><![CDATA[Category: CentOS | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/centos/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-25T22:12:46+08:00</updated>
+  <updated>2015-08-10T09:17:57+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,30 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CentOS下使用NTFS格式的U盘或移动硬盘]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/08/10/centos-ntfs-disk/"/>
+    <updated>2015-08-10T09:14:06+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/08/10/centos-ntfs-disk</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>CentOS7没有携带NTFS的驱动，当使用NTFS的硬盘的时候就会出现无法识别的问题</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>安装ntfs-3g的驱动</p>
+
+<p><code>
+wget https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+sudo rpm -ivUh epel-release-7-5.noarch.rpm
+sudo yum install ntfs-3g
+</code></p>
+
+<p>注意：需要讲U盘退出后再插入才可以生效</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[安装附属包失败后修复virtualbox上的centos]]></title>

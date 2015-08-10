@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: Linux - Duff Qiu's Blog</title>
+  <title>CentOS下使用NTFS格式的U盘或移动硬盘 - Duff Qiu's Blog</title>
   <meta name="author" content="Duff Qiu">
 
 
@@ -19,7 +19,10 @@
 
 
   
-  <meta name="description" content="Category: Linux">
+  <meta name="description" content="原由 CentOS7没有携带NTFS的驱动，当使用NTFS的硬盘的时候就会出现无法识别的问题 解决办法 安装ntfs-3g的驱动 1
+2
+3
+wget https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -28,7 +31,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://duffqiu.github.ioblog/categories/linux">
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/08/10/centos-ntfs-disk">
   <link href="/favicon.png" rel="icon">
 <!--
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
@@ -98,36 +101,124 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Linux</h1>
+    
+      <h1 class="entry-title">CentOS下使用NTFS格式的U盘或移动硬盘</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-10T09:14:06+08:00" pubdate data-updated="true">Aug 10<span>th</span>, 2015</time>
+        
+        
+           | <a href="#comments">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>CentOS7没有携带NTFS的驱动，当使用NTFS的硬盘的时候就会出现无法识别的问题</p>
 
-  
-  <h2>2015</h2>
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>安装ntfs-3g的驱动</p>
 
-<article>
-  
-<h1><a href="/blog/2015/02/26/ssh-proxy-in-linux/">Ssh在linux下使用http/https代理</a></h1>
-<time datetime="2015-02-26T18:00:30+08:00" pubdate><span class='month'>Feb</span> <span class='day'>26</span> <span class='year'>2015</span></time>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">wget https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+</span><span class="line">sudo rpm -ivUh epel-release-7-5.noarch.rpm
+</span><span class="line">sudo yum install ntfs-3g</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/linux/'>Linux</a>, <a class='category' href='/blog/categories/proxy/'>Proxy</a></span>
-</footer>
-
-
-</article>
+<p>注意：需要讲U盘退出后再插入才可以生效</p>
 
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Duff Qiu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-10T09:14:06+08:00" pubdate data-updated="true">Aug 10<span>th</span>, 2015</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/centos/'>CentOS</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/07/25/fleet-ha-service-trap/" title="Previous Post: fleet部署高可用性服务的坑">&laquo; fleet部署高可用性服务的坑</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+
+
+   <section>
+     <h1>Comments</h1>
+     <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"duffqiu"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+</div>
+   </section>
+  
 
 </div>
 
@@ -193,6 +284,90 @@
 
   
 </aside>
+
+
+
+
+<article class="archives">
+  <div class="related-posts">
+    <h2>Related Posts</h2>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/25/fleet-ha-service-trap/">fleet部署高可用性服务的坑</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/fleet/'>Fleet</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/18/user-docker-mac/">在Mac下使用docker</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/docker/'>Docker</a>, <a class='category' href='/blog/categories/mac/'>MAC</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/13/zookeeper-cloud-deploy/">zookeeper云部署方案设计</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/cloud/'>Cloud</a>, <a class='category' href='/blog/categories/zookeeper/'>Zookeeper</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/09/install-zsh-coreos/">Install ZSH and oh_my_zsh in CoreOS</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/zsh/'>ZSH</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/06/docker-cleanup-none-images/">Docker清除none images</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+</span>
+            
+        </div>
+      </article>
+    
+  </div>
+</article>
 
 
     </div>

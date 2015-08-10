@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-07-25T22:12:46+08:00</updated>
+  <updated>2015-08-10T09:17:57+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[CentOS下使用NTFS格式的U盘或移动硬盘]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/08/10/centos-ntfs-disk/"/>
+    <updated>2015-08-10T09:14:06+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/08/10/centos-ntfs-disk</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>CentOS7没有携带NTFS的驱动，当使用NTFS的硬盘的时候就会出现无法识别的问题</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>安装ntfs-3g的驱动</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">wget https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+</span><span class="line">sudo rpm -ivUh epel-release-7-5.noarch.rpm
+</span><span class="line">sudo yum install ntfs-3g</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>注意：需要讲U盘退出后再插入才可以生效</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Fleet部署高可用性服务的坑]]></title>
@@ -1218,103 +1243,6 @@ sbt会在用户的home目录下创建.sbt和.ivy2的目录，依赖包都放在�
 <p>到此一个就本的sbt的scala开发环境就建成了。
 后续不同的项目的变化基本上就集中在增加新的依赖包，增加不同的plugin来执行不同的任务
 个人使用看来，对比maven相对而言要简单一些。只是SBT使用场景基本只局限于java和scala，同时sbt的写法是scala语法</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Scala中函数式编程还是命令式编程]]></title>
-    <link href="http://duffqiu.github.io/blog/2015/02/05/fp-or-imperative-with-scala/"/>
-    <updated>2015-02-05T11:44:46+08:00</updated>
-    <id>http://duffqiu.github.io/blog/2015/02/05/fp-or-imperative-with-scala</id>
-    <content type="html"><![CDATA[<h3 id="section">原由</h3>
-<hr />
-<p>Scala是即支持传统的命令式编程也支持函数式编程(FP)，我们既可以像java那样写代码，也可以像Lisp那样写。
-但是那种好呢？</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-<p>个人的理解是，主要取决于对问题的解决方式的思路。
-如果已经习惯了命令式编程的思路，那就用命令式编程好了。
-不过既然FP已经逐渐成为潮流，那换换思路也未尝不可。
-从Scala语言本身看两者没有冲突</p>
-
-<h3 id="section-2">一个例子来对比两种思路</h3>
-<hr />
-
-<p>例子：有一个Map的数组/列表，要将不同Map中相同key的value值相加，最后得到一个Map</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Vector</span><span class="o">(</span><span class="n">Map</span><span class="o">(</span><span class="s">&quot;test&quot;</span> <span class="o">-&gt;</span> <span class="mi">1</span><span class="o">,</span> <span class="s">&quot;hello&quot;</span> <span class="o">-&gt;</span> <span class="mi">2</span><span class="o">,</span> <span class="s">&quot;wwww&quot;</span> <span class="o">-&gt;</span> <span class="mi">9</span><span class="o">),</span> <span class="n">Map</span><span class="o">(</span><span class="s">&quot;test&quot;</span> <span class="o">-&gt;</span> <span class="mi">3</span><span class="o">,</span> <span class="s">&quot;hello&quot;</span> <span class="o">-&gt;</span> <span class="mi">5</span><span class="o">,</span> <span class="s">&quot;http&quot;</span> <span class="o">-&gt;</span> <span class="mi">33</span><span class="o">))</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-<p>期望得到的结果</p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">Map</span><span class="o">(</span><span class="n">test</span> <span class="o">-&gt;</span> <span class="mi">4</span><span class="o">,</span> <span class="n">hello</span> <span class="o">-&gt;</span> <span class="mi">7</span><span class="o">,</span> <span class="n">wwww</span> <span class="o">-&gt;</span> <span class="mi">9</span><span class="o">,</span> <span class="n">http</span> <span class="o">-&gt;</span> <span class="mi">33</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>命令式编程方式
-思路：循环Vector中的每个Map，然后循环Map中的每个Key-Value，将相同的Key对应的Value加起来后存入到一个临时的Map，最后返回这个Map</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-<span class="line-number">10</span>
-<span class="line-number">11</span>
-<span class="line-number">12</span>
-<span class="line-number">13</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">def</span> <span class="nf">merge</span><span class="o">(</span><span class="nl">input:</span> <span class="n">Vector</span><span class="o">[</span><span class="n">Map</span><span class="o">[</span><span class="n">String</span><span class="o">,</span> <span class="n">Int</span><span class="o">]])</span> <span class="o">=</span> <span class="o">{</span>
-</span><span class="line">
-</span><span class="line">  <span class="n">var</span> <span class="n">mergeRes</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">head</span>
-</span><span class="line">  <span class="n">val</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">tail</span>
-</span><span class="line">
-</span><span class="line">  <span class="k">for</span><span class="o">(</span><span class="n">itr</span> <span class="o">&lt;-</span> <span class="n">temp</span><span class="o">)</span> <span class="o">{</span>
-</span><span class="line">  	<span class="k">for</span><span class="o">((</span><span class="n">word</span><span class="o">,</span> <span class="n">count</span><span class="o">)</span> <span class="o">&lt;-</span> <span class="n">itr</span><span class="o">)</span> <span class="o">{</span>
-</span><span class="line">  		<span class="n">mergeRes</span> <span class="o">=</span> <span class="n">mergeRes</span> <span class="o">+</span> <span class="o">(</span><span class="n">word</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">mergeRes</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">word</span><span class="o">).</span><span class="na">getOrElse</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span> <span class="o">+</span> <span class="n">count</span><span class="o">))</span>
-</span><span class="line">  	<span class="o">}</span>
-</span><span class="line">  <span class="o">}</span>
-</span><span class="line">
-</span><span class="line">  <span class="n">mergeRes</span>
-</span><span class="line"><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>函数式编程方式
-思路：对于Vector作折叠操作(reduceLeft)，因为每此计算都要以上一次计算作为输入。而计算中需要做的操作由使用者控制。同时对于每个Map都需要操作每个key-value并返回新的key-value所以用到map函数</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-<span class="line-number">8</span>
-<span class="line-number">9</span>
-</pre></td><td class="code"><pre><code class="java"><span class="line">  <span class="n">def</span> <span class="nf">mergeFP</span><span class="o">(</span><span class="nl">input:</span> <span class="n">Vector</span><span class="o">[</span><span class="n">Map</span><span class="o">[</span><span class="n">String</span><span class="o">,</span> <span class="n">Int</span><span class="o">]])</span> <span class="o">=</span> <span class="o">{</span>
-</span><span class="line">    <span class="n">input</span><span class="o">.</span><span class="na">reduceLeft</span> <span class="o">{</span>
-</span><span class="line">      <span class="o">(</span><span class="n">el</span><span class="o">,</span> <span class="n">acc</span><span class="o">)</span> <span class="o">=&gt;</span>
-</span><span class="line">        <span class="n">el</span><span class="o">.</span><span class="na">map</span> <span class="o">{</span>
-</span><span class="line">          <span class="k">case</span> <span class="o">(</span><span class="n">word</span><span class="o">,</span> <span class="n">count</span><span class="o">)</span> <span class="o">=&gt;</span>
-</span><span class="line">            <span class="n">acc</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">word</span><span class="o">).</span><span class="na">map</span><span class="o">(</span><span class="n">accCount</span> <span class="o">=&gt;</span> <span class="o">(</span><span class="n">word</span> <span class="o">-&gt;</span> <span class="o">(</span><span class="n">accCount</span> <span class="o">+</span> <span class="n">count</span><span class="o">))).</span><span class="na">getOrElse</span><span class="o">(</span><span class="n">word</span> <span class="o">-&gt;</span> <span class="n">count</span><span class="o">)</span>
-</span><span class="line">        <span class="o">}</span> <span class="o">++</span> <span class="o">(</span><span class="n">acc</span> <span class="o">--</span> <span class="n">el</span><span class="o">.</span><span class="na">keys</span><span class="o">)</span>
-</span><span class="line">    <span class="o">}</span>
-</span><span class="line">  <span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>从两者的对比俩看，如果不是熟悉FP的思路的化，似乎FP的代码更难看些。这也是为什么有人认为FP不利于代码沟通的原因吧。
-但是从FP的实现看，中间没有任何可变变量（其实Scala对于reduceLeft用了中间可变变量，只是对于函数的使用者不需要了）</p>
-
-<p><strong>注</strong> 改FP的例子载自Akka in Action，但是它的是foldLeft不是reduceLeft</p>
 
 ]]></content>
   </entry>
