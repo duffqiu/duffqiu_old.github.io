@@ -12,17 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-481e56af3abf6bc7b32e24100e58f2f2.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-5d68a8f34fb34e5ed1286d4fb4d997f0.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 CentOS7没有携带NTFS的驱动，当使用NTFS的硬盘的时候就会出现无法识别的问题 解决办法 安装ntfs-3g的驱动 1
-2
-3
-wget https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch. &hellip;">
+  <meta name="description" content="原由 当在一个集群环境中，我们需要用到docker启动一个服务的时候，如果总是指定固定的公开端口给docker运行的服务，那么将极大的限制了服务部署的灵活性和可维护行。那么有没有办法在服务启动后去容易获得docker动态分配的端口呢？ 解决办法 Docker提供了port的子命令，具体使用如下： &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -41,7 +38,7 @@ wget https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch. &
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-142f3ca1a330d9a5599981e1e9387bdd.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-ec825086ebed1697f2bd04caee20d55d.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
@@ -102,6 +99,61 @@ wget https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch. &
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/08/14/docker-public-port/">如何获取docker动态分配的port</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-14T14:31:12+08:00" pubdate data-updated="true">Aug 14<span>th</span>, 2015</time>
+        
+        
+           | <a href="/blog/2015/08/14/docker-public-port/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>当在一个集群环境中，我们需要用到docker启动一个服务的时候，如果总是指定固定的公开端口给docker运行的服务，那么将极大的限制了服务部署的灵活性和可维护行。那么有没有办法在服务启动后去容易获得docker动态分配的端口呢？</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>Docker提供了port的子命令，具体使用如下：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">docker port &lt;container-name&gt; |cut -d':' -f2</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h4 id="section-2">后续问题</h4>
+
+<p>目前这种方式只适合外服务外做服务注册的场景。
+如果服务注册是在服务程序中完成的（如上报到zookeeper等），那么目前是没有办法的。有个<a href="https://github.com/docker/docker/issues/3778">issue3778</a>在跟，不知道docker什么时候提供</p>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -779,74 +831,6 @@ wget https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch. &
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/07/05/coreos-etcd2/">CoreOS Etcd2</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-07-05T16:13:19+08:00" pubdate data-updated="true">Jul 5<span>th</span>, 2015</time>
-        
-        
-           | <a href="/blog/2015/07/05/coreos-etcd2/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<hr />
-<p>从CoreOS 682.1开始，ETCD2已经被默认安装了，通过Clould Init的方式在Openstack上启动CoreOS时发生了一些错误，总结如下</p>
-
-<h3 id="section-1">解决办法</h3>
-<hr />
-
-<ul>
-  <li>ETCD2总是启动不成功，通过<code>journalctl _EXE=/usr/bin/coreos-cloudinit</code>查看发现其提示没有发现本地的文件有相关的member信息。究其原因是我在cloudinit中设置了etcd2的文件路径，而改文件目录默认是root的权限，但是etcd2运行的时候是以etcd用户运行的，所以造成无法访问改文件目录而启动失败</li>
-  <li>解决的办法是通过在cloudinit中写一个oneshot的systemd的服务，该服务将这个目录的权限和所有权更改为etcd，可参照我github上的<a href="https://raw.githubusercontent.com/duffqiu/coreos-openstack/master/etcd2/cloud-config-front1.yaml">cloudinit的例子</a></li>
-  <li>另外需要注意的是，etcd2通过discovery指定的cluster的大小。如果没有满足这个cluster的大小的节点联入则etcd2的集群是无法启动的</li>
-  <li>etcd2的cluster，在接入节点满足cluster指定的大小后，后续的接入节点将自动降格为proxy模式</li>
-  <li>etcdctl可以用<code>--debug</code>开查看发出的CURL命令是什么</li>
-</ul>
-
-<h4 id="docker-tips">Docker tips</h4>
-
-<ul>
-  <li>从Docker 1.6开始，docker可以支持查看container的运行时的CPU和Memery的消耗，以下命令为列出本机所有containter的运行状况</li>
-</ul>
-
-<p>docker stats $(docker inspect –format=”{{ .Name }}” $(docker ps -q))</p>
-
-<ul>
-  <li>从Docker 1.6开始，docker支持直接使用命令进入到container中进行交互，而不用向以前那么麻烦的使用nsenter的方式了，具体用法是</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="sh"><span class="line">docker <span class="nb">exec</span> -it &lt;containter name&gt; &lt;<span class="nb">command </span>in container&gt;
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -862,6 +846,10 @@ wget https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch. &
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/08/14/docker-public-port/">如何获取docker动态分配的port</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/10/centos-ntfs-disk/">CentOS下使用NTFS格式的U盘或移动硬盘</a>
       </li>
     
@@ -875,10 +863,6 @@ wget https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch. &
     
       <li class="post">
         <a href="/blog/2015/07/13/zookeeper-cloud-deploy/">Zookeeper云部署方案设计</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/09/install-zsh-coreos/">Install ZSH and Oh_my_zsh in CoreOS</a>
       </li>
     
   </ul>
@@ -899,7 +883,7 @@ wget https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch. &
 <li class='category'><a href='/blog/categories/coreos/'>CoreOS (6)</a></li>
 <li class='category'><a href='/blog/categories/data-model/'>Data Model (1)</a></li>
 <li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (9)</a></li>
-<li class='category'><a href='/blog/categories/docker/'>Docker (2)</a></li>
+<li class='category'><a href='/blog/categories/docker/'>Docker (3)</a></li>
 <li class='category'><a href='/blog/categories/etcd2/'>ETCD2 (1)</a></li>
 <li class='category'><a href='/blog/categories/entity-model/'>Entity Model (1)</a></li>
 <li class='category'><a href='/blog/categories/fp/'>FP (1)</a></li>

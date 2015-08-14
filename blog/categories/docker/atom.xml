@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Docker | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/docker/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-08-10T09:17:57+08:00</updated>
+  <updated>2015-08-14T14:39:56+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,32 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[如何获取docker动态分配的port]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/08/14/docker-public-port/"/>
+    <updated>2015-08-14T14:31:12+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/08/14/docker-public-port</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>当在一个集群环境中，我们需要用到docker启动一个服务的时候，如果总是指定固定的公开端口给docker运行的服务，那么将极大的限制了服务部署的灵活性和可维护行。那么有没有办法在服务启动后去容易获得docker动态分配的端口呢？</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>Docker提供了port的子命令，具体使用如下：</p>
+
+<p><code>
+docker port &lt;container-name&gt; |cut -d':' -f2
+</code></p>
+
+<h4 id="section-2">后续问题</h4>
+
+<p>目前这种方式只适合外服务外做服务注册的场景。
+如果服务注册是在服务程序中完成的（如上报到zookeeper等），那么目前是没有办法的。有个<a href="https://github.com/docker/docker/issues/3778">issue3778</a>在跟，不知道docker什么时候提供</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[在Mac下使用docker]]></title>
