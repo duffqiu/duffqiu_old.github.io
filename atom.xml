@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-10-26T09:52:58+08:00</updated>
+  <updated>2015-10-26T10:03:22+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -61,7 +61,7 @@
 </span><span class="line">DELAY=0</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <ul>
-  <li>修改对应的网卡配置， <code>/etc/sysconfig/network-scripts</code>，目录下ifcfg-enp0s3（名字可能有所不同），将自身的IP对应的设置注释掉，同时增加一个行：<code>BRIDGE=docker0</code>，同时去掉这个网卡的相关的IP的设置</li>
+  <li>修改对应的网卡配置， <code>/etc/sysconfig/network-scripts</code>，目录下ifcfg-enp0s3（名字可能有所不同），将自身的IP对应的设置注释掉，同时增加一个行：<code>BRIDGE=docker0</code></li>
   <li>重启机器，然后通过<code>ip a</code>可以参看到多了个虚拟网卡docker0，并且ip被配置在这个虚拟网卡上，原来的网卡如enp0s3已经没有了ip地址，并且通过<code>brctl show</code>可以看到docker0被指向了enp0s3的接口</li>
   <li>
     <p>修改docker引擎启动参数，在文件<code>/usr/lib/systemd/system/docker.service</code>增加<code>--fixed-cidr=192.168.1.96/27 --default-gateway=192.168.1.1</code> ，然后重启引擎</p>
@@ -71,6 +71,8 @@
   </li>
   <li>另外一个坑：如果是MAC OSX下使用Virtualbox起的主机的话，则容器无法联通到外面，不知道是MAC限制的原因，还是说我的wifi路由器无法支持的原因</li>
 </ul>
+
+<p>注意：如果容器也想使用host主机网络上的DHCP，则需要借助pipework的方式（或者启动容器时–net=none）来设置网络，因为docker会自动使用它用到的bridge来分配ip，而不是从外部dhcp分配ip。但是pipework对centos支持不好，使用dhcp后，docker0的bridge没有起来，需要仿照它源码的内容在容器里面操作。（容器必须具备网络权限）</p>
 
 ]]></content>
   </entry>
