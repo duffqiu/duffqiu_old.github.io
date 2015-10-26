@@ -12,14 +12,14 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-510a8c782d49f042d58184baf84e1d30.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-b07433714ed199dc1e8cce92d8f44bc5.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
 
 
   
-  <meta name="description" content="原由 在使用Openstack过程中，VM总是要运行某些程序，而这些程序的数据是记录在磁盘中的。如何保证在VM被删除或者重建后这些数据依然能够存在呢？这就要用到Openstack的Block Service了。但是这里面有几个问题： block service创建出来的卷是是个无文件格式的盘， &hellip;">
+  <meta name="description" content="Systemd的启动顺序 /etc/systemd/system/ /run/systemd/system/ /usr/lib/systemd/system/ 在CoreOS中，自带的服务都是放在了/usr/lib/systemd/system/目录下，但是该目录是只读的，如需更改， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-7f47dba13c3602d2d1a0a36a2205bfdc.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-6d5a8eee3d4460ff218932bb7b4b6221.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
@@ -99,6 +99,69 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/07/05/systemd-boot/">Systemd的启动顺序和自动启动配置</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-05T17:56:27+08:00" pubdate data-updated="true">Jul 5<span>th</span>, 2015</time>
+        
+        
+           | <a href="/blog/2015/07/05/systemd-boot/#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="systemd">Systemd的启动顺序</h3>
+<hr />
+
+<ul>
+  <li>/etc/systemd/system/</li>
+  <li>/run/systemd/system/</li>
+  <li>/usr/lib/systemd/system/</li>
+</ul>
+
+<p>在CoreOS中，自带的服务都是放在了/usr/lib/systemd/system/目录下，但是该目录是只读的，如需更改，可以将对应的service unit文件copy到/etc/systemd/system目录下，然后更改后重新启动</p>
+
+<p>每次更改service unit文件需要执行 <code>sudo systemctl daemon-reload</code></p>
+
+<h3 id="systemdboot">Systemd的服务需要在系统boot时启动</h3>
+<hr />
+
+<p>需要在Service Unit文件中加入：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[Installl]
+</span><span class="line">WantedBy=multi-user.target</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>然后执行<code>sudo systemctl daemon-reload</code>和<code>sudo systemctl enable &lt;xxxx.service&gt;</code></p>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -885,158 +948,6 @@ CentOS7没有安装包，需要下载压缩包，4然后解压到<code>/opt/subl
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/02/23/mac-port-guide/">Mac下port工具的使用</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2015-02-23T22:29:35+08:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2015</time>
-        
-        
-           | <a href="/blog/2015/02/23/mac-port-guide/#comments">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="section">原由</h3>
-<hr />
-
-<p>Mac下面除了用dmg、pkg来安装软件外，比较方便的还有用MacPorts来帮助你安装其他应用程序，跟BSD中的ports道理一样。MacPorts就像apt-get、yum一样，可以快速安装些软件。</p>
-
-<p>Mac下还有brew可以用来管理软件包，但是个人不喜欢这个工具，还是比较倾向于用port</p>
-
-<h3 id="section-1">工具使用详解</h3>
-<hr />
-
-<ul>
-  <li>更新ports tree(即软件信息列表)和MacPorts版本，强烈推荐第一次运行的时候使用-v参数，显示详细的更新过程。</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">sudo port -v selfupdate</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>搜索索引中的软件</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">port search &lt;name&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>安装新软件</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">sudo port install &lt;name&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>卸载软件</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">sudo port uninstall &lt;name&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>递归卸载要卸载的软件所依赖的软件包，但这一命令不会卸载那些又依赖其他软件包的软件。</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">sudo port uninstall --follow-dependencies software_name </span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>查看有更新的软件以及版本</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">port outdated</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>升级可以更新的软件</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">sudo port upgrade outdated </span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>升级软件并且同时升级所依赖的软件包</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">sudo port upgrade &lt;name&gt; </span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>关闭软件</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">sudo port deactivate &lt;name&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>查询所需软件信息</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">sudo port info &lt;name&gt; </span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>查看软件依赖性：</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">sudo port deps &lt;name&gt;  </span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>清理安装过程中的缓存文件，在获取软件失败时也可以使用：</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">sudo port clean --all &lt;name&gt;  </span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>查看已经安装的软件的内容信息</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">port contents &lt;name&gt;  </span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>查看已安装软件的信息</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">sudo port installed &lt;name&gt;  </span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<ul>
-  <li>报告所查询软件的依赖包情况</li>
-</ul>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">port dependents &lt;name&gt;  </span></code></pre></td></tr></table></div></figure></notextile></div>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -1054,6 +965,10 @@ CentOS7没有安装包，需要下载压缩包，4然后解压到<code>/opt/subl
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/10/25/docker-fix-network/">配置Docker的容器网络与主机网络相同</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/08/18/centos-virtualbox-nfs/">Linux下的Virtualbox使用NFS</a>
       </li>
     
@@ -1067,10 +982,6 @@ CentOS7没有安装包，需要下载压缩包，4然后解压到<code>/opt/subl
     
       <li class="post">
         <a href="/blog/2015/07/25/fleet-ha-service-trap/">Fleet部署高可用性服务的坑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/07/18/user-docker-mac/">在Mac下使用docker</a>
       </li>
     
   </ul>
@@ -1092,7 +1003,7 @@ CentOS7没有安装包，需要下载压缩包，4然后解压到<code>/opt/subl
 <li class='category'><a href='/blog/categories/coreos/'>CoreOS (6)</a></li>
 <li class='category'><a href='/blog/categories/data-model/'>Data Model (1)</a></li>
 <li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (9)</a></li>
-<li class='category'><a href='/blog/categories/docker/'>Docker (3)</a></li>
+<li class='category'><a href='/blog/categories/docker/'>Docker (4)</a></li>
 <li class='category'><a href='/blog/categories/etcd2/'>ETCD2 (1)</a></li>
 <li class='category'><a href='/blog/categories/entity-model/'>Entity Model (1)</a></li>
 <li class='category'><a href='/blog/categories/fp/'>FP (1)</a></li>

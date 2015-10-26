@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Docker | Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/blog/categories/docker/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-08-18T10:31:54+08:00</updated>
+  <updated>2015-10-26T09:50:23+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -12,6 +12,61 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[配置Docker的容器网络与主机网络相同]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/10/25/docker-fix-network/"/>
+    <updated>2015-10-25T19:31:58+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/10/25/docker-fix-network</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>原生的Docker安装后，容器使用的网络是一个通过Bridge方式的NAT内部网络，但是多个主机中的容器是无法通信的。如果需要将多个主机中的容器构成同一个网络，则需要另外独立于Docker来预先配置网络</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>目前可行的方式有多种，有用OVS的Overlay Network的等SDN方式。但是鉴于SDN方式依然不是很成熟，所以还是期望将容器的网络构建于与主机相同的网络或使用独立网卡在不同的网络中。这种方式下，从网络的角度，容器就是一台独立的机器。</p>
+
+<p>具体方式如下(以CentOS 7为主机系统):</p>
+
+<ul>
+  <li>安装bridge工具：<code>yum install bridge-utilis</code></li>
+  <li>先卸载原有的Docker，目前CentOS yum repo的版本为1.7.1，但是该版本的网络功能还是有问题，具体可以参见Github上Docker的Release Note。</li>
+  <li>参照Docker官方的方式配置Docker yum repo<a href="https://docs.docker.com/installation/centos/">docker centos install guide</a>, 然后<code>yum install docker-engine</code> (目前需要1.8.3版本)</li>
+  <li>如果需要其它用户使用docker而非用root，则需要创建docker用户和用户组，然后将其它用户加入到docker用户组中。并且将<code>/var/lib/docker</code>目录的拥有者改为<code>docker.docker</code></li>
+  <li>创建一个linux bridge，为了方便，将名字也命名为docker0，这样就不用给docker engine增加-b启动参数. 
+    <ul>
+      <li><code>/etc/sysconfig/network-scripts</code>，目录下创建一个文件ifcfg-docker0，然后增加一下内容</li>
+    </ul>
+  </li>
+</ul>
+
+<p><code>
+DEVICE=docker0
+TYPE=bridge
+BOOTPROTO=static
+IPADDR=192.168.1.26
+NETMASK=255.255.255.0
+GATEWAY=192.168.1.1
+DNS1=144.114.114.114
+ONBOOT=yes
+DELAY=0
+</code>   </p>
+
+<ul>
+  <li>修改对应的网卡配置， <code>/etc/sysconfig/network-scripts</code>，目录下ifcfg-enp0s3（名字可能有所不同），将自身的IP对应的设置注释掉，同时增加一个行：<code>BRIDGE=docker0</code></li>
+  <li>重启机器，然后通过<code>ip a</code>可以参看到多了个虚拟网卡docker0，并且ip被配置在这个虚拟网卡上，原来的网卡如enp0s3已经没有了ip地址，并且通过<code>brctl show</code>可以看到docker0被指向了enp0s3的接口</li>
+  <li>
+    <p>修改docker引擎启动参数，在文件<code>/usr/lib/systemd/system/docker.service</code>增加<code>--fixed-cidr=192.168.1.96/27 --default-gateway=192.168.1.1</code> ，然后重启引擎</p>
+  </li>
+  <li>
+    <p>这里有个坑：如果enp0s3启动比docker0慢的话，则docker0启动失败，变通的办法是在<code>/etc/rc.local</code>文件中增加一行<code>ifup docker0</code> （似乎是用virtualbox会这样），并确保改文件是可执行的</p>
+  </li>
+  <li>另外一个坑：如果是MAC OSX下使用Virtualbox起的主机的话，则容器无法联通到外面，不知道是MAC限制的原因，还是说我的wifi路由器无法支持的原因</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[如何获取docker动态分配的port]]></title>
