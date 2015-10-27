@@ -4,7 +4,7 @@
   <title><![CDATA[Duff Qiu's Blog]]></title>
   <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
   <link href="http://duffqiu.github.io/"/>
-  <updated>2015-10-26T10:03:22+08:00</updated>
+  <updated>2015-10-27T16:03:26+08:00</updated>
   <id>http://duffqiu.github.io/</id>
   <author>
     <name><![CDATA[Duff Qiu]]></name>
@@ -55,12 +55,13 @@
 </span><span class="line">BOOTPROTO=static
 </span><span class="line">IPADDR=192.168.1.26
 </span><span class="line">NETMASK=255.255.255.0
-</span><span class="line">GATEWAY=192.168.1.1
+</span><span class="line">#GATEWAY=192.168.1.1
 </span><span class="line">DNS1=144.114.114.114
 </span><span class="line">ONBOOT=yes
 </span><span class="line">DELAY=0</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <ul>
+  <li><strong><em>注意</em></strong> 在docker0上不能配置GATEWAY这个参数，不然容器访问不出去</li>
   <li>修改对应的网卡配置， <code>/etc/sysconfig/network-scripts</code>，目录下ifcfg-enp0s3（名字可能有所不同），将自身的IP对应的设置注释掉，同时增加一个行：<code>BRIDGE=docker0</code></li>
   <li>重启机器，然后通过<code>ip a</code>可以参看到多了个虚拟网卡docker0，并且ip被配置在这个虚拟网卡上，原来的网卡如enp0s3已经没有了ip地址，并且通过<code>brctl show</code>可以看到docker0被指向了enp0s3的接口</li>
   <li>
