@@ -12,7 +12,7 @@
 <meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
 
 
-<link href='/assets/global-9b9f2ea9353deb63ddffa98c4dd20b61.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-8cde27b49bc0ab877f54123624323cd8.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
@@ -38,7 +38,7 @@
   <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
   <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href='/assets/global-bb757502693bf592df87b77a0c5b035a.css' rel='stylesheet' type='text/css' />
+<link href='/assets/global-b5b3673188d66d658a2c16f278ccf875.css' rel='stylesheet' type='text/css' />
 
 
 <script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
@@ -141,6 +141,7 @@
 
 <ul>
   <li>安装bridge工具：<code>yum install bridge-utilis</code></li>
+  <li>安装docker-selinux: <code>yum install docker-selinux</code>，尽管是1.7.1版本，但是可以用在1.8.1的引擎上。不过因为linux权限控制原因，这个只能使用devicemapper的方式，对于overlay方式的存储，必须将selinux关闭。可以通过<code>sestatus查看selinux状态</code></li>
   <li>先卸载原有的Docker，目前CentOS yum repo的版本为1.7.1，但是该版本的网络功能还是有问题，具体可以参见Github上Docker的Release Note。</li>
   <li>参照Docker官方的方式配置Docker yum repo<a href="https://docs.docker.com/installation/centos/">docker centos install guide</a>, 然后<code>yum install docker-engine</code> (目前需要1.8.3版本)</li>
   <li>如果需要其它用户使用docker而非用root，则需要创建docker用户和用户组，然后将其它用户加入到docker用户组中。并且将<code>/var/lib/docker</code>目录的拥有者改为<code>docker.docker</code></li>
@@ -165,22 +166,22 @@
 </span><span class="line">BOOTPROTO=static
 </span><span class="line">IPADDR=192.168.1.26
 </span><span class="line">NETMASK=255.255.255.0
-</span><span class="line">#GATEWAY=192.168.1.1
+</span><span class="line">GATEWAY=192.168.1.1
 </span><span class="line">DNS1=144.114.114.114
 </span><span class="line">ONBOOT=yes
 </span><span class="line">DELAY=0</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <ul>
-  <li><strong><em>注意</em></strong> 在docker0上不能配置GATEWAY这个参数，不然容器访问不出去</li>
   <li>修改对应的网卡配置， <code>/etc/sysconfig/network-scripts</code>，目录下ifcfg-enp0s3（名字可能有所不同），将自身的IP对应的设置注释掉，同时增加一个行：<code>BRIDGE=docker0</code></li>
   <li>重启机器，然后通过<code>ip a</code>可以参看到多了个虚拟网卡docker0，并且ip被配置在这个虚拟网卡上，原来的网卡如enp0s3已经没有了ip地址，并且通过<code>brctl show</code>可以看到docker0被指向了enp0s3的接口</li>
   <li>
     <p>修改docker引擎启动参数，在文件<code>/usr/lib/systemd/system/docker.service</code>增加<code>--fixed-cidr=192.168.1.96/27 --default-gateway=192.168.1.1</code> ，然后重启引擎</p>
   </li>
   <li>
-    <p>这里有个坑：如果enp0s3启动比docker0慢的话，则docker0启动失败，变通的办法是在<code>/etc/rc.local</code>文件中增加一行<code>ifup docker0</code> （似乎是用virtualbox会这样），并确保改文件是可执行的</p>
+    <p>这里有个坑：如果enp0s3启动比docker0慢的话，则docker0启动失败，变通的办法是在<code>/etc/rc.local</code>文件中增加一行<code>ifup docker0</code> （似乎是用virtualbox会这样），并确保改文件是可执行的，通过安装NetworkManager可以解决这个问题 <code>yum insall NetworkManager</code></p>
   </li>
-  <li>另外一个坑：如果是MAC OSX下使用Virtualbox起的主机的话，则容器无法联通到外面，不知道是MAC限制的原因，还是说我的wifi路由器无法支持的原因</li>
+  <li>另外一个坑：如果是MAC OSX下使用Virtualbox起的主机的话，则容器无法联通到外面，不知道是MAC限制的原因，还是说我的wifi路由器无法支持的原因。在多次试验后终于找到了问题，是我使用VM的bridge方式连通外部的时候是通过WIFI的网卡，这个会照成无法连接的问题，主要体现是容器发出的ARP到了Mac后没有响应回来。使用了有线网卡就OK了。不过要记住在VM的bridge属性promiscuous上选择ALL方式</li>
+  <li>Docker无法启动报devicemapper的动态链接包没有装载的问题，这需要更新devicemapper库 <code>yum install device-mapper-libs</code>，不过最好的方式是装docker钱先更新一下系统 <code>yum update</code></li>
 </ul>
 
 <p>注意：如果容器也想使用host主机网络上的DHCP，则需要借助pipework的方式（或者启动容器时–net=none）来设置网络，因为docker会自动使用它用到的bridge来分配ip，而不是从外部dhcp分配ip。但是pipework对centos支持不好，使用dhcp后，docker0的bridge没有起来，需要仿照它源码的内容在容器里面操作。（容器必须具备网络权限）</p>
