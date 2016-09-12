@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Centos | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/centos/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2015-10-28T09:26:38+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Linux下的Virtualbox使用NFS]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/08/18/centos-virtualbox-nfs/"/>
+    <updated>2015-08-18T10:08:43+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/08/18/centos-virtualbox-nfs</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在使用vagrant安装配置CoreOS的时候，无法共享主机目录到CoreOS中</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>需要先在主机中安装相应的NFS服务，具体方法：</p>
+
+<ul>
+  <li>安装nfs相应的服务</li>
+</ul>
+
+<p><code>
+sudo yum install nfs-utils rpcbind
+</code></p>
+
+<ul>
+  <li>启动相应的服务并设置linux启动时同时启动</li>
+</ul>
+
+<p><code>
+sudo systemctl start nfs-server
+sudo systemctl start rpcbind
+sudo systemctl enable nfs-server
+</code></p>
+
+<ul>
+  <li>似乎到这里就可以了，但是在启动CoreOS的时候还是不能用，后来发现时linux firewall的问题，需要将nfs的服务在firewall中打开（如果只是打开端口好像不行）</li>
+</ul>
+
+<p><code>
+sudo firewall-cmd --permanent --zone=public --add-service=nfs 
+sudo firewall-cmd –reload 
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

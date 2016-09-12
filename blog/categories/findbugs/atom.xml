@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Findbugs | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/findbugs/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2015-10-28T09:26:38+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[在Jenkins中使用Findbugs]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/08/zai-jenkinszhong-shi-yong-findbugs/"/>
+    <updated>2014-02-08T13:02:06+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/08/zai-jenkinszhong-shi-yong-findbugs</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<p>看了看Sonar的介绍，的确很专业，但是是否每个功能都用的上？而且Sonar也是集成了PMD, Findbugs, Checkstyle等插件的功能来帮助完成相关的任务的。<br />
+但是Jenkins也同样直接支持这些插件，是否只用Jenkins加上这些插件就可以了？</p>
+
+<p>前面介绍Jenkins的时候已经用了不少插件，这里再加一个Findbugs</p>
+
+<h3 id="section-1">配置</h3>
+
+<ul>
+  <li>在对应的maven项目中加入maven的Findbugs插件，配置示例如下：</li>
+</ul>
+
+<p><code>sh
+	&lt;plugin&gt;
+	  &lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+	  &lt;artifactId&gt;findbugs-maven-plugin&lt;/artifactId&gt;
+	  &lt;version&gt;2.5.4-SNAPSHOT&lt;/version&gt;
+	  &lt;configuration&gt;
+	    &lt;xmlOutput&gt;true&lt;/xmlOutput&gt;
+	  &lt;/configuration&gt;
+	&lt;/plugin&gt;
+</code><br />
+- 在Jenkins中安装对应的Findbugs插件“FindBugs Plug-in”<br />
+- 然后在Jenkins的项目配置中激活Findbugs，也就是打个勾。<br />
+- 给Maven的运行加入新的goald：“findbugs:findbugs”<br />
+- 重新构建项目就可以得到了</p>
+
+<h4 id="section-2">小插曲：</h4>
+<p>在Eclpse中使用的时候没有发现问题，但是到了Jenkins后，从后台的build输出确发现了一个异常的warning: “Failed to notify spy hudson.maven.Maven3Builder$JenkinsEventSpy: Failed to load edu.umd.cs.findbugs.detect.TestASM”，从而没能在Jenkins上看到Findbugs的报告。后来查了半天，尽然是Jenkins的Bug，临时的解决办法尽然是将Maven换成<code>3.0.5</code>的版本，不要使用3.1或3.1.1</p>
+]]></content>
+  </entry>
+  
+</feed>

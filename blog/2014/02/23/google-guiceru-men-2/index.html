@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Google Guice入门2 - Duff Qiu's Blog</title>
+  <meta name="author" content="Duff Qiu">
+
+
+<meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
+
+
+<link href='/assets/global-8cde27b49bc0ab877f54123624323cd8.css' rel='stylesheet' type='text/css' />
+
+
+<script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
+
+
+  
+  <meta name="description" content="原由 在使用Guice做依赖注入的时候，很可能会发生在一个依赖模块（Module）中有多个同类型的接口需要注入，但是又需要根据不同的使用类注入不同的具体对象。如果只是简单的申明为接口注入对象，则会使用同一个对象。如：bind(IDescription.class).to( &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/02/23/google-guiceru-men-2">
+  <link href="/favicon.png" rel="icon">
+<!--
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
+  <link href="/atom.xml" rel="alternate" title="Duff Qiu's Blog" type="application/atom+xml">
+  <!-- <script src="/javascripts/modernizr-2.0.js"></script> -->
+  <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+  <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
+  <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='/assets/global-b5b3673188d66d658a2c16f278ccf875.css' rel='stylesheet' type='text/css' />
+
+
+<script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
+
+
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-47478128-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Duff Qiu's Blog</a></h1>
+  
+    <h2>Duff Qiu的个人博客，只为记录一个过程，结果都是浮云☁️！</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:duffqiu.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/categories/java/">Java编程</a><li>
+  <li><a href="/blog/categories/scala/">Scala编程</a><li>
+  <li><a href="/blog/categories/uml/">UML Tips</a><li>
+  <li><a href="/blog/categories/osx/">OSX经验与Tips</a><li>
+  <li><a href="/blog/categories/octopress/">Octopress经验</a><li>
+  <li><a href="/blog/archives">全部文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Google Guice入门2</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-23T14:26:45+08:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2014</time>
+        
+        
+           | <a href="#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>在使用Guice做依赖注入的时候，很可能会发生在一个依赖模块（Module）中有多个同类型的接口需要注入，但是又需要根据不同的使用类注入不同的具体对象。如果只是简单的申明为接口注入对象，则会使用同一个对象。如：<code>bind(IDescription.class).to(ConnectionDescription.class);</code></p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>使用<code>@Named("&lt;xxxx&gt;")</code>来命名需要注入的接口，然后在注入的时候指定名称来特定注入，如： </p>
+
+<p>顶层使用类中：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="nd">@Inject</span>
+</span><span class="line"><span class="nd">@Named</span><span class="o">(</span><span class="s">&quot;SendMsgWithAuditDesc&quot;</span><span class="o">)</span>
+</span><span class="line"><span class="kd">private</span> <span class="n">IDescription</span> <span class="n">desc</span><span class="o">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Module configure方法中</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="c1">//为什么的注入</span>
+</span><span class="line"><span class="n">bind</span><span class="o">(</span><span class="n">IDescription</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">to</span><span class="o">(</span><span class="n">ConnectionDescription</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">//指定名称的注入</span>
+</span><span class="line"><span class="n">bind</span><span class="o">(</span><span class="n">IDescription</span><span class="o">.</span><span class="na">class</span><span class="o">).</span><span class="na">annotatedWith</span><span class="o">(</span>
+</span><span class="line">	        <span class="n">Names</span><span class="o">.</span><span class="na">named</span><span class="o">(</span><span class="s">&quot;SendMsgWithAuditDesc&quot;</span><span class="o">)).</span><span class="na">toProvider</span><span class="o">(</span>
+</span><span class="line">	        <span class="n">SendMessageWithAuditDescriptionProvider</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这里用了prvoider是因为需要使用参数的构造函数。Provider类如下：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SendMessageWithAuditDescriptionProvider</span> <span class="kd">implements</span>
+</span><span class="line">        <span class="n">Provider</span><span class="o">&lt;</span><span class="n">ConnectionDescription</span><span class="o">&gt;</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">    <span class="nd">@Override</span>
+</span><span class="line">    <span class="kd">public</span> <span class="kd">final</span> <span class="n">ConnectionDescription</span> <span class="nf">get</span><span class="o">()</span> <span class="o">{</span>
+</span><span class="line">
+</span><span class="line">	<span class="k">return</span> <span class="k">new</span> <span class="nf">ConnectionDescription</span><span class="o">(</span><span class="s">&quot;Audit with SMPP&quot;</span><span class="o">,</span>
+</span><span class="line">	        <span class="s">&quot;Send Msg with audit via SMPP&quot;</span><span class="o">);</span>
+</span><span class="line">    <span class="o">}</span>
+</span><span class="line">
+</span><span class="line"><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>代码可以参考<a href="https://github.com/duffqiu/DesignPatternDemo">DesignPatternDemo的Decorator部分</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Duff Qiu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-23T14:26:45+08:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/guice/'>Guice</a>, <a class='category' href='/blog/categories/java/'>Java</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/02/22/google-guiceru-men-1/" title="Previous Post: Google Guice入门1">&laquo; Google Guice入门1</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/02/23/she-ji-mo-shi-%3Adai-li-mo-shi/" title="Next Post: 设计模式：代理模式">设计模式：代理模式 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+
+   <section>
+     <h1>Comments</h1>
+     <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"duffqiu"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+</div>
+   </section>
+  
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+<h1>Recent Comments</h1>
+<ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
+
+</section>
+
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/appscale/'>Appscale (3)</a></li>
+<li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
+<li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
+<li class='category'><a href='/blog/categories/block-storage/'>Block Storage (1)</a></li>
+<li class='category'><a href='/blog/categories/centos/'>CentOS (2)</a></li>
+<li class='category'><a href='/blog/categories/centos/'>Centos (1)</a></li>
+<li class='category'><a href='/blog/categories/cloud/'>Cloud (1)</a></li>
+<li class='category'><a href='/blog/categories/coreos/'>CoreOS (6)</a></li>
+<li class='category'><a href='/blog/categories/data-model/'>Data Model (1)</a></li>
+<li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (9)</a></li>
+<li class='category'><a href='/blog/categories/docker/'>Docker (4)</a></li>
+<li class='category'><a href='/blog/categories/etcd2/'>ETCD2 (1)</a></li>
+<li class='category'><a href='/blog/categories/entity-model/'>Entity Model (1)</a></li>
+<li class='category'><a href='/blog/categories/fp/'>FP (1)</a></li>
+<li class='category'><a href='/blog/categories/findbugs/'>Findbugs (1)</a></li>
+<li class='category'><a href='/blog/categories/fleet/'>Fleet (2)</a></li>
+<li class='category'><a href='/blog/categories/gsl/'>GSL (1)</a></li>
+<li class='category'><a href='/blog/categories/guava/'>Guava (1)</a></li>
+<li class='category'><a href='/blog/categories/guice/'>Guice (2)</a></li>
+<li class='category'><a href='/blog/categories/integration/'>Integration (1)</a></li>
+<li class='category'><a href='/blog/categories/junit/'>JUnit (1)</a></li>
+<li class='category'><a href='/blog/categories/java/'>Java (13)</a></li>
+<li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>
+<li class='category'><a href='/blog/categories/jenkins/'>Jenkins (3)</a></li>
+<li class='category'><a href='/blog/categories/keepalived/'>Keepalived (2)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>Linux (1)</a></li>
+<li class='category'><a href='/blog/categories/mac/'>MAC (3)</a></li>
+<li class='category'><a href='/blog/categories/maven/'>Maven (3)</a></li>
+<li class='category'><a href='/blog/categories/miscellany/'>Miscellany (1)</a></li>
+<li class='category'><a href='/blog/categories/nfs/'>NFS (1)</a></li>
+<li class='category'><a href='/blog/categories/oo/'>OO (1)</a></li>
+<li class='category'><a href='/blog/categories/osx/'>OSX (4)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>Octopress (16)</a></li>
+<li class='category'><a href='/blog/categories/openstack/'>Openstack (2)</a></li>
+<li class='category'><a href='/blog/categories/plantuml/'>PlantUML (3)</a></li>
+<li class='category'><a href='/blog/categories/port/'>Port (2)</a></li>
+<li class='category'><a href='/blog/categories/proxy/'>Proxy (2)</a></li>
+<li class='category'><a href='/blog/categories/rest/'>REST (3)</a></li>
+<li class='category'><a href='/blog/categories/sbt/'>SBT (2)</a></li>
+<li class='category'><a href='/blog/categories/scala/'>Scala (7)</a></li>
+<li class='category'><a href='/blog/categories/script/'>Script (1)</a></li>
+<li class='category'><a href='/blog/categories/sublime/'>Sublime (1)</a></li>
+<li class='category'><a href='/blog/categories/systemd/'>Systemd (1)</a></li>
+<li class='category'><a href='/blog/categories/uml/'>UML (1)</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/'>VirtualBox (1)</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/'>Virtualbox (1)</a></li>
+<li class='category'><a href='/blog/categories/zsh/'>ZSH (1)</a></li>
+<li class='category'><a href='/blog/categories/zookeeper/'>Zookeeper (1)</a></li>
+
+  </ul>
+</section>
+
+  
+</aside>
+
+
+
+
+<article class="archives">
+  <div class="related-posts">
+    <h2>Related Posts</h2>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/10/25/docker-fix-network/">配置Docker的容器网络与主机网络相同</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/docker/'>Docker</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/08/18/centos-virtualbox-nfs/">Linux下的Virtualbox使用NFS</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/centos/'>Centos</a>, <a class='category' href='/blog/categories/nfs/'>NFS</a>, <a class='category' href='/blog/categories/virtualbox/'>Virtualbox</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/08/14/docker-public-port/">如何获取docker动态分配的port</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/docker/'>Docker</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/08/10/centos-ntfs-disk/">CentOS下使用NTFS格式的U盘或移动硬盘</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/centos/'>CentOS</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/25/fleet-ha-service-trap/">fleet部署高可用性服务的坑</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/fleet/'>Fleet</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+  </div>
+</article>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Duff Qiu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

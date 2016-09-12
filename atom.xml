@@ -1,0 +1,1003 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2015-10-28T09:26:38+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[配置Docker的容器网络与主机网络相同]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/10/25/docker-fix-network/"/>
+    <updated>2015-10-25T19:31:58+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/10/25/docker-fix-network</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>原生的Docker安装后，容器使用的网络是一个通过Bridge方式的NAT内部网络，但是多个主机中的容器是无法通信的。如果需要将多个主机中的容器构成同一个网络，则需要另外独立于Docker来预先配置网络</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>目前可行的方式有多种，有用OVS的Overlay Network的等SDN方式。但是鉴于SDN方式依然不是很成熟，所以还是期望将容器的网络构建于与主机相同的网络或使用独立网卡在不同的网络中。这种方式下，从网络的角度，容器就是一台独立的机器。</p>
+
+<p>具体方式如下(以CentOS 7为主机系统):</p>
+
+<ul>
+  <li>安装bridge工具：<code>yum install bridge-utilis</code></li>
+  <li>安装docker-selinux: <code>yum install docker-selinux</code>，尽管是1.7.1版本，但是可以用在1.8.1的引擎上。不过因为linux权限控制原因，这个只能使用devicemapper的方式，对于overlay方式的存储，必须将selinux关闭。可以通过<code>sestatus查看selinux状态</code></li>
+  <li>先卸载原有的Docker，目前CentOS yum repo的版本为1.7.1，但是该版本的网络功能还是有问题，具体可以参见Github上Docker的Release Note。</li>
+  <li>参照Docker官方的方式配置Docker yum repo<a href="https://docs.docker.com/installation/centos/">docker centos install guide</a>, 然后<code>yum install docker-engine</code> (目前需要1.8.3版本)</li>
+  <li>如果需要其它用户使用docker而非用root，则需要创建docker用户和用户组，然后将其它用户加入到docker用户组中。并且将<code>/var/lib/docker</code>目录的拥有者改为<code>docker.docker</code></li>
+  <li>创建一个linux bridge，为了方便，将名字也命名为docker0，这样就不用给docker engine增加-b启动参数. 
+    <ul>
+      <li><code>/etc/sysconfig/network-scripts</code>，目录下创建一个文件ifcfg-docker0，然后增加一下内容</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">DEVICE=docker0
+</span><span class="line">TYPE=bridge
+</span><span class="line">BOOTPROTO=static
+</span><span class="line">IPADDR=192.168.1.26
+</span><span class="line">NETMASK=255.255.255.0
+</span><span class="line">GATEWAY=192.168.1.1
+</span><span class="line">DNS1=144.114.114.114
+</span><span class="line">ONBOOT=yes
+</span><span class="line">DELAY=0</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>修改对应的网卡配置， <code>/etc/sysconfig/network-scripts</code>，目录下ifcfg-enp0s3（名字可能有所不同），将自身的IP对应的设置注释掉，同时增加一个行：<code>BRIDGE=docker0</code></li>
+  <li>重启机器，然后通过<code>ip a</code>可以参看到多了个虚拟网卡docker0，并且ip被配置在这个虚拟网卡上，原来的网卡如enp0s3已经没有了ip地址，并且通过<code>brctl show</code>可以看到docker0被指向了enp0s3的接口</li>
+  <li>
+    <p>修改docker引擎启动参数，在文件<code>/usr/lib/systemd/system/docker.service</code>增加<code>--fixed-cidr=192.168.1.96/27 --default-gateway=192.168.1.1</code> ，然后重启引擎</p>
+  </li>
+  <li>
+    <p>这里有个坑：如果enp0s3启动比docker0慢的话，则docker0启动失败，变通的办法是在<code>/etc/rc.local</code>文件中增加一行<code>ifup docker0</code> （似乎是用virtualbox会这样），并确保改文件是可执行的，通过安装NetworkManager可以解决这个问题 <code>yum insall NetworkManager</code></p>
+  </li>
+  <li>另外一个坑：如果是MAC OSX下使用Virtualbox起的主机的话，则容器无法联通到外面，不知道是MAC限制的原因，还是说我的wifi路由器无法支持的原因。在多次试验后终于找到了问题，是我使用VM的bridge方式连通外部的时候是通过WIFI的网卡，这个会照成无法连接的问题，主要体现是容器发出的ARP到了Mac后没有响应回来。使用了有线网卡就OK了。不过要记住在VM的bridge属性promiscuous上选择ALL方式</li>
+  <li>Docker无法启动报devicemapper的动态链接包没有装载的问题，这需要更新devicemapper库 <code>yum install device-mapper-libs</code>，不过最好的方式是装docker钱先更新一下系统 <code>yum update</code></li>
+</ul>
+
+<p>注意：如果容器也想使用host主机网络上的DHCP，则需要借助pipework的方式（或者启动容器时–net=none）来设置网络，因为docker会自动使用它用到的bridge来分配ip，而不是从外部dhcp分配ip。但是pipework对centos支持不好，使用dhcp后，docker0的bridge没有起来，需要仿照它源码的内容在容器里面操作。（容器必须具备网络权限）</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Linux下的Virtualbox使用NFS]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/08/18/centos-virtualbox-nfs/"/>
+    <updated>2015-08-18T10:08:43+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/08/18/centos-virtualbox-nfs</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在使用vagrant安装配置CoreOS的时候，无法共享主机目录到CoreOS中</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>需要先在主机中安装相应的NFS服务，具体方法：</p>
+
+<ul>
+  <li>安装nfs相应的服务</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sudo yum install nfs-utils rpcbind</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>启动相应的服务并设置linux启动时同时启动</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sudo systemctl start nfs-server
+</span><span class="line">sudo systemctl start rpcbind
+</span><span class="line">sudo systemctl enable nfs-server</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>似乎到这里就可以了，但是在启动CoreOS的时候还是不能用，后来发现时linux firewall的问题，需要将nfs的服务在firewall中打开（如果只是打开端口好像不行）</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sudo firewall-cmd --permanent --zone=public --add-service=nfs 
+</span><span class="line">sudo firewall-cmd –reload </span></code></pre></td></tr></table></div></figure></notextile></div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[如何获取docker动态分配的port]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/08/14/docker-public-port/"/>
+    <updated>2015-08-14T14:31:12+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/08/14/docker-public-port</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>当在一个集群环境中，我们需要用到docker启动一个服务的时候，如果总是指定固定的公开端口给docker运行的服务，那么将极大的限制了服务部署的灵活性和可维护行。那么有没有办法在服务启动后去容易获得docker动态分配的端口呢？</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>Docker提供了port的子命令，具体使用如下：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">docker port &lt;container-name&gt; |cut -d':' -f2</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h4 id="section-2">后续问题</h4>
+
+<p>目前这种方式只适合外服务外做服务注册的场景。
+如果服务注册是在服务程序中完成的（如上报到zookeeper等），那么目前是没有办法的。有个<a href="https://github.com/docker/docker/issues/3778">issue3778</a>在跟，不知道docker什么时候提供</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CentOS下使用NTFS格式的U盘或移动硬盘]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/08/10/centos-ntfs-disk/"/>
+    <updated>2015-08-10T09:14:06+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/08/10/centos-ntfs-disk</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>CentOS7没有携带NTFS的驱动，当使用NTFS的硬盘的时候就会出现无法识别的问题</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>安装ntfs-3g的驱动</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">wget https://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+</span><span class="line">sudo rpm -ivUh epel-release-7-5.noarch.rpm
+</span><span class="line">sudo yum install ntfs-3g</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>注意：需要讲U盘退出后再插入才可以生效</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Fleet部署高可用性服务的坑]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/25/fleet-ha-service-trap/"/>
+    <updated>2015-07-25T17:39:16+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/25/fleet-ha-service-trap</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在一个云集群环境中，如何部署服务使其达到高可用性是运维中重要的事情。如果选用CoreOS和Docker作为基础，那么Fleet将是一个很好的服务调度工具。不过改调度工具是比较适用于低层的服务，如果想要灵活的更小粒度的调度应用服务，则需要参考Apache Mesos或者是Google的Kubernetes。至于用Mesos或者是Kubernetes，我后面试完后再分享。回到Fleet，我使用它主要是因为需要集群中重要部署某些特定的服务给应用服务使用，如zookeeper。所以参见fleet的文档“<a href="https://coreos.com/fleet/docs/latest/launching-containers-fleet.html">如使用fleet何部署容器</a>”，但是对于高可用性章节，有些注意点文档倒是没有提，给使用过程造成了一定的麻烦。这个问题也在issue列表中<a href="https://github.com/coreos/fleet/issues/969">#969</a>，在本文时改问题依然没有修复。不过如何恢复错误倒是有办法的</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>问题的来源是这样的，如果需要部署高可用性服务，那么systemd服务的命名方式是xxxx@.service。注意，文件一定要以<code>.service</code>最为后缀命名。然后通过fleet命令来部署它，本例子是部署3个服务实例</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">fleetctl submit xxxx@.service
+</span><span class="line">fleetctl load xxxx@{1..3}.service
+</span><span class="line">fleetctl start xxxx@{1..3}.service</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>但是在敲键盘的时候，输入<code>load</code>指令时讲要运行的服务的实例的个数给漏了，写成和 submit相同的形式，因为我是调出历史命令改的</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">fleetctl load xxxx@.service</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这个时候fleet将出问题了，fleetctl会一直挂在哪里不动了。通过<code>ctl+c</code>取消后，使用正确的命令也不会去部署服务了（某台错误的机器）</p>
+
+<p>通过查看fleet的服务日志<code>journalctl -u fleet</code>可以看到其一直在输出错误：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">ul 25 09:21:59 core-02 fleetd[550]: ERROR reconcile.go:79: Unable to determine agent's current state: failed fetching unit states from UnitManager: Unit name xxxxr@.service is not valid.
+</span><span class="line">Jul 25 09:21:59 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name xxxx@.service is not valid.
+</span><span class="line">Jul 25 09:22:00 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name xxxx@.service is not valid.
+</span><span class="line">Jul 25 09:22:01 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name xxxx@.service is not valid.
+</span><span class="line">Jul 25 09:22:02 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name zookeeper@.service is not valid.
+</span><span class="line">Jul 25 09:22:03 core-02 fleetd[550]: ERROR generator.go:65: Failed fetching current unit states: Unit name xxxx@.service is not valid.
+</span><span class="line">Jul 25 09:22:04 core-02 fleetd[550]: ERROR reconcile.go:79: Unable to determine agent's current state: failed fetching unit states from UnitManager: Unit name xxxx@.service is not valid</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>解决步骤如下</p>
+
+<ul>
+  <li>找到出问题的机器。因为fleet是随机部署服务的，所以需要确定是哪台机才可以定位问题。通过<code>fleetctl list-unit-files</code>看看<code>xxxx@.service</code>被load到哪台机上</li>
+  <li>通过ssh登陆到错误的机器，查找xxxx@.service文件所在的地方，然后将其删除。文件主要放在两个地方：<code>/run/fleet/units/</code>和<code>/run/systemd/system</code>。需要sudo权限</li>
+  <li>运行<code>systemctl daemon-reload</code>刷新systemd的服务</li>
+  <li>重新启动fleet: <code>systemctl restart fleet</code></li>
+  <li>需要注意的是如果重启fleet将会造成所以依赖fleet管理的服务都会被重新启动。如果服务是通过docker容器运行的，而服务描述文件中有写了<code>docker pull</code>将有可能造成服务恢复需要很长时间</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[在Mac下使用docker]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/18/user-docker-mac/"/>
+    <updated>2015-07-18T18:29:43+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/18/user-docker-mac</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>Docker是基于Linux Kernel的容器管理器，但是如果想在Mac上使用就必须安装Linux的虚拟机。当然如果是自己安装一个Linux到virtualbox或者vmare也是没有问题的。我自己就是这样用CoreOS的。但是如果只是想试用或学习docker，这样的方式有些重了，因为每次都要启动虚拟机，登录虚拟机再使用。为了解决这个docker有了<a href="http://docs.docker.com/installation/mac/">boot2docker</a>。但是boot2docker还是需要比较繁琐的安装。所以最好的方式是直接使用<a href="https://kitematic.com">kitematic</a>，kitematic还同时支持windows。但是切记不要将kitematic用在生产环境。</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ul>
+  <li>直接下载kitematic，然后得到一个kitematic.app</li>
+  <li>将它放到application中，直接运行就好</li>
+  <li>在菜单中将docker命令行安装到系统，需要管理员权限，这样就可以通过命令行使用docker了(不过命令行启动需要在kitematic点击<code>DOCKER CLI</code>)</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Zookeeper云部署方案设计]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/13/zookeeper-cloud-deploy/"/>
+    <updated>2015-07-13T16:50:40+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/13/zookeeper-cloud-deploy</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p><a href="http://zookeeper.apache.org/">Zookeeper</a>从Hadoop开始就被Apache多个项目使用。其作为分布式的Key-Value的配置存储，master-election，分布式锁以及service discovery等功能被广泛使用。尽管后很多后起之秀如：<a href="https://coreos.com/etcd/">Etcd</a>, <a href="https://www.consul.io/">Consul</a>，但是因为不同框架间的依赖关系（如Mesos, Storm, Kafka等都依赖zookeeper），Zookeeper仍然是无可代替的。当然也有一种趋势是，新的一些框架／应用开始同时支持多种类似于zookeeper的框架。在选择上用哪种框架来做为配置存储等，各有各的忧虑了。而作为一个互联网的后台平台，很可能需要同时用到多种类似于zookeeper的框架。而对于如何将zookeeper部署到云上，支持scale-in, scale-out, fault tolerance, high avaiabilty等特性则很少有文章提起。本文则是通过在CoreOS上，利用docker以及CoreOS的etcd, fleet等设计如何将zookeeper部署到云平台上，并达到上面提到各种特性。</p>
+
+<h3 id="section-1">方案设计</h3>
+<hr />
+
+<h4 id="section-2">总体设计思路</h4>
+
+<p><img src="http://duffqiu.github.io/images/zookeepercloud.jpg" alt="zookeeper cloud deploy" /></p>
+
+<h4 id="section-3">设计前提</h4>
+
+<ul>
+  <li>设计上将zookeeper部署到CoreOS的主机上，并通过Docker Container的方式运行。当然这个不是必须的。也可以直接部署到linux/windows的主机上，只是管理和运维的方式略有不同，这个例子可以作为参考</li>
+  <li>因为最新的zookeeper3.4.6有个bug，如果设置了zoo.cfg中使用域名的方式来作为集群中的主机名，则当如果域名对应的ip被改变后，zookeeper将无法识别。 参见<a href="https://issues.apache.org/jira/browse/ZOOKEEPER-1506">issue 1506</a>，所以我下载了源码自己编译了一个版本</li>
+  <li>据说zookeeper在后续的版本会加入自身的service discovery功能，则云化部署需要重新调整</li>
+  <li>
+    <p>一个zookeeper的quorum中主机数n的容错率为ceil(n/2)，即如果机器为3台则必须有2台存活；如果为5台则必须有3台存活。</p>
+  </li>
+  <li>zookeeper的集群是在配置的时候通过zoo.cfg的配置文件中的主机列表决定一个quorum，如以下配置。利用CoreOS的fleet做到在某个主机意外down掉后，fleet会在另外一个可用的主机上重新启动服务，所以这里不能使用固定ip，而是使用了域名。</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">server.1=zookeeper-1:2888:3888
+</span><span class="line">server.2=zookeeper-2:2888:3888
+</span><span class="line">server.3=zookeeper-3:2888:3888</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>因为要使用到域名，不得不使用自己的域名服务器，我使用了skydns2作为我的域名解析，它是利用etcd作为配置数据存储。（因为用了CoreOS，etcd自然就已经在了，不过在etcd切换到2.0版本的时候发生了写问题，不过那是后话了）。具体可以参见我的github上如何打包配置skeydns: <a href="https://github.com/duffqiu/skydns2">duffqiu/skydns</a></li>
+  <li>
+    <p>因为在zookeeper集群配置中需要特定指定集群的数量和明确其ip或域名，这将带来以下问题</p>
+
+    <ul>
+      <li>如何能动态的扩展zookeeper来支持更多的客户端，同时又不用去重启哪些已经运行的zookeeper，避免因为zookeeper重启而造成的应用的重联</li>
+      <li>如何避免因为扩充了zookeeper的主机数量而造成zookeeper自身的master的选举的效率的问题</li>
+      <li>如何到达在不需要的时候可以动态的减少zookeeper的主机数而不造成影响</li>
+    </ul>
+  </li>
+  <li>根据以上问题分析，我们需要用到zookeeper的observer特性  </li>
+</ul>
+
+<h4 id="section-4">思路要点</h4>
+
+<ul>
+  <li>在一个数据中心，配置可靠的zookeeper集群核心，主机数量为3/5/7个，具体看使用情况定。有文章说不要将核心的群集中的主机分布到不同的数据中心，因为多数据中心的网络延迟和不可靠性将极大影响zookeeper集群的可用性。如本图中的core1, core2, core3。这和核心的主机配置都是通过域名的方式，以fleet的服务方式部署，当一个主机意外down后，也能通过fleet来恢复，从而达到高可用性。因为是固定的配置，这个核心是不会scale-in, scale-out的。具体可以参考<a href="https://github.com/duffqiu/zk-fleet">duffqiu/zk-fleet</a></li>
+  <li>利用zookeeper的observer特性，来作为应用的接入的边缘节点，该类observer主机不参与zookeeper的master选举，而不会造成选举性能问题。因为核心的zookeeper集群可以不用配置这些边缘节点，所以这些边缘节点的scale-out, scale-in不会影响到核心集群。边缘节点的配置可以参考<a href="https://github.com/duffqiu/zk-observer">duffqiu/zk-observer</a></li>
+  <li>为了屏蔽zookeeper的伸缩性对于应用的影响，则对于一组边缘节点通用使用一个反向代理作为起接入点，如zk-1会接入到zk-observer-1-1…zk-observer-1-n。这个配置我还没做，后续补上</li>
+</ul>
+
+<h4 id="tips">Tips</h4>
+
+<p>zookeeper的默认配置对于日志文件没有限定，这样会造成磁盘的无尽消耗，需要将配置增加如下</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">autopurge.snapRetainCount=10
+</span><span class="line">autopurge.purgeInterval=1</span></code></pre></td></tr></table></div></figure></notextile></div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Install ZSH and Oh_my_zsh in CoreOS]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/09/install-zsh-coreos/"/>
+    <updated>2015-07-09T21:13:24+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/09/install-zsh-coreos</id>
+    <content type="html"><![CDATA[<h3 id="why">Why</h3>
+<hr />
+
+<p>Since some guys from other country ask me how to install zsh and oh-my-zsh in CoreOS, I have to write it in English.</p>
+
+<p>ZSH with <a href="https://github.com/robbyrussell/oh-my-zsh">oh_my_zsh</a> is very convinient shell instead of bash or other shells. </p>
+
+<p>But if you are using CoreOS (most people use it because of using Docker, fleet and etcd), you will meet a challenge because CoreOS doesn’t include zsh with it.</p>
+
+<p>Since there is no installation tool like yum or apt-get in CoreOS, we have to do some workaround mannually to have zsh on it.</p>
+
+<h3 id="how">How</h3>
+<hr />
+
+<ul>
+  <li>
+    <p>Get the zsh related files. (Of course you can build a zsh from source code, but the process is too heavy)</p>
+
+    <ul>
+      <li>Create a local folder in CoreOS. For example: <code>/home/core/zsh</code>. I will refer it as <code>zsh_home</code>. And also create subfolders: <code>lib64</code>, <code>share</code>, <code>bin</code></li>
+      <li>Run a docker container with centos7 image: <code>docker run -it --rm -v &lt;zsh_home&gt;:/root/zsh centos /bin/bash</code></li>
+      <li>In the container, run <code>yum update</code> and <code>yum install zsh</code></li>
+      <li>In the container, query what is installed for zsh: <code>rpm -aql zsh</code></li>
+      <li>Copy the zsh files to the folder you mount for the container in the docker run command. <code>cp /bin/zsh root/zsh/bin</code>, <code>cp -r /usr/lib64/zsh /root/zsh/lib64</code>, <code>cp -r /usr/share/zsh /root/zsh/share</code></li>
+      <li>Copy the dynamic library file for zsh: <code>cp /usr/lib64/libtinfo.so.5 /root/zsh/lib64/</code></li>
+    </ul>
+  </li>
+  <li>Install oh-my-zsh. Follow the instruction of installation of oh-my-zsh is OK.</li>
+  <li>
+    <p>Update .bashrc file (under home path)</p>
+
+    <ul>
+      <li>Break the link of .bashrc: <code>rm .bashrc</code> because it is a link default</li>
+      <li>Get the default version: <code>cp ../../usr/share/skel/.bashrc .bashrc</code></li>
+      <li>Update .bashrc: add below lines in the bottom of the file <code>export PATH=$PATH:/home/core/zsh/bin/</code> and <code>export LD_LIBRARY_PATH=/home/core/zsh/lib64/</code></li>
+      <li>add the <code>zsh</code> command in the last line of .bashrc file becuase we can’t use <code>chsh -s &lt;zsh_home&gt;/zsh</code>
+. The file <code>/etc/shells</code> is read only</li>
+    </ul>
+  </li>
+  <li>
+    <p>Update oh-my-zsh</p>
+
+    <ul>
+      <li>add the below lines on the top of the file: .zshrc</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">module_path=(&lt;zsh_home&gt;/lib64/zsh/5.0.2/)
+</span><span class="line">
+</span><span class="line">fpath=(&lt;zsh_home&gt;/share/zsh/5.0.2/functions/ &lt;zsh_home&gt;/share/zsh/site-functions/ $fpath)
+</span><span class="line">
+</span><span class="line">export PATH=$PATH:&lt;zsh_home&gt;/bin</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>…
+    <ul>
+      <li>add <code>PATH=$PATH:/home/core/zsh/bin</code> on the top of file .oh-my-zsh/oh-my-zsh.sh</li>
+      <li>add below lines on the top of the file .oh-my-zsh/tools/check_for_upgrade.sh</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">module_path=(&lt;zsh_home&gt;/lib64/zsh/5.0.2/)
+</span><span class="line">
+</span><span class="line">fpath=(&lt;zsh_home&gt;/share/zsh/5.0.2/functions/ &lt;zsh_home&gt;/share/zsh/site-functions/ $fpath)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>relogin CoreOS shall be ok to use zsh</li>
+</ul>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Docker清除none Images]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/06/docker-cleanup-none-images/"/>
+    <updated>2015-07-06T15:32:40+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/06/docker-cleanup-none-images</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>如果是本地去build image，则中间过程会产生不少<none>的image，特别是如果build的过程使用了ctrl+c取消进程的执行。如何有效的清除这些<none>
+的image而节约空间呢？</none></none></p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>Docker在查询image的命令中增加了<code>--filer/-f</code>参数，利用该选项查询哪些none的image然后再逐一删除</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">docker rmi $(docker images -f "dangling=true" -q)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Coreos Fleet使用陷阱几例]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/05/coreos-fleet-trap/"/>
+    <updated>2015-07-05T18:57:28+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/05/coreos-fleet-trap</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>CoreOS带了一个基于Systemd的集群服务管理工具，可以便于管理在多个CoreOS实例中部署和管理服务，虽然它的力度比较粗一点，无法针对资源的情况来管理，不像Mesos，但是因为其基于Systemd，其服务依赖等做的比较好，比较适用于基础服务的部署。
+但是在使用过程中还是遇到了不少坑和麻烦，现在一一列举出来</p>
+
+<h3 id="fleet">Fleet的坑</h3>
+<hr />
+
+<ul>
+  <li>Fleet的Service Unit的文件的写法。在Unit文件中使用环境变量只能用在<code>[Service]</code>域中，其它域是无法使用的。参见<a href="https://github.com/coreos/fleet/issues/1246">issue 1246</a></li>
+  <li>Fleet的Service Unit的文件的[X-Fleet]域的Conflicts不要像systemd那样一行写多个服务的名字。如果有多个冲突项，则需要写多行的Conflicts。参见<a href="https://github.com/coreos/fleet/issues/1245">issue 1245</a></li>
+  <li>Fleetctl要能够连接集群中的其它机器，则需要使用ssh-agent</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">eval `ssh-agent`
+</span><span class="line">ssh-add &lt;ssh的私钥，如果是用openstack，则是用openstack生成的私钥&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Systemd的启动顺序和自动启动配置]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/05/systemd-boot/"/>
+    <updated>2015-07-05T17:56:27+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/05/systemd-boot</id>
+    <content type="html"><![CDATA[<h3 id="systemd">Systemd的启动顺序</h3>
+<hr />
+
+<ul>
+  <li>/etc/systemd/system/</li>
+  <li>/run/systemd/system/</li>
+  <li>/usr/lib/systemd/system/</li>
+</ul>
+
+<p>在CoreOS中，自带的服务都是放在了/usr/lib/systemd/system/目录下，但是该目录是只读的，如需更改，可以将对应的service unit文件copy到/etc/systemd/system目录下，然后更改后重新启动</p>
+
+<p>每次更改service unit文件需要执行 <code>sudo systemctl daemon-reload</code></p>
+
+<h3 id="systemdboot">Systemd的服务需要在系统boot时启动</h3>
+<hr />
+
+<p>需要在Service Unit文件中加入：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[Installl]
+</span><span class="line">WantedBy=multi-user.target</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>然后执行<code>sudo systemctl daemon-reload</code>和<code>sudo systemctl enable &lt;xxxx.service&gt;</code></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Openstack如何更好的使用block Service作为磁盘使用]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/05/openstack-blockservice/"/>
+    <updated>2015-07-05T17:15:59+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/05/openstack-blockservice</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在使用Openstack过程中，VM总是要运行某些程序，而这些程序的数据是记录在磁盘中的。如何保证在VM被删除或者重建后这些数据依然能够存在呢？这就要用到Openstack的Block Service了。但是这里面有几个问题：</p>
+
+<ul>
+  <li>block service创建出来的卷是是个无文件格式的盘，无法被直接读写</li>
+  <li>通常我们希望在给一个VM初始化时挂在一个盘时，这个盘已经包含了某些必须的文件内容 </li>
+</ul>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>思路是做出一个带有文件格式已经需要的文件内容／数据的block service的image，这样就不用去格式化这个卷，同时也包含所需的内容，具体方法如下：</p>
+
+<ul>
+  <li>创建一个本地image，指定大小。 <code>dd if=/dev/null of=example.img bs=1M seek=1024</code>。这里创建了一个1G大小的镜像文件example.img，对于不同的使用目的，这里的bs需要调优</li>
+  <li>格式化成ext4。 <code>mkfs.ext4 -F example.img</code></li>
+  <li>创建本地的挂载目录 <code>mkdir &lt;path&gt;</code></li>
+  <li>挂载这个image到指定的目录 <code>mount -t ext4 -o loop example.img &lt;path&gt;</code></li>
+  <li>将需要的资料放入到这个目录中</li>
+  <li>卸载该image <code>umount &lt;path&gt;</code></li>
+  <li>将image转成qcow2格式 <code>qemu-img convert -f raw -O qcow2 example.img example.qcow2</code></li>
+  <li>上传到openstack</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">glance image-create --name &lt;image name&gt; \
+</span><span class="line">--container-format bare \
+</span><span class="line">--disk-format qcow2 \
+</span><span class="line">--file exmaple.qcow2 \
+</span><span class="line">--is-public True</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>创建block storage的卷</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">cinder create --image-id &lt;image uuid&gt; --display-name &lt;disk name&gt; &lt;size x G&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>创建完成就可以将其挂载到VM中使用了</li>
+  <li>可以在创建VM时在nova命令中生成这个卷</li>
+</ul>
+
+<h4 id="openstack-tips">Openstack tips</h4>
+
+<ul>
+  <li><code>vgdisplay</code>获取openstack的磁盘空间信息</li>
+</ul>
+
+<h4 id="bash-tips">Bash tips</h4>
+
+<ul>
+  <li><code>echo $?</code> 获取最近命令的status code</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CoreOS Etcd2]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/05/coreos-etcd2/"/>
+    <updated>2015-07-05T16:13:19+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/05/coreos-etcd2</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>从CoreOS 682.1开始，ETCD2已经被默认安装了，通过Clould Init的方式在Openstack上启动CoreOS时发生了一些错误，总结如下</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ul>
+  <li>ETCD2总是启动不成功，通过<code>journalctl _EXE=/usr/bin/coreos-cloudinit</code>查看发现其提示没有发现本地的文件有相关的member信息。究其原因是我在cloudinit中设置了etcd2的文件路径，而改文件目录默认是root的权限，但是etcd2运行的时候是以etcd用户运行的，所以造成无法访问改文件目录而启动失败</li>
+  <li>解决的办法是通过在cloudinit中写一个oneshot的systemd的服务，该服务将这个目录的权限和所有权更改为etcd，可参照我github上的<a href="https://raw.githubusercontent.com/duffqiu/coreos-openstack/master/etcd2/cloud-config-front1.yaml">cloudinit的例子</a></li>
+  <li>另外需要注意的是，etcd2通过discovery指定的cluster的大小。如果没有满足这个cluster的大小的节点联入则etcd2的集群是无法启动的</li>
+  <li>etcd2的cluster，在接入节点满足cluster指定的大小后，后续的接入节点将自动降格为proxy模式</li>
+  <li>etcdctl可以用<code>--debug</code>开查看发出的CURL命令是什么</li>
+</ul>
+
+<h4 id="docker-tips">Docker tips</h4>
+
+<ul>
+  <li>从Docker 1.6开始，docker可以支持查看container的运行时的CPU和Memery的消耗，以下命令为列出本机所有containter的运行状况</li>
+</ul>
+
+<p>docker stats $(docker inspect –format=”{{ .Name }}” $(docker ps -q))</p>
+
+<ul>
+  <li>从Docker 1.6开始，docker支持直接使用命令进入到container中进行交互，而不用向以前那么麻烦的使用nsenter的方式了，具体用法是</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">docker <span class="nb">exec</span> -it &lt;containter name&gt; &lt;<span class="nb">command </span>in container&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CoreOS安装和使用Keepalived]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/05/coreos-keepalived/"/>
+    <updated>2015-07-05T15:43:47+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/05/coreos-keepalived</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在之前的文章<a href="http://duffqiu.github.io/blog/2015/07/05/openstack-vip/">Openstack用Keealived来实现VIP</a>介绍了如何使用Keepalived来实现VIP，但是如果使用的vm是CoreOS，所有的程序又必须运行在Docker中的话，又该如何办呢？</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ul>
+  <li>将Keepalived做成一个Docker的image，如果需要可以自己下载keepalived的源码编译出可执行文件。因为只是用到VIP特性，可以在编译的时候将IPVS去掉（该功能可以使用haproxy代替）。一个比较偷懒的办法是先用yum的方式安装keepalived(基于CentOS)<code>yum install keepalived</code>，然后用<code>rpm -e --nodeps keepalived</code>去掉安装的可执行文件而是用自己编译的可执行文件。不然的话就需要一个一个指定的方式来安装keepalived需要的依赖包了</li>
+  <li>查看CoreOS的内核是否已经启动ip_vs模块<code>lsmod</code>。似乎从681.2开始，默认都已经启动了，之前的版本没有默认启动</li>
+  <li>如果没有启动ip_vs，则可以通过<code>sudo modprobe -a ip_vs</code>来加载</li>
+  <li>使用<code>--priviliedged</code>和<code>--net=host</code>的方式来启动keepalived</li>
+  <li>具体的docker file可以参考我的github上的<a href="https://github.com/duffqiu/keepalived">repo</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Openstack用Keealived来实现VIP]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/05/openstack-vip/"/>
+    <updated>2015-07-05T15:34:52+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/05/openstack-vip</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在Openstack创建VM的时候一般都是使用DHCP的方式来分配虚拟机的IP地址。这样就会出现一个问题，每次重建VM的时候，IP地址都会被改变，从而影响外部的访问。同时如果期望有两个虚拟机同时服务一个IP接入的话，则需要用到VIP的方式来实现。</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>VIP的实现方式通常使用VRRP（Virtual Router Redundancy Protocol）协议的方式。目前开源比较通用的软件是<a href="http://keepalived.org/">Keepalived</a>，但是在Openstack的环境中，并不是在两台虚拟机安装了Keepalived就可以的。而是需要做某些配置，下面具体讲讲</p>
+
+<ul>
+  <li>在OpenStack的一个内部网络上创建一个Port，这个Port将得到一个内网的IP <code>neutron port-create --name &lt;port name&gt; &lt;internal network name&gt;</code> 。如果不知道openstack上有哪些网络可用，则可以用<code>neutron net-list</code>来查看</li>
+  <li>创建一个外网可访问的floating ip。<code>neutron floatingip-create &lt;external network name&gt;</code></li>
+  <li>将这个floating ip关联到这个新建的port上。 <code>neutron floatingip-associate &lt;floating ip uuid&gt; &lt;port uuid&gt;</code>。这样就可以通过外部网络访问到这个port口了。</li>
+  <li>启动两台VM，然后各自配置keepalived，并且用这个内网的ip作为VIP给keepalvied使用。配置好后，似乎都没有问题了。但是始终无法访问，原因是openstack对于使用VIP有安全限制，必须认为的将这个VIP与VM关联才可以访问</li>
+  <li>配置VM的allowed-address-pair。首先通过<code>nova list |grep &lt;vm identity&gt;</code>来找到自己创建的VM，然后通过<code>neutron port-list|grep &lt;vm ip&gt;</code>来找到VM port对应的uuid。通过<code>neutron port-show &lt;vm port uuid&gt;</code>来查看是否配置了allowed-address-pair。如果没有则需要更新port来支持allowed-address-pair。命令是<code>neutron port-update &lt;vm port uuid&gt; --allowed-address-pairs type=dict list=true ip_address=&lt;VIP&gt;</code></li>
+</ul>
+
+<h3 id="section-2">如何调试</h3>
+
+<ul>
+  <li>如果一切都配置好了，但是就是无法通，则可以在VM或者是Openstack对应的Computer Node上用<code>tcpdump -i &lt;net card name&gt; icmp</code>的方式开跟踪是否消息包是通的</li>
+  <li><code>ip neigh |grep &lt;vip&gt;</code> 来查看<vip>对应的mac地址。然后在作为master的keepalived的机器上看看是否是这个mac地址</vip></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[CoreOS的安装]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/03/29/install-coreos/"/>
+    <updated>2015-03-29T11:10:44+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/03/29/install-coreos</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>想玩Docker的人肯定应该听说过<a href="https://coreos.com">CoreOS</a>。它是一个紧密结合Docker为大集群服务器而设计的Linux系统。它本身不允许安装软件包。所有提供的功能和扩展都是通过Docker容器来提供。安装CoreOS可以有多种方式，网管上都有介绍。这里主要说一下两种方式，一种是单机版，一种是服务器集群。这两种方式都是基于VirtualBox的安装.</p>
+
+<h3 id="coreos">单机安装CoreOS</h3>
+<hr />
+
+<ul>
+  <li>配置Virtualbox，创建一个linux的虚拟主机出来，内存512就够了</li>
+  <li>下载CoreOS的ISO文件。（注意：国内对于CoreOS的下载服务器做了屏蔽，也不知道是为什么）</li>
+  <li>设置CoreOS的ISO的文件作为虚拟光驱，然后启动CoreOS的虚拟机</li>
+  <li>CoreOS的安装程序没有图形界面，光驱载入后只是给了个命令行的console</li>
+  <li>在命令行中输入<code>sudo coreos-install -d /dev/sda</code>，然后这个脚本将下载CoreOS的安装包并开始安装 (注意：同样国内服务器屏蔽了下载服务器)</li>
+  <li>安装成功后关闭CoreOS的虚拟机，<code>sudo systemctrl poweroff</code></li>
+  <li>然后调整CoreOS的虚拟机，将启动顺序改为硬盘为先</li>
+  <li>启动CoreOS的虚拟机，但是需要先进入GUN GRUB设置启动脚本，因为默认情况CoreOS是用证书连接的。没有用户名和密码。所以直接启动是无法登录系统的。</li>
+  <li>启动CoreOS的虚拟机后用上下键选择启动default项，在最后一行的末尾加上<code>console=tty0 console=ttyS0 coreos.autologin=tty1 coreos.autologin=ttyS0</code>，然后F10保存后启动，这个时候将不需要密码进入系统了(这个改动只会一次有效，以后需要还要重新更改)</li>
+  <li>注意：有可能不同的虚拟机启动的时候的cosole不是tty0或者ttyS0,则可以试一下tty1</li>
+  <li>CoreOS默认安装后有用户core，这个时候可以用<code>sudo passwd core</code>来修改密码</li>
+  <li>修改密码成功后，以后登录就可以用core用户和新设置的密码了</li>
+  <li>CoreOS的虚拟机启动后默认已经启动了Docker，可以用<code>docker info</code>来查看docker的状态</li>
+  <li>单机版的CoreOS只是拿来练习docker用的，或者是做开发环境，不可用作生产环境</li>
+  <li>在Virutalbox上的虚拟主机上的网络配置端口映射（如SSH的22端口映射到主机的2222端口，这样就可以通过连接本机的2222端口到虚拟机了）</li>
+</ul>
+
+<h3 id="vagrantcoreos">Vagrant安装单一虚拟机的CoreoS集群</h3>
+<hr />
+
+<ul>
+  <li>主要参照官网的文档说明<a href="https://coreos.com/docs/running-coreos/platforms/vagrant/">Running CoreOS on Vagrant</a></li>
+  <li><a href="https://coreos.com/docs/running-coreos/platforms/vagrant/">Vagrant</a>主要是作为开发环境配置管理工具，需要1.6.3及以上版本</li>
+  <li>根据Virtualbox以及Vagrant的说明安装好这些工具</li>
+  <li>用Git克隆对应的vagrant安装CoreOS的工程</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">git clone https://github.com/coreos/coreos-vagrant.git
+</span><span class="line"><span class="nb">cd </span>coreos-vagrant
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>从这个项目中的example文件copy得到一份<code>user-data</code>和<code>config.rb</code>。<code>user-data</code>是CoreOS的云配置文件，是<a href="https://github.com/coreos/fleet">fleet</a>需要用到的配置内容。<code>config.rb</code>是Vagrant用到的配置选项。</li>
+  <li>
+    <p>修改<code>user-data</code>文件，配置<a href="https://github.com/coreos/fleet">etcd</a>用到的这个CoreOS cluster服务发现所要的etcd的服务。是不是有些绕？etcd需要ectd?后面再写个如何建etcd群的文章给CoreOS cluster用。</p>
+
+    <ul>
+      <li>使用免费的公开的etcd的服务获得一个群的token: 调用<code>https://discovery.etcd.io/new</code>得到一个token值</li>
+      <li>将这个token替换discovery配置项中的<token>就可。</token></li>
+      <li>需要注意的是，每次<code>vagrant destroy</code>后要重新更新这个token值</li>
+      <li>每次更新这个文件后，需要用<code>vagrant reload --provision</code>的来更新VM</li>
+    </ul>
+  </li>
+  <li>
+    <p>修改<code>config.rb</code>配置文件</p>
+
+    <ul>
+      <li>设置群中服务器个的个数 <code>$num_instances=3</code></li>
+      <li>设置VM的版本，如使用最新的稳定版 <code>$update_channel='stable'</code>。如果需要指定版本，则可以修改<code>Vagrantfile</code>中的config.vm.box_version配置</li>
+    </ul>
+  </li>
+  <li>
+    <p>用启动CoreOS cluster</p>
+
+    <ul>
+      <li><code>vagrant up</code> 启动，如果之前没有box，则会自动下载对应的box。注意如果有代理，则需要在环境变量中设置http_proxy以及https_proxy(windows下也要) </li>
+      <li>如果只想启动一台server则可以：<code>vagrant up &lt;name&gt;</code>，默认<name>可以是core-01, core-02, core-03&#8230;</name></li>
+      <li>检查启动状态：<code>vagrant status</code></li>
+      <li>连接进server: <code>vagrant ssh &lt;name&gt;</code>，这样将通过证书来认证默认用户core。如果使用Putty这样的ssh client则可以参考<a href="https://github.com/Varying-Vagrant-Vagrants/VVV/wiki/Connect-to-Your-Vagrant-Virtual-Machine-with-PuTTY">用ssh登录vagrant创建的vm</a></li>
+      <li>如果想共享主机目录到CoreOS则可以去掉<code>Vagrantfile</code>中关于<code>config.vm.synced_folder</code>的注释符</li>
+    </ul>
+  </li>
+  <li>
+    <p>验证CoreOS是否成功建立集群</p>
+
+    <ul>
+      <li>登录其中一台CoreOS</li>
+      <li>使用命令：<code>fleetctl list-machines</code>看是否成功列出集群中所有的CoreOS服务器，如果有错误，一般是配置<code>user-data</code>文件的discovery不正确</li>
+    </ul>
+  </li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Scala作为脚本语言动态执行]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/03/03/scala-script/"/>
+    <updated>2015-03-03T17:05:37+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/03/03/scala-script</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>通常我们设计程序的时候都会分为3个层面，MVC是最通用的分层方式。一个是展示层，一个逻辑处理层，一个存储层。但是对于逻辑处理层还可以抽象分为两个层次，一个固定逻辑层，一个动态逻辑层。
+对于动态逻辑层的实现，在Java中一般可以使用JavaScript引擎来执行JavaScript脚本。在Scala的程序中也可以这样做。不过Scala增加了使用Scala语言本身作为scritp语言。即Scala代替Javascript。
+在2.11的REPL中可以这样做了，参见<a href="http://duffqiu.github.io/blog/2015/03/02/scala211-overview/">Scala2.11Overview</a>
+那么在代码中如何做呢？找了半天都没有找到官方的例子，尝试的过程中不是发现Null Point Exception的此错误就是说xxx Not Found (xxx是指Scala的类型，如Object, Int等)
+在Junjun的提醒下，可能是ClassLoader的问题，造成script的执行找不到对应的jar包（包括Scala的标准包），因为默认情况下，ScriptEngine是在bootstrap路径下找jar包。参见<a href="http://docs.oracle.com/javase/7/docs/technotes/tools/findingclasses.html">Java如何找CLASS文件</a></p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ul>
+  <li>先来看看原来在REPL中调用ScalaScript(尽管Script的代码依然是Scala，为了好区分这些是动态执行的Scala,暂且叫他ScalaScript)</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">import javax.script.ScriptEngineManager
+</span><span class="line">val e = new ScriptEngineManager().getEngineByName("scala")
+</span><span class="line">e.put("n", 10)
+</span><span class="line">e.eval("1 to n.asInstanceOf[Int] foreach println")</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>
+    <p>这些代码如果直接搬到Scala程序中，然后通过<code>java -jar</code>的方式运行是回出现我前面提到的错误的</p>
+  </li>
+  <li>
+    <p>解决方式1： 使用<code>-xXbootclasspath</code>来指定scalascript中用到的jar包，包含scala的标准包，因为bootstrao只包含了JAVA的rt.jar以及jre/lib下面的jar包。</p>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">java -Xbootclasspath/a:/usr/scala-2.11.4/lib/scala-library.jar:/usr/scala-2.11.4/lib/scala-compiler.jar:/usr/scala-2.11.4/lib/scala-reflect.jar -jar  &lt;your jar file&gt;
+</span><span class="line">//注意/a:/是固定的格式，具体可以查Jdk的文档</span></code></pre></td></tr></table></div></figure></notextile></div>
+<pre><code>- 但是这个方式在前面的&lt;&lt;Java如何找CLASS文件&gt;&gt;的文中不建议，同时使用起来也比较麻烦
+</code></pre>
+
+<ul>
+  <li>解决方式2： 在代码中指定scalascript和调用程度本身使用相同的jar包，代码如下：</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">import javax.script.ScriptEngineManager
+</span><span class="line">import javax.script.ScriptEngine
+</span><span class="line">
+</span><span class="line">val m = new ScriptEngineManager()
+</span><span class="line">val engine = m.getEngineByName("scala")
+</span><span class="line">
+</span><span class="line">//需要设计的属性
+</span><span class="line">val settings = engine.asInstanceOf[scala.tools.nsc.interpreter.IMain].settings
+</span><span class="line">settings.usejavacp.value = true  //使用程序的class path作为engine的class path
+</span><span class="line">
+</span><span class="line">engine.put("m", 10)
+</span><span class="line">engine.eval("1 to m.asInstanceOf[Int] foreach println")</span></code></pre></td></tr></table></div></figure></notextile></div>
+<pre><code>- 在sbt的工程中，将scala的标准包都变成依赖包，显示指定
+- 然后通过`sbt assembly`来打包程序为胖程序（即包含所有的依赖包），`sbt package`不会包含依赖包的
+- 直接通过`jar -jar &lt;your jar file&gt;`就可以了.
+</code></pre>
+
+<h4 id="section-2">官方讨论</h4>
+
+<p><a href="https://github.com/scala/scala/pull/2238">Scala Issue 2238</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Scala211特性简介]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/03/02/scala211-overview/"/>
+    <updated>2015-03-02T12:02:16+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/03/02/scala211-overview</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>Scala语言本生的变更还是比较快的，现在最通用是2.10和2.11版本
+那么是否需要用2.11版本呢？
+我们来看一看2.11的一些特性。参考于<a href="http://docs.scala-lang.org/scala/2.11/">scala2.11overview</a></p>
+
+<h3 id="scala-211">Scala 2.11特性简介</h3>
+<hr />
+
+<ul>
+  <li>
+    <p>更小</p>
+
+    <ul>
+      <li>Actor包被废弃，如果的需要直接用Akka的包，已经被包含在了Scala的版准语言包了</li>
+      <li>XML包被移除出scala-library.jar，编程了一个独立的包，如需要可以加入如下依赖 <code>libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.3"</code></li>
+    </ul>
+  </li>
+  <li>更快: 提高了性能</li>
+  <li>
+    <p>更强</p>
+
+    <ul>
+      <li>语言：支持case class的参数多于22个参数(参见：<a href="https://issues.scala-lang.org/browse/SI-7296">1</a>)</li>
+      <li>语言：增强类型推断。(不过好像这个问题又被打开了, 参见<a href="https://issues.scala-lang.org/browse/SI-1786">2</a>)</li>
+      <li>REPL: 这个增强了很多项， 不一一举例了，下面是一些我个人觉得有用的。</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">scala&gt; :settings &lt;+/-&gt; &lt;flag&gt;
+</span><span class="line">//这个主要是针对在REPL中提示有warning的时候，需要使用某些启动参数。原来的方式是需要退出REPL然后再用指定参数启动。现在可以直接通过这个名利来激活(+)/去除(-)某个特性(flag)，如显示deprecation，则用":settings + deprecation"</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<pre><code>- REPL: 支持script引擎 (我个人没有用过scala下的script引擎，不知道。后面再写个如何在[代码中动态执行Scala](/blog/2015/03/03/scala-script/))
+</code></pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ssh在linux下使用http/https代理]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/02/26/ssh-proxy-in-linux/"/>
+    <updated>2015-02-26T18:00:30+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/02/26/ssh-proxy-in-linux</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>在公司有代理的环境下，如果在linux下使用github，则可以使用https的方式。
+但是https的方式需要每次都输入用户名和密码（用户名可以写在url上避免输入，但是密码就必须要）
+但是如果能使用ssh的rsa方式则可以避免这个麻烦，但是ssh默认是不支持使用http/https代理的。
+那么有没有办法通过某种手段让ssh支持代理呢？答案是可定的，这个工具是<a href="http://www.agroman.net/corkscrew/">Corkscrew官网</a></p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<p>通过Corkscrew来建立隧道的方式来为ssh提供代理，具体方法如下 </p>
+
+<ul>
+  <li>安装Corkscrew（主要下载源代码，然后配置、编译、安装，典型的C程序的方式）</li>
+  <li>配置ssh，在~/.ssh/目录下生成一个config=文将，然后增加一行：<code>ProxyCommand /usr/local/bin/corkscrew &lt;proxy http url&gt; &lt;proxy port&gt; %h %p</code></li>
+  <li>如果是新建的config文件，注意要更改一下它的权限为600，<code>chmod 600 ~/.ssh/config</code></li>
+  <li>根据github的说明配置ssh的public和private key,参考<a href="https://help.github.com/articles/generating-ssh-keys/#platform-linux">git帮助</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Sublime入门以及搭建scala开发环境]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/02/25/sublime-startup/"/>
+    <updated>2015-02-25T14:49:46+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/02/25/sublime-startup</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>Sublime号称是神级编辑器，同时支持多种插件的扩展。并且支持多个平台。
+这里主要讲以下如何安装和配置，并说明一下如何使用scala插件来搭建开发环境，
+避免使用其他的IDE这么重的工具，节约内存和系统消耗</p>
+
+<h3 id="sublime">sublime使用入门</h3>
+<hr />
+
+<ul>
+  <li>
+    <p>安装sublime
+可以直接从<a href="http://www.sublimetext.com/">sublime官网</a>下载对应的版本安装
+这里针对不同的系统的配置的文件的路径如下：</p>
+
+    <ul>
+      <li>Mac OSX: <code>~/Library/Library/Application Support/Sublime Text 3</code></li>
+      <li>Linux CentOS7: <code>~/.config/sublime-text-3</code></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Mac OSX有对应的dmg安装包，一部一部安装就可以
+CentOS7没有安装包，需要下载压缩包，4然后解压到<code>/opt/sublime-text</code>目录(注意要把名字中的3去掉)，然后将目录中的sublime_text.desktop复制到<code>/usr/share/applications</code>，这样在CentOS的启动菜单上就对应的图表了</p>
+
+<ul>
+  <li>
+    <p>安装包管理插件Package Control</p>
+
+    <ul>
+      <li>最先要安装的是插件<a href="https://packagecontrol.io/installation">管理工具Package Control</a>: 下载插件包，然后放到配置路径的Installed Packages目录下就可以了。</li>
+      <li>每次通过<code>shift+Ctrl+P</code>来打开命令板选择“Package Control: Install Package”来安装插件</li>
+    </ul>
+  </li>
+  <li>
+    <p>安装scala插件SublimeREPL</p>
+
+    <ul>
+      <li><code>shift+Ctrl+P</code>来打开命令板选择“Package Control: Install Package”，然后选择SublimeREPL</li>
+      <li>安装成功后就可以在命令板中选择对应的scala/sbt来打开scala REPL和sbt REPL了</li>
+      <li>配置： 有可能你安装sbt/scala的目录不同，造成无法打开scala REPL和sbt REPL，这个时候需要手工配置一下。在配置的文件的路径下找到<code>Packages/SublimeREPL/config/Scala</code>目录下的Main.sublime-menu文件，编辑该文件，为对应的scala和sbt指定好对应的目录就可以了</li>
+      <li>使用：对于SublimeREPL:scala只是打开了scala REPL，用处不大，可以使用下面的scala worksheet插件代替。但是对于SublimeREPL:sbt则比较有用。方式是通过sublime先打开sbt的工程的目录，然后在命令板执行SublimeREPL:SBT for opened folder。不过还有更方便的插件SbblimeSBT</li>
+    </ul>
+  </li>
+  <li>
+    <p>安装scala worksheet插件</p>
+
+    <ul>
+      <li><code>shift+Ctrl+P</code>来打开命令板选择“Package Control: Install Package”，然后选择Scala Worksheet</li>
+      <li>安装成功后就可以在命令板中选择对应的show scala worksheet了。</li>
+      <li>使用方式是编写对应的scala文件并保存后，再执行show scala worksheet，这样scala REPL就自动会执行你编辑的文件了。</li>
+      <li>有可能在打开show scala worksheet出现无法找到scala的无法，简单的解决方式是在1<code>/usr/bin</code>下给scala建立一个soft link <code>sudo ln &lt;scala install path&gt; /usr/bin/scala</code></li>
+      <li>如果需要给Scala worksheet增加额外的jar包，则需要配置Sublime中的setting。<code>preferences-&gt;Settings - User</code>，然后增加一个JSON key: (注意不要用相对路径，要用绝对路径)</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">"scala_worksheet_classpath":
+</span><span class="line">[
+</span><span class="line">	"&lt;jar path&gt;/&lt;jar name&gt;"
+</span><span class="line">]</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>
+    <p>安装SublimeSBT插件</p>
+
+    <ul>
+      <li><code>shift+Ctrl+P</code>来打开命令板选择“Package Control: Install Package”，然后选择SublimeSBT</li>
+      <li>使用：shift+Ctrl+P`来打开命令板选择SBT: xxx来运行对应的sbt命令</li>
+    </ul>
+  </li>
+  <li>
+    <p>给对应的scala sbt项目配置SBT插件：sbt-sublime </p>
+
+    <ul>
+      <li>在project/plugin.sbt中增加<code>addSbtPlugin("com.orrsella" % "sbt-sublime" % "1.0.9")</code></li>
+      <li>在sbt console中调用<code>gen-sublime</code>来获取依赖包的源文件以及生成sublime的工程文件（每次SBT Clean都会自动删除这些文件。）。这样也节约了需要在每一个依赖包的定义后面增加withSource的选项</li>
+      <li>使用步骤1： 在sublime中， project-&gt;open project来打开生成sublime的工程文件，这个时候将会将SBT的工程目录加载进来，同时多了一个External Libraries的目录（其存放了依赖包的源代码）</li>
+      <li>使用步骤2： 使用SublimeSBT插件调用SBT: Start continus compiling，这样每次更改源文件都会被自动编译。如果发现错误，则Sublime会自动提示在那一行代码上</li>
+      <li>使用步骤3： 因为引入了依赖包的源代码，则可以通过在sublime中的Goto菜单来调转到指定的类/方法的源文件处(仅Sublime Text 3支持)</li>
+      <li>使用步骤4： 使用Snippet：case class…等来协助快速编写代码（但是不知道是上面哪个插件体提供的了）</li>
+    </ul>
+  </li>
+  <li>
+    <p>使用Git插件，在“Package Control: Install Package”中选择Git就可以了，然后在命令板选择对应的Git:xxx命令就可如Git status。</p>
+  </li>
+</ul>
+
+<p>Sublime搭建Scala开发环境小结：
+    - 总体而言还是不错，运行速度又快，基本的功能都有
+    - 但是唯一的遗憾是没有办法在编写代码的时候自动提示可能的方法/类等</p>
+
+<h4 id="section-1">小提示</h4>
+<p>对于sublime text 3的最新版本在linus下无法使用ibus的输入法，所以编写这个blog的时候我又回到了gedit
+从这个对比来看，linus和mac osx从个人用户的使用来看还是差很远的</p>
+
+]]></content>
+  </entry>
+  
+</feed>

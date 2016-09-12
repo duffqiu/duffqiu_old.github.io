@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ETCD2 | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/etcd2/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2015-10-28T09:26:38+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[CoreOS Etcd2]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/05/coreos-etcd2/"/>
+    <updated>2015-07-05T16:13:19+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/05/coreos-etcd2</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>从CoreOS 682.1开始，ETCD2已经被默认安装了，通过Clould Init的方式在Openstack上启动CoreOS时发生了一些错误，总结如下</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ul>
+  <li>ETCD2总是启动不成功，通过<code>journalctl _EXE=/usr/bin/coreos-cloudinit</code>查看发现其提示没有发现本地的文件有相关的member信息。究其原因是我在cloudinit中设置了etcd2的文件路径，而改文件目录默认是root的权限，但是etcd2运行的时候是以etcd用户运行的，所以造成无法访问改文件目录而启动失败</li>
+  <li>解决的办法是通过在cloudinit中写一个oneshot的systemd的服务，该服务将这个目录的权限和所有权更改为etcd，可参照我github上的<a href="https://raw.githubusercontent.com/duffqiu/coreos-openstack/master/etcd2/cloud-config-front1.yaml">cloudinit的例子</a></li>
+  <li>另外需要注意的是，etcd2通过discovery指定的cluster的大小。如果没有满足这个cluster的大小的节点联入则etcd2的集群是无法启动的</li>
+  <li>etcd2的cluster，在接入节点满足cluster指定的大小后，后续的接入节点将自动降格为proxy模式</li>
+  <li>etcdctl可以用<code>--debug</code>开查看发出的CURL命令是什么</li>
+</ul>
+
+<h4 id="docker-tips">Docker tips</h4>
+
+<ul>
+  <li>从Docker 1.6开始，docker可以支持查看container的运行时的CPU和Memery的消耗，以下命令为列出本机所有containter的运行状况</li>
+</ul>
+
+<p>
+docker stats $(docker inspect –format=”{{ .Name }}” $(docker ps -q))
+</p>
+
+<ul>
+  <li>从Docker 1.6开始，docker支持直接使用命令进入到container中进行交互，而不用向以前那么麻烦的使用nsenter的方式了，具体用法是</li>
+</ul>
+
+<p><code>sh
+docker exec -it &lt;containter name&gt; &lt;command in container&gt;
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

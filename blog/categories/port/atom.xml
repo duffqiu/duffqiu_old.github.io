@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Port | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/port/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2015-10-28T09:26:38+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Mac下port工具的使用]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/02/23/mac-port-guide/"/>
+    <updated>2015-02-23T22:29:35+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/02/23/mac-port-guide</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+
+<p>Mac下面除了用dmg、pkg来安装软件外，比较方便的还有用MacPorts来帮助你安装其他应用程序，跟BSD中的ports道理一样。MacPorts就像apt-get、yum一样，可以快速安装些软件。</p>
+
+<p>Mac下还有brew可以用来管理软件包，但是个人不喜欢这个工具，还是比较倾向于用port</p>
+
+<h3 id="section-1">工具使用详解</h3>
+<hr />
+
+<ul>
+  <li>更新ports tree(即软件信息列表)和MacPorts版本，强烈推荐第一次运行的时候使用-v参数，显示详细的更新过程。</li>
+</ul>
+
+<p><code>
+sudo port -v selfupdate
+</code></p>
+
+<ul>
+  <li>搜索索引中的软件</li>
+</ul>
+
+<p><code>
+port search &lt;name&gt;
+</code></p>
+
+<ul>
+  <li>安装新软件</li>
+</ul>
+
+<p><code>
+sudo port install &lt;name&gt;
+</code></p>
+
+<ul>
+  <li>卸载软件</li>
+</ul>
+
+<p><code>
+sudo port uninstall &lt;name&gt;
+</code></p>
+
+<ul>
+  <li>递归卸载要卸载的软件所依赖的软件包，但这一命令不会卸载那些又依赖其他软件包的软件。</li>
+</ul>
+
+<p><code>
+sudo port uninstall --follow-dependencies software_name 
+</code></p>
+
+<ul>
+  <li>查看有更新的软件以及版本</li>
+</ul>
+
+<p><code>
+port outdated
+</code></p>
+
+<ul>
+  <li>升级可以更新的软件</li>
+</ul>
+
+<p><code>
+sudo port upgrade outdated 
+</code></p>
+
+<ul>
+  <li>升级软件并且同时升级所依赖的软件包</li>
+</ul>
+
+<p><code>
+sudo port upgrade &lt;name&gt; 
+</code></p>
+
+<ul>
+  <li>关闭软件</li>
+</ul>
+
+<p><code>
+sudo port deactivate &lt;name&gt;
+</code></p>
+
+<ul>
+  <li>查询所需软件信息</li>
+</ul>
+
+<p><code>
+sudo port info &lt;name&gt; 
+</code></p>
+
+<ul>
+  <li>查看软件依赖性：</li>
+</ul>
+
+<p><code>
+sudo port deps &lt;name&gt;  
+</code></p>
+
+<ul>
+  <li>清理安装过程中的缓存文件，在获取软件失败时也可以使用：</li>
+</ul>
+
+<p><code>
+sudo port clean --all &lt;name&gt;  
+</code></p>
+
+<ul>
+  <li>查看已经安装的软件的内容信息</li>
+</ul>
+
+<p><code>
+port contents &lt;name&gt;  
+</code></p>
+
+<ul>
+  <li>查看已安装软件的信息</li>
+</ul>
+
+<p><code>
+sudo port installed &lt;name&gt;  
+</code></p>
+
+<ul>
+  <li>报告所查询软件的依赖包情况</li>
+</ul>
+
+<p><code>
+port dependents &lt;name&gt;  
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Port Tips: 软件版本选择]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/01/port-tips-ruan-jian-ban-ben-xuan-ze/"/>
+    <updated>2014-02-01T23:30:20+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/01/port-tips-ruan-jian-ban-ben-xuan-ze</id>
+    <content type="html"><![CDATA[<h3 id="port">port查看本地已安装的文件</h3>
+
+<pre><code>&gt;port installed
+</code></pre>
+
+<h3 id="port-1">port查看同一个软件的不同版本</h3>
+
+<pre><code>&gt;port select --list python    #这里查看的已经安装了的python的版本
+</code></pre>
+
+<p>我的机器情况是：    </p>
+
+<p><img src="/images/Snip20140201_1.png" alt="image" />    </p>
+
+<p>显示为none指的是系统自带的版本</p>
+
+<h3 id="section">激活某个版本</h3>
+
+<pre><code>&gt;sudo port select --set python python2.7
+</code></pre>
+
+<p><strong>注意：</strong> 只有那些有对应的select软件包的软件才可以设置版本    </p>
+]]></content>
+  </entry>
+  
+</feed>

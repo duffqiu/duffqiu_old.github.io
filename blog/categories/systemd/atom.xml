@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Systemd | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/systemd/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2015-10-28T09:26:38+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Systemd的启动顺序和自动启动配置]]></title>
+    <link href="http://duffqiu.github.io/blog/2015/07/05/systemd-boot/"/>
+    <updated>2015-07-05T17:56:27+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2015/07/05/systemd-boot</id>
+    <content type="html"><![CDATA[<h3 id="systemd">Systemd的启动顺序</h3>
+<hr />
+
+<ul>
+  <li>/etc/systemd/system/</li>
+  <li>/run/systemd/system/</li>
+  <li>/usr/lib/systemd/system/</li>
+</ul>
+
+<p>在CoreOS中，自带的服务都是放在了/usr/lib/systemd/system/目录下，但是该目录是只读的，如需更改，可以将对应的service unit文件copy到/etc/systemd/system目录下，然后更改后重新启动</p>
+
+<p>每次更改service unit文件需要执行 <code>sudo systemctl daemon-reload</code></p>
+
+<h3 id="systemdboot">Systemd的服务需要在系统boot时启动</h3>
+<hr />
+
+<p>需要在Service Unit文件中加入：</p>
+
+<p><code>
+[Installl]
+WantedBy=multi-user.target
+</code></p>
+
+<p>然后执行<code>sudo systemctl daemon-reload</code>和<code>sudo systemctl enable &lt;xxxx.service&gt;</code></p>
+
+]]></content>
+  </entry>
+  
+</feed>

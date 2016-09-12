@@ -1,0 +1,579 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>创建基于maven的java和scala工程 - Duff Qiu's Blog</title>
+  <meta name="author" content="Duff Qiu">
+
+
+<meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
+
+
+<link href='/assets/global-8cde27b49bc0ab877f54123624323cd8.css' rel='stylesheet' type='text/css' />
+
+
+<script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
+
+
+  
+  <meta name="description" content="原由 最近在看Scala和ScalaTest，但是要搭建一个同时运行Java和Scala的项目工程，还是遇到了些问题。因为我习惯了搭建出来的工程是Maven工程，同时即要能在Eclipse上运行，也能用Maven命令的方式运行以便后续用Jenkins。经过一段摸索终于试验出来。但是很奇怪， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2014/04/06/chuang-jian-ji-yu-mavende-javahe-scalagong-cheng">
+  <link href="/favicon.png" rel="icon">
+<!--
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
+  <link href="/atom.xml" rel="alternate" title="Duff Qiu's Blog" type="application/atom+xml">
+  <!-- <script src="/javascripts/modernizr-2.0.js"></script> -->
+  <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+  <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
+  <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='/assets/global-b5b3673188d66d658a2c16f278ccf875.css' rel='stylesheet' type='text/css' />
+
+
+<script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
+
+
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-47478128-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Duff Qiu's Blog</a></h1>
+  
+    <h2>Duff Qiu的个人博客，只为记录一个过程，结果都是浮云☁️！</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:duffqiu.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/categories/java/">Java编程</a><li>
+  <li><a href="/blog/categories/scala/">Scala编程</a><li>
+  <li><a href="/blog/categories/uml/">UML Tips</a><li>
+  <li><a href="/blog/categories/osx/">OSX经验与Tips</a><li>
+  <li><a href="/blog/categories/octopress/">Octopress经验</a><li>
+  <li><a href="/blog/archives">全部文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">创建基于maven的java和scala工程</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-06T09:20:56+08:00" pubdate data-updated="true">Apr 6<span>th</span>, 2014</time>
+        
+        
+           | <a href="#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3 id="section">原由</h3>
+<hr />
+<p>最近在看Scala和ScalaTest，但是要搭建一个同时运行Java和Scala的项目工程，还是遇到了些问题。因为我习惯了搭建出来的工程是Maven工程，同时即要能在Eclipse上运行，也能用Maven命令的方式运行以便后续用Jenkins。经过一段摸索终于试验出来。但是很奇怪，搜索出来的结果没有一个直接好使的。</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<h4 id="eclipse">Eclipse配置</h4>
+
+<ul>
+  <li>安装Scala的IDE，参见<a href="http://scala-ide.org">Scala-IDE官网</a>，注意选择Scala孵化器中的ScalaTest插件</li>
+  <li>安装Maven在Eclipse上的插件，通过<code>Preference -&gt;Maven-&gt;Discovery</code>安装m2e的对应插件。在后续的POM文件中使用到的插件最好都安装对应的m2e插件。(包括：build-helper，pmd, checkstyle, findbugs, compiler…)</li>
+  <li>
+    <p>创建Maven工程中，添加如下插件</p>
+
+    <ul>
+      <li>build-helper插件，添加scala的source和test source。因为<code>&lt;sourceDirectory&gt;</code>只能指定一个目录，所以需要这个插件来帮助添加scala的文件目录</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">		&lt;plugin&gt;
+</span><span class="line">			&lt;groupId&gt;org.codehaus.mojo&lt;/groupId&gt;
+</span><span class="line">			&lt;artifactId&gt;build-helper-maven-plugin&lt;/artifactId&gt;
+</span><span class="line">			&lt;version&gt;1.8&lt;/version&gt;
+</span><span class="line">			&lt;executions&gt;
+</span><span class="line">				&lt;execution&gt;
+</span><span class="line">					&lt;id&gt;add-source&lt;/id&gt;
+</span><span class="line">					&lt;phase&gt;generate-sources&lt;/phase&gt;
+</span><span class="line">					&lt;goals&gt;
+</span><span class="line">						&lt;goal&gt;add-source&lt;/goal&gt;
+</span><span class="line">					&lt;/goals&gt;
+</span><span class="line">					&lt;configuration&gt;
+</span><span class="line">						&lt;sources&gt;
+</span><span class="line">							&lt;source&gt;src/main/scala&lt;/source&gt;
+</span><span class="line">						&lt;/sources&gt;
+</span><span class="line">					&lt;/configuration&gt;
+</span><span class="line">				&lt;/execution&gt;
+</span><span class="line">				&lt;execution&gt;
+</span><span class="line">					&lt;id&gt;add-test-source&lt;/id&gt;
+</span><span class="line">					&lt;phase&gt;generate-sources&lt;/phase&gt;
+</span><span class="line">					&lt;goals&gt;
+</span><span class="line">						&lt;goal&gt;add-test-source&lt;/goal&gt;
+</span><span class="line">					&lt;/goals&gt;
+</span><span class="line">					&lt;configuration&gt;
+</span><span class="line">						&lt;sources&gt;
+</span><span class="line">							&lt;source&gt;src/test/scala&lt;/source&gt;
+</span><span class="line">						&lt;/sources&gt;
+</span><span class="line">					&lt;/configuration&gt;
+</span><span class="line">				&lt;/execution&gt;
+</span><span class="line">			&lt;/executions&gt;
+</span><span class="line">		&lt;/plugin&gt;
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>Scala插件，协助编译scala，同时指定scala版本</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">		&lt;plugin&gt;
+</span><span class="line">			&lt;groupId&gt;net.alchim31.maven&lt;/groupId&gt;
+</span><span class="line">			&lt;artifactId&gt;scala-maven-plugin&lt;/artifactId&gt;
+</span><span class="line">			&lt;version&gt;3.1.6&lt;/version&gt;
+</span><span class="line">			&lt;executions&gt;
+</span><span class="line">				&lt;execution&gt;
+</span><span class="line">					&lt;goals&gt;
+</span><span class="line">						&lt;goal&gt;compile&lt;/goal&gt;
+</span><span class="line">						&lt;goal&gt;testCompile&lt;/goal&gt;
+</span><span class="line">					&lt;/goals&gt;
+</span><span class="line">				&lt;/execution&gt;
+</span><span class="line">			&lt;/executions&gt;
+</span><span class="line">			&lt;configuration&gt;
+</span><span class="line">				&lt;scalaVersion&gt;2.10.3&lt;/scalaVersion&gt;
+</span><span class="line">			&lt;/configuration&gt;
+</span><span class="line">		&lt;/plugin&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>ScalaTest插件</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">		&lt;plugin&gt;
+</span><span class="line">			&lt;groupId&gt;org.scalatest&lt;/groupId&gt;
+</span><span class="line">			&lt;artifactId&gt;scalatest-maven-plugin&lt;/artifactId&gt;
+</span><span class="line">			&lt;version&gt;1.0-RC2&lt;/version&gt;
+</span><span class="line">			&lt;configuration&gt;
+</span><span class="line">				&lt;reportsDirectory&gt;${project.build.directory}/surefire-reports&lt;/reportsDirectory&gt;
+</span><span class="line">				&lt;junitxml&gt;.&lt;/junitxml&gt;
+</span><span class="line">				&lt;filereports&gt;WDF TestSuite.txt&lt;/filereports&gt;
+</span><span class="line">			&lt;/configuration&gt;
+</span><span class="line">			&lt;executions&gt;
+</span><span class="line">				&lt;execution&gt;
+</span><span class="line">					&lt;id&gt;test&lt;/id&gt;
+</span><span class="line">					&lt;goals&gt;
+</span><span class="line">						&lt;goal&gt;test&lt;/goal&gt;
+</span><span class="line">					&lt;/goals&gt;
+</span><span class="line">				&lt;/execution&gt;
+</span><span class="line">			&lt;/executions&gt;
+</span><span class="line">		&lt;/plugin&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>指定Junit插件，如果需要同时使用JUnit测试java代码。注意，新版本的插件已经可以支持多线程并发，大大提高测试的速度。强烈建议使用最新的版本</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">		&lt;plugin&gt;
+</span><span class="line">			&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+</span><span class="line">			&lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+</span><span class="line">			&lt;version&gt;2.17&lt;/version&gt;
+</span><span class="line">			&lt;configuration&gt;
+</span><span class="line">				&lt;parallel&gt;methods&lt;/parallel&gt;
+</span><span class="line">				&lt;threadCount&gt;10&lt;/threadCount&gt;
+</span><span class="line">			&lt;/configuration&gt;
+</span><span class="line">		&lt;/plugin&gt;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>安装m2e的scala maven plugin的connector插件，不然在eclipse上直接读取pom文件会解释出错。 <a href="http://alchim31.free.fr/m2e-scala/update-site/">update地址</a></li>
+</ul>
+
+<h3 id="section-2">小插曲</h3>
+<p>不知道什么原因，ScalaTest的官网被屏蔽了。一个纯开源的技术网站有这个必要性么？还是躺枪了？</p>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Duff Qiu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-06T09:20:56+08:00" pubdate data-updated="true">Apr 6<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/java/'>Java</a>, <a class='category' href='/blog/categories/maven/'>Maven</a>, <a class='category' href='/blog/categories/scala/'>Scala</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/13/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-2/" title="Previous Post: 如何定义一个好的REST接口2">&laquo; 如何定义一个好的REST接口2</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/04/06/ru-he-ding-yi-%5B%3F%5D-ge-hao-de-restjie-kou-3/" title="Next Post: 如何定义一个好的REST接口3">如何定义一个好的REST接口3 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+
+   <section>
+     <h1>Comments</h1>
+     <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"duffqiu"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+</div>
+   </section>
+  
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+<h1>Recent Comments</h1>
+<ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
+
+</section>
+
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/appscale/'>Appscale (3)</a></li>
+<li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
+<li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
+<li class='category'><a href='/blog/categories/block-storage/'>Block Storage (1)</a></li>
+<li class='category'><a href='/blog/categories/centos/'>CentOS (2)</a></li>
+<li class='category'><a href='/blog/categories/centos/'>Centos (1)</a></li>
+<li class='category'><a href='/blog/categories/cloud/'>Cloud (1)</a></li>
+<li class='category'><a href='/blog/categories/coreos/'>CoreOS (6)</a></li>
+<li class='category'><a href='/blog/categories/data-model/'>Data Model (1)</a></li>
+<li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (9)</a></li>
+<li class='category'><a href='/blog/categories/docker/'>Docker (4)</a></li>
+<li class='category'><a href='/blog/categories/etcd2/'>ETCD2 (1)</a></li>
+<li class='category'><a href='/blog/categories/entity-model/'>Entity Model (1)</a></li>
+<li class='category'><a href='/blog/categories/fp/'>FP (1)</a></li>
+<li class='category'><a href='/blog/categories/findbugs/'>Findbugs (1)</a></li>
+<li class='category'><a href='/blog/categories/fleet/'>Fleet (2)</a></li>
+<li class='category'><a href='/blog/categories/gsl/'>GSL (1)</a></li>
+<li class='category'><a href='/blog/categories/guava/'>Guava (1)</a></li>
+<li class='category'><a href='/blog/categories/guice/'>Guice (2)</a></li>
+<li class='category'><a href='/blog/categories/integration/'>Integration (1)</a></li>
+<li class='category'><a href='/blog/categories/junit/'>JUnit (1)</a></li>
+<li class='category'><a href='/blog/categories/java/'>Java (13)</a></li>
+<li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>
+<li class='category'><a href='/blog/categories/jenkins/'>Jenkins (3)</a></li>
+<li class='category'><a href='/blog/categories/keepalived/'>Keepalived (2)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>Linux (1)</a></li>
+<li class='category'><a href='/blog/categories/mac/'>MAC (3)</a></li>
+<li class='category'><a href='/blog/categories/maven/'>Maven (3)</a></li>
+<li class='category'><a href='/blog/categories/miscellany/'>Miscellany (1)</a></li>
+<li class='category'><a href='/blog/categories/nfs/'>NFS (1)</a></li>
+<li class='category'><a href='/blog/categories/oo/'>OO (1)</a></li>
+<li class='category'><a href='/blog/categories/osx/'>OSX (4)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>Octopress (16)</a></li>
+<li class='category'><a href='/blog/categories/openstack/'>Openstack (2)</a></li>
+<li class='category'><a href='/blog/categories/plantuml/'>PlantUML (3)</a></li>
+<li class='category'><a href='/blog/categories/port/'>Port (2)</a></li>
+<li class='category'><a href='/blog/categories/proxy/'>Proxy (2)</a></li>
+<li class='category'><a href='/blog/categories/rest/'>REST (3)</a></li>
+<li class='category'><a href='/blog/categories/sbt/'>SBT (2)</a></li>
+<li class='category'><a href='/blog/categories/scala/'>Scala (7)</a></li>
+<li class='category'><a href='/blog/categories/script/'>Script (1)</a></li>
+<li class='category'><a href='/blog/categories/sublime/'>Sublime (1)</a></li>
+<li class='category'><a href='/blog/categories/systemd/'>Systemd (1)</a></li>
+<li class='category'><a href='/blog/categories/uml/'>UML (1)</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/'>VirtualBox (1)</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/'>Virtualbox (1)</a></li>
+<li class='category'><a href='/blog/categories/zsh/'>ZSH (1)</a></li>
+<li class='category'><a href='/blog/categories/zookeeper/'>Zookeeper (1)</a></li>
+
+  </ul>
+</section>
+
+  
+</aside>
+
+
+
+
+<article class="archives">
+  <div class="related-posts">
+    <h2>Related Posts</h2>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/10/25/docker-fix-network/">配置Docker的容器网络与主机网络相同</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/docker/'>Docker</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/08/18/centos-virtualbox-nfs/">Linux下的Virtualbox使用NFS</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/centos/'>Centos</a>, <a class='category' href='/blog/categories/nfs/'>NFS</a>, <a class='category' href='/blog/categories/virtualbox/'>Virtualbox</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/08/14/docker-public-port/">如何获取docker动态分配的port</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/docker/'>Docker</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/08/10/centos-ntfs-disk/">CentOS下使用NTFS格式的U盘或移动硬盘</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/centos/'>CentOS</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/25/fleet-ha-service-trap/">fleet部署高可用性服务的坑</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/fleet/'>Fleet</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+  </div>
+</article>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Duff Qiu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

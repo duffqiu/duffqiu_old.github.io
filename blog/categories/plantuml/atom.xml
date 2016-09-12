@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: PlantUML | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/plantuml/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2015-10-28T09:26:38+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[PlantUML小技巧]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/22/plantumlxiao-ji-qiao/"/>
+    <updated>2014-02-22T15:10:21+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/22/plantumlxiao-ji-qiao</id>
+    <content type="html"><![CDATA[<h3 id="plantuml">PlantUML画模块图/组件图的问题</h3>
+
+<p>在使用PlantUML的时候，如果模块中嵌套模块然后将关联关系定义在子模块中，则很容易造成模块的混沦。</p>
+
+<h3 id="section">解决办法</h3>
+<p>我个人一个比较好的practice是这样一个模式，PlantUML代码如下<br />
+同时最好的方式是在纸上先用笔画好初稿</p>
+
+<p>```
+@startuml
+title “组件图Best Practice”</p>
+
+<p>‘全局的component
+component [global 1]
+component [global 2]
+interface “inferface 1” as if1
+interface “inferface 2” as if2
+…</p>
+
+<p>‘模块定义
+package “Parent1” {
+	package “Children1-1” {
+		‘只定义component，不定义关心
+		component [1-1-1]
+		component [1-1-2]
+		…
+	}
+	package “Children1-2” {
+		component [1-2-1]
+		component [1-2-2]
+		…
+	}</p>
+
+<p>}</p>
+
+<p>package “Parent2” {
+	package “Children2-1” {
+		‘只定义component，不定义关心
+		component [2-1-1]
+		component [2-1-2]
+		…
+	}
+	package “Children2-2” {
+		component [2-2-1]
+		component [2-2-2]
+		…
+	}</p>
+
+<p>}</p>
+
+<p>‘完成component定义后再定义关系不要再component中定义关系，容易造成有些component还未必定义就被使用</p>
+
+<p>‘定义全局和子模块的关系
+[global 1]..&gt;[global 2]
+[global 1] - if1
+[global 2] - if2
+[global 1] ..&gt; [1-1-1]</p>
+
+<p>‘定义Parent1和children间的关系已经与其它Parent或children的关系
+[1-1-1]..&gt;[1-1-2]
+[1-1-1]..&gt;[1-2-1]
+[1-2-1]..&gt;[1-2-2]
+[1-1-1]..&gt;[2-1-1]</p>
+
+<p>‘定义Parent2和children间的关系已经与其它Parent或children的关系
+[2-1-1]..&gt;[2-1-2]
+[2-1-1]..&gt;[2-2-1]
+[2-1-1]..&gt;[2-2-2]</p>
+
+<p>@enduml
+```</p>
+
+<div style="text-decoration:underline; font-size: 16px; color: red" onclick="showdiv('componentuml')"> 最后的UML图如下： </div>
+
+<div style="display:none" class="prev" id="componentuml" onclick="hidediv('componentuml')" title="点击关闭">
+
+
+
+<center><img src='/images/plantuml/1342eb5869c6a1040f2c1b269144edb8.png'></center>
+
+</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Maven工程中加入PlantUML]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-plantuml/"/>
+    <updated>2014-02-13T23:37:47+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/13/mavengong-cheng-zhong-jia-ru-plantuml</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<p>设计于编码的最好实践是设计文档与代码文档放在最近的地方，便于同时修改和更新。最好都放入到一个代码工程中</p>
+
+<h3 id="section-1">解决办法</h3>
+<p>PlantUML的Mavin Plugin是最好的解决办法。在Maven工程中建一个目录存放PlantUML的设计文件，txt文件就可以。如：<code>src/main/plantuml</code></p>
+
+<ol>
+  <li>
+    <p>然后确保已经安装好了graphvizDot。</p>
+  </li>
+  <li>
+    <p>然后就可以写plantuml的文本</p>
+  </li>
+  <li>
+    <p>修改maven的工程的pom.xml文件，增加<a href="https://github.com/duffqiu/maven-plantuml-plugin">PlantUML的Maven Plugin</a>，注意用的版本，我用时maven plugin最新的版本为7954，plantuml版本是7991，代码如下</p>
+  </li>
+</ol>
+
+<p>``` sh</p>
+
+<pre><code>&lt;plugin&gt;
+  &lt;groupId&gt;com.github.jeluard&lt;/groupId&gt;
+  &lt;artifactId&gt;plantuml-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;7954&lt;/version&gt;
+  &lt;configuration&gt;
+    &lt;graphvizDot&gt;/opt/local/bin/dot&lt;/graphvizDot&gt;
+    &lt;sourceFiles&gt;
+      &lt;directory&gt;${basedir}&lt;/directory&gt;
+      &lt;includes&gt;
+        &lt;include&gt;src/main/plantuml/*.txt&lt;/include&gt;
+      &lt;/includes&gt;
+    &lt;/sourceFiles&gt;
+  &lt;/configuration&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;net.sourceforge.plantuml&lt;/groupId&gt;
+      &lt;artifactId&gt;plantuml&lt;/artifactId&gt;
+      &lt;version&gt;7991&lt;/version&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+&lt;/plugin&gt;
+</code></pre>
+
+<p>```</p>
+
+<p>因为用port安装的graphvizDot目录不在<code>/usr/bin</code>下，所以需要特定指定改目录</p>
+
+<p>然后用maven的build的target：<code>com.github.jeluard:plantuml-maven-plugin:generate</code>就可以将plantuml下的文件转成UML图形了。图形文件放在<code>target/plantuml</code>目录下</p>
+
+<p>如果用Eclipse，则可以安装对应的<a href="http://plantuml.sourceforge.net/updatesitejuno/">eclipse插件，安装地址 </a>，这样在写plantuml文本的时候就可以同时看到图形了。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress中使用plantuml]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/02/12/octopresszhong-shi-yong-plantuml/"/>
+    <updated>2014-02-12T22:36:09+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/02/12/octopresszhong-shi-yong-plantuml</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+<p>一直想便利的在Octopress使用UML，之前没有太好的办法，只能在astah画好后存为图片文件，然后再用链接的方式使用</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+<p>现在经Leo同学推荐，使用文本的UML语言的方式可以写出UML图，他就是<a href="http://plantuml.sourceforge.net">Plant UML</a>，同时在github上有个octopress的插件可以直接支持在Markdown中使用Plant UML，它是<a href="https://github.com/yjpark/jekyll-plantuml">jekyll-plantuml</a></p>
+
+<h4 id="section-2">安装办法</h4>
+<ol>
+  <li>在octopress上建一个<code>_lib</code>的目录</li>
+  <li>下载<a href="http://plantuml.sourceforge.net/download.html">plantuml.jar</a>到上面建的<code>_lib</code>的目录</li>
+  <li>下载<a href="https://github.com/yjpark/jekyll-plantuml/raw/master/plantuml.rb">plantuml.rb</a>插件到<code>plugin</code>目录</li>
+  <li>
+    <p>修改<code>_config.yml</code>文件，增加platuml的配置如下</p>
+
+    <pre><code># PlantUML
+plantuml_jar: _lib/plantuml.jar
+plantuml_background_color: "#f8f8f8"
+</code></pre>
+  </li>
+  <li>然后用</li>
+</ol>
+
+<p><code>sh
+<center><img src='/images/plantuml/f3f38d1d042bc259f06614d2fdeb7237.png'></center>
+</code></p>
+
+<p>括上platuml的代码就可以了，下面是一个简单的示例</p>
+
+<p>源码如下：</p>
+
+<p><code>sh  
+<center><img src='/images/plantuml/701d88046b71f1849b1c4c67dd74ed25.png'></center>
+</code></p>
+
+<p>图片展示如下： </p>
+
+<p><center><img src='/images/plantuml/4b8dd507ddcb69d1776592ee5d1f6ab6.png'></center></p>
+
+<p>类的表示方式如下：</p>
+
+<p><center><img src='/images/plantuml/22b7fb4839fbcdfac523806c58c514ca.png'></center></p>
+
+<h3 id="section-3">小插曲</h3>
+<p>默认情况下，plantuml只能支持sequence图的生成，如果要生成其它图，则需要用到Graphiz。<br />
+在Mac上用<code>port</code>命令安装Graphiz，安装完成后<code>dot</code>命令是安装到了<code>/opt/local/bin/dot</code>目录下，而plantuml默认是要用<code>/usr/bin/dot</code>，这样plantuml.rb的plugin还是无法生成其它类型的图，但是platuml.jar是支持指定dot的路径的，所以手工改造一下plantuml.rb，具体方式如下：</p>
+
+<ol>
+  <li>
+    <p>在<code>_config.yml</code>文件中增加一个plantuml的配置项并设定dot的路径：<code>lantuml_dotpath: /opt/local/bin/dot</code></p>
+  </li>
+  <li>
+    <p>在plantuml.rb文件中的<code>filename = Digest::MD5.hexdigest(code) + ".png"</code>语句上面增加dot的配置的读取</p>
+  </li>
+</ol>
+
+<p><code>ruby
+      dotpath = site.config['plantuml_dotpath']
+      puts "using dot at: " + dotpath + "\n"
+      if File.exist?(dotpath)
+        puts "PlantUML set dot path:" + dotpath + "\n"
+        dotcmd = " -graphvizdot " + dotpath
+      else
+        dotcmd = ""
+      end
+</code></p>
+
+<p>然后修改<code>cmd = "java -jar " + plantuml_jar + " -pipe &gt; " + filepath</code>在最后增加<code> + dotcmd</code>，完整如下 </p>
+
+<p><code>ruby
+cmd = "java -jar " + plantuml_jar + " -pipe &gt; " + filepath + dotcmd
+</code></p>
+
+<p>因为之前发生过错误，所以需要手工清除<code>octopress/public/images/plantuml/</code>这个目录</p>
+
+<p>这个我的第一个github pull request，纪念一下</p>
+]]></content>
+  </entry>
+  
+</feed>

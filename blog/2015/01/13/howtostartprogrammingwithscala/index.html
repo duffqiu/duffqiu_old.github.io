@@ -1,0 +1,450 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>如何开始用scala编程 - Duff Qiu's Blog</title>
+  <meta name="author" content="Duff Qiu">
+
+
+<meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
+
+
+<link href='/assets/global-8cde27b49bc0ab877f54123624323cd8.css' rel='stylesheet' type='text/css' />
+
+
+<script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
+
+
+  
+  <meta name="description" content="原由
+在经历这么多年的OO的编程概念后，这一两年有兴起了FP(Functional Programming)的编程模式
+作为多年的Java程序员如何能更好的接受FP并应用到开发中呢？主要有两个选择 Scala Clojure 他俩最主要的区别是Clojure是比较纯粹的JVM下List语言的变种。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/01/13/howtostartprogrammingwithscala">
+  <link href="/favicon.png" rel="icon">
+<!--
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
+  <link href="/atom.xml" rel="alternate" title="Duff Qiu's Blog" type="application/atom+xml">
+  <!-- <script src="/javascripts/modernizr-2.0.js"></script> -->
+  <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+  <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
+  <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='/assets/global-b5b3673188d66d658a2c16f278ccf875.css' rel='stylesheet' type='text/css' />
+
+
+<script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
+
+
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-47478128-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Duff Qiu's Blog</a></h1>
+  
+    <h2>Duff Qiu的个人博客，只为记录一个过程，结果都是浮云☁️！</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:duffqiu.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/categories/java/">Java编程</a><li>
+  <li><a href="/blog/categories/scala/">Scala编程</a><li>
+  <li><a href="/blog/categories/uml/">UML Tips</a><li>
+  <li><a href="/blog/categories/osx/">OSX经验与Tips</a><li>
+  <li><a href="/blog/categories/octopress/">Octopress经验</a><li>
+  <li><a href="/blog/archives">全部文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">如何开始用scala编程</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-13T17:19:11+08:00" pubdate data-updated="true">Jan 13<span>th</span>, 2015</time>
+        
+        
+           | <a href="#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3 id="section">原由</h3>
+<p>在经历这么多年的OO的编程概念后，这一两年有兴起了FP(Functional Programming)的编程模式
+作为多年的Java程序员如何能更好的接受FP并应用到开发中呢？主要有两个选择</p>
+
+<ul>
+  <li><a href="http://scala-lang.org/">Scala</a></li>
+  <li><a href="http://clojure.org/">Clojure</a></li>
+</ul>
+
+<p>他俩最主要的区别是Clojure是比较纯粹的JVM下List语言的变种。没有OO的概念
+Scala比较好的融合了OO和FP，比较合适Java平滑过渡到FP的编程范式。从Java8的新特性看
+Java和Scala已经越来越接近。但是个人觉得Scala更好看写。或许是因为Java有过多的历史负担吧</p>
+
+<p>如果是想纯粹学一下List，也可以看看<a href="https://www.haskell.org">Haskell</a></p>
+
+<h3 id="coursera">Coursera的视频课程</h3>
+<p>开始一门新的语言，大家总是期望有好的视频来讲解，最出名的是这个了，但是建议大家还是看完入门的书籍对scala有一定的了解后再来看这个
+<a href="https://www.coursera.org/course/progfun">Functional Programming Principles in Scala</a></p>
+
+<h3 id="section-1">入门书籍推荐</h3>
+<p>现在关于Scala的书籍已经很多了，要达到熟悉的程度要看不下10本书。但是对于基础入门，以下这本我建议大家买个纸质版  <br />
+<img src="/images/kuaixuescala.jpg" alt="快学Scala" />    </p>
+
+<p>这本有些旧了，某些章节可以不用看，具体如下：</p>
+
+<ul>
+  <li>第19章: 解析，这个太难，也不容易应用，可以忽略</li>
+  <li>第20章: Actor，这个已经被Akka代替，不用再看，后面将写些如何应用Akka</li>
+  <li>第22章: 定界延续，这个也太难，可以暂时忽略</li>
+</ul>
+
+<h3 id="section-2">看一个有趣的例子</h3>
+<p>最近同学们在谈论lisp/FP的时候提到的一个例子:
+有一个农场，鸡的数量是鸭的4倍，但是鸭比猪少9只，鸭和猪的数量是67只，求所有动物的脚加起来总共有多少只？
+这个是个推论性的问题，在scala中用for{}的方式来解答(这里的for不是做循环，scala语言的用法叫for comprehension)</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="java"><span class="line"><span class="n">val</span> <span class="n">d</span> <span class="o">=</span> <span class="o">(</span><span class="mi">1</span> <span class="n">to</span> <span class="mi">67</span><span class="o">)</span> <span class="n">toStream</span>
+</span><span class="line">
+</span><span class="line"><span class="n">val</span> <span class="n">feet</span> <span class="o">=</span> <span class="k">for</span> <span class="o">{</span>
+</span><span class="line">  <span class="n">d1</span> <span class="o">&lt;-</span> <span class="n">d</span>
+</span><span class="line">  <span class="n">c1</span> <span class="o">=</span> <span class="n">d1</span> <span class="o">*</span> <span class="mi">4</span>
+</span><span class="line">  <span class="n">p1</span> <span class="o">=</span> <span class="n">d1</span> <span class="o">+</span><span class="mi">9</span> <span class="k">if</span><span class="o">(</span><span class="n">d1</span> <span class="o">+</span> <span class="n">p1</span> <span class="o">==</span> <span class="mi">67</span><span class="o">)</span>
+</span><span class="line"><span class="o">}</span> <span class="n">yield</span> <span class="o">{</span>
+</span><span class="line">  <span class="o">(</span><span class="n">c1</span><span class="o">+</span><span class="n">d1</span><span class="o">)*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">p1</span><span class="o">*</span><span class="mi">4</span>
+</span><span class="line"><span class="o">}</span>
+</span><span class="line"><span class="n">println</span><span class="o">(</span><span class="n">feet</span><span class="o">.</span><span class="na">take</span><span class="o">(</span><span class="mi">1</span><span class="o">).</span><span class="na">force</span><span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h4 id="section-3">小提示</h4>
+<p>Linux下查找文件中的某些字符串
+<code>grep -rnw '&lt;path&gt;' -e "&lt;string value&gt;"</code></p>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Duff Qiu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-01-13T17:19:11+08:00" pubdate data-updated="true">Jan 13<span>th</span>, 2015</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/scala/'>Scala</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/01/13/continue-octopress-in-other-machine/" title="Previous Post: 在其它机器上继续编写blog或者是新建编辑环境处理已有的Octopress系统">&laquo; 在其它机器上继续编写blog或者是新建编辑环境处理已有的Octopress系统</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/02/02/integration-pattern-normalizer/" title="Next Post: 集成模式：标准化模式">集成模式：标准化模式 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+
+   <section>
+     <h1>Comments</h1>
+     <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"duffqiu"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+</div>
+   </section>
+  
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+<h1>Recent Comments</h1>
+<ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
+
+</section>
+
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/appscale/'>Appscale (3)</a></li>
+<li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
+<li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
+<li class='category'><a href='/blog/categories/block-storage/'>Block Storage (1)</a></li>
+<li class='category'><a href='/blog/categories/centos/'>CentOS (2)</a></li>
+<li class='category'><a href='/blog/categories/centos/'>Centos (1)</a></li>
+<li class='category'><a href='/blog/categories/cloud/'>Cloud (1)</a></li>
+<li class='category'><a href='/blog/categories/coreos/'>CoreOS (6)</a></li>
+<li class='category'><a href='/blog/categories/data-model/'>Data Model (1)</a></li>
+<li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (9)</a></li>
+<li class='category'><a href='/blog/categories/docker/'>Docker (4)</a></li>
+<li class='category'><a href='/blog/categories/etcd2/'>ETCD2 (1)</a></li>
+<li class='category'><a href='/blog/categories/entity-model/'>Entity Model (1)</a></li>
+<li class='category'><a href='/blog/categories/fp/'>FP (1)</a></li>
+<li class='category'><a href='/blog/categories/findbugs/'>Findbugs (1)</a></li>
+<li class='category'><a href='/blog/categories/fleet/'>Fleet (2)</a></li>
+<li class='category'><a href='/blog/categories/gsl/'>GSL (1)</a></li>
+<li class='category'><a href='/blog/categories/guava/'>Guava (1)</a></li>
+<li class='category'><a href='/blog/categories/guice/'>Guice (2)</a></li>
+<li class='category'><a href='/blog/categories/integration/'>Integration (1)</a></li>
+<li class='category'><a href='/blog/categories/junit/'>JUnit (1)</a></li>
+<li class='category'><a href='/blog/categories/java/'>Java (13)</a></li>
+<li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>
+<li class='category'><a href='/blog/categories/jenkins/'>Jenkins (3)</a></li>
+<li class='category'><a href='/blog/categories/keepalived/'>Keepalived (2)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>Linux (1)</a></li>
+<li class='category'><a href='/blog/categories/mac/'>MAC (3)</a></li>
+<li class='category'><a href='/blog/categories/maven/'>Maven (3)</a></li>
+<li class='category'><a href='/blog/categories/miscellany/'>Miscellany (1)</a></li>
+<li class='category'><a href='/blog/categories/nfs/'>NFS (1)</a></li>
+<li class='category'><a href='/blog/categories/oo/'>OO (1)</a></li>
+<li class='category'><a href='/blog/categories/osx/'>OSX (4)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>Octopress (16)</a></li>
+<li class='category'><a href='/blog/categories/openstack/'>Openstack (2)</a></li>
+<li class='category'><a href='/blog/categories/plantuml/'>PlantUML (3)</a></li>
+<li class='category'><a href='/blog/categories/port/'>Port (2)</a></li>
+<li class='category'><a href='/blog/categories/proxy/'>Proxy (2)</a></li>
+<li class='category'><a href='/blog/categories/rest/'>REST (3)</a></li>
+<li class='category'><a href='/blog/categories/sbt/'>SBT (2)</a></li>
+<li class='category'><a href='/blog/categories/scala/'>Scala (7)</a></li>
+<li class='category'><a href='/blog/categories/script/'>Script (1)</a></li>
+<li class='category'><a href='/blog/categories/sublime/'>Sublime (1)</a></li>
+<li class='category'><a href='/blog/categories/systemd/'>Systemd (1)</a></li>
+<li class='category'><a href='/blog/categories/uml/'>UML (1)</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/'>VirtualBox (1)</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/'>Virtualbox (1)</a></li>
+<li class='category'><a href='/blog/categories/zsh/'>ZSH (1)</a></li>
+<li class='category'><a href='/blog/categories/zookeeper/'>Zookeeper (1)</a></li>
+
+  </ul>
+</section>
+
+  
+</aside>
+
+
+
+
+<article class="archives">
+  <div class="related-posts">
+    <h2>Related Posts</h2>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/10/25/docker-fix-network/">配置Docker的容器网络与主机网络相同</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/docker/'>Docker</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/08/18/centos-virtualbox-nfs/">Linux下的Virtualbox使用NFS</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/centos/'>Centos</a>, <a class='category' href='/blog/categories/nfs/'>NFS</a>, <a class='category' href='/blog/categories/virtualbox/'>Virtualbox</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/08/14/docker-public-port/">如何获取docker动态分配的port</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/docker/'>Docker</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/08/10/centos-ntfs-disk/">CentOS下使用NTFS格式的U盘或移动硬盘</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/centos/'>CentOS</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/25/fleet-ha-service-trap/">fleet部署高可用性服务的坑</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/fleet/'>Fleet</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+  </div>
+</article>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Duff Qiu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

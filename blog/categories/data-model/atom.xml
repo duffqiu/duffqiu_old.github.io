@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Data Model | Duff Qiu's Blog]]></title>
+  <link href="http://duffqiu.github.io/blog/categories/data-model/atom.xml" rel="self"/>
+  <link href="http://duffqiu.github.io/"/>
+  <updated>2015-10-28T09:26:38+08:00</updated>
+  <id>http://duffqiu.github.io/</id>
+  <author>
+    <name><![CDATA[Duff Qiu]]></name>
+    <email><![CDATA[duffqiu@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[从实体模型到数据模型]]></title>
+    <link href="http://duffqiu.github.io/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing/"/>
+    <updated>2014-04-06T11:41:20+08:00</updated>
+    <id>http://duffqiu.github.io/blog/2014/04/06/cong-shi-ti-mo-xing-dao-shu-ju-mo-xing</id>
+    <content type="html"><![CDATA[<h3 id="section">原由</h3>
+<hr />
+
+<p>在系统设计过程中，我们总会用到Entity Model和Data Model，但是两者之间的关系是如何演变的呢？</p>
+
+<h3 id="section-1">解决办法</h3>
+<hr />
+
+<ol>
+  <li>首先建立一个最详尽的Entity Model，尽可能将所有具体的entity以及他们间的关系都列举出来</li>
+  <li>将该详尽的Entity Model尽可能的浓缩抽象，变成7-10个框的图形</li>
+  <li>根据浓缩后的Entity Model和业务操作的要求来抽取成Data Model</li>
+</ol>
+
+<p>因为设计公司机密问题，无法在这里给出具体的示例。后面有好的例子再补充</p>
+
+<p>同时对于Data Model，有几点个人设计的体验：</p>
+
+<ol>
+  <li>不要过于局限于SQL的那几个范式。</li>
+  <li>尽可能单表操作</li>
+  <li>如果业务上不是要求严格的事物处理，尽可能不做事务操作，而是通过后续的数据处理清理垃圾数据。只是数据的使用过程中要注意保护（如先query后操作create/update）</li>
+  <li>如果两个业务模块操作同一个表的不同数据，则可以考虑将表拆成两个对立的子表。</li>
+  <li>当数据库性能达到一定瓶颈的时候，可以考虑使用NOSQL的方式做cache，如用<a href="http://redis.io">Redis</a></li>
+</ol>
+
+<h4 id="section-2">小插曲</h4>
+
+<p>使用plantuml画entity model或者component 图都是出现自动排列时图形是乱的，很不好看。不过通过一个简单打设置就可以比较工整了。在plantuml文件的前面增加以下代码</p>
+
+<p><code>
+left to right direction
+</code></p>
+
+]]></content>
+  </entry>
+  
+</feed>

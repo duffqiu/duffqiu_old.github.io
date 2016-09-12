@@ -1,0 +1,464 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Install ZSH and Oh_my_zsh in CoreOS - Duff Qiu's Blog</title>
+  <meta name="author" content="Duff Qiu">
+
+
+<meta name="msvalidate.01" content="359198A91024370BBF46839C4C26D15C" />
+
+
+<link href='/assets/global-8cde27b49bc0ab877f54123624323cd8.css' rel='stylesheet' type='text/css' />
+
+
+<script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
+
+
+  
+  <meta name="description" content="Why Since some guys from other country ask me how to install zsh and oh-my-zsh in CoreOS, I have to write it in English. ZSH with oh_my_zsh is very &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://duffqiu.github.io/blog/2015/07/09/install-zsh-coreos">
+  <link href="/favicon.png" rel="icon">
+<!--
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css"> -->
+  <link href="/atom.xml" rel="alternate" title="Duff Qiu's Blog" type="application/atom+xml">
+  <!-- <script src="/javascripts/modernizr-2.0.js"></script> -->
+  <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> -->
+  <!-- <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script> -->
+  <!-- <script src="/javascripts/octopress.js" type="text/javascript"></script> -->
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='/assets/global-b5b3673188d66d658a2c16f278ccf875.css' rel='stylesheet' type='text/css' />
+
+
+<script src='/assets/global-1ae286654142297648bf164d97e30542.js' type='text/javascript'></script>
+
+
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+<!-- <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css"> -->
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-47478128-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Duff Qiu's Blog</a></h1>
+  
+    <h2>Duff Qiu的个人博客，只为记录一个过程，结果都是浮云☁️！</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:duffqiu.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/categories/java/">Java编程</a><li>
+  <li><a href="/blog/categories/scala/">Scala编程</a><li>
+  <li><a href="/blog/categories/uml/">UML Tips</a><li>
+  <li><a href="/blog/categories/osx/">OSX经验与Tips</a><li>
+  <li><a href="/blog/categories/octopress/">Octopress经验</a><li>
+  <li><a href="/blog/archives">全部文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Install ZSH and Oh_my_zsh in CoreOS</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-09T21:13:24+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2015</time>
+        
+        
+           | <a href="#comments">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3 id="why">Why</h3>
+<hr />
+
+<p>Since some guys from other country ask me how to install zsh and oh-my-zsh in CoreOS, I have to write it in English.</p>
+
+<p>ZSH with <a href="https://github.com/robbyrussell/oh-my-zsh">oh_my_zsh</a> is very convinient shell instead of bash or other shells. </p>
+
+<p>But if you are using CoreOS (most people use it because of using Docker, fleet and etcd), you will meet a challenge because CoreOS doesn’t include zsh with it.</p>
+
+<p>Since there is no installation tool like yum or apt-get in CoreOS, we have to do some workaround mannually to have zsh on it.</p>
+
+<h3 id="how">How</h3>
+<hr />
+
+<ul>
+  <li>
+    <p>Get the zsh related files. (Of course you can build a zsh from source code, but the process is too heavy)</p>
+
+    <ul>
+      <li>Create a local folder in CoreOS. For example: <code>/home/core/zsh</code>. I will refer it as <code>zsh_home</code>. And also create subfolders: <code>lib64</code>, <code>share</code>, <code>bin</code></li>
+      <li>Run a docker container with centos7 image: <code>docker run -it --rm -v &lt;zsh_home&gt;:/root/zsh centos /bin/bash</code></li>
+      <li>In the container, run <code>yum update</code> and <code>yum install zsh</code></li>
+      <li>In the container, query what is installed for zsh: <code>rpm -aql zsh</code></li>
+      <li>Copy the zsh files to the folder you mount for the container in the docker run command. <code>cp /bin/zsh root/zsh/bin</code>, <code>cp -r /usr/lib64/zsh /root/zsh/lib64</code>, <code>cp -r /usr/share/zsh /root/zsh/share</code></li>
+      <li>Copy the dynamic library file for zsh: <code>cp /usr/lib64/libtinfo.so.5 /root/zsh/lib64/</code></li>
+    </ul>
+  </li>
+  <li>Install oh-my-zsh. Follow the instruction of installation of oh-my-zsh is OK.</li>
+  <li>
+    <p>Update .bashrc file (under home path)</p>
+
+    <ul>
+      <li>Break the link of .bashrc: <code>rm .bashrc</code> because it is a link default</li>
+      <li>Get the default version: <code>cp ../../usr/share/skel/.bashrc .bashrc</code></li>
+      <li>Update .bashrc: add below lines in the bottom of the file <code>export PATH=$PATH:/home/core/zsh/bin/</code> and <code>export LD_LIBRARY_PATH=/home/core/zsh/lib64/</code></li>
+      <li>add the <code>zsh</code> command in the last line of .bashrc file becuase we can’t use <code>chsh -s &lt;zsh_home&gt;/zsh</code>
+. The file <code>/etc/shells</code> is read only</li>
+    </ul>
+  </li>
+  <li>
+    <p>Update oh-my-zsh</p>
+
+    <ul>
+      <li>add the below lines on the top of the file: .zshrc</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">module_path=(&lt;zsh_home&gt;/lib64/zsh/5.0.2/)
+</span><span class="line">
+</span><span class="line">fpath=(&lt;zsh_home&gt;/share/zsh/5.0.2/functions/ &lt;zsh_home&gt;/share/zsh/site-functions/ $fpath)
+</span><span class="line">
+</span><span class="line">export PATH=$PATH:&lt;zsh_home&gt;/bin</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>…
+    <ul>
+      <li>add <code>PATH=$PATH:/home/core/zsh/bin</code> on the top of file .oh-my-zsh/oh-my-zsh.sh</li>
+      <li>add below lines on the top of the file .oh-my-zsh/tools/check_for_upgrade.sh</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">module_path=(&lt;zsh_home&gt;/lib64/zsh/5.0.2/)
+</span><span class="line">
+</span><span class="line">fpath=(&lt;zsh_home&gt;/share/zsh/5.0.2/functions/ &lt;zsh_home&gt;/share/zsh/site-functions/ $fpath)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>relogin CoreOS shall be ok to use zsh</li>
+</ul>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Duff Qiu</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-07-09T21:13:24+08:00" pubdate data-updated="true">Jul 9<span>th</span>, 2015</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/zsh/'>ZSH</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/07/06/docker-cleanup-none-images/" title="Previous Post: Docker清除none images">&laquo; Docker清除none images</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015/07/13/zookeeper-cloud-deploy/" title="Next Post: zookeeper云部署方案设计">zookeeper云部署方案设计 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+
+   <section>
+     <h1>Comments</h1>
+     <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"duffqiu"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+</div>
+   </section>
+  
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+<h1>Recent Comments</h1>
+<ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
+
+</section>
+
+<section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/appscale/'>Appscale (3)</a></li>
+<li class='category'><a href='/blog/categories/auto-test/'>Auto Test (1)</a></li>
+<li class='category'><a href='/blog/categories/bing/'>Bing (1)</a></li>
+<li class='category'><a href='/blog/categories/block-storage/'>Block Storage (1)</a></li>
+<li class='category'><a href='/blog/categories/centos/'>CentOS (2)</a></li>
+<li class='category'><a href='/blog/categories/centos/'>Centos (1)</a></li>
+<li class='category'><a href='/blog/categories/cloud/'>Cloud (1)</a></li>
+<li class='category'><a href='/blog/categories/coreos/'>CoreOS (6)</a></li>
+<li class='category'><a href='/blog/categories/data-model/'>Data Model (1)</a></li>
+<li class='category'><a href='/blog/categories/design-pattern/'>Design Pattern (9)</a></li>
+<li class='category'><a href='/blog/categories/docker/'>Docker (4)</a></li>
+<li class='category'><a href='/blog/categories/etcd2/'>ETCD2 (1)</a></li>
+<li class='category'><a href='/blog/categories/entity-model/'>Entity Model (1)</a></li>
+<li class='category'><a href='/blog/categories/fp/'>FP (1)</a></li>
+<li class='category'><a href='/blog/categories/findbugs/'>Findbugs (1)</a></li>
+<li class='category'><a href='/blog/categories/fleet/'>Fleet (2)</a></li>
+<li class='category'><a href='/blog/categories/gsl/'>GSL (1)</a></li>
+<li class='category'><a href='/blog/categories/guava/'>Guava (1)</a></li>
+<li class='category'><a href='/blog/categories/guice/'>Guice (2)</a></li>
+<li class='category'><a href='/blog/categories/integration/'>Integration (1)</a></li>
+<li class='category'><a href='/blog/categories/junit/'>JUnit (1)</a></li>
+<li class='category'><a href='/blog/categories/java/'>Java (13)</a></li>
+<li class='category'><a href='/blog/categories/jekyll/'>Jekyll (1)</a></li>
+<li class='category'><a href='/blog/categories/jenkins/'>Jenkins (3)</a></li>
+<li class='category'><a href='/blog/categories/keepalived/'>Keepalived (2)</a></li>
+<li class='category'><a href='/blog/categories/linux/'>Linux (1)</a></li>
+<li class='category'><a href='/blog/categories/mac/'>MAC (3)</a></li>
+<li class='category'><a href='/blog/categories/maven/'>Maven (3)</a></li>
+<li class='category'><a href='/blog/categories/miscellany/'>Miscellany (1)</a></li>
+<li class='category'><a href='/blog/categories/nfs/'>NFS (1)</a></li>
+<li class='category'><a href='/blog/categories/oo/'>OO (1)</a></li>
+<li class='category'><a href='/blog/categories/osx/'>OSX (4)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>Octopress (16)</a></li>
+<li class='category'><a href='/blog/categories/openstack/'>Openstack (2)</a></li>
+<li class='category'><a href='/blog/categories/plantuml/'>PlantUML (3)</a></li>
+<li class='category'><a href='/blog/categories/port/'>Port (2)</a></li>
+<li class='category'><a href='/blog/categories/proxy/'>Proxy (2)</a></li>
+<li class='category'><a href='/blog/categories/rest/'>REST (3)</a></li>
+<li class='category'><a href='/blog/categories/sbt/'>SBT (2)</a></li>
+<li class='category'><a href='/blog/categories/scala/'>Scala (7)</a></li>
+<li class='category'><a href='/blog/categories/script/'>Script (1)</a></li>
+<li class='category'><a href='/blog/categories/sublime/'>Sublime (1)</a></li>
+<li class='category'><a href='/blog/categories/systemd/'>Systemd (1)</a></li>
+<li class='category'><a href='/blog/categories/uml/'>UML (1)</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/'>VirtualBox (1)</a></li>
+<li class='category'><a href='/blog/categories/virtualbox/'>Virtualbox (1)</a></li>
+<li class='category'><a href='/blog/categories/zsh/'>ZSH (1)</a></li>
+<li class='category'><a href='/blog/categories/zookeeper/'>Zookeeper (1)</a></li>
+
+  </ul>
+</section>
+
+  
+</aside>
+
+
+
+
+<article class="archives">
+  <div class="related-posts">
+    <h2>Related Posts</h2>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/10/25/docker-fix-network/">配置Docker的容器网络与主机网络相同</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/docker/'>Docker</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/08/18/centos-virtualbox-nfs/">Linux下的Virtualbox使用NFS</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/centos/'>Centos</a>, <a class='category' href='/blog/categories/nfs/'>NFS</a>, <a class='category' href='/blog/categories/virtualbox/'>Virtualbox</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/08/14/docker-public-port/">如何获取docker动态分配的port</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/docker/'>Docker</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/08/10/centos-ntfs-disk/">CentOS下使用NTFS格式的U盘或移动硬盘</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/centos/'>CentOS</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+      <article>
+        <h3 class="title"><a href="/blog/2015/07/25/fleet-ha-service-trap/">fleet部署高可用性服务的坑</a></h3>
+        <div class="meta">
+          <span class="tags">
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/coreos/'>CoreOS</a>, <a class='category' href='/blog/categories/fleet/'>Fleet</a>
+  
+</span>
+
+</span>
+            
+        </div>
+      </article>
+    
+  </div>
+</article>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Duff Qiu -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
