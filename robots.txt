@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: 
-
-Sitemap: http://duffqiu.github.io/sitemap.xml 
